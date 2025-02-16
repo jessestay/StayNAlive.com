@@ -4353,6 +4353,21 @@ Would you like me to:
 
 ---
 
+_**User**_
+
+Now I'd like to: 
+
+Help set up automated pattern syncing
+Add more error patterns from your project
+
+---
+
+_**Assistant**_
+
+
+
+---
+
 
 
 ---
