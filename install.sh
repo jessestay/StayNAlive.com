@@ -124,4 +124,7 @@ echo -e "${GREEN}Installation complete!${NC}"
 echo -e "Theme zip created at: ${BLUE}dist/staynalive.zip${NC}"
 echo -e "You can now install this theme in WordPress through:"
 echo -e "1. WordPress Admin > Appearance > Themes > Add New > Upload Theme"
-echo -e "2. Or copy the contents of ${BLUE}dist/staynalive${NC} to your wp-content/themes directory" 
+echo -e "2. Or copy the contents of ${BLUE}dist/staynalive${NC} to your wp-content/themes directory"
+
+mkdir -p src
+touch src/index.js 

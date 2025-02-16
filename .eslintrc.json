@@ -1,0 +1,13 @@
+{
+    "extends": [
+        "@wordpress/eslint-plugin/esnext"
+    ],
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2021,
+        "sourceType": "module"
+    }
+} 
