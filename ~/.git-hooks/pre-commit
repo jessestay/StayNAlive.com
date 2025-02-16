@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Load AI Fix if available
+if [ -f ".ai-fix.sh" ]; then
+    source .ai-fix.sh
+    
+    # Check for errors before commit
+    if ! check_for_errors; then
+        echo "Would you like AI to attempt fixing these errors? (y/n)"
+        read -r response
+        if [[ "$response" =~ ^[Yy]$ ]]; then
+            fix_with_ai "$ERROR_MSG" "$ERROR_FILE"
+        fi
+    fi
+fi 

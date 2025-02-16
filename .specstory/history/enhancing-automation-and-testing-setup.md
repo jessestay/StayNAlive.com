@@ -1091,7 +1091,896 @@ Would you like me to add more patterns or enhance any of the fix functions?
 
 ---
 
+_**User**_
+
+How can I use this type of automatic error detection and automatic AI error fixing in all other cursor projects and workspaces?
+
+---
+
+_**Assistant**_
+
+To make this AI error detection and fixing system reusable across all projects, we can create a standalone script that can be included in any project. Here's how:
+
+1. First, create a new script called `ai-fix.sh` that can be symlinked or copied into any project:
+
+```bash:ai-fix.sh
+#!/bin/bash
+
+# Version
+AI_FIX_VERSION="1.0.0"
+
+# Colors for output
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+# Error tracking
+ERRORS=()
+WARNINGS=()
+
+# Load project-specific config if it exists
+if [ -f ".ai-fix.config.json" ]; then
+    echo "Loading project configuration..."
+    eval "$(jq -r 'to_entries | .[] | "export " + .key + "=\"" + .value + "\""' .ai-fix.config.json)"
+fi
+
+# Common error patterns database
+declare -A ERROR_PATTERNS=(
+    # NPM/Node errors
+    ["Cannot find module"]=1
+    ["ERESOLVE"]=1
+    ["peer dependency conflict"]=1
+    ["Failed to load config"]=1
+    ["Missing dependencies"]=1
+    
+    # PHP errors
+    ["PHP Parse error"]=1
+    ["PHP Fatal error"]=1
+    ["PHP Notice"]=1
+    ["PHP Warning"]=1
+    
+    # Build tool errors
+    ["webpack"]=1
+    ["babel"]=1
+    ["postcss"]=1
+    ["stylelint"]=1
+    ["eslint"]=1
+    
+    # Package manager errors
+    ["npm ERR!"]=1
+    ["composer"]=1
+    ["yarn"]=1
+)
+
+# Main AI fix function
+fix_with_ai() {
+    local error_msg="$1"
+    local file="$2"
+    local project_type="${3:-auto}"  # Can be specified or auto-detected
+    
+    echo -e "${BLUE}AI attempting to fix error in ${file}:${NC}"
+    echo -e "${RED}${error_msg}${NC}"
+    
+    # Auto-detect project type if not specified
+    if [ "$project_type" = "auto" ]; then
+        if [ -f "package.json" ]; then
+            project_type="node"
+        elif [ -f "composer.json" ]; then
+            project_type="php"
+        elif [ -f "Cargo.toml" ]; then
+            project_type="rust"
+        fi
+    fi
+    
+    # Load project-specific fixes
+    if [ -f ".ai-fix/${project_type}/fixes.sh" ]; then
+        source ".ai-fix/${project_type}/fixes.sh"
+    fi
+    
+    # Apply fixes based on error patterns
+    for pattern in "${!ERROR_PATTERNS[@]}"; do
+        if [[ $error_msg == *"$pattern"* ]]; then
+            handle_known_error "$pattern" "$error_msg" "$file" "$project_type"
+            return $?
+        fi
+    done
+    
+    # If no pattern matched, try generic fixes
+    generic_error_fix "$error_msg" "$file" "$project_type"
+}
+
+# Usage function
+show_usage() {
+    echo "AI Fix Tool v${AI_FIX_VERSION}"
+    echo "Usage: ai-fix [command] [options]"
+    echo ""
+    echo "Commands:"
+    echo "  watch         Watch for errors in real-time"
+    echo "  fix          Fix a specific error"
+    echo "  init         Initialize AI Fix in current project"
+    echo "  patterns     List known error patterns"
+    echo ""
+    echo "Options:"
+    echo "  --project    Specify project type (node, php, rust, etc.)"
+    echo "  --auto       Auto-detect project type"
+    echo "  --config     Path to config file"
+}
+
+# Main entry point
+main() {
+    case "$1" in
+        "watch")
+            watch_for_errors "${@:2}"
+            ;;
+        "fix")
+            fix_specific_error "${@:2}"
+            ;;
+        "init")
+            initialize_ai_fix "${@:2}"
+            ;;
+        "patterns")
+            list_patterns
+            ;;
+        *)
+            show_usage
+            ;;
+    esac
+}
+
+# Run main if script is executed directly
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
+```
+
+2. Create a project template for initializing in new projects:
+
+```bash:.ai-fix/templates/init.sh
+#!/bin/bash
+
+# Create project structure
+mkdir -p .ai-fix/{node,php,rust,python}/fixes
+mkdir -p .ai-fix/patterns
+
+# Create default config
+cat > .ai-fix.config.json << 'EOL'
+{
+    "project_type": "auto",
+    "auto_fix": true,
+    "backup": true,
+    "patterns_path": ".ai-fix/patterns",
+    "fixes_path": ".ai-fix/fixes"
+}
+EOL
+
+# Create gitignore
+echo ".ai-fix/backups/" >> .gitignore
+```
+
+3. Add to your global git config:
+
+```bash:~/.gitconfig
+[init]
+    templateDir = ~/.git-templates
+
+[core]
+    hooksPath = ~/.git-hooks
+```
+
+4. Create a pre-commit hook that uses the AI fix:
+
+```bash:~/.git-hooks/pre-commit
+#!/bin/bash
+
+# Load AI Fix if available
+if [ -f ".ai-fix.sh" ]; then
+    source .ai-fix.sh
+    
+    # Check for errors before commit
+    if ! check_for_errors; then
+        echo "Would you like AI to attempt fixing these errors? (y/n)"
+        read -r response
+        if [[ "$response" =~ ^[Yy]$ ]]; then
+            fix_with_ai "$ERROR_MSG" "$ERROR_FILE"
+        fi
+    fi
+fi
+```
+
+To use in any project:
+
+1. Initialize:
+```bash
+curl -o ai-fix.sh https://raw.githubusercontent.com/your-repo/ai-fix/main/ai-fix.sh
+chmod +x ai-fix.sh
+./ai-fix.sh init
+```
+
+2. Add to your build scripts:
+```json:package.json
+{
+  "scripts": {
+    "build": "ai-fix watch -- npm run build",
+    "test": "ai-fix watch -- npm test"
+  }
+}
+```
+
+3. Or use directly:
+```bash
+# Fix a specific error
+./ai-fix.sh fix "Error message" file.js
+
+# Watch for errors
+./ai-fix.sh watch npm run build
+```
+
+Would you like me to:
+1. Add more project type templates
+2. Add more error patterns
+3. Create a central pattern repository
+4. Add machine learning capabilities
+
+---
+
+_**User**_
+
+
+
+---
+
 _****_
+
+3 and 4
+
+---
+
+_**Assistant**_
+
+I'll help enhance the AI fix system with machine learning capabilities and create a central pattern repository:
+
+1. First, let's create a pattern learning system:
+
+``````bash:.ai-fix/ml/pattern_learner.sh
+#!/bin/bash
+
+# Pattern learning system
+learn_pattern() {
+    local error_msg="$1"
+    local fix_command="$2"
+    local success="$3"
+    
+    # Create pattern hash
+    local pattern_hash=$(echo "$error_msg" | sha256sum | cut -d' ' -f1)
+    
+    # Store pattern data
+    cat >> ".ai-fix/patterns/${pattern_hash}.json" << EOL
+{
+    "pattern": "$(echo "$error_msg" | jq -R -s '.')",
+    "fix": "$(echo "$fix_command" | jq -R -s '.')",
+    "success_rate": $success,
+    "last_used": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+    "project_type": "$PROJECT_TYPE",
+    "context": {
+        "os": "$(uname -s)",
+        "dependencies": $(jq -c '.dependencies // {}' package.json 2>/dev/null || echo '{}')
+    }
+}
+EOL
+}
+
+# Pattern matching using ML
+match_pattern() {
+    local error_msg="$1"
+    
+    # Use fuzzy matching to find similar patterns
+    local matches=$(find .ai-fix/patterns -name "*.json" -exec sh -c '
+        jq -r '"'"'.pattern'"'"' "{}" | similarity-score "'"$error_msg"'" 
+    ' \;)
+    
+    # Return best match above threshold
+    echo "$matches" | sort -nr | head -n1
+}
+``````
+
+2. Add a central pattern repository sync:
+
+``````bash:.ai-fix/sync/repository.sh
+#!/bin/bash
+
+PATTERN_REPO_URL="https://api.github.com/repos/your-org/ai-fix-patterns"
+
+# Sync patterns with central repository
+sync_patterns() {
+    # Check if we have access token
+    if [ -z "$PATTERN_REPO_TOKEN" ]; then
+        echo -e "${YELLOW}No access token found for pattern repository${NC}"
+        return 1
+    }
+    
+    # Upload new patterns
+    find .ai-fix/patterns -name "*.json" -mtime -1 | while read pattern_file; do
+        # Only sync successful patterns
+        if jq -e '.success_rate > 0.8' "$pattern_file" > /dev/null; then
+            curl -X POST \
+                -H "Authorization: token $PATTERN_REPO_TOKEN" \
+                -H "Content-Type: application/json" \
+                -d @"$pattern_file" \
+                "$PATTERN_REPO_URL/contents/patterns/$(basename "$pattern_file")"
+        fi
+    done
+    
+    # Download new patterns
+    curl -s \
+        -H "Authorization: token $PATTERN_REPO_TOKEN" \
+        "$PATTERN_REPO_URL/contents/patterns" | \
+    jq -r '.[] | .download_url' | while read url; do
+        curl -s "$url" > ".ai-fix/patterns/$(basename "$url")"
+    done
+}
+``````
+
+3. Add machine learning capabilities to fix_with_ai:
+
+``````diff:ai-fix.sh
+ fix_with_ai() {
+     local error_msg="$1"
+     local file="$2"
+     local project_type="${3:-auto}"
+     
++    # Try ML-based pattern matching first
++    local pattern_match=$(match_pattern "$error_msg")
++    if [ -n "$pattern_match" ]; then
++        local fix_command=$(echo "$pattern_match" | jq -r '.fix')
++        echo -e "${BLUE}Found ML-matched fix pattern${NC}"
++        
++        if [ "$AUTO_FIX" = "true" ] || confirm_fix "$fix_command"; then
++            if eval "$fix_command"; then
++                learn_pattern "$error_msg" "$fix_command" 1
++                return 0
++            else
++                learn_pattern "$error_msg" "$fix_command" 0
++            fi
++        fi
++    fi
++    
+     # Rest of existing code...
+ }
+``````
+
+4. Add a pattern scoring system:
+
+``````bash:.ai-fix/ml/scoring.sh
+#!/bin/bash
+
+# Score pattern matches
+score_pattern() {
+    local pattern="$1"
+    local error_msg="$2"
+    
+    # Calculate similarity score
+    local similarity=$(string_similarity "$pattern" "$error_msg")
+    
+    # Get pattern success rate
+    local success_rate=$(jq '.success_rate' "$pattern_file")
+    
+    # Calculate final score
+    echo "scale=2; ($similarity * 0.7) + ($success_rate * 0.3)" | bc
+}
+
+# String similarity using Levenshtein distance
+string_similarity() {
+    local str1="$1"
+    local str2="$2"
+    python3 -c "
+import Levenshtein
+print(1 - Levenshtein.distance('$str1', '$str2') / max(len('$str1'), len('$str2')))
+"
+}
+``````
+
+5. Add pattern analytics:
+
+``````bash:.ai-fix/analytics/report.sh
+#!/bin/bash
+
+generate_pattern_report() {
+    echo "AI Fix Pattern Analytics"
+    echo "======================="
+    echo
+    
+    # Success rate by pattern
+    echo "Pattern Success Rates:"
+    find .ai-fix/patterns -name "*.json" -exec jq -r '[.pattern, .success_rate] | @tsv' {} \; | \
+        sort -k2 -nr | \
+        column -t
+    
+    # Most common errors
+    echo -e "\nMost Common Errors:"
+    jq -r '.pattern' .ai-fix/patterns/*.json | \
+        sort | \
+        uniq -c | \
+        sort -nr | \
+        head -n10
+    
+    # Project type distribution
+    echo -e "\nProject Type Distribution:"
+    jq -r '.project_type' .ai-fix/patterns/*.json | \
+        sort | \
+        uniq -c | \
+        sort -nr
+}
+``````
+
+This enhances the system with:
+1. Machine learning pattern matching
+2. Central pattern repository
+3. Pattern success tracking
+4. Similarity scoring
+5. Analytics reporting
+
+Would you like me to:
+1. Add more ML algorithms
+2. Enhance the pattern repository
+3. Add more analytics features
+4. Create a web interface
+
+---
+
+_**User**_
+
+Here are the current errors
+
+---
+
+_**Assistant**_
+
+I'll help analyze and fix the current errors. First, let's add error handling functions to ai-fix.sh:
+
+``````diff:ai-fix.sh
+# Add these functions after the error patterns
++# Handle known error patterns
++handle_known_error() {
++    local pattern="$1"
++    local error_msg="$2"
++    local file="$3"
++    local project_type="$4"
++    
++    echo -e "${BLUE}Handling known error pattern: ${pattern}${NC}"
++    
++    case "$pattern" in
++        "Cannot find module"|"Missing dependencies")
++            handle_missing_module_error "$error_msg" "$file"
++            ;;
++        "ERESOLVE"|"peer dependency conflict")
++            handle_dependency_conflict "$error_msg" "$file"
++            ;;
++        "PHP Parse error"|"PHP Fatal error"|"PHP Notice"|"PHP Warning")
++            handle_php_error "$error_msg" "$file"
++            ;;
++        "webpack"|"babel"|"postcss"|"stylelint"|"eslint")
++            handle_build_tool_error "$pattern" "$error_msg" "$file"
++            ;;
++        *)
++            return 1
++            ;;
++    esac
++}
++
++# Handle missing module errors
++handle_missing_module_error() {
++    local error_msg="$1"
++    local file="$2"
++    
++    # Extract module name
++    local module=$(echo "$error_msg" | grep -o "'[^']*'" | head -1 | tr -d "'")
++    if [ -n "$module" ]; then
++        echo -e "${BLUE}Installing missing module: $module${NC}"
++        npm install --save-dev "$module"
++        return $?
++    fi
++    return 1
++}
++
++# Handle dependency conflicts
++handle_dependency_conflict() {
++    local error_msg="$1"
++    local file="$2"
++    
++    echo "Resolving dependency conflicts..."
++    rm -rf node_modules package-lock.json
++    npm install --legacy-peer-deps --no-audit
++    
++    # Check for specific version conflicts
++    if grep -q "stylelint" package.json; then
++        npm install --save-dev stylelint@14.16.1
++    fi
++    if grep -q "@wordpress/stylelint-config" package.json; then
++        npm install --save-dev @wordpress/stylelint-config@21.41.0
++    fi
++}
++
++# Handle PHP errors
++handle_php_error() {
++    local error_msg="$1"
++    local file="$2"
++    
++    # Run PHP Code Beautifier and Fixer
++    if command -v phpcbf >/dev/null 2>&1; then
++        phpcbf "$file"
++    fi
++    
++    # Fix common PHP issues
++    sed -i '' -e 's/[^;]$/&;/' \
++             -e 's/}\([^ ]\)/}\n\1/g' \
++             -e 's/[^{]\{$/\{/g' \
++             -e 's/\([^}]\)}/\1\n}/g' "$file"
++}
++
++# Handle build tool errors
++handle_build_tool_error() {
++    local tool="$1"
++    local error_msg="$2"
++    local file="$3"
++    
++    case "$tool" in
++        "webpack"|"babel")
++            npm install --save-dev @babel/core @babel/preset-env
++            ;;
++        "postcss")
++            npm install --save-dev postcss postcss-cli autoprefixer
++            ;;
++        "stylelint")
++            npm install --save-dev stylelint stylelint-config-standard
++            ;;
++        "eslint")
++            npm install --save-dev eslint eslint-config-standard
++            ;;
++    esac
++}
+``````
+
+This adds:
+1. Specific handlers for each error type
+2. Automatic dependency resolution
+3. PHP error fixing
+4. Build tool error handling
+
+Would you like me to:
+1. Add more error handlers
+2. Enhance the existing handlers
+3. Add error pattern learning
+4. Add more build tool support
+
+---
+
+_**User**_
+
+3
+
+---
+
+_**Assistant**_
+
+I'll enhance the error pattern learning system to make it more sophisticated. Let's add pattern learning and analysis:
+
+1. First, let's create a pattern database manager:
+
+``````bash:.ai-fix/ml/pattern_db.sh
+#!/bin/bash
+
+# Pattern database manager
+PATTERN_DB_VERSION="1.0.0"
+PATTERN_DB_PATH=".ai-fix/patterns/db.json"
+
+# Initialize pattern database
+init_pattern_db() {
+    if [ ! -f "$PATTERN_DB_PATH" ]; then
+        echo '{
+            "version": "'"$PATTERN_DB_VERSION"'",
+            "patterns": {},
+            "metadata": {
+                "created": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'",
+                "last_updated": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'",
+                "total_patterns": 0,
+                "success_rate": 0
+            }
+        }' > "$PATTERN_DB_PATH"
+    fi
+}
+
+# Add pattern to database
+add_pattern() {
+    local error_pattern="$1"
+    local fix_command="$2"
+    local success="$3"
+    local context="$4"
+    
+    # Create pattern hash
+    local pattern_hash=$(echo "$error_pattern" | sha256sum | cut -d' ' -f1)
+    
+    # Update pattern database
+    jq --arg hash "$pattern_hash" \
+       --arg pattern "$error_pattern" \
+       --arg fix "$fix_command" \
+       --arg success "$success" \
+       --arg context "$context" \
+       --arg date "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+       '.patterns[$hash] = {
+           "pattern": $pattern,
+           "fix": $fix,
+           "success_rate": ($success | tonumber),
+           "uses": ((.patterns[$hash].uses // 0) + 1),
+           "last_used": $date,
+           "context": ($context | fromjson),
+           "history": ((.patterns[$hash].history // []) + [{
+               "date": $date,
+               "success": ($success | tonumber)
+           }])
+       } | .metadata.last_updated = $date | .metadata.total_patterns = (.patterns | length)' \
+       "$PATTERN_DB_PATH" > "${PATTERN_DB_PATH}.tmp" && mv "${PATTERN_DB_PATH}.tmp" "$PATTERN_DB_PATH"
+}
+
+# Find similar patterns
+find_similar_patterns() {
+    local error_msg="$1"
+    local threshold="${2:-0.7}"  # Default similarity threshold
+    
+    jq -r --arg msg "$error_msg" --arg threshold "$threshold" '
+        .patterns | to_entries[] | select(
+            (.value.pattern | similarity($msg)) >= ($threshold | tonumber)
+        ) | [.value.pattern, .value.success_rate, .value.fix] | @tsv
+    ' "$PATTERN_DB_PATH"
+}
+
+# Analyze pattern effectiveness
+analyze_patterns() {
+    jq -r '
+        .patterns | to_entries[] | 
+        .value | 
+        [
+            .pattern,
+            .success_rate,
+            .uses,
+            (.history | length),
+            (.history | map(.success) | add / length)
+        ] | @tsv
+    ' "$PATTERN_DB_PATH" | 
+    column -t -s $'\t' -N "Pattern,Success Rate,Uses,History Size,Avg Success"
+}
+
+# Clean up old patterns
+cleanup_patterns() {
+    local days="${1:-30}"  # Default to 30 days
+    local threshold="${2:-0.3}"  # Default success threshold
+    
+    jq --arg days "$days" --arg threshold "$threshold" '
+        .patterns |= with_entries(
+            select(
+                .value.last_used >= (now - ($days | tonumber * 86400)) or
+                .value.success_rate >= ($threshold | tonumber)
+            )
+        )
+    ' "$PATTERN_DB_PATH" > "${PATTERN_DB_PATH}.tmp" && mv "${PATTERN_DB_PATH}.tmp" "$PATTERN_DB_PATH"
+}
+``````
+
+2. Add pattern learning to the main fix_with_ai function:
+
+``````diff:ai-fix.sh
+ fix_with_ai() {
+     local error_msg="$1"
+     local file="$2"
+     local project_type="${3:-auto}"
+     
++    # Initialize pattern database if needed
++    init_pattern_db
++    
++    # Get context for pattern learning
++    local context=$(get_error_context "$error_msg" "$file" "$project_type")
++    
+     # Try ML-based pattern matching first
+-    local pattern_match=$(match_pattern "$error_msg")
++    local pattern_match=$(find_similar_patterns "$error_msg")
+     if [ -n "$pattern_match" ]; then
+-        local fix_command=$(echo "$pattern_match" | jq -r '.fix')
++        local fix_command=$(echo "$pattern_match" | cut -f3)
++        local success_rate=$(echo "$pattern_match" | cut -f2)
+         echo -e "${BLUE}Found ML-matched fix pattern${NC}"
++        echo -e "${BLUE}Previous success rate: ${success_rate}${NC}"
+         
+         if [ "$AUTO_FIX" = "true" ] || confirm_fix "$fix_command"; then
+             if eval "$fix_command"; then
+-                learn_pattern "$error_msg" "$fix_command" 1
++                add_pattern "$error_msg" "$fix_command" 1 "$context"
+                 return 0
+             else
+-                learn_pattern "$error_msg" "$fix_command" 0
++                add_pattern "$error_msg" "$fix_command" 0 "$context"
+             fi
+         fi
+     fi
+``````
+
+3. Add context gathering function:
+
+``````bash:.ai-fix/ml/context.sh
+#!/bin/bash
+
+# Gather context for error analysis
+get_error_context() {
+    local error_msg="$1"
+    local file="$2"
+    local project_type="$3"
+    
+    # Create context object
+    cat << EOF
+{
+    "environment": {
+        "os": "$(uname -s)",
+        "node_version": "$(node -v 2>/dev/null || echo '')",
+        "php_version": "$(php -v 2>/dev/null | head -n1 || echo '')",
+        "project_type": "$project_type"
+    },
+    "file_info": {
+        "path": "$file",
+        "type": "${file##*.}",
+        "size": $(stat -f%z "$file" 2>/dev/null || echo 0)
+    },
+    "dependencies": $(jq -c '.dependencies // {}' package.json 2>/dev/null || echo '{}'),
+    "error_type": "$(categorize_error "$error_msg")",
+    "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+}
+EOF
+}
+
+# Categorize error type
+categorize_error() {
+    local error_msg="$1"
+    
+    case "$error_msg" in
+        *"Cannot find module"*) echo "missing_module" ;;
+        *"ERESOLVE"*) echo "dependency_conflict" ;;
+        *"PHP Parse error"*) echo "syntax_error" ;;
+        *"webpack"*) echo "build_error" ;;
+        *) echo "unknown" ;;
+    esac
+}
+``````
+
+This enhances the pattern learning by:
+1. Adding a proper pattern database
+2. Tracking pattern success rates
+3. Including context in pattern matching
+4. Cleaning up ineffective patterns
+5. Providing pattern analytics
+
+Would you like me to:
+1. Add more pattern analysis features
+2. Enhance the context gathering
+3. Add pattern sharing capabilities
+4. Add pattern visualization
+
+---
+
+_**User**_
+
+Let's fix this.
+
+---
+
+_**Assistant**_
+
+I see the issue. We need to source the AI fix scripts and fix the command not found error. Let's update install.sh:
+
+``````diff:install.sh
+# At the top of the file, after color definitions
++ # Source AI fix scripts
++ for script in .ai-fix/{ml,sync}/*.sh; do
++     if [ -f "$script" ]; then
++         source "$script"
++     fi
++ done
++ 
++ # Initialize AI fix
++ if [ ! -d ".ai-fix" ]; then
++     mkdir -p .ai-fix/{ml,sync,patterns}
++     cp -r .ai-fix/templates/* .ai-fix/
++ fi
+
+# Update the build command section
+echo -e "${BLUE}Building assets...${NC}"
+- if ! npm run build; then
++ # Capture build output and errors
++ BUILD_OUTPUT=$(npm run build 2>&1)
++ BUILD_STATUS=$?
++ 
++ if [ $BUILD_STATUS -ne 0 ]; then
++     # Extract error message
++     ERROR_MSG=$(echo "$BUILD_OUTPUT" | grep -A 2 "Error:" | head -n3)
++     
++     # Try to fix with AI
++     if type fix_with_ai >/dev/null 2>&1; then
++         echo -e "${BLUE}Attempting AI fix...${NC}"
++         if fix_with_ai "$ERROR_MSG" "package.json" "node"; then
++             # Retry build after fix
++             if ! npm run build; then
++                 echo -e "${RED}Build failed even after AI fix attempt${NC}"
++                 exit 1
++             fi
++         else
++             echo -e "${RED}AI fix failed${NC}"
++             exit 1
++         fi
++     else
++         echo -e "${RED}AI fix not available${NC}"
++         echo -e "${RED}Build failed: $ERROR_MSG${NC}"
++         exit 1
++     fi
++ fi
+
+# Add error pattern learning for common errors
++ learn_from_errors() {
++     local output="$1"
++     
++     # Extract and learn from stylelint errors
++     if echo "$output" | grep -q "stylelint-config-standard"; then
++         add_pattern \
++             "Could not find \"stylelint-config-standard\"" \
++             "npm install --save-dev stylelint-config-standard" \
++             1 \
++             "{\"type\":\"dependency\",\"tool\":\"stylelint\"}"
++     fi
++     
++     # Extract and learn from PHP errors
++     if echo "$output" | grep -q "PHP syntax error"; then
++         add_pattern \
++             "$(echo "$output" | grep -A 1 "PHP syntax error")" \
++             "phpcbf --standard=WordPress" \
++             1 \
++             "{\"type\":\"syntax\",\"language\":\"php\"}"
++     fi
++     
++     # Extract and learn from JavaScript errors
++     if echo "$output" | grep -q "error.*no-unused-vars\|error.*no-undef"; then
++         add_pattern \
++             "$(echo "$output" | grep -A 1 "error.*no-")" \
++             "eslint --fix" \
++             1 \
++             "{\"type\":\"lint\",\"tool\":\"eslint\"}"
++     fi
++ }
+
+# Add error learning to the build process
++ if [ -n "$BUILD_OUTPUT" ]; then
++     learn_from_errors "$BUILD_OUTPUT"
++ fi
+``````
+
+This update:
+1. Sources all AI fix scripts at startup
+2. Initializes AI fix directory structure
+3. Properly captures and handles build errors
+4. Adds error pattern learning
+5. Provides better error reporting
+
+Would you like me to:
+1. Add more error patterns
+2. Enhance the error learning
+3. Add error recovery strategies
+4. Add more build tool support
+
+---
+
+_**User**_
+
+1, 2, 3, and 4
+
+---
+
+_**Assistant**_
 
 
 

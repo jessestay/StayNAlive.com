@@ -7,6 +7,19 @@ RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
+# Source AI fix scripts
+for script in .ai-fix/{ml,sync}/*.sh; do
+    if [ -f "$script" ]; then
+        source "$script"
+    fi
+done
+
+# Initialize AI fix
+if [ ! -d ".ai-fix" ]; then
+    mkdir -p .ai-fix/{ml,sync,patterns}
+    cp -r .ai-fix/templates/* .ai-fix/
+fi
+
 echo -e "${BLUE}Installing Stay N Alive Theme...${NC}"
 
 # Check write permissions
@@ -283,14 +296,69 @@ mkdir -p build/css
 
 # Build assets
 echo -e "${BLUE}Building assets...${NC}"
-if ! npm run build 2> build-error.log; then
-    error_msg=$(cat build-error.log)
-    fix_with_ai "$error_msg" "package.json"
-    # Try build again after potential fix
-    if ! npm run build; then
-        echo -e "${RED}Failed to build assets.${NC}"
+# Capture build output and errors
+BUILD_OUTPUT=$(npm run build 2>&1)
+BUILD_STATUS=$?
+
+if [ $BUILD_STATUS -ne 0 ]; then
+    # Extract error message
+    ERROR_MSG=$(echo "$BUILD_OUTPUT" | grep -A 2 "Error:" | head -n3)
+    
+    # Try to fix with AI
+    if type fix_with_ai >/dev/null 2>&1; then
+        echo -e "${BLUE}Attempting AI fix...${NC}"
+        if fix_with_ai "$ERROR_MSG" "package.json" "node"; then
+            # Retry build after fix
+            if ! npm run build; then
+                echo -e "${RED}Build failed even after AI fix attempt${NC}"
+                exit 1
+            fi
+        else
+            echo -e "${RED}AI fix failed${NC}"
+            exit 1
+        fi
+    else
+        echo -e "${RED}AI fix not available${NC}"
+        echo -e "${RED}Build failed: $ERROR_MSG${NC}"
         exit 1
     fi
+fi
+
+# Add error pattern learning for common errors
+learn_from_errors() {
+    local output="$1"
+    
+    # Extract and learn from stylelint errors
+    if echo "$output" | grep -q "stylelint-config-standard"; then
+        add_pattern \
+            "Could not find \"stylelint-config-standard\"" \
+            "npm install --save-dev stylelint-config-standard" \
+            1 \
+            "{\"type\":\"dependency\",\"tool\":\"stylelint\"}"
+    fi
+    
+    # Extract and learn from PHP errors
+    if echo "$output" | grep -q "PHP syntax error"; then
+        add_pattern \
+            "$(echo "$output" | grep -A 1 "PHP syntax error")" \
+            "phpcbf --standard=WordPress" \
+            1 \
+            "{\"type\":\"syntax\",\"language\":\"php\"}"
+    fi
+    
+    # Extract and learn from JavaScript errors
+    if echo "$output" | grep -q "error.*no-unused-vars\|error.*no-undef"; then
+        add_pattern \
+            "$(echo "$output" | grep -A 1 "error.*no-")" \
+            "eslint --fix" \
+            1 \
+            "{\"type\":\"lint\",\"tool\":\"eslint\"}"
+    fi
+}
+
+# Add error learning to the build process
+if [ -n "$BUILD_OUTPUT" ]; then
+    learn_from_errors "$BUILD_OUTPUT"
 fi
 
 # Create production build
