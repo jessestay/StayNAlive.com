@@ -11,7 +11,7 @@ sync_patterns() {
     }
     
     # Upload new patterns
-    find .ai-fix/patterns -name "*.json" -mtime -1 | while read pattern_file; do
+    find .ai-fix/patterns -name "*.json" -mtime -1 | while read -r pattern_file; do
         # Only sync successful patterns
         if jq -e '.success_rate > 0.8' "$pattern_file" > /dev/null; then
             curl -X POST \
@@ -26,7 +26,7 @@ sync_patterns() {
     curl -s \
         -H "Authorization: token $PATTERN_REPO_TOKEN" \
         "$PATTERN_REPO_URL/contents/patterns" | \
-    jq -r '.[] | .download_url' | while read url; do
+    jq -r '.[] | .download_url' | while read -r url; do
         curl -s "$url" > ".ai-fix/patterns/$(basename "$url")"
     done
 } 

@@ -2944,6 +2944,43 @@ Would you like me to:
 
 ---
 
+_**User**_
+
+It's giving me these errors now.
+
+---
+
+_**Assistant**_
+
+I see several issues. Let's fix them one by one:
+
+1. First, let's fix the syntax error in `.ai-fix/sync/repository.sh`:
+
+``````diff:.ai-fix/sync/repository.sh
+#!/bin/bash
+
+PATTERN_REPO_URL="https://api.github.com/repos/your-org/ai-fix-patterns"
+
+# Sync patterns with central repository
+sync_patterns() {
+    # Check if we have access token
+    if [ -z "$PATTERN_REPO_TOKEN" ]; then
+        echo -e "${YELLOW}No access token found for pattern repository${NC}"
+        return 1
+    fi
+    
+    # Upload new patterns
+    find .ai-fix/patterns -name "*.json" -mtime -1 | while read -r pattern_file; do
+        # Only sync successful patterns
+        if jq -e '.success_rate > 0.8' "$pattern_file" > /dev/null; then
+            curl -X POST \
+                -H "Authorization: token $PATTERN_REPO_TOKEN" \
+                -H "Content-Type: application/json" \
+                -d @"$pattern_file" \
+                "$PATTERN_REPO_URL/contents
+
+---
+
 
 
 ---

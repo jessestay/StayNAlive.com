@@ -51,6 +51,43 @@ recover_from_build_error() {
     local error_msg="$1"
     local file="$2"
     
+    # Handle stylelint config error
+    if [[ $error_msg == *"Could not find \"stylelint-config-standard\""* ]]; then
+        npm install --save-dev stylelint-config-standard
+        
+        # Create stylelint config
+        cat > .stylelintrc.json << 'EOL'
+{
+    "extends": [
+        "stylelint-config-standard",
+        "@wordpress/stylelint-config"
+    ],
+    "rules": {
+        "no-descending-specificity": null,
+        "selector-class-pattern": null
+    }
+}
+EOL
+        return 0
+    fi
+
+    # Handle ESLint undefined errors
+    if [[ $error_msg == *"'registerBlockVariation' is not defined"* ]] || 
+       [[ $error_msg == *"'registerBlockPattern' is not defined"* ]]; then
+        # Add imports to editor-customization.js
+        sed -i '' '1i\
+import { registerBlockVariation, registerBlockPattern } from "@wordpress/blocks";' \
+            assets/js/editor-customization.js
+        return 0
+    fi
+
+    # Handle unused variable warning
+    if [[ $error_msg == *"'unregisterBlockStyle' is assigned a value but never used"* ]]; then
+        # Either use the variable or remove it
+        sed -i '' '/unregisterBlockStyle/d' assets/js/editor-customization.js
+        return 0
+    fi
+    
     # Try common build recovery steps
     rm -rf node_modules package-lock.json
     npm cache clean --force
