@@ -9,6 +9,7 @@ _Nothing yet._
 ## [3.11.3] - 2025-01-23
 
 ### Changed
+
 - Generic.ControlStructures.InlineControlStructure no longer unnecessarily listens for T_SWITCH tokens. [#595]
     - Thanks to [Rodrigo Primo][@rodrigoprimo] for the patch.
 - Squiz.Functions.FunctionDeclarationArgumentSpacing: improvements to error message for `SpaceBeforeComma` error. [#783]
@@ -19,6 +20,7 @@ _Nothing yet._
     - Thanks to [Michał Bundyra][@michalbundyra], [Rodrigo Primo][@rodrigoprimo] and [Juliette Reinders Folmer][@jrfnl] for their contributions.
 
 ### Fixed
+
 - Fixed bug [#620] : Squiz.Functions.FunctionDeclarationArgumentSpacing: newlines after type will now be handled by the fixer. This also prevents a potential fixer conflict.
     - Thanks to [Dan Wallis][@fredden] for the patch.
 - Fixed bug [#782] : Tokenizer/PHP: prevent an "Undefined array key" notice during live coding for unfinished arrow functions.
@@ -47,6 +49,7 @@ _Nothing yet._
 ## [3.11.2] - 2024-12-11
 
 ### Changed
+
 - Generators/HTML + Markdown: the output will now be empty (no page header/footer) when there are no docs to display. [#687]
     - This is in line with the Text Generator which already didn't produce output if there are no docs.
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch.
@@ -67,6 +70,7 @@ _Nothing yet._
     - Thanks to [Rodrigo Primo][@rodrigoprimo] and [Juliette Reinders Folmer][@jrfnl] for their contributions.
 
 ### Fixed
+
 - Fixed bug [#527] : Squiz.Arrays.ArrayDeclaration: short lists within a foreach condition should be ignored.
     - Thanks to [Rodrigo Primo][@rodrigoprimo] for the patch.
 - Fixed bug [#665] : Generic.NamingConventions.UpperCaseConstantName: false positives and false negatives when code uses unconventional spacing and comments when calling `define()`.
@@ -102,12 +106,14 @@ _Nothing yet._
 ## [3.11.1] - 2024-11-16
 
 ### Changed
+
 - Output from the `--generator=...` feature will respect the OS-expected EOL char in more places. [#671]
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch.
 - Various housekeeping, including improvements to the tests and documentation.
     - Thanks to [Bartosz Dziewoński][@MatmaRex] and [Juliette Reinders Folmer][@jrfnl] for their contributions.
 
 ### Fixed
+
 - Fixed bug [#674] : Generic.WhiteSpace.HereNowdocIdentifierSpacing broken XML documentation
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch.
 - Fixed bug [#675] : InvalidArgumentException when a ruleset includes a sniff by file name and the included sniff does not comply with the PHPCS naming conventions.
@@ -121,6 +127,7 @@ _Nothing yet._
 ## [3.11.0] - 2024-11-12
 
 ### Added
+
 - Runtime support for PHP 8.4. All known PHP 8.4 deprecation notices have been fixed.
     - Syntax support for new PHP 8.4 features will follow in a future release.
     - If you find any PHP 8.4 deprecation notices which were missed, please report them.
@@ -142,6 +149,7 @@ _Nothing yet._
     - Thanks to [Rodrigo Primo][@rodrigoprimo] and [Juliette Reinders Folmer][@jrfnl] for the patches.
 
 ### Changed
+
 - The Common::getSniffCode() method will now throw an InvalidArgumentException exception if an invalid `$sniffClass` is passed. [#524], [#625]
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch.
 - Documentation generated using the `--generator=...` feature will now always be presented in natural order based on the sniff name(s). [#668]
@@ -162,6 +170,7 @@ _Nothing yet._
     - Thanks to [Rodrigo Primo][@rodrigoprimo] and [Juliette Reinders Folmer][@jrfnl] for their contributions.
 
 ### Fixed
+
 - Fixed bug [#3808][sq-3808] : Generic.WhiteSpace.ScopeIndent would throw false positive for tab indented multi-token yield from expression.
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - Fixed bug [#630] : The tokenizer could inadvertently transform "normal" parentheses to DNF parentheses, when a function call was preceded by a switch-case / alternative syntax control structure colon.
@@ -208,10 +217,12 @@ _Nothing yet._
 ## [3.10.3] - 2024-09-18
 
 ### Changed
+
 - Various housekeeping, including improvements to the tests and documentation.
     - Thanks to [Rodrigo Primo][@rodrigoprimo] and [Juliette Reinders Folmer][@jrfnl] for their contributions.
 
 ### Fixed
+
 - Fixed bug [#553] : Squiz.Classes.SelfMemberReference: false negative(s) when namespace operator was encountered between the namespace declaration and the OO declaration.
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - Fixed bug [#579] : AbstractPatternSniff: potential PHP notice during live coding.
@@ -232,6 +243,7 @@ _Nothing yet._
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Other
+
 - The provenance of PHAR files associated with a release can now be verified via [GitHub Artifact Attestations][ghattest] using the [GitHub CLI tool][ghcli] with the following command: `gh attestation verify [phpcs|phpcbf].phar -o PHPCSStandards`. [#574]
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch.
 
@@ -252,6 +264,7 @@ _Nothing yet._
 ## [3.10.2] - 2024-07-22
 
 ### Changed
+
 - The following sniff(s) have received efficiency improvements:
     - Generic.Functions.FunctionCallArgumentSpacing
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch.
@@ -261,6 +274,7 @@ _Nothing yet._
     - Thanks to [Bill Ruddock][@biinari], [Dan Wallis][@fredden], [Klaus Purer][@klausi], [Rodrigo Primo][@rodrigoprimo] and [Juliette Reinders Folmer][@jrfnl] for their contributions.
 
 ### Fixed
+
 - Fixed bug [#513] : Generic.Functions.FunctionCallArgumentSpacing did not ignore the body of a match expressions passed as a function argument, which could lead to false positives.
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - Fixed bug [#533] : Generic.WhiteSpace.DisallowTabIndent: tab indentation for heredoc/nowdoc closers will no longer be auto-fixed to prevent parse errors. The issue will still be reported.
@@ -290,11 +304,13 @@ _Nothing yet._
 ## [3.10.1] - 2024-05-22
 
 ### Added
+
 - Documentation for the following sniffs:
     - Generic.Commenting.DocComment
     - Thanks to [Rodrigo Primo][@rodrigoprimo] for the patch.
 
 ### Changed
+
 - The following have received efficiency improvements:
     - Type handling in the PHP Tokenizer
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch.
@@ -302,6 +318,7 @@ _Nothing yet._
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for their contributions.
 
 ### Fixed
+
 - Fixed bug [#110], [#437], [#475] : `File::findStartOfStatement()`: the start of statement/expression determination for tokens in parentheses/short array brackets/others scopes, nested within match expressions, was incorrect in most cases.
     The trickle down effect of the bug fixes made to the `File::findStartOfStatement()` method, is that the Generic.WhiteSpace.ScopeIndent and the PEAR.WhiteSpace.ScopeIndent sniffs should now be able to correctly determine and fix the indent for match expressions containing nested expressions.
     These fixes also fix an issue with the `Squiz.Arrays.ArrayDeclaration` sniff and possibly other, unreported bugs.
@@ -320,6 +337,7 @@ _Nothing yet._
 ## [3.10.0] - 2024-05-20
 
 ### Added
+
 - Tokenizer support for PHP 8.2 Disjunctive Normal Form (DNF) types. [#3731][sq-3731], [#387], [#461]
     - Includes new `T_TYPE_OPEN_PARENTHESIS` and `T_TYPE_CLOSE_PARENTHESIS` tokens to represent the parentheses in DNF types.
     - These new tokens, like other parentheses, will have the `parenthesis_opener` and `parenthesis_closer` token array indexes set and the tokens between them will have the `nested_parenthesis` index.
@@ -332,6 +350,7 @@ _Nothing yet._
     - Thanks to [Przemek Hernik][@przemekhernik] for the patch.
 
 ### Changed
+
 - The help screens have received a face-lift for improved usability and readability. [#447]
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch and thanks to [Colin Stewart][@costdev], [Gary Jones][@GaryJones] and [@mbomb007] for reviewing.
 - The Squiz.Commenting.ClosingDeclarationComment sniff will now also examine and flag closing comments for traits. [#442]
@@ -345,6 +364,7 @@ _Nothing yet._
     - Thanks to [Dan Wallis][@fredden], [Danny van der Sluijs][@DannyvdSluijs], [Rodrigo Primo][@rodrigoprimo] and [Juliette Reinders Folmer][@jrfnl] for their contributions.
 
 ### Fixed
+
 - Fixed bug [#466] : Generic.Functions.CallTimePassByReference was not flagging call-time pass-by-reference in class instantiations using the self/parent/static keywords.
     - Thanks to [Rodrigo Primo][@rodrigoprimo] for the patch.
 - Fixed bug [#494] : edge case bug in tokenization of an empty block comment.
@@ -371,12 +391,14 @@ _Nothing yet._
 ## [3.9.2] - 2024-04-24
 
 ### Changed
+
 - The Generic.ControlStructures.DisallowYodaConditions sniff no longer listens for the null coalesce operator. [#458]
     - Thanks to [Rodrigo Primo][@rodrigoprimo] for the patch.
 - Various housekeeping, including improvements to the tests and documentation.
     - Thanks to [Dan Wallis][@fredden], [Rodrigo Primo][@rodrigoprimo] and [Juliette Reinders Folmer][@jrfnl] for their contributions.
 
 ### Fixed
+
 - Fixed bug [#381] : Squiz.Commenting.ClosingDeclarationComment could throw the wrong error when the close brace being examined is at the very end of a file.
     - Thanks to [Rodrigo Primo][@rodrigoprimo] for the patch.
 - Fixed bug [#385] : Generic.CodeAnalysis.JumbledIncrementer improved handling of parse errors/live coding.
@@ -401,6 +423,7 @@ _Nothing yet._
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Other
+
 - [ESLint 9.0] has been released and changes the supported configuration file format.
     The (deprecated) `Generic.Debug.ESLint` sniff only supports the "old" configuration file formats and when using the sniff to run ESLint, the `ESLINT_USE_FLAT_CONFIG=false` environment variable will need to be set when using ESLint >= 9.0.
     For more information, see [#436].
@@ -425,6 +448,7 @@ _Nothing yet._
 ## [3.9.1] - 2024-03-31
 
 ### Added
+
 - Documentation for the following sniffs:
     - Generic.PHP.RequireStrictTypes
     - Squiz.WhiteSpace.MemberVarSpacing
@@ -433,6 +457,7 @@ _Nothing yet._
     - Thanks to [Jay McPartland][@jaymcp] and [Rodrigo Primo][@rodrigoprimo] for the patches.
 
 ### Changed
+
 - The following sniffs have received performance related improvements:
     - Generic.CodeAnalysis.UselessOverridingMethod
     - Generic.Files.ByteOrderMark
@@ -446,6 +471,7 @@ _Nothing yet._
     - Thanks to [Jay McPartland][@jaymcp], [João Pedro Oliveira][@jpoliveira08], [Rodrigo Primo][@rodrigoprimo] and [Juliette Reinders Folmer][@jrfnl] for their contributions.
 
 ### Fixed
+
 - Fixed bug [#289] : Squiz.WhiteSpace.OperatorSpacing and PSR12.Operators.OperatorSpacing : improved fixer conflict protection by more strenuously avoiding handling operators in declare statements.
     - Thanks to [Dan Wallis][@fredden] for the patch.
 - Fixed bug [#366] : Generic.CodeAnalysis.UselessOverridingMethod : prevent false negative when the declared method name and the called method name do not use the same case.
@@ -465,6 +491,7 @@ _Nothing yet._
 ## [3.9.0] - 2024-02-16
 
 ### Added
+
 - Tokenizer support for PHP 8.3 typed class constants. [#321]
     - Additionally, the following sniffs have been updated to support typed class constants:
         - Generic.NamingConventions.UpperCaseConstantName [#332]
@@ -498,6 +525,7 @@ _Nothing yet._
     - Thanks to [Denis Žoljom][@dingo-d] and [Rodrigo Primo][@rodrigoprimo] for the patches
 
 ### Changed
+
 - The Performance report can now also be used for a `phpcbf` run. [#308]
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - Sniff tests which extend the PHPCS native `AbstractSniffUnitTest` class will now show a (non-build-breaking) warning when test case files contain fixable errors/warnings, but there is no corresponding `.fixed` file available in the test suite to verify the fixes against. [#336]
@@ -511,6 +539,7 @@ _Nothing yet._
     - Thanks to [Dan Wallis][@fredden], [Joachim Noreiko][@joachim-n], [Remi Collet][@remicollet], [Rodrigo Primo][@rodrigoprimo] and [Juliette Reinders Folmer][@jrfnl] for their contributions
 
 ### Deprecated
+
 - Support for scanning JavaScript and CSS files. See [#2448][sq-2448].
     - This also means that all sniffs which are only aimed at JavaScript or CSS files are now deprecated.
     - The Javascript and CSS Tokenizers, all Javascript and CSS specific sniffs, and support for JS and CSS in select sniffs which support multiple file types, will be removed in version 4.0.0.
@@ -526,6 +555,7 @@ _Nothing yet._
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Fixed
+
 - Fixed bug [#127] : Squiz.Commenting.FunctionComment : The `MissingParamType` error code will now be used instead of `MissingParamName` when a parameter name is provided, but not its type. Additionally, invalid type hint suggestions will no longer be provided in these cases.
     - Thanks to [Dan Wallis][@fredden] for the patch
 - Fixed bug [#196] : Squiz.PHP.EmbeddedPhp : fixer will no longer leave behind trailing whitespace when moving code to another line.
@@ -550,6 +580,7 @@ _Nothing yet._
     - Thanks to [Dan Wallis][@fredden] for the patch
 
 ### Other
+
 - A "Community cc list" has been introduced to ping maintainers of external standards and integrators for input regarding change proposals for PHP_CodeSniffer which may impact them. [#227]
     - For anyone who missed the discussion about this and is interested to be on this list, please feel invited to submit a PR to add yourself.
         The list is located in the `.github` folder.
@@ -583,6 +614,7 @@ _Nothing yet._
 ## [3.8.1] - 2024-01-11
 
 ### Added
+
 - Documentation has been added for the following sniffs:
     - Generic.CodeAnalysis.EmptyPHPStatement
     - Generic.Formatting.SpaceBeforeCast
@@ -595,12 +627,14 @@ _Nothing yet._
     - Thanks to [Rodrigo Primo][@rodrigoprimo] and [Denis Žoljom][@dingo-d] for the patches
 
 ### Changed
+
 - GitHub releases will now always only contain unversioned release assets (PHARS + asc files) (same as it previously was in the squizlabs repo). See [#205] for context.
     - Thanks to [Shivam Mathur][@shivammathur] for opening a discussion about this
 - Various housekeeping, includes improvements to the tests and documentation
     - Thanks to [Dan Wallis][@fredden], [Lucas Hoffmann][@lucc], [Rodrigo Primo][@rodrigoprimo] and [Juliette Reinders Folmer][@jrfnl] for their contributions
 
 ### Fixed
+
 - Fixed bug [#124] : Report Full : avoid unnecessarily wrapping lines when `-s` is used
     - Thanks to [Brad Jorsch][@anomiex] for the patch
 - Fixed bug [#124] : Report Full : fix incorrect bolding of pipes when `-s` is used and messages wraps
@@ -631,6 +665,7 @@ _Nothing yet._
 [Squizlabs/PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) is dead. Long live [PHPCSStandards/PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer)!
 
 ### Breaking Changes
+
 - The `squizlabs/PHP_CodeSniffer` repository has been abandoned. The `PHPCSStandards/PHP_CodeSniffer` repository will serve as the continuation of the project. For more information about this change, please read the [announcement](https://github.com/squizlabs/PHP_CodeSniffer/issues/3932).
     - Installation of PHP_CodeSniffer via PEAR is no longer supported.
         - Users will need to switch to another installation method.
@@ -646,6 +681,7 @@ _Nothing yet._
         - Users who have (valid) open issues or pull requests in the `squizlabs/PHP_CodeSniffer` repository are invited to resubmit these to the `PHPCSStandards/PHP_CodeSniffer` repository.
 
 ### Added
+
 - Runtime support for PHP 8.3. All known PHP 8.3 deprecation notices have been fixed
     - Syntax support for new PHP 8.3 features will follow in a future release
     - If you find any PHP 8.3 deprecation notices which were missed, please report them
@@ -692,6 +728,7 @@ _Nothing yet._
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Changed
+
 - Changes have been made to the way PHPCS handles invalid sniff properties being set in a custom ruleset
     - Fixes PHP 8.2 deprecation notices for properties set in a (custom) ruleset for complete standards/complete sniff categories
     - Invalid sniff properties set for individual sniffs will now result in an error and halt the execution of PHPCS
@@ -756,10 +793,12 @@ _Nothing yet._
     - Thanks to [Andrew Dawes][@AndrewDawes], [Danny van der Sluijs][@DannyvdSluijs] and [Juliette Reinders Folmer][@jrfnl] for the patches
 
 ### Removed
+
 - Removed support for installation via PEAR
     - Use composer or the PHAR files instead
 
 ### Fixed
+
 - Fixed bug [#2857][sq-2857] : Squiz/NonExecutableCode: prevent false positives when exit is used in a ternary expression or as default with null coalesce
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - Fixed bug [#3386][sq-3386] : PSR1/SideEffects : improved recognition of disable/enable annotations
@@ -884,6 +923,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.7.2] - 2023-02-23
 
 ### Changed
+
 - Newer versions of Composer will now suggest installing PHPCS using require-dev instead of require
     - Thanks to [Gary Jones][@GaryJones] for the patch
 - A custom Out Of Memory error will now be shown if PHPCS or PHPCBF run out of memory during a run
@@ -894,6 +934,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz.Formatting.OperatorBracket no longer reports false positives in match() structures
 
 ### Fixed
+
 - Fixed bug [#3616][sq-3616] : Squiz.PHP.DisallowComparisonAssignment false positive for PHP 8 match expression
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - Fixed bug [#3618][sq-3618] : Generic.WhiteSpace.ArbitraryParenthesesSpacing false positive for return new parent()
@@ -931,6 +972,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.7.1] - 2022-06-18
 
 ### Fixed
+
 - Fixed bug [#3609][sq-3609] : Methods/constants with name empty/isset/unset are always reported as error
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
@@ -939,6 +981,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.7.0] - 2022-06-13
 
 ### Added
+
 - Added support for PHP 8.1 explicit octal notation
     - This new syntax has been backfilled for PHP versions less than 8.1
     - Thanks to [Mark Baker][@MarkBaker] for the patch
@@ -956,6 +999,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Jaroslav Hanslík][@kukulich] for the patch
 
 ### Changed
+
 - File::getMethodParameters now supports the new PHP 8.1 readonly token
     - When constructor property promotion is used, a new property_readonly array index is included in the return value
         - This is a boolean value indicating if the property is readonly
@@ -981,6 +1025,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Jaroslav Hanslík][@kukulich] for the patch
 
 ### Fixed
+
 - Fixed bug [#3502][sq-3502] : A match statement within an array produces Squiz.Arrays.ArrayDeclaration.NoKeySpecified
 - Fixed bug [#3503][sq-3503] : Squiz.Commenting.FunctionComment.ThrowsNoFullStop false positive when one line @throw
 - Fixed bug [#3505][sq-3505] : The nullsafe operator is not counted in Generic.Metrics.CyclomaticComplexity
@@ -1013,10 +1058,12 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.6.2] - 2021-12-13
 
 ### Changed
+
 - Processing large code bases that use tab indenting inside comments and strings will now be faster
     - Thanks to [Thiemo Kreuz][@thiemowmde] for the patch
 
 ### Fixed
+
 - Fixed bug [#3388][sq-3388] : phpcs does not work when run from WSL drives
     - Thanks to [Juliette Reinders Folmer][@jrfnl] and [Graham Wharton][@gwharton] for the patch
 - Fixed bug [#3422][sq-3422] : Squiz.WhiteSpace.ScopeClosingBrace fixer removes HTML content when fixing closing brace alignment
@@ -1052,6 +1099,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.6.1] - 2021-10-11
 
 ### Changed
+
 - PHPCS annotations can now be specified using hash-style comments
     - Previously, only slash-style and block-style comments could be used to do things like disable errors
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
@@ -1079,6 +1127,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Fixed
+
 - Generic.NamingConventions.ConstructorName no longer throws deprecation notices on PHP 8.1
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - Fixed false positives when using attributes in the following sniffs:
@@ -1153,6 +1202,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.6.0] - 2021-04-09
 
 ### Added
+
 - Added support for PHP 8.0 union types
     - A new T_TYPE_UNION token is available to represent the pipe character
     - File::getMethodParameters(), getMethodProperties(), and getMemberProperties() will now return union types
@@ -1209,6 +1259,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Anna Borzenko][@annechko] for the contribution
 
 ### Changed
+
 - The value of the T_FN_ARROW token has changed from "T_FN_ARROW" to "PHPCS_T_FN_ARROW" to avoid package conflicts
     - This will have no impact on custom sniffs unless they are specifically looking at the value of the T_FN_ARROW constant
     - If sniffs are just using constant to find arrow functions, they will continue to work without modification
@@ -1269,6 +1320,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Fixed
+
 - Fixed an issue that could occur when checking files on network drives, such as with WSL2 on Windows 10
     - This works around a long-standing PHP bug with is_readable()
     - Thanks to [Michael S][@codebymikey] for the patch
@@ -1329,12 +1381,14 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.5.8] - 2020-10-23
 
 ### Removed
+
 - Reverted a change to the way include/exclude patterns are processed for STDIN content
     - This change is not backwards compatible and will be re-introduced in version 3.6.0
 
 ## [3.5.7] - 2020-10-23
 
 ### Added
+
 - The PHP 8.0 T_NULLSAFE_OBJECT_OPERATOR token has been made available for older versions
     - Existing sniffs that check for T_OBJECT_OPERATOR have been modified to apply the same rules for the nullsafe object operator
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
@@ -1351,12 +1405,14 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Changed
+
 - The autoloader has been changed to fix sniff class name detection issues that may occur when running on PHP 7.4+
     - Thanks to [Eloy Lafuente][@stronk7] for the patch
 - PSR12.ControlStructures.BooleanOperatorPlacement.FoundMixed error message is now more accurate when using the allowOnly setting
     - Thanks to [Vincent Langlet][@VincentLanglet] for the patch
 
 ### Fixed
+
 - Fixed Squiz.Formatting.OperatorBracket false positive when exiting with a negative number
 - Fixed Squiz.PHP.DisallowComparisonAssignment false positive for methods called on an object
 - Fixed bug [#2882][sq-2882] : Generic.Arrays.ArrayIndent can request close brace indent to be less than the statement indent level
@@ -1414,6 +1470,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.5.6] - 2020-08-10
 
 ### Added
+
 - Added support for PHP 8.0 magic constant dereferencing
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - Added support for changes to the way PHP 8.0 tokenizes comments
@@ -1425,6 +1482,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Changed
+
 - The cache is no longer used if the list of loaded PHP extensions changes
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - `Generic.NamingConventions.CamelCapsFunctionName` no longer reports `__serialize` and `__unserialize` as invalid names
@@ -1435,6 +1493,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Michał Bundyra][@michalbundyra] for the patch
 
 ### Fixed
+
 - Fixed bug [#2877][sq-2877] : PEAR.Functions.FunctionCallSignature false positive for array of functions
     - Thanks to [Vincent Langlet][@VincentLanglet] for the patch
 - Fixed bug [#2888][sq-2888] : PSR12.Files.FileHeader blank line error with multiple namespaces in one file
@@ -1460,12 +1519,14 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.5.5] - 2020-04-17
 
 ### Changed
+
 - The T_FN backfill now works more reliably so T_FN tokens only ever represent real arrow functions
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - Fixed an issue where including sniffs using paths containing multiple dots would silently fail
 - Generic.CodeAnalysis.EmptyPHPStatement now detects empty statements at the start of control structures
 
 ### Fixed
+
 - Error wording in PEAR.Functions.FunctionCallSignature now always uses "parenthesis" instead of sometimes using "bracket"
     - Thanks to [Vincent Langlet][@VincentLanglet] for the patch
 - Fixed bug [#2787][sq-2787] : Squiz.PHP.DisallowMultipleAssignments not ignoring typed property declarations
@@ -1503,6 +1564,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.5.4] - 2020-01-31
 
 ### Changed
+
 - The PHP 7.4 numeric separator backfill now works correctly for more float formats
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - The PHP 7.4 numeric separator backfill is no longer run on PHP version 7.4.0 or greater
@@ -1527,6 +1589,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz.PHP.InnerFunctions now handles multiple nested anon classes correctly
 
 ### Fixed
+
 - Fixed bug [#2497][sq-2497] : Sniff properties not set when referencing a sniff using relative paths or non-native slashes
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - Fixed bug [#2657][sq-2657] : Squiz.WhiteSpace.FunctionSpacing can remove spaces between comment and first/last method during auto-fixing
@@ -1581,6 +1644,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.5.3] - 2019-12-04
 
 ### Changed
+
 - The PHP 7.4 T_FN token has been made available for older versions
     - T_FN represents the fn string used for arrow functions
     - The double arrow becomes the scope opener, and uses a new T_FN_ARROW token type
@@ -1622,6 +1686,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Michał Bundyra][@michalbundyra] for the patch
 
 ### Fixed
+
 - Fixed bug [#2586][sq-2586] : Generic.WhiteSpace.ScopeIndent false positives when indenting open tags at a non tab-stop
 - Fixed bug [#2638][sq-2638] : Squiz.CSS.DuplicateClassDefinitionSniff sees comments as part of the class name
     - Thanks to [Raphael Horber][@rhorber] for the patch
@@ -1649,6 +1714,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.5.2] - 2019-10-28
 
 ### Changed
+
 - Generic.ControlStructures.DisallowYodaConditions now returns less false positives
     - False positives were being returned for array comparisons, or when performing some function calls
 - Squiz.WhiteSpace.SemicolonSpacing.Incorrect error message now escapes newlines and tabs
@@ -1659,6 +1725,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Craig Duncan][@duncan3dc] for the patch
 
 ### Fixed
+
 - Fixed bug [#2654][sq-2654] : Incorrect indentation for arguments of multiline function calls
 - Fixed bug [#2656][sq-2656] : Squiz.WhiteSpace.MemberVarSpacing removes comments before first member var during auto fixing
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
@@ -1677,6 +1744,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.5.1] - 2019-10-17
 
 ### Changed
+
 - Very very verbose diff report output has slightly changed to improve readability
     - Output is printed when running PHPCS with the --report=diff and -vvv command line arguments
     - Fully qualified class names have been replaced with sniff codes
@@ -1692,6 +1760,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - PSR12.Files.FileHeader now allows a hashbang line at the top of the file
 
 ### Fixed
+
 - Fixed bug [#2506][sq-2506] : PSR2 standard can't auto fix multi-line function call inside a string concat statement
 - Fixed bug [#2530][sq-2530] : PEAR.Commenting.FunctionComment does not support intersection types in comments
 - Fixed bug [#2615][sq-2615] : Constant visibility false positive on non-class constants
@@ -1722,6 +1791,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.5.0] - 2019-09-27
 
 ### Changed
+
 - The included PSR12 standard is now complete and ready to use
     - Check your code using PSR-12 by running PHPCS with --standard=PSR12
 - Added support for PHP 7.4 typed properties
@@ -1856,6 +1926,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Jakub Chábek][@grongor] for the patch
 
 ### Fixed
+
 - Fixed bug [#2391][sq-2391] : Sniff-specific ignore rules inside rulesets are filtering out too many files
     - Thanks to [Juliette Reinders Folmer][@jrfnl] and [Willington Vega][@wvega] for the patch
 - Fixed bug [#2478][sq-2478] : FunctionCommentThrowTag.WrongNumber when exception is thrown once but built conditionally
@@ -1917,9 +1988,11 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.4.2] - 2019-04-11
 
 ### Changed
+
 - Squiz.Arrays.ArrayDeclaration now has improved handling of syntax errors
 
 ### Fixed
+
 - Fixed an issue where the PCRE JIT on PHP 7.3 caused PHPCS to die when using the parallel option
     - PHPCS now disables the PCRE JIT before running
 - Fixed bug [#2368][sq-2368] : MySource.PHP.AjaxNullComparison throws error when first function has no doc comment
@@ -1946,6 +2019,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.4.1] - 2019-03-19
 
 ### Changed
+
 - The PEAR installable version of PHPCS was missing some files, which have been re-included in this release
     - The code report was not previously available for PEAR installs
     - The Generic.Formatting.SpaceBeforeCast sniff was not previously available for PEAR installs
@@ -2019,6 +2093,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Fixed
+
 - Fixed bug [#2298][sq-2298] : PSR2.Classes.ClassDeclaration allows extended class on new line
     - Thanks to [Michał Bundyra][@michalbundyra] for the patch
 - Fixed bug [#2337][sq-2337] : Generic.WhiteSpace.ScopeIndent incorrect error when multi-line function call starts on same line as open tag
@@ -2041,6 +2116,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.4.0] - 2018-12-20
 
 ### Deprecated
+
 - The Generic.Formatting.NoSpaceAfterCast sniff has been deprecated and will be removed in version 4
     - The functionality of this sniff is now available in the Generic.Formatting.SpaceAfterCast sniff
         - Include the Generic.Formatting.SpaceAfterCast sniff and set the "spacing" property to "0"
@@ -2048,6 +2124,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
         - The existing sniff will continue to work until version 4 has been released
 
 ### Changed
+
 - Rule include patterns in a ruleset.xml file are now evaluated as OR instead of AND
     - Previously, a file had to match every include pattern and no exclude patterns to be included
     - Now, a file must match at least one include pattern and no exclude patterns to be included
@@ -2179,6 +2256,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Fixed
+
 - Fixed bug [#2109][sq-2109] : Generic.Functions.CallTimePassByReference false positive for bitwise and used in function argument
 - Fixed bug [#2165][sq-2165] : Conflict between Squiz.Arrays.ArrayDeclaration and ScopeIndent sniffs when heredoc used in array
 - Fixed bug [#2167][sq-2167] : Generic.WhiteSpace.ScopeIndent shows invalid error when scope opener indented inside inline HTML
@@ -2229,10 +2307,12 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.9.2] - 2018-11-08
 
 ### Changed
+
 - PHPCS should now run under PHP 7.3 without deprecation warnings
     - Thanks to [Nick Wilde][@NickDickinsonWilde] for the patch
 
 ### Fixed
+
 - Fixed bug [#1496][sq-1496] : Squiz.Strings.DoubleQuoteUsage not unescaping dollar sign when fixing
     - Thanks to [Michał Bundyra][@michalbundyra] for the patch
 - Fixed bug [#1549][sq-1549] : Squiz.PHP.EmbeddedPhp fixer conflict with // comment before PHP close tag
@@ -2242,6 +2322,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.3.2] - 2018-09-24
 
 ### Changed
+
 - Fixed a problem where the report cache was not being cleared when the sniffs inside a standard were updated
 - The info report (--report=info) now has improved formatting for metrics that span multiple lines
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
@@ -2260,6 +2341,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Fixed
+
 - Fixed a problem where referencing a relative file path in a ruleset XML file could add unnecessary sniff exclusions
     - This didn't actually exclude anything, but caused verbose output to list strange exclusion rules
 - Fixed bug [#2110][sq-2110] : Squiz.WhiteSpace.FunctionSpacing is removing indents from the start of functions when fixing
@@ -2291,10 +2373,12 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.3.1] - 2018-07-27
 
 ### Removed
+
 - Support for HHVM has been dropped due to recent unfixed bugs and HHVM refocus on Hack only
     - Thanks to [Walt Sorensen][@photodude] and [Juliette Reinders Folmer][@jrfnl] for helping to remove all HHVM exceptions from the core
 
 ### Changed
+
 - The full report (the default report) now has improved word wrapping for multi-line messages and sniff codes
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - The summary report now sorts files based on their directory location instead of just a basic string sort
@@ -2342,6 +2426,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Fixed
+
 - Fixed bug [#2029][sq-2029] : Squiz.Scope.MemberVarScope throws fatal error when a property is found in an interface
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 - Fixed bug [#2047][sq-2047] : PSR12.Classes.ClassInstantiation false positive when instantiating class from array index
@@ -2364,6 +2449,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.3.0] - 2018-06-07
 
 ### Deprecated
+
 - The Squiz.WhiteSpace.LanguageConstructSpacing sniff has been deprecated and will be removed in version 4
     - The sniff has been moved to the Generic standard, with a new code of Generic.WhiteSpace.LanguageConstructSpacing
     - As soon as possible, replace all instances of the old sniff code with the new sniff code in your ruleset.xml files
@@ -2393,11 +2479,13 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
             - To access the original return value string, use the main tokens array
 
 ### Added
+
 - This release contains an incomplete version of the PSR-12 coding standard
     - Errors found using this standard should be valid, but it will miss a lot of violations until it is complete
     - If you'd like to test and help, you can use the standard by running PHPCS with --standard=PSR12
 
 ### Changed
+
 - Config values set using --runtime-set now override any config values set in rulesets or the CodeSniffer.conf file
 - You can now apply include-pattern rules to individual message codes in a ruleset like you can with exclude-pattern rules
     - Previously, include-pattern rules only applied to entire sniffs
@@ -2534,6 +2622,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - If not set, the sniff will use whatever value is set for the existing 'spacing' property
 
 ### Fixed
+
 - Fixed bug [#1863][sq-1863] : File::findEndOfStatement() not working when passed a scope opener
 - Fixed bug [#1876][sq-1876] : PSR2.Namespaces.UseDeclaration not giving error for use statements before the namespace declaration
     - Adds a new PSR2.Namespaces.UseDeclaration.UseBeforeNamespace error message
@@ -2598,6 +2687,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.2.3] - 2018-02-21
 
 ### Changed
+
 - The new phpcs: comment syntax can now be prefixed with an at symbol ( @phpcs: )
     - This restores the behaviour of the previous syntax where these comments are ignored by doc generators
 - The current PHP version ID is now used to generate cache files
@@ -2633,6 +2723,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Fixed
+
 - Fixed test suite compatibility with PHPUnit 7
 - Fixed bug [#1793][sq-1793] : PSR2 forcing exact indent for function call opening statements
 - Fixed bug [#1803][sq-1803] : Squiz.WhiteSpace.ScopeKeywordSpacing removes member var name while fixing if no space after scope keyword
@@ -2665,18 +2756,21 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.2.2] - 2017-12-20
 
 ### Changed
+
 - Disabled STDIN detection on Windows
     - This fixes a problem with IDE plugins (e.g., PHPStorm) hanging on Windows
 
 ## [3.2.1] - 2017-12-18
 
 ### Changed
+
 - Empty diffs are no longer followed by a newline character (request [#1781][sq-1781])
 - Generic.Functions.OpeningFunctionBraceKernighanRitchie no longer complains when the open brace is followed by a close tag
     - This makes the sniff more useful when used in templates
     - Thanks to [Joseph Zidell][@josephzidell] for the patch
 
 ### Fixed
+
 - Fixed problems with some scripts and plugins waiting for STDIN
     - This was a notable problem with IDE plugins (e.g., PHPStorm) and build systems
 - Fixed bug [#1782][sq-1782] : Incorrect detection of operator in ternary + anonymous function
@@ -2687,6 +2781,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.2.0] - 2017-12-13
 
 ### Deprecated
+
 - This release deprecates the @codingStandards comment syntax used for sending commands to PHP_CodeSniffer
     - The existing syntax will continue to work in all version 3 releases, but will be removed in version 4
     - The comment formats have been replaced by a shorter syntax:
@@ -2706,6 +2801,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
         - phpcs:set has the token T_PHPCS_SET
 
 ### Changed
+
 - The phpcs:disable and phpcs:ignore comments can now selectively ignore specific sniffs (request [#604][sq-604])
     - E.g., phpcs:disable Generic.Commenting.Todo.Found for a specific message
     - E.g., phpcs:disable Generic.Commenting.Todo for a whole sniff
@@ -2789,6 +2885,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Fixed
+
 - Fixed bug [#1462][sq-1462] : Error processing cyrillic strings in Tokenizer
 - Fixed bug [#1573][sq-1573] : Squiz.WhiteSpace.LanguageConstructSpacing does not properly check for tabs and newlines
     - Thanks to [Michał Bundyra][@michalbundyra] for the patch
@@ -2828,6 +2925,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.1.1] - 2017-10-17
 
 ### Changed
+
 - Restored preference of non-dist files over dist files for phpcs.xml and phpcs.xml.dist
     - The order that the files are searched is now: .phpcs.xml, phpcs.xml, .phpcs.xml.dist, phpcs.xml.dist
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
@@ -2839,6 +2937,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
 
 ### Fixed
+
 - Fixed bug [#1512][sq-1512] : PEAR.Functions.FunctionCallSignature enforces spaces when no arguments if required spaces is not 0
 - Fixed bug [#1522][sq-1522] : Squiz Arrays.ArrayDeclaration and Strings.ConcatenationSpacing fixers causing parse errors with here/nowdocs
 - Fixed bug [#1570][sq-1570] : Squiz.Arrays.ArrayDeclaration fixer removes comments between array keyword and open parentheses
@@ -2870,6 +2969,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.1.0] - 2017-09-20
 
 ### Changed
+
 - This release includes a change to support newer versions of PHPUnit (versions 4, 5, and 6 are now supported)
     - The custom PHP_CodeSniffer test runner now requires a bootstrap file
     - Developers with custom standards using the PHP_CodeSniffer test runner will need to do one of the following:
@@ -2931,6 +3031,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Martin Hujer][@mhujer] for the patch
 
 ### Fixed
+
 - Fixed bug [#1550][sq-1550] : Squiz.Commenting.FunctionComment false positive when function contains closure
 - Fixed bug [#1577][sq-1577] : Generic.InlineControlStructureSniff breaks with a comment between body and condition in do while loops
 - Fixed bug [#1581][sq-1581] : Sniffs not loaded when one-standard directories are being registered in installed_paths
@@ -2957,6 +3058,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.0.2] - 2017-07-18
 
 ### Changed
+
 - The code report now gracefully handles tokenizer exceptions
 - The phpcs and phpcbf scripts are now the only places that exit() in the code
     - This allows for easier usage of core PHPCS functions from external scripts
@@ -2971,6 +3073,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Improved the error message when Squiz.ControlStructures.ControlSignature detects a newline after the closing parenthesis
 
 ### Fixed
+
 - Fixed a problem where the source report was not printing the correct number of errors found
 - Fixed a problem where the --cache=/path/to/cachefile CLI argument was not working
 - Fixed bug [#1465][sq-1465] : Generic.WhiteSpace.ScopeIndent reports incorrect errors when indenting double arrows in short arrays
@@ -3002,6 +3105,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.0.1] - 2017-06-14
 
 ### Security
+
 - This release contains a fix for a security advisory related to the improper handling of a shell command
     - A properly crafted filename would allow for arbitrary code execution when using the --filter=gitmodified command line option
     - All version 3 users are encouraged to upgrade to this version, especially if you are checking 3rd-party code
@@ -3013,6 +3117,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Sergei Morozov][@morozov] for the report and patch
 
 ### Changed
+
 - Arguments on the command line now override or merge with those specified in a ruleset.xml file in all cases
 - PHPCS now stops looking for a phpcs.xml file as soon as one is found, favoring the closest one to the current dir
 - Added missing help text for the --stdin-path CLI option to --help
@@ -3036,6 +3141,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - It previously broke comments onto multiple lines, but didn't align them
 
 ### Fixed
+
 - Fixed a problem where excluding a message from a custom standard's own sniff would exclude the whole sniff
     - This caused some PSR2 errors to be under-reported
 - Fixed bug [#1442][sq-1442] : T_NULLABLE detection not working for nullable parameters and return type hints in some cases
@@ -3068,6 +3174,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.9.1] - 2017-05-22
 
 ### Fixed
+
 - Fixed bug [#1442][sq-1442] : T_NULLABLE detection not working for nullable parameters and return type hints in some cases
 - Fixed bug [#1448][sq-1448] : Generic.Classes.OpeningBraceSameLine doesn't detect comment before opening brace
     - Thanks to [Juliette Reinders Folmer][@jrfnl] for the patch
@@ -3078,6 +3185,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.0.0] - 2017-05-04
 
 ### Changed
+
 - Added an --ignore-annotations command line argument to ignore all @codingStandards annotations in code comments (request [#811][sq-811])
 - This allows you to force errors to be shown that would otherwise be ignored by code comments
     - Also stop files being able to change sniff properties midway through processing
@@ -3096,6 +3204,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Includes all changes from the 2.9.0 release
 
 ### Fixed
+
 - Fixed bug [#834][sq-834] : PSR2.ControlStructures.SwitchDeclaration does not handle if branches with returns
     - Thanks to [Fabian Wiget][@fabacino] for the patch
 
@@ -3106,6 +3215,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.0.0RC4] - 2017-03-02
 
 ### Security
+
 - This release contains a fix for a security advisory related to the improper handling of shell commands
     - Uses of shell_exec() and exec() were not escaping filenames and configuration settings in most cases
     - A properly crafted filename or configuration option would allow for arbitrary code execution when using some features
@@ -3126,6 +3236,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Klaus Purer][@klausi] for the report
 
 ### Changed
+
 - The indent property of PEAR.Classes.ClassDeclaration has been removed
     - Instead of calculating the indent of the brace, it just ensures the brace is aligned with the class keyword
     - Other sniffs can be used to ensure the class itself is indented correctly
@@ -3134,6 +3245,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Includes all changes from the 2.8.1 release
 
 ### Fixed
+
 - Fixed bug [#1333][sq-1333] : The new autoloader breaks some frameworks with custom autoloaders
 - Fixed bug [#1334][sq-1334] : Undefined offset when explaining standard with custom sniffs
 
@@ -3143,6 +3255,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.0.0RC3] - 2017-02-02
 
 ### Changed
+
 - Added support for ES6 class declarations
     - Previously, these class were tokenized as JS objects but are now tokenized as normal T_CLASS structures
 - Added support for ES6 method declarations, where the "function" keyword is not used
@@ -3160,6 +3273,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Includes all changes from the 2.8.0 release
 
 ### Fixed
+
 - Fixed an issue where excluding a file using a @codingStandardsIgnoreFile comment would produce errors
     - For PHPCS, it would show empty files being processed
     - For PHPCBF, it would produce a PHP error
@@ -3174,12 +3288,14 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.0.0RC2] - 2016-11-30
 
 ### Changed
+
 - Made the Runner class easier to use with wrapper scripts
 - Full usage information is no longer printed when a usage error is encountered (request [#1186][sq-1186])
     - Makes it a lot easier to find and read the error message that was printed
 - Includes all changes from the 2.7.1 release
 
 ### Fixed
+
 - Fixed an undefined var name error that could be produced while running PHPCBF
 - Fixed bug [#1167][sq-1167] : 3.0.0RC1 PHAR does not work with PEAR standard
 - Fixed bug [#1208][sq-1208] : Excluding files doesn't work when using STDIN with a filename specified
@@ -3191,6 +3307,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.0.0RC1] - 2016-09-02
 
 ### Changed
+
 - Progress output now shows E and W in green when a file has fixable errors or warnings
     - Only supported if colors are enabled
 - PHPCBF no longer produces verbose output by default (request [#699][sq-699])
@@ -3206,6 +3323,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Includes all changes from the 2.7.0 release
 
 ### Fixed
+
 - Fixed shell error appearing on some systems when trying to find executable paths
 
 [sq-699]: https://github.com/squizlabs/PHP_CodeSniffer/issues/699
@@ -3213,6 +3331,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [3.0.0a1] - 2016-07-20
 
 ### Changed
+
 - Min PHP version increased from 5.1.2 to 5.4.0
 - Added optional caching of results between runs (request [#530][sq-530])
     - Enable the cache by using the --cache command line argument
@@ -3282,6 +3401,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Exit code 0 is unchanged and continues to mean no coding standard errors found
 
 ### Removed
+
 - The included PHPCS standard has been removed
     - All rules are now found inside the phpcs.xml.dist file
     - Running "phpcs" without any arguments from a git clone will use this ruleset
@@ -3301,6 +3421,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.9.0] - 2017-05-04
 
 ### Changed
+
 - Added Generic.Debug.ESLint sniff to run ESLint over JS files and report errors
     - Set eslint path using: phpcs --config-set eslint_path /path/to/eslint
     - Thanks to [Ryan McCue][@rmccue] for the contribution
@@ -3326,6 +3447,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Added missing error codes for a couple of sniffs so they can now be customised as normal
 
 ### Fixed
+
 - Fixed bug [#1266][sq-1266] : PEAR.WhiteSpace.ScopeClosingBrace can throw an error while fixing mixed PHP/HTML
 - Fixed bug [#1364][sq-1364] : Yield From values are not recognised as returned values in Squiz FunctionComment sniff
 - Fixed bug [#1373][sq-1373] : Error in tab expansion results in white-space of incorrect size
@@ -3357,6 +3479,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.8.1] - 2017-03-02
 
 ### Security
+
 - This release contains a fix for a security advisory related to the improper handling of shell commands
     - Uses of shell_exec() and exec() were not escaping filenames and configuration settings in most cases
     - A properly crafted filename or configuration option would allow for arbitrary code execution when using some features
@@ -3377,6 +3500,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Klaus Purer][@klausi] for the report
 
 ### Changed
+
 - The PHP-supplied T_COALESCE_EQUAL token has been replicated for PHP versions before 7.2
 - PEAR.Functions.FunctionDeclaration now reports an error for blank lines found inside a function declaration
 - PEAR.Functions.FunctionDeclaration no longer reports indent errors for blank lines in a function declaration
@@ -3391,6 +3515,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz.ControlStructures.InlineIfDeclaration is now able to fix the spacing errors it reports
 
 ### Fixed
+
 - Fixed bug [#1340][sq-1340] : STDIN file contents not being populated in some cases
     - Thanks to [David Biňovec][@david-binda] for the patch
 - Fixed bug [#1344][sq-1344] : PEAR.Functions.FunctionCallSignatureSniff throws error for blank comment lines
@@ -3411,6 +3536,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.8.0] - 2017-02-02
 
 ### Changed
+
 - The Internal.NoCodeFound error is no longer generated for content sourced from STDIN
     - This should stop some Git hooks generating errors because PHPCS is trying to process the refs passed on STDIN
 - Squiz.Commenting.DocCommentAlignment now checks comments on class properties defined using the VAR keyword
@@ -3444,6 +3570,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Algirdas Gurevicius][@uniquexor] for the patch
 
 ### Fixed
+
 - Fixed bug [#1230][sq-1230] : JS tokeniser incorrectly tokenises bitwise shifts as comparison
     - Thanks to [Ryan McCue][@rmccue] for the patch
 - Fixed bug [#1237][sq-1237] : Uninitialized string offset in PHP Tokenizer on PHP 5.2
@@ -3494,6 +3621,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.7.1] - 2016-11-30
 
 ### Changed
+
 - Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis fix now removes unnecessary whitespace
 - Squiz.Formatting.OperatorBracket no longer errors for negative array indexes used within a function call
 - Squiz.PHP.EmbeddedPhp no longer expects a semicolon after statements that are only opening a scope
@@ -3508,6 +3636,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Sergey][@sserbin] for the patch
 
 ### Fixed
+
 - Fixed bug [#1135][sq-1135] : PEAR.ControlStructures.MultiLineCondition.CloseBracketNewLine not detected if preceded by multiline function call
 - Fixed bug [#1138][sq-1138] : PEAR.ControlStructures.MultiLineCondition.Alignment not detected if closing brace is first token on line
 - Fixed bug [#1141][sq-1141] : Sniffs that check EOF newlines don't detect newlines properly when the last token is a doc block
@@ -3547,6 +3676,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.7.0] - 2016-09-02
 
 ### Changed
+
 - Added --file-list command line argument to allow a list of files and directories to be specified in an external file
     - Useful if you have a generated list of files to check that would be too long for the command line
     - File and directory paths are listed one per line
@@ -3604,6 +3734,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Finlay Beaton][@ofbeaton] for the patch
 
 ### Fixed
+
 - Fixed bug [#985][sq-985] : Duplicate class definition detection generates false-positives in media queries
     - Thanks to [Raphael Horber][@rhorber] for the patch
 - Fixed bug [#1014][sq-1014] : Squiz VariableCommentSniff doesn't always detect a missing comment
@@ -3648,6 +3779,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.6.2] - 2016-07-14
 
 ### Changed
+
 - Added a new --exclude CLI argument to exclude a list of sniffs from checking and fixing (request [#904][sq-904])
     - Accepts the same sniff codes as the --sniffs command line argument, but provides the opposite functionality
 - Added a new -q command line argument to disable progress and verbose information from being printed (request [#969][sq-969])
@@ -3664,6 +3796,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - The Squiz.Commenting.BlockComment sniff now supports tabs for indenting comment lines (request [#1056][sq-1056])
 
 ### Fixed
+
 - Fixed bug [#790][sq-790] : Incorrect missing @throws error in methods that use closures
 - Fixed bug [#908][sq-908] : PSR2 standard is not checking that closing brace is on line following the body
 - Fixed bug [#945][sq-945] : Incorrect indent behavior using deep-nested function and arrays
@@ -3701,6 +3834,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.6.1] - 2016-05-31
 
 ### Changed
+
 - The PHP-supplied T_COALESCE token has been replicated for PHP versions before 7.0
 - Function return types of self, parent and callable are now tokenized as T_RETURN_TYPE
     - Thanks to [Jaroslav Hanslík][@kukulich] for the patch
@@ -3710,6 +3844,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Added a rollbackChangeset() method to the Fixer class to purposely rollback the active changeset
 
 ### Fixed
+
 - Fixed bug [#940][sq-940] : Auto-fixing issue encountered with inconsistent use of braces
 - Fixed bug [#943][sq-943] : Squiz.PHP.InnerFunctions.NotAllowed reported in anonymous classes
 - Fixed bug [#944][sq-944] : PHP warning when running the latest phar
@@ -3751,6 +3886,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.6.0] - 2016-04-04
 
 ### Changed
+
 - Paths used when setting CLI arguments inside ruleset.xml files are now relative to the ruleset location (request [#847][sq-847])
     - This change only applies to paths within ARG tags, used to set CLI arguments
     - Previously, the paths were relative to the directory PHPCS was being run from
@@ -3796,6 +3932,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Further fix for bug [#698][sq-698]
 
 ### Fixed
+
 - Fixed bug [#791][sq-791] : codingStandardsChangeSetting settings not working with namespaces
 - Fixed bug [#872][sq-872] : Incorrect detection of blank lines between CSS class names
 - Fixed bug [#879][sq-879] : Generic InlineControlStructureSniff can create parse error when case/if/elseif/else have mixed brace and braceless definitions
@@ -3841,6 +3978,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.5.1] - 2016-01-20
 
 ### Changed
+
 - The PHP-supplied T_SPACESHIP token has been replicated for PHP versions before 7.0
 - T_SPACESHIP is now correctly identified as an operator
     - Thanks to [Alexander Obuhovich][@aik099] for the patch
@@ -3857,6 +3995,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - PEAR and Squiz FunctionComment sniffs now support variadic functions (request [#841][sq-841])
 
 ### Fixed
+
 - Fixed bug [#622][sq-622] : Wrong detection of Squiz.CSS.DuplicateStyleDefinition with media queries
 - Fixed bug [#752][sq-752] : The missing exception error is reported in first found DocBlock
 - Fixed bug [#794][sq-794] : PSR2 MultiLineFunctionDeclaration forbids comments after opening parenthesis of a multiline call
@@ -3915,6 +4054,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.5.0] - 2015-12-11
 
 ### Changed
+
 - PHPCS will now look for a phpcs.xml file in parent directories as well as the current directory (request [#626][sq-626])
 - PHPCS will now use a phpcs.xml file even if files are specified on the command line
     - This file is still only used if no standard is specified on the command line
@@ -3931,6 +4071,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Arnout Boks][@aboks] for the patch
 
 ### Fixed
+
 - Fixed bug [#660][sq-660] : Syntax checks can fail on Windows with PHP5.6
 - Fixed bug [#784][sq-784] : $this->trait is seen as a T_TRAIT token
 - Fixed bug [#786][sq-786] : Switch indent issue with short array notation
@@ -3959,6 +4100,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.4.0] - 2015-11-24
 
 ### Changed
+
 - Added support for PHP 7 anonymous classes
     - Anonymous classes are now tokenized as T_ANON_CLASS and ignored by normal class sniffs
 - Added support for PHP 7 function return type declarations
@@ -3983,6 +4125,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Generic InlineControlStructureSniff now correctly fixes ELSEIF statements
 
 ### Fixed
+
 - Fixed bug [#601][sq-601] : Expected type hint int[]; found array in Squiz FunctionCommentSniff
     - Thanks to [Scato Eggen][@scato] for the patch
 - Fixed bug [#625][sq-625] : Consider working around T_HASHBANG in HHVM 3.5.x and 3.6.x
@@ -4044,6 +4187,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.3.4] - 2015-09-09
 
 ### Changed
+
 - JSON report format now includes the fixable status for each error message and the total number of fixable errors
 - Added more guard code for function declarations with syntax errors
 - Added tokenizer support for the PHP declare construct
@@ -4059,6 +4203,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz ControlSignatureSniff now supports control structures with only inline HTML content
 
 ### Fixed
+
 - Fixed bug [#636][sq-636] : Some class names cause CSS tokenizer to hang
 - Fixed bug [#638][sq-638] : VCS blame reports output error content from the blame commands for files not under VC
 - Fixed bug [#642][sq-642] : Method params incorrectly detected when default value uses short array syntax
@@ -4098,6 +4243,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.3.3] - 2015-06-24
 
 ### Changed
+
 - Improved the performance of the CSS tokenizer, especially on very large CSS files (thousands of lines)
     - Thanks to [Klaus Purer][@klausi] for the patch
 - Defined tokens for lower PHP versions are now phpcs-specific strings instead of ints
@@ -4111,6 +4257,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz ScopeClosingBraceSniff is now better at checking embedded PHP code
 
 ### Fixed
+
 - Fixed bug [#584][sq-584] : Squiz.Arrays.ArrayDeclaration sniff gives incorrect NoComma error for multiline string values
 - Fixed bug [#589][sq-589] : PEAR.Functions.FunctionCallSignature sniff not checking all function calls
 - Fixed bug [#592][sq-592] : USE statement tokenizing can sometimes result in mismatched scopes
@@ -4146,9 +4293,11 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.3.2] - 2015-04-29
 
 ### Changed
+
 - The error message for PSR2.ControlStructures.SwitchDeclaration.WrongOpenercase is now clearer (request [#579][sq-579])
 
 ### Fixed
+
 - Fixed bug [#545][sq-545] : Long list of CASE statements can cause tokenizer to reach a depth limit
 - Fixed bug [#565][sq-565] : Squiz.WhiteSpace.OperatorSpacing reports negative number in short array
     - Thanks to [Vašek Purchart][@VasekPurchart] for the patch
@@ -4165,6 +4314,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.3.1] - 2015-04-23
 
 ### Changed
+
 - PHPCS can now exit with 0 even if errors are found
     - Set the ignore_errors_on_exit config variable to 1 to set this behaviour
     - Use with the ignore_warnings_on_exit config variable to never return a non-zero exit code
@@ -4181,6 +4331,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - The Squiz standard has increased the max padding for statement alignment from 12 to 20
 
 ### Fixed
+
 - Fixed bug [#479][sq-479] : Yielded values are not recognised as returned values in Squiz FunctionComment sniff
 - Fixed bug [#512][sq-512] : Endless loop whilst parsing mixture of control structure styles
 - Fixed bug [#515][sq-515] : Spaces in JS block incorrectly flagged as indentation error
@@ -4214,6 +4365,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.3.0] - 2015-03-04
 
 ### Changed
+
 - The existence of the main config file is now cached to reduce is_file() calls when it doesn't exist (request [#486][sq-486])
 - Abstract classes inside the Sniffs directory are now ignored even if they are named `[Name]Sniff.php` (request [#476][sq-476])
     - Thanks to [David Vernet][@Decave] for the patch
@@ -4241,6 +4393,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - PEAR IncludingFileSniff no longer produces invalid code when removing parenthesis from require/include statements
 
 ### Fixed
+
 - Fixed bug [#415][sq-415] : The @codingStandardsIgnoreStart has no effect during fixing
 - Fixed bug [#432][sq-432] : Properties of custom sniffs cannot be configured
 - Fixed bug [#453][sq-453] : PSR2 standard does not allow closing tag for mixed PHP/HTML files
@@ -4282,6 +4435,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.2.0] - 2015-01-22
 
 ### Changed
+
 - Added (hopefully) tastefully used colors to report and progress output for the phpcs command
     - Use the --colors command line argument to use colors in output
     - Use the command "phpcs --config-set colors true" to turn colors on by default
@@ -4329,6 +4483,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Stefano Kowalke][@Konafets] for the contribution
 
 ### Fixed
+
 - Fixed bug [#379][sq-379] : Squiz.Arrays.ArrayDeclaration.NoCommaAfterLast incorrectly detects comments
 - Fixed bug [#382][sq-382] : JS tokenizer incorrect for inline conditionally created immediately invoked anon function
 - Fixed bug [#383][sq-383] : Squiz.Arrays.ArrayDeclaration.ValueNoNewline incorrectly detects nested arrays
@@ -4374,6 +4529,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.1.0] - 2014-12-18
 
 ### Changed
+
 - Time and memory output is now shown if progress information is also shown (request [#335][sq-335])
 - A tilde can now be used to reference a user's home directory in a path to a standard (request [#353][sq-353])
 - Added PHP_CodeSniffer_File::findStartOfStatement() to find the first non-whitespace token in a statement
@@ -4403,6 +4559,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz ArrayDeclarationSniff now skips function calls while checking multi-line arrays
 
 ### Fixed
+
 - Fixed bug [#337][sq-337] : False positive with anonymous functions in Generic_Sniffs_WhiteSpace_ScopeIndentSniff
 - Fixed bug [#339][sq-339] : reformatting brace location can result in broken code
 - Fixed bug [#342][sq-342] : Nested ternary operators not tokenized correctly
@@ -4442,6 +4599,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.0.0] - 2014-12-05
 
 ### Changed
+
 - JS tokenizer now sets functions as T_CLOSUREs if the function is anonymous
 - JS tokenizer now sets all objects to T_OBJECT
     - Object end braces are set to a new token T_CLOSE_OBJECT
@@ -4470,6 +4628,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Improved fixing of lines after cases statements in Squiz SwitchDeclarationSniff
 
 ### Fixed
+
 - Fixed bug [#311][sq-311] : Suppression of function prototype breaks checking of lines within function
 - Fixed bug [#320][sq-320] : Code sniffer indentation issue
 - Fixed bug [#333][sq-333] : Nested ternary operators causing problems
@@ -4480,6 +4639,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.5.6] - 2014-12-05
 
 ### Changed
+
 - JS tokenizer now detects xor statements correctly
 - The --config-show command now pretty-prints the config values
     - Thanks to [Ken Guest][@kenguest] for the patch
@@ -4493,6 +4653,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Thibaud Fabre][@fabre-thibaud] for the patch
 
 ### Fixed
+
 - Fixed bug [#280][sq-280] : The --config-show option generates error when there is no config file
 - Fixed bug [#306][sq-306] : File containing only a namespace declaration raises undefined index notice
 - Fixed bug [#308][sq-308] : Squiz InlineIfDeclarationSniff fails on ternary operators inside closure
@@ -4504,6 +4665,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.0.0RC4] - 2014-11-07
 
 ### Changed
+
 - JS tokenizer now detects xor statements correctly
 - Improved detection of properties and objects in the JS tokenizer
 - Generic ScopeIndentSniff can now fix indents using tabs instead of spaces
@@ -4526,6 +4688,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Running unit tests with the -v CLI argument no longer generates PHP errors
 
 ### Fixed
+
 - Fixed bug [#295][sq-295] : ScopeIndentSniff hangs when processing nested closures
 - Fixed bug [#298][sq-298] : False positive in ScopeIndentSniff when anonymous functions are used with method chaining
 - Fixed bug [#302][sq-302] : Fixing code in Squiz InlineComment sniff can remove some comment text
@@ -4547,6 +4710,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.0.0RC3] - 2014-10-16
 
 ### Changed
+
 - Improved default output for PHPCBF and removed the options to print verbose and progress output
 - If a .fixed file is supplied for a unit test file, the auto fixes will be checked against it during testing
     - See Generic ScopeIndentUnitTest.inc and ScopeIndentUnitTest.inc.fixed for an example
@@ -4568,6 +4732,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Already handled by Squiz.Classes.ClassDeclaration.CloseBraceSameLine
 
 ### Fixed
+
 - Fixed bug [#280][sq-280] : The --config-show option generates error when there is no config file
 
 [sq-280]: https://github.com/squizlabs/PHP_CodeSniffer/issues/280
@@ -4576,6 +4741,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.0.0RC2] - 2014-09-26
 
 ### Changed
+
 - Minified JS and CSS files are now detected and skipped (fixes bug [#252][sq-252] and bug [#19899][pear-19899])
     - A warning will be added to the file so it can be found in the report and ignored in the future
 - Fixed incorrect length of JS object operator tokens
@@ -4624,6 +4790,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Generic UpperCaseConstantSniff and LowerCaseConstantSniff now ignore function names
 
 ### Fixed
+
 - Fixed bug [#243][sq-243] : Missing DocBlock not detected
 - Fixed bug [#248][sq-248] : FunctionCommentSniff expects ampersand on param name
 - Fixed bug [#265][sq-265] : False positives with type hints in ForbiddenFunctionsSniff
@@ -4645,6 +4812,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.5.5] - 2014-09-25
 
 ### Changed
+
 - PHP tokenizer no longer converts class/function names to special tokens types
     - Class/function names such as parent and true would become special tokens such as T_PARENT and T_TRUE
 - Improved closure support in Generic ScopeIndentSniff
@@ -4661,6 +4829,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Generic UpperCaseConstantSniff and LowerCaseConstantSniff now ignore function names
 
 ### Fixed
+
 - Fixed bug [#248][sq-248] : FunctionCommentSniff expects ampersand on param name
 - Fixed bug [#265][sq-265] : False positives with type hints in ForbiddenFunctionsSniff
 - Fixed bug [#20373][pear-20373] : Inline comment sniff tab handling way
@@ -4679,6 +4848,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.0.0RC1] - 2014-08-06
 
 ### Changed
+
 - PHPCBF will now fix incorrect newline characters in a file
 - PHPCBF now exits cleanly when there are no errors to fix
 - Added phpcbf.bat file for Windows
@@ -4733,6 +4903,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Jonathan Marcil][@jmarcil] for the patch
 
 ### Fixed
+
 - Fixed bug [#20261][pear-20261] : phpcbf has an endless fixing loop
 - Fixed bug [#20268][pear-20268] : Incorrect documentation titles in PEAR documentation
 - Fixed bug [#20296][pear-20296] : new array notion in function comma check fails
@@ -4754,6 +4925,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.5.4] - 2014-08-06
 
 ### Changed
+
 - Removed use of sys_get_temp_dir() as this is not supported by the min PHP version
 - The installed_paths config var now accepts relative paths
     - The paths are relative to the PHP_CodeSniffer install directory
@@ -4777,6 +4949,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Jonathan Marcil][@jmarcil] for the patch
 
 ### Fixed
+
 - Fixed bug [#20268][pear-20268] : Incorrect documentation titles in PEAR documentation
 - Fixed bug [#20296][pear-20296] : new array notion in function comma check fails
 - Fixed bug [#20307][pear-20307] : PHP_CodeSniffer_Standards_AbstractVariableSniff analyze traits
@@ -4801,6 +4974,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.0.0a2] - 2014-05-01
 
 ### Changed
+
 - Added report type --report=info to show information about the checked code to make building a standard easier
     - Checks a number of things, such as what line length you use, and spacing are brackets, but not everything
     - Still highly experimental
@@ -4837,6 +5011,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Sniff code Squiz.WhiteSpace.MemberVarSpacing.After changed to Squiz.WhiteSpace.MemberVarSpacing.Incorrect (request [#20241][pear-20241])
 
 ### Fixed
+
 - Fixed bug [#20200][pear-20200] : Invalid JSON produced with specific error message
 - Fixed bug [#20204][pear-20204] : Ruleset exclude checks are case sensitive
 - Fixed bug [#20213][pear-20213] : Invalid error, Inline IF must be declared on single line
@@ -4854,6 +5029,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.5.3] - 2014-05-01
 
 ### Changed
+
 - Improved detection of nested IF statements that use the alternate IF/ENDIF syntax
 - PHP tokenizer now supports DEFAULT statements opened with a T_SEMICOLON
 - PSR1 CamelCapsMethodNameSniff now ignores magic methods
@@ -4870,6 +5046,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Sniff code Squiz.WhiteSpace.MemberVarSpacing.After changed to Squiz.WhiteSpace.MemberVarSpacing.Incorrect (request [#20241][pear-20241])
 
 ### Fixed
+
 - Fixed bug [#20200][pear-20200] : Invalid JSON produced with specific error message
 - Fixed bug [#20204][pear-20204] : Ruleset exclude checks are case sensitive
 - Fixed bug [#20213][pear-20213] : Invalid error, Inline IF must be declared on single line
@@ -4896,6 +5073,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [2.0.0a1] - 2014-02-05
 
 ### Changed
+
 - Added the phpcbf script to automatically fix many errors found by the phpcs script
 - Added report type --report=diff to show suggested changes to fix coding standard violations
 - The --report argument now allows for custom reports to be used
@@ -4948,6 +5126,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.5.2] - 2014-02-05
 
 ### Changed
+
 - Improved support for the PHP 5.5. classname::class syntax
     - PSR2 SwitchDeclarationSniff no longer throws errors when this syntax is used in CASE conditions
 - Improved support for negative checks of instanceOf in Squiz ComparisonOperatorUsageSniff
@@ -4980,6 +5159,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Generic FixmeSniff and TodoSniff now work correctly with accented characters
 
 ### Fixed
+
 - Fixed bug [#20145][pear-20145] : Custom ruleset preferences directory over installed standard
 - Fixed bug [#20147][pear-20147] : phpcs-svn-pre-commit - no more default error report
 - Fixed bug [#20151][pear-20151] : Problem handling "if(): ... else: ... endif;" syntax
@@ -4993,6 +5173,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.5.1] - 2013-12-12
 
 ### Changed
+
 - Config values can now be set at runtime using the command line argument `--runtime-set key value`
     - Runtime values are the same as config values, but are not written to the main config file
     - Thanks to [Wim Godden][@wimg] for the patch
@@ -5011,6 +5192,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - This is a further fix for bug [#20100][pear-20100] : incorrect Function mysql() has been deprecated report
 
 ### Fixed
+
 - Fixed bug [#20136][pear-20136] : Squiz_Sniffs_WhiteSpace_ScopeKeywordSpacingSniff and Traits
 - Fixed bug [#20138][pear-20138] : Protected property underscore and camel caps issue (in trait with Zend)
     - Thanks to [Gaetan Rousseau][@Naelyth] for the patch
@@ -5023,6 +5205,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.5.0] - 2013-11-28
 
 ### Changed
+
 - Doc generation is now working again for installed standards
     - Includes a fix for limiting the docs to specific sniffs
 - Generic ScopeIndentSniff now allows for ignored tokens to be set via ruleset.xml files
@@ -5044,6 +5227,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Maksim Kochkin][@ksimka] for the patch
 
 ### Fixed
+
 - Fixed bug [#20093][pear-20093] : Bug with ternary operator token
 - Fixed bug [#20097][pear-20097] : `CLI.php` throws error in PHP 5.2
 - Fixed bug [#20100][pear-20100] : incorrect Function mysql() has been deprecated report
@@ -5059,6 +5243,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.4.8] - 2013-11-26
 
 ### Changed
+
 - Generic ScopeIndentSniff now allows for ignored tokens to be set via ruleset.xml files
     - E.g., to ignore comments, override a property using:
     - name="ignoreIndentationTokens" type="array" value="T_COMMENT,T_DOC_COMMENT"
@@ -5074,6 +5259,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Maksim Kochkin][@ksimka] for the patch
 
 ### Fixed
+
 - Fixed bug [#20097][pear-20097] : `CLI.php` throws error in PHP 5.2
 - Fixed bug [#20100][pear-20100] : incorrect Function mysql() has been deprecated report
 - Fixed bug [#20119][pear-20119] : PHP warning: invalid argument to str_repeat() in SVN blame report with -s
@@ -5091,6 +5277,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.5.0RC4] - 2013-09-26
 
 ### Changed
+
 - You can now restrict violations to individual sniff codes using the --sniffs command line argument
     - Previously, this only restricted violations to an entire sniff and not individual messages
     - If you have scripts calling PHP_CodeSniffer::process() or creating PHP_CodeSniffer_File objects, you must update your code
@@ -5138,6 +5325,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - PSR UseDeclarationSniff no longer throws errors for USE statements inside TRAITs
 
 ### Fixed
+
 - Fixed cases where code was incorrectly assigned the T_GOTO_LABEL token when used in a complex CASE condition
 - Fixed bug [#20026][pear-20026] : Check for multi-line arrays that should be single-line is slightly wrong
     - Adds new error message for single-line arrays that end with a comma
@@ -5153,6 +5341,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.4.7] - 2013-09-26
 
 ### Changed
+
 - Added report type --report=junit to show the error list in a JUnit compatible format
     - Thanks to [Oleg Lobach][@bladeofsteel] for the contribution
 - Added support for the PHP 5.4 callable type hint
@@ -5191,6 +5380,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - PSR UseDeclarationSniff no longer throws errors for USE statements inside TRAITs
 
 ### Fixed
+
 - Fixed bug [#20026][pear-20026] : Check for multi-line arrays that should be single-line is slightly wrong
     - Adds new error message for single-line arrays that end with a comma
 - Fixed bug [#20029][pear-20029] : ForbiddenFunction sniff incorrectly recognizes methods in USE clauses
@@ -5208,6 +5398,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.5.0RC3] - 2013-07-25
 
 ### Changed
+
 - Added report type --report=json to show the error list and total counts for all checked files
     - Thanks to [Jeffrey Fisher][@jeffslofish] for the contribution
 - PHP_CodeSniffer::isCamelCaps now allows for acronyms at the start of a string if the strict flag is FALSE
@@ -5255,6 +5446,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Arnout Boks][@aboks] for the patch
 
 ### Fixed
+
 - Fixed bug [#19811][pear-19811] : Comments not ignored in all cases in AbstractPatternSniff
     - Thanks to [Erik Wiffin][@erikwiffin] for the patch
 - Fixed bug [#19892][pear-19892] : ELSE with no braces causes incorrect SWITCH break statement indentation error
@@ -5276,6 +5468,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.4.6] - 2013-07-25
 
 ### Changed
+
 - Added report type --report=json to show the error list and total counts for all checked files
     - Thanks to [Jeffrey Fisher][@jeffslofish] for the contribution
 - The JS tokenizer now has support for the T_THROW token
@@ -5319,6 +5512,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Arnout Boks][@aboks] for the patch
 
 ### Fixed
+
 - Fixed bug [#19811][pear-19811] : Comments not ignored in all cases in AbstractPatternSniff
     - Thanks to [Erik Wiffin][@erikwiffin] for the patch
 - Fixed bug [#19892][pear-19892] : ELSE with no braces causes incorrect SWITCH break statement indentation error
@@ -5353,6 +5547,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.5.0RC2] - 2013-04-04
 
 ### Changed
+
 - Ruleset processing has been rewritten to be more predictable
     - Provides much better support for relative paths inside ruleset files
     - May mean that sniffs that were previously ignored are now being included when importing external rulesets
@@ -5390,6 +5585,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Generic DuplicateClassNameSniff no longer reports duplicate errors if multiple PHP open tags exist in a file
 
 ### Fixed
+
 - Fixed bug [#19819][pear-19819] : Freeze with syntax error in use statement
 - Fixed bug [#19820][pear-19820] : Wrong message level in Generic_Sniffs_CodeAnalysis_EmptyStatementSniff
 - Fixed bug [#19859][pear-19859] : CodeSniffer::setIgnorePatterns API changed
@@ -5402,6 +5598,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.4.5] - 2013-04-04
 
 ### Changed
+
 - Added Generic LowerCaseKeywordSniff to ensure all PHP keywords are defined in lowercase
     - The PSR2 and Squiz standards now use this sniff
 - Added Generic SAPIUsageSniff to ensure the `PHP_SAPI` constant is used instead of `php_sapi_name()` (request [#19863][pear-19863])
@@ -5429,6 +5626,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Generic DuplicateClassNameSniff no longer reports duplicate errors if multiple PHP open tags exist in a file
 
 ### Fixed
+
 - Fixed bug [#19819][pear-19819] : Freeze with syntax error in use statement
 - Fixed bug [#19820][pear-19820] : Wrong message level in Generic_Sniffs_CodeAnalysis_EmptyStatementSniff
 - Fixed bug [#19859][pear-19859] : CodeSniffer::setIgnorePatterns API changed
@@ -5446,6 +5644,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.5.0RC1] - 2013-02-08
 
 ### Changed
+
 - Reports have been completely rewritten to consume far less memory
     - Each report is incrementally written to the file system during a run and then printed out when the run ends
     - There is no longer a need to keep the list of errors and warnings in memory during a run
@@ -5456,6 +5655,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.4.4] - 2013-02-07
 
 ### Changed
+
 - Ignored lines no longer cause the summary report to show incorrect error and warning counts
     - Thanks to [Bert Van Hauwaert][@becoded] for the patch
 - Added Generic CSSLintSniff to run CSSLint over a CSS file and report warnings
@@ -5478,6 +5678,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz SuperfluousWhitespaceSniff now allows a single newline at the end of JS and CSS files
 
 ### Fixed
+
 - Fixed bug [#19755][pear-19755] : Token of T_CLASS type has no scope_opener and scope_closer keys
 - Fixed bug [#19759][pear-19759] : Squiz.PHP.NonExecutableCode fails for return function()...
 - Fixed bug [#19763][pear-19763] : Use statements for traits not recognised correctly for PSR2 code style
@@ -5502,6 +5703,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.4.3] - 2012-12-04
 
 ### Changed
+
 - Added support for the PHP 5.5 T_FINALLY token to detect try/catch/finally statements
 - Added empty CodeSniffer.conf to enable config settings for Composer installs
 - Added Generic EndFileNoNewlineSniff to ensure there is no newline at the end of a file
@@ -5516,6 +5718,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to [Andy Grunwald][@andygrunwald] for the patch
 
 ### Fixed
+
 - Fixed bug [#19699][pear-19699] : Generic.Files.LineLength giving false positives when tab-width is used
 - Fixed bug [#19726][pear-19726] : Wrong number of spaces expected after instanceof static
 - Fixed bug [#19727][pear-19727] : PSR2: no error reported when using } elseif {
@@ -5527,6 +5730,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.4.2] - 2012-11-09
 
 ### Changed
+
 - PHP_CodeSniffer can now be installed using Composer
     - Require `squizlabs/php_codesniffer` in your `composer.json` file
     - Thanks to [Rob Bast][@alcohol], [Stephen Rees-Carter][@valorin], [Stefano Kowalke][@Konafets] and [Ivan Habunek][@ihabunek] for help with this
@@ -5541,6 +5745,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - PSR2 no longer reports errors for whitespace at the end of blank lines
 
 ### Fixed
+
 - Fixed gitblame report not working on Windows
     - Thanks to [Rogerio Prado de Jesus][@rogeriopradoj]
 - Fixed an incorrect error in Squiz OperatorSpacingSniff for default values inside a closure definition
@@ -5558,6 +5763,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.4.1] - 2012-11-02
 
 ### Changed
+
 - All ignore patterns have been reverted to being checked against the absolute path of a file
     - Patterns can be specified to be relative in a ruleset.xml file, but nowhere else
     - e.g., `<exclude-pattern type="relative">^tests/*</exclude-pattern>`
@@ -5594,6 +5800,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - PSR1 ClassDeclarationSniff no longer throws an error for non-namespaced code if PHP version is less than 5.3.0
 
 ### Fixed
+
 - Fixed bug [#19616][pear-19616] : Nested switches cause false error in PSR2
 - Fixed bug [#19629][pear-19629] : PSR2 error for inline comments on multi-line argument lists
 - Fixed bug [#19644][pear-19644] : Alternative syntax, e.g. if/endif triggers Inline Control Structure error
@@ -5614,6 +5821,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.4.0] - 2012-09-26
 
 ### Changed
+
 - Added PSR1 and PSR2 coding standards that can be used to check your code against these guidelines
 - PHP 5.4 short array syntax is now detected and tokens are assigned to the open and close characters
     - New tokens are T_OPEN_SHORT_ARRAY and T_CLOSE_SHORT_ARRAY as PHP does not define its own
@@ -5635,6 +5843,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz BlockCommentSniff now correctly reports an error for blank lines before blocks at the start of a control structure
 
 ### Fixed
+
 - Fixed a PHP notice generated when loading custom array settings from a ruleset.xml file
 - Fixed bug [#17908][pear-17908] : CodeSniffer does not recognise optional @params
     - Thanks to [Pete Walker][pear-pete] for the patch
@@ -5650,6 +5859,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.3.6] - 2012-08-08
 
 ### Changed
+
 - Memory usage has been dramatically reduced when using the summary report
     - Reduced memory is only available when displaying a single summary report to the screen
     - PHP_CodeSniffer will not generate any messages in this case, storing only error counts instead
@@ -5673,6 +5883,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Summary report no longer shows two lines of PHP_Timer output when showing sources
 
 ### Fixed
+
 - Fixed undefined variable error in PEAR FunctionCallSignatureSniff for lines with no indent
 - Fixed bug [#19502][pear-19502] : Generic.Files.LineEndingsSniff fails if no new-lines in file
 - Fixed bug [#19508][pear-19508] : switch+return: Closing brace indented incorrectly
@@ -5687,6 +5898,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.3.5] - 2012-07-12
 
 ### Changed
+
 - Added Generic CamelCapsFunctionNameSniff to just check if function and method names use camel caps
     - Does not allow underscore prefixes for private/protected methods
     - Defaults to strict checking, where two uppercase characters can not be next to each other
@@ -5704,6 +5916,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - The PHP tokenizer now recognises T_RETURN as a valid closer for T_CASE and T_DEFAULT inside switch statements
 
 ### Fixed
+
 - Fixed duplicate message codes in Generic OpeningFunctionBraceKernighanRitchieSniff
 - Fixed bug [#18651][pear-18651] : PHPUnit Test cases for custom standards are not working on Windows
 - Fixed bug [#19416][pear-19416] : Shorthand arrays cause bracket spacing errors
@@ -5733,6 +5946,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.3.4] - 2012-05-17
 
 ### Changed
+
 - Added missing package.xml entries for new Generic FixmeSniff
     - Thanks to [Jaroslav Hanslík][@kukulich] for the patch
 - Expected indents for PEAR ScopeClosingBraceSniff and FunctionCallSignatureSniff can now be set in ruleset files
@@ -5764,6 +5978,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Thanks to Denis Shapkin for the patch
 
 ### Fixed
+
 - Fixed bug [#19290][pear-19290] : Generic indent sniffer fails for anonymous functions
 - Fixed bug [#19324][pear-19324] : Setting show_warnings configuration option does not work
 - Fixed bug [#19354][pear-19354] : Not recognizing references passed to method
@@ -5796,6 +6011,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.3.3] - 2012-02-07
 
 ### Changed
+
 - Added new Generic FixmeSniff that shows error messages for all FIXME comments left in your code
     - Thanks to [Sam Graham][@illusori] for the contribution
 - The maxPercentage setting in the Squiz CommentedOutCodeSniff can now be overridden in a ruleset.xml file
@@ -5808,6 +6024,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - PHP_CodeSniffer_File::getTokensAsString() now detects incorrect length value (request [#19313][pear-19313])
 
 ### Fixed
+
 - Fixed bug [#19114][pear-19114] : CodeSniffer checks extension even for single file
 - Fixed bug [#19171][pear-19171] : Show sniff codes option is ignored by some report types
     - Thanks to [Dominic Scheirlinck][@dominics] for the patch
@@ -5837,6 +6054,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## [1.3.2] - 2011-12-01
 
 ### Changed
+
 - Added Generic JSHintSniff to run jshint.js over a JS file and report warnings
     - Set jshint path using phpcs --config-set jshint_path /path/to/jshint-rhino.js
     - Set rhino path using phpcs --config-set rhino_path /path/to/rhino
@@ -5852,6 +6070,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz FunctionCommentThrownTagSniff no longer reports errors if it can't find a function comment
 
 ### Fixed
+
 - Fixed unit tests not running under Windows
     - Thanks to [Jaroslav Hanslík][@kukulich] for the patch
 - Fixed bug [#18964][pear-18964] : "$stackPtr must be of type T_VARIABLE" on heredocs and nowdocs
@@ -5868,6 +6087,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.3.1 - 2011-11-03
 
 ### Changed
+
 - All report file command line arguments now work with relative paths (request [#17240][pear-17240])
 - The extensions command line argument now supports multi-part file extensions (request [#17227][pear-17227])
 - Added report type --report=hgblame to show number of errors/warnings committed by authors in a Mercurial repository
@@ -5901,6 +6121,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Fixes bug [#18933][pear-18933] : Alternative namespace declaration syntax confuses scope sniffs
 
 ### Fixed
+
 - Fixed issue in Squiz FileCommentSniff where suggested package name was the same as the incorrect package name
 - Fixed some issues with Squiz ArrayDeclarationSniff when using function calls in array values
 - Fixed doc generation so it actually works again
@@ -5966,6 +6187,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.3.0 - 2011-03-17
 
 ### Changed
+
 - Add a new token T_CLOSURE that replaces T_FUNCTION if the function keyword is anonymous
 - Many Squiz sniffs no longer report errors when checking closures; they are now ignored
 - Fixed some error messages in PEAR MultiLineConditionSniff that were not using placeholders for message data
@@ -5973,6 +6195,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - PEAR FunctionDeclarationSniff now ignores arrays in argument default values when checking multi-line declarations
 
 ### Fixed
+
 - Fixed bug [#18200][pear-18200] : Using custom named ruleset file as standard no longer works
 - Fixed bug [#18196][pear-18196] : PEAR MultiLineCondition.SpaceBeforeOpenBrace not consistent with newline chars
 - Fixed bug [#18204][pear-18204] : FunctionCommentThrowTag picks wrong exception type when throwing function call
@@ -5997,6 +6220,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.3.0RC2 - 2011-01-14
 
 ### Changed
+
 - You can now print multiple reports for each run and print each to the screen or a file (request [#12434][pear-12434])
     - Format is `--report-[report][=file]` (e.g., `--report-xml=out.xml`)
     - Printing to screen is done by leaving `[file]` empty (e.g., `--report-xml`)
@@ -6042,6 +6266,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
     - Can override the warnings using the code Internal.DetectLineEndings
 
 ### Fixed
+
 - Fixed bug [#17693][pear-17693] : issue with pre-commit hook script with filenames that start with v
 - Fixed bug [#17860][pear-17860] : isReference function fails with references in array
     - Thanks to [Lincoln Maskey][pear-ljmaskey] for the patch
@@ -6088,6 +6313,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.3.0RC1 - 2010-09-03
 
 ### Changed
+
 - Added exclude pattern support to ruleset.xml file so you can specify ignore patterns in a standard (request [#17683][pear-17683])
     - Use new exclude-pattern tags to include the ignore rules into your ruleset.xml file
     - See CodeSniffer/Standards/PHPCS/ruleset.xml for an example
@@ -6107,6 +6333,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz FunctionCommentSniff now supports namespaces in type hints
 
 ### Fixed
+
 - Fixed a problem in Squiz OutputBufferingIndentSniff where block comments were reported as not indented
 - Fixed bug [#17092][pear-17092] : Problems with utf8_encode and htmlspecialchars with non-ascii chars
     - Use the new --encoding=utf-8 command line argument if your files are utf-8 encoded
@@ -6134,6 +6361,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.3.0a1 - 2010-07-15
 
 ### Changed
+
 - All `CodingStandard.php` files have been replaced by `ruleset.xml` files
     - Custom standards will need to be converted over to this new format to continue working
 - You can specify a path to your own custom ruleset.xml file by using the --standard command line arg
@@ -6162,6 +6390,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Removed found and expected messages from Squiz ConcatenationSpacingSniff because they were messy and not helpful
 
 ### Fixed
+
 - Fixed a problem where Generic CodeAnalysisSniff could show warnings if checking multi-line strings
 - Fixed error messages in Squiz ArrayDeclarationSniff reporting incorrect number of found and expected spaces
 - Fixed bug [#17048][pear-17048] : False positive in Squiz_WhiteSpace_ScopeKeywordSpacingSniff
@@ -6195,6 +6424,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.2.2 - 2010-01-27
 
 ### Changed
+
 - The core PHP_CodeSniffer_File methods now understand the concept of closures (feature request [#16866][pear-16866])
     - Thanks to [Christian Kaps][@akkie] for the sample code
 - Sniffs can now specify violation codes for each error and warning they add
@@ -6245,6 +6475,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - MySource DisallowSelfActionsSniff now ignores abstract classes
 
 ### Fixed
+
 - Fixed a problem with the SVN pre-commit hook for PHP versions without vertical whitespace regex support
 - Fixed bug [#16740][pear-16740] : False positives for heredoc strings and unused parameter sniff
 - Fixed bug [#16794][pear-16794] : ValidLogicalOperatorsSniff doesn't report operators not in lowercase
@@ -6277,6 +6508,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.2.1 - 2009-11-17
 
 ### Changed
+
 - Added a new report type --report=svnblame to show how many errors and warnings were committed by each author
     - Also shows the percentage of their code that are errors and warnings
     - Requires you to have the SVN command in your path
@@ -6311,6 +6543,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - When only the case of var names differ for function comments, the error now indicates the case is different
 
 ### Fixed
+
 - Fixed an issue with Generic UnnecessaryStringConcatSniff where it incorrectly suggested removing a concat
 - Fixed bug [#16530][pear-16530] : ScopeIndentSniff reports false positive
 - Fixed bug [#16533][pear-16533] : Duplicate errors and warnings
@@ -6348,6 +6581,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.2.0 - 2009-08-17
 
 ### Changed
+
 - Installed standards are now favoured over custom standards when using the cmd line arg with relative paths
 - Unit tests now use a lot less memory while running
 - Squiz standard now uses Generic EmptyStatementSniff but throws errors instead of warnings
@@ -6355,6 +6589,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Removed unused ValidArrayIndexNameSniff from the Squiz standard
 
 ### Fixed
+
 - Fixed bug [#16424][pear-16424] : SubversionPropertiesSniff print PHP Warning
 - Fixed bug [#16450][pear-16450] : Constant `PHP_CODESNIFFER_VERBOSITY` already defined (unit tests)
 - Fixed bug [#16453][pear-16453] : function declaration long line splitted error
@@ -6368,6 +6603,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.2.0RC3 - 2009-07-07
 
 ### Changed
+
 - You can now use @codingStandardsIgnoreStart and @...End comments to suppress messages (feature request [#14002][pear-14002])
 - A warning is now included for files without any code when short_open_tag is set to Off (feature request [#12952][pear-12952])
 - You can now use relative paths to your custom standards with the --standard cmd line arg (feature request [#14967][pear-14967])
@@ -6383,9 +6619,11 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.2.0RC2 - 2009-05-25
 
 ### Changed
+
 - Test suite can now be run using the full path to `AllTests.php` (feature request [#16179][pear-16179])
 
 ### Fixed
+
 - Fixed bug [#15980][pear-15980] : PHP_CodeSniffer change PHP current directory
     - Thanks to [Dolly Aswin Harahap][pear-dollyaswin] for the patch
 - Fixed bug [#16001][pear-16001] : Notice triggered
@@ -6405,6 +6643,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.2.0RC1 - 2009-03-09
 
 ### Changed
+
 - Reports that are output to a file now include a trailing newline at the end of the file
 - Fixed sniff names not shown in -vvv token processing output
 - Added Generic SubversionPropertiesSniff to check that specific svn props are set for files
@@ -6419,6 +6658,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz OperatorBracketSniff now allows square brackets in simple unbracketed operations
 
 ### Fixed
+
 - Fixed the incorrect tokenizing of multi-line block comments in CSS files
 - Fixed bug [#15383][pear-15383] : Uncaught PHP_CodeSniffer_Exception
 - Fixed bug [#15408][pear-15408] : An unexpected exception has been caught: Undefined offset: 2
@@ -6439,6 +6679,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.2.0a1 - 2008-12-18
 
 ### Changed
+
 - PHP_CodeSniffer now has a CSS tokenizer for checking CSS files
 - Added support for a new multi-file sniff that sniffs all processed files at once
 - Added new output format --report=emacs to output errors using the emacs standard compile output format
@@ -6532,6 +6773,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Improve AbstractPatternSniff support so it can listen for any token type, not just weighted tokens
 
 ### Fixed
+
 - Fixed Squiz DoubleQuoteUsageSniff so it works correctly with short_open_tag=Off
 - Fixed bug [#14409][pear-14409] : Output of warnings to log file
 - Fixed bug [#14520][pear-14520] : Notice: Undefined offset: 1 in `CodeSniffer/File.php` on line
@@ -6564,12 +6806,14 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.1.0 - 2008-07-14
 
 ### Changed
+
 - PEAR FileCommentSniff now allows tag orders to be overridden in child classes
     - Thanks to Jeff Hodsdon for the patch
 - Added Generic DisallowMultipleStatementsSniff to ensure there is only one statement per line
 - Squiz standard now uses DisallowMultipleStatementsSniff
 
 ### Fixed
+
 - Fixed error in Zend ValidVariableNameSniff when checking vars in form: $class->{$var}
 - Fixed bug [#14077][pear-14077] : Fatal error: Uncaught PHP_CodeSniffer_Exception: $stackPtr is not a class member
 - Fixed bug [#14168][pear-14168] : Global Function -> Static Method and __autoload()
@@ -6581,12 +6825,14 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.1.0RC3 - 2008-07-03
 
 ### Changed
+
 - PEAR FileCommentSniff now allows tag orders to be overridden in child classes
     - Thanks to Jeff Hodsdon for the patch
 - Added Generic DisallowMultipleStatementsSniff to ensure there is only one statement per line
 - Squiz standard now uses DisallowMultipleStatementsSniff
 
 ### Fixed
+
 - Fixed error in Zend ValidVariableNameSniff when checking vars in form: $class->{$var}
 - Fixed bug [#14077][pear-14077] : Fatal error: Uncaught PHP_CodeSniffer_Exception: $stackPtr is not a class member
 - Fixed bug [#14168][pear-14168] : Global Function -> Static Method and __autoload()
@@ -6605,12 +6851,14 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.1.0RC2 - 2008-06-13
 
 ### Changed
+
 - Permission denied errors now stop script execution but still display current errors (feature request [#14076][pear-14076])
 - Added Squiz ValidArrayIndexNameSniff to ensure array indexes do not use camel case
 - Squiz ArrayDeclarationSniff now ensures arrays are not declared with camel case index values
 - PEAR ValidVariableNameSniff now alerts about a possible parse error for member vars inside an interface
 
 ### Fixed
+
 - Fixed bug [#13921][pear-13921] : js parsing fails for comments on last line of file
 - Fixed bug [#13922][pear-13922] : crash in case of malformed (but tokenized) PHP file
     - PEAR and Squiz ClassDeclarationSniff now throw warnings for possible parse errors
@@ -6624,6 +6872,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.1.0RC1 - 2008-05-13
 
 ### Changed
+
 - Added support for multiple tokenizers so PHP_CodeSniffer can check more than just PHP files
     - PHP_CodeSniffer now has a JS tokenizer for checking JavaScript files
     - Sniffs need to be updated to work with additional tokenizers, or new sniffs written for them
@@ -6669,6 +6918,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Removed warning shown in Zend CodeAnalyzerSniff when the ZCA path is not set
 
 ### Fixed
+
 - Fixed error in Squiz ValidVariableNameSniff when checking vars in the form $obj->$var
 - Fixed error in Squiz DisallowMultipleAssignmentsSniff when checking vars in the form $obj->$var
 - Fixed error in Squiz InlineCommentSniff where comments for class constants were seen as inline
@@ -6700,6 +6950,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.0.1a1 - 2008-04-21
 
 ### Changed
+
 - Fixed error in PEAR ValidClassNameSniff when checking class names with double underscores
 - Moved Squiz InlineControlStructureSniff into Generic standard
 - PEAR standard now throws warnings for inline control structures
@@ -6711,6 +6962,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz ClosingDeclarationCommentSniff and AbstractVariableSniff now throw warnings for possible parse errors
 
 ### Fixed
+
 - Fixed bug [#13827][pear-13827] : AbstractVariableSniff throws "undefined index"
 - Fixed bug [#13846][pear-13846] : Bug in Squiz.NonExecutableCodeSniff
 - Fixed bug [#13849][pear-13849] : infinite loop in PHP_CodeSniffer_File::findNext()
@@ -6723,6 +6975,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.0.1 - 2008-02-04
 
 ### Changed
+
 - Squiz ArrayDeclarationSniff now throws error if the array keyword is followed by a space
 - Squiz ArrayDeclarationSniff now throws error for empty multi-line arrays
 - Squiz ArrayDeclarationSniff now throws error for multi-line arrays with a single value
@@ -6739,6 +6992,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Added MySource UnusedSystemSniff to check for included classes that are never used
 
 ### Fixed
+
 - Fixed a problem that caused the parentheses map to sometimes contain incorrect values
 - Fixed bug [#12767][pear-12767] : Cant run phpcs from dir with PEAR subdir
 - Fixed bug [#12773][pear-12773] : Reserved variables are not detected in strings
@@ -6760,6 +7014,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.0.0 - 2007-12-21
 
 ### Changed
+
 - You can now specify the full path to a coding standard on the command line (feature request [#11886][pear-11886])
     - This allows you to use standards that are stored outside of PHP_CodeSniffer's own Standard dir
     - You can also specify full paths in the `CodingStandard.php` include and exclude methods
@@ -6782,6 +7037,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - MySource IncludeSystemSniff no longer throws errors for the Util package
 
 ### Fixed
+
 - Fixed bug [#12621][pear-12621] : "space after AS" check is wrong
     - Thanks to [Satoshi Oikawa][pear-renoiv] for the patch
 - Fixed bug [#12645][pear-12645] : error message is wrong
@@ -6797,6 +7053,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.0.0RC3 - 2007-11-30
 
 ### Changed
+
 - Added new command line argument --tab-width that will convert tabs to spaces before testing
     - This allows you to use the existing sniffs that check for spaces even when you use tabs
     - Can also be set via a config var: phpcs --config-set tab_width 4
@@ -6816,6 +7073,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz DisallowMultipleAssignmentsSniff no longer throws errors for assignments in inline IF statements
 
 ### Fixed
+
 - Fixed bug [#12455][pear-12455] : CodeSniffer treats content inside heredoc as PHP code
 - Fixed bug [#12471][pear-12471] : Checkstyle report is broken
 - Fixed bug [#12476][pear-12476] : PHP4 destructors are reported as error
@@ -6832,6 +7090,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.0.0RC2 - 2007-11-14
 
 ### Changed
+
 - Added a new Checkstyle report format
     - Like the current XML format but modified to look like Checkstyle output
     - Thanks to [Manuel Pichler][@manuelpichler] for helping get the format correct
@@ -6853,6 +7112,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - PEAR FunctionCommentSniff no longer complains about unknown tags
 
 ### Fixed
+
 - Fixed incorrect errors about missing function comments in PEAR FunctionCommentSniff
 - Fixed incorrect function docblock detection in Squiz FunctionCommentSniff
 - Fixed incorrect errors for list() in Squiz DisallowMultipleAssignmentsSniff
@@ -6870,6 +7130,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 1.0.0RC1 - 2007-11-01
 
 ### Changed
+
 - Main phpcs script can now be run from a CVS checkout without installing the package
 - Added a new CSV report format
     - Header row indicates what position each element is in
@@ -6911,6 +7172,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Squiz VariableCommentSniff now checks that short and long comments start with a capital letter
 
 ### Fixed
+
 - Fixed error with multi-token array indexes in Squiz ArrayDeclarationSniff
 - Fixed error with checking shorthand IF statements without a semicolon in Squiz InlineIfDeclarationSniff
 - Fixed error where constants used as default values in function declarations were seen as type hints
@@ -6923,6 +7185,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.9.0 - 2007-09-24
 
 ### Changed
+
 - Added a config system for setting config data across phpcs runs
 - You can now change the default coding standard from PEAR to something else
     - Run: phpcs `--config-set default_standard [standard]`
@@ -6935,6 +7198,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.8.0 - 2007-08-08
 
 ### Changed
+
 - Added new XML report format; --report=xml (feature request [#11535][pear-11535])
     - Thanks to [Brett Bieber][@saltybeagle] for the patch
 - Added new command line argument --ignore to specify a list of files to skip (feature request [#11556][pear-11556])
@@ -6956,6 +7220,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Comment sniff errors about incorrect tag orders are now more descriptive (feature request [#11693][pear-11693])
 
 ### Fixed
+
 - Fixed bug [#11473][pear-11473] : Invalid CamelCaps name when numbers used in names
 
 [pear-11473]: https://pear.php.net/bugs/bug.php?id=11473
@@ -6969,6 +7234,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.7.0 - 2007-07-02
 
 ### Changed
+
 - BC BREAK: EOL character is now auto-detected and used instead of hard-coded \n
     - Pattern sniffs must now specify "EOL" instead of "\n" or "\r\n" to use auto-detection
     - Please use $phpcsFile->eolChar to check for newlines instead of hard-coding "\n" or "\r\n"
@@ -7009,6 +7275,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Errors no longer thrown when checking 0 length files with verbosity on
 
 ### Fixed
+
 - Fixed bug [#11105][pear-11105] : getIncludedSniffs() not working anymore
     - Thanks to [Blair Robertson][pear-adviva] for the patch
 - Fixed bug [#11120][pear-11120] : Uninitialized string offset in `AbstractParser.php` on line 200
@@ -7022,6 +7289,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.6.0 - 2007-05-15
 
 ### Changed
+
 - The number of errors and warnings found is now shown for each file while checking the file if verbosity is enabled
 - Now using PHP_EOL instead of hard-coded \n so output looks good on Windows (feature request [#10761][pear-10761])
     - Thanks to [Carsten Wiedmann][pear-cwiedmann] for the patch.
@@ -7029,6 +7297,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Added new -l command line argument to stop recursion into directories (feature request [#10979][pear-10979])
 
 ### Fixed
+
 - Fixed variable name error causing incorrect error message in Squiz ValidVariableNameSniff
 - Fixed bug [#10757][pear-10757] : Error in ControlSignatureSniff
 - Fixed bugs [#10751][pear-10751], [#10777][pear-10777] : Sniffer class paths handled incorrectly in Windows
@@ -7050,6 +7319,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.5.0 - 2007-04-17
 
 ### Changed
+
 - BC BREAK: Coding standards now require a class to be added so PHP_CodeSniffer can get information from them
     - Please read the end user docs for info about the new class required for all coding standards
 - Coding standards can now include sniffs from other standards, or whole standards, without writing new sniff files
@@ -7061,6 +7331,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Add FunctionCommentThrowTagSniff to Squiz standard to check that @throws tags are correct
 
 ### Fixed
+
 - Fixed problems caused by references and type hints in Squiz FunctionDeclarationArgumentSpacingSniff
 - Fixed problems with errors not being thrown for some misaligned @param comments in Squiz FunctionCommentSniff
 - Fixed badly spaced comma error being thrown for "extends" class in Squiz ClassDeclarationSniff
@@ -7081,6 +7352,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.4.0 - 2007-02-19
 
 ### Changed
+
 - Standard name specified with --standard command line argument is no longer case sensitive
 - Long error and warning messages are now wrapped to 80 characters in the full error report (thanks Endre Czirbesz)
 - Shortened a lot of error and warning messages so they don't take up so much room
@@ -7090,6 +7362,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - PHP_CodeSniffer_File::isReference() now returns correctly when checking refs on right side of =>
 
 ### Fixed
+
 - Fixed incorrect error with switch closing brace in Squiz SwitchDeclarationSniff
 - Fixed missing error when multiple statements are not aligned correctly with object operators
 - Fixed incorrect errors for some PHP special variables in Squiz ValidVariableNameSniff
@@ -7101,6 +7374,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.3.0 - 2007-01-11
 
 ### Changed
+
 - Updated package.xml to version 2
 - Specifying coding standard on command line is now optional, even if you have multiple standards installed
     - PHP_CodeSniffer uses the PEAR coding standard by default if no standard is specified
@@ -7121,6 +7395,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Updated file, class and method comments for all files
 
 ### Fixed
+
 - Fixed bug [#9274][pear-9274] : nested_parenthesis element not set for open and close parenthesis tokens
 - Fixed bug [#9411][pear-9411] : too few pattern characters cause incorrect error report
 
@@ -7129,6 +7404,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.2.1 - 2006-11-09
 
 ### Fixed
+
 - Fixed bug [#9274][pear-9274] : nested_parenthesis element not set for open and close parenthesis tokens
 
 [pear-9274]: https://pear.php.net/bugs/bug.php?id=9274
@@ -7136,6 +7412,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.2.0 - 2006-10-13
 
 ### Changed
+
 - Added a generic standards package that will contain generic sniffs to be used in specific coding standards
     - thanks to Frederic Poeydomenge for the idea
 - Changed PEAR standard to use generic sniffs where available
@@ -7152,6 +7429,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Added new command line arg (-vv) to show developer debug output
 
 ### Fixed
+
 - Fixed some coding standard errors
 - Fixed bug [#8834][pear-8834] : Massive memory consumption
 - Fixed bug [#8836][pear-8836] : path case issues in package.xml
@@ -7168,15 +7446,18 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.1.1 - 2006-09-25
 
 ### Changed
+
 - Added unit tests for all PEAR sniffs
 - Exception class now extends from PEAR_Exception
 
 ### Fixed
+
 - Fixed summary report so files without errors but with warnings are not shown when warnings are hidden
 
 ## 0.1.0 - 2006-09-19
 
 ### Changed
+
 - Reorganised package contents to conform to PEAR standards
 - Changed version numbering to conform to PEAR standards
 - Removed duplicate `require_once()` of `Exception.php` from `CodeSniffer.php`
@@ -7184,11 +7465,13 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.0.5 - 2006-09-18
 
 ### Fixed
+
 - Fixed `.bat` file for situation where `php.ini` cannot be found so `include_path` is not set
 
 ## 0.0.4 - 2006-08-28
 
 ### Changed
+
 - Added .bat file for easier running of PHP_CodeSniffer on Windows
 - Sniff that checks method names now works for PHP4 style code where there is no scope keyword
 - Sniff that checks method names now works for PHP4 style constructors
@@ -7208,6 +7491,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.0.3 - 2006-08-22
 
 ### Changed
+
 - Added sniff to check for invalid class and interface names
 - Added sniff to check for invalid function and method names
 - Added sniff to warn if line is greater than 85 characters
@@ -7215,11 +7499,13 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 - Added command line arg to print current version (--version)
 
 ### Fixed
+
 - Fixed error where comments were not allowed on the same line as a control structure declaration
 
 ## 0.0.2 - 2006-07-25
 
 ### Changed
+
 - Removed the including of checked files to stop errors caused by parsing them
 - Removed the use of reflection so checked files do not have to be included
 - Memory usage has been greatly reduced
@@ -7238,6 +7524,7 @@ Additionally, thanks to [Alexander Turek][@derrabus] for consulting on the repo 
 ## 0.0.1 - 2006-07-19
 
 ### Added
+
 - Initial preview release
 
 <!--

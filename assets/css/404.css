@@ -1,81 +1,81 @@
 .error-404 {
-    padding: 80px 0;
-    text-align: center;
+	padding: 80px 0;
+	text-align: center;
 }
 
 .error-title {
-    margin-bottom: 30px;
-    color: var(--wp--preset--color--primary);
+	margin-bottom: 30px;
+	color: var(--wp--preset--color--primary);
 }
 
 .error-content {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px;
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 0 20px;
 }
 
 .error-search {
-    margin: 40px auto;
-    max-width: 500px;
+	margin: 40px auto;
+	max-width: 500px;
 }
 
 .error-widgets {
-    margin-top: 60px;
-    gap: 40px;
+	margin-top: 60px;
+	gap: 40px;
 }
 
 .widget {
-    flex: 1;
-    min-width: 300px;
-    text-align: left;
+	flex: 1;
+	min-width: 300px;
+	text-align: left;
 }
 
 .widget h2 {
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--wp--preset--color--primary);
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 2px solid var(--wp--preset--color--primary);
 }
 
 .wp-block-latest-posts {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+	list-style: none;
+	padding: 0;
+	margin: 0;
 }
 
 .wp-block-latest-posts li {
-    margin-bottom: 15px;
+	margin-bottom: 15px;
 }
 
 .wp-block-latest-posts__post-date {
-    color: #666;
-    font-size: 0.9em;
+	color: #666;
+	font-size: 0.9em;
 }
 
 .wp-block-categories-list {
-    list-style: none;
-    padding: 0;
+	list-style: none;
+	padding: 0;
 }
 
 .wp-block-categories-list li {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .wp-block-tag-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
 }
 
 @media (max-width: 768px) {
-    .error-404 {
-        padding: 40px 0;
-    }
-    
-    .error-widgets {
-        flex-direction: column;
-    }
-    
-    .widget {
-        width: 100%;
-    }
+	.error-404 {
+	    padding: 40px 0;
+	}
+	
+	.error-widgets {
+	    flex-direction: column;
+	}
+	
+	.widget {
+	    width: 100%;
+	}
 } 

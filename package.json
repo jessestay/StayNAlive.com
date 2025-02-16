@@ -20,8 +20,8 @@
     "url": "https://github.com/jessestay/staynalive/issues"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^26.0.0",
     "@wordpress/eslint-plugin": "^17.0.0",
+    "@wordpress/scripts": "^26.0.0",
     "@wordpress/stylelint-config": "^21.0.0",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.57.0",

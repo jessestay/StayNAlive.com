@@ -233,6 +233,14 @@ if ! composer require --dev dealerdirect/phpcodesniffer-composer-installer:^1.0 
     exit 1
 fi
 
+# After creating all files but before running linters
+# Fix CSS formatting
+if [ -f "fix-css.sh" ]; then
+    echo -e "${BLUE}Fixing CSS formatting...${NC}"
+    chmod +x fix-css.sh
+    ./fix-css.sh
+fi
+
 # Run linting
 echo -e "${BLUE}Running linters...${NC}"
 npm run lint || true
