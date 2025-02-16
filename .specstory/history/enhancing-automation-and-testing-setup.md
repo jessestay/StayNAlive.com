@@ -4364,7 +4364,166 @@ Add more error patterns from your project
 
 _**Assistant**_
 
+I'll help set up automated pattern syncing and add more error patterns based on the errors we've seen:
 
+1. First, let's add more error patterns:
+
+````json:ai-fix-patterns/patterns/php-yoda.json
+{
+    "pattern": "Use Yoda Condition checks, you must",
+    "fix": "sed -i '' 's/if (\\$\\([a-zA-Z_]*\\) [=!]== \\(.*\\))/if (\\2 [=!]== \\$\\1)/' \"$FILE\"",
+    "success_rate": 0.95,
+    "context": {
+        "type": "syntax",
+        "language": "php",
+        "tool": "phpcs"
+    }
+}
+````
+
+````json:ai-fix-patterns/patterns/php-inline-comments.json
+{
+    "pattern": "Inline comments must end in full-stops",
+    "fix": "sed -i '' 's/\\/\\/ \\([A-Za-z].*[^.!?]\\)$/\\/\\/ \\1./' \"$FILE\"",
+    "success_rate": 0.98,
+    "context": {
+        "type": "syntax",
+        "language": "php",
+        "tool": "phpcs"
+    }
+}
+````
+
+````json:ai-fix-patterns/patterns/js-undefined-imports.json
+{
+    "pattern": "'registerBlockVariation' is not defined",
+    "fix": "sed -i '' '1i\\import { registerBlockVariation } from \"@wordpress/blocks\";' \"$FILE\"",
+    "success_rate": 0.9,
+    "context": {
+        "type": "syntax",
+        "language": "javascript",
+        "tool": "eslint"
+    }
+}
+````
+
+2. Add automated pattern syncing in GitHub Actions:
+
+````yaml:ai-fix-patterns/.github/workflows/sync.yml
+name: Sync Patterns
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    name: Sync Pattern Database
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Validate patterns
+        run: npm run validate
+      
+      - name: Sync patterns
+        env:
+          PATTERN_REPO_TOKEN: ${{ secrets.PATTERN_REPO_TOKEN }}
+        run: |
+          # Fetch latest patterns
+          git config --global user.email "ai-fix-bot@users.noreply.github.com"
+          git config --global user.name "AI Fix Bot"
+          
+          # Pull latest changes
+          git pull origin main
+          
+          # Update pattern database
+          node scripts/update-patterns.js
+          
+          # Commit and push if there are changes
+          if [[ -n $(git status --porcelain) ]]; then
+            git add patterns/
+            git commit -m "Auto-sync patterns [skip ci]"
+            git push
+          fi
+````
+
+3. Add a pattern update script:
+
+````javascript:ai-fix-patterns/scripts/update-patterns.js
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+
+// Load all patterns
+const patternsDir = path.join(__dirname, '../patterns');
+const patterns = {};
+
+// Read existing patterns
+fs.readdirSync(patternsDir)
+    .filter(file => file.endsWith('.json'))
+    .forEach(file => {
+        const pattern = JSON.parse(fs.readFileSync(path.join(patternsDir, file)));
+        const hash = crypto.createHash('sha256').update(pattern.pattern).digest('hex');
+        patterns[hash] = pattern;
+    });
+
+// Update success rates based on history
+Object.values(patterns).forEach(pattern => {
+    if (pattern.history && pattern.history.length > 0) {
+        const recent = pattern.history.slice(-100); // Last 100 uses
+        pattern.success_rate = recent.filter(h => h.success).length / recent.length;
+    }
+});
+
+// Write updated patterns
+Object.entries(patterns).forEach(([hash, pattern]) => {
+    fs.writeFileSync(
+        path.join(patternsDir, `${hash}.json`),
+        JSON.stringify(pattern, null, 2)
+    );
+});
+````
+
+4. Update package.json for the pattern repository:
+
+````json:ai-fix-patterns/package.json
+{
+    "name": "ai-fix-patterns",
+    "version": "1.0.0",
+    "scripts": {
+        "validate": "ajv validate -s schemas/pattern.schema.json -d \"patterns/*.json\"",
+        "update": "node scripts/update-patterns.js"
+    },
+    "devDependencies": {
+        "ajv": "^8.12.0",
+        "ajv-cli": "^5.0.0"
+    }
+}
+````
+
+Would you like me to:
+1. Add more error patterns
+2. Add pattern testing
+3. Add pattern analytics
+4. Set up automated pattern generation from error logs
+
+---
+
+_**User**_
+
+1, 2, 3, and 4
 
 ---
 
