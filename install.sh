@@ -205,7 +205,12 @@ trap 'echo -e "${RED}Installation failed${NC}"; cleanup; exit 1' ERR INT TERM
 
 # Install dependencies
 echo -e "${BLUE}Installing Node dependencies...${NC}"
-if ! npm install --legacy-peer-deps; then
+# Remove package-lock.json and node_modules to ensure clean install
+rm -f package-lock.json
+rm -rf node_modules
+
+# Install with legacy peer deps to handle WordPress package conflicts
+if ! npm install --legacy-peer-deps --no-audit; then
     echo -e "${RED}Failed to install Node dependencies.${NC}"
     echo -e "Try running: npm install --legacy-peer-deps --verbose"
     exit 1
@@ -318,11 +323,102 @@ echo -e "2. Or copy the contents of ${BLUE}dist/staynalive${NC} to your wp-conte
 ERRORS=()
 WARNINGS=()
 
-# Function to log errors
-log_error() {
-    ERRORS+=("$1")
-    echo -e "${RED}Error: $1${NC}"
+# AI error fixing function
+fix_with_ai() {
+    local error_msg="$1"
+    local file="$2"
+    
+    echo -e "${BLUE}AI attempting to fix error in ${file}:${NC}"
+    echo -e "${RED}${error_msg}${NC}"
+    
+    # Create context from current environment
+    local context=""
+    if [ -f "$file" ]; then
+        context+="File contents of ${file}:\n"
+        context+=$(cat "$file")
+        context+="\n\nError message:\n${error_msg}"
+    fi
+    
+    # Ask for permission to proceed with AI fix
+    echo -e "${YELLOW}AI would like to attempt fixing this error. Proceed? (y/n)${NC}"
+    read -r proceed
+    
+    if [[ "$proceed" =~ ^[Yy]$ ]]; then
+        if [ -f "$file" ]; then
+            # Create backup
+            cp "$file" "${file}.backup"
+            
+            # Apply AI fix (using local context only)
+            if [ -f "fix-all.sh" ]; then
+                ./fix-all.sh "$file"
+            else
+                # Basic fixes based on error patterns
+                case "$error_msg" in
+                    *"syntax error"*)
+                        # Fix PHP syntax
+                        sed -i '' 's/[^;]$/&;/' "$file"
+                        ;;
+                    *"undefined variable"*)
+                        # Add variable declaration
+                        sed -i '' "1i\\$undefined_var = '';" "$file"
+                        ;;
+                    *"missing semicolon"*)
+                        # Add missing semicolons
+                        sed -i '' 's/\([^;]\)$/\1;/' "$file"
+                        ;;
+                    *)
+                        echo -e "${RED}Unable to automatically fix this error${NC}"
+                        mv "${file}.backup" "$file"
+                        return 1
+                        ;;
+                esac
+            fi
+            
+            # Verify fix worked
+            if php -l "$file" > /dev/null 2>&1; then
+                echo -e "${GREEN}Fix applied successfully!${NC}"
+                rm "${file}.backup"
+                return 0
+            else
+                echo -e "${RED}Fix failed, restoring backup${NC}"
+                mv "${file}.backup" "$file"
+                return 1
+            fi
+        fi
+    else
+        echo -e "${YELLOW}Skipping AI fix${NC}"
+        return 1
+    fi
 }
+
+# Modify error logging to attempt AI fixes
+log_error() {
+    local error_msg="$1"
+    local file="$2"
+    
+    ERRORS+=("$error_msg")
+    echo -e "${RED}Error: $error_msg${NC}"
+    
+    if [ -n "$file" ]; then
+        fix_with_ai "$error_msg" "$file"
+    fi
+}
+
+# Update error handling in commands
+if ! npm install 2> npm-error.log; then
+    log_error "Failed to install npm dependencies" "package.json"
+fi
+
+if ! composer install 2> composer-error.log; then
+    log_error "Failed to install composer dependencies" "composer.json"
+fi
+
+# Add error handling for PHP files
+for php_file in $(find . -name "*.php"); do
+    if ! php -l "$php_file" > /dev/null 2>&1; then
+        log_error "PHP syntax error in $php_file" "$php_file"
+    fi
+done
 
 # Function to log warnings
 log_warning() {
@@ -360,11 +456,4 @@ display_summary() {
     fi
 }
 
-# Add error handling to commands
-if ! npm install; then
-    log_error "Failed to install npm dependencies"
-fi
-
-if ! composer install; then
-    log_error "Failed to install composer dependencies"
-fi 
+display_summary 

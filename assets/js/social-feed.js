@@ -71,17 +71,21 @@ class SocialFeed {
 
     /**
      * Format feed data for display
-     * 
+     *
      * @param {Object} data Feed data to format
      * @return {string} Formatted HTML
      */
     formatFeedData(data) {
-        return data.map(item => `
+        return data
+            .map(
+                item => `
             <div class="social-feed-item">
                 <h3>${item.title}</h3>
                 <p>${item.content}</p>
             </div>
-        `).join('');
+        `
+            )
+            .join('');
     }
 }
 

@@ -2,7 +2,7 @@
 /**
  * Security enhancements for the theme
  *
- * @package StayNAlive
+ * @package staynalive
  */
 namespace StayNAlive;
 
@@ -32,7 +32,7 @@ add_action(
 add_filter(
 	'wp_handle_upload_prefilter',
 	function ( $file ) {
-		if ( $file['type'] === 'image/svg+xml' ) {
+		if ( 'image/svg+xml' === $file['type'] ) {
 			if ( ! sanitize_svg( $file['tmp_name'] ) ) {
 				$file['error'] = 'Invalid SVG file';
 			}
