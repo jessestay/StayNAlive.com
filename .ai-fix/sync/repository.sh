@@ -6,7 +6,8 @@ PATTERN_REPO_URL="https://api.github.com/repos/jessestay/ai-fix-patterns"
 sync_patterns() {
     # Check if we have access token
     if [ -z "$PATTERN_REPO_TOKEN" ]; then
-        echo -e "${YELLOW}No access token found for pattern repository${NC}"
+        echo -e "${YELLOW}No access token found. Please set PATTERN_REPO_TOKEN${NC}"
+        echo "Visit https://github.com/settings/tokens to generate a token"
         return 1
     }
     
