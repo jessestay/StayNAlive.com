@@ -333,10 +333,24 @@ log_warning() {
 # Function to display summary
 display_summary() {
     echo -e "\n${BLUE}Build Summary:${NC}"
+    # Performance metrics
+    echo -e "\n${BLUE}Performance Metrics:${NC}"
+    echo -e "Build time: $((SECONDS))s"
+    echo -e "Memory usage: $(ps -o rss= -p $$)KB"
+    
+    # Test results
+    echo -e "\n${BLUE}Test Results:${NC}"
+    if [ -f "test-results.json" ]; then
+        echo -e "Unit Tests: $(jq '.numPassedTests' test-results.json) passed"
+        echo -e "E2E Tests: $(jq '.numPassedE2E' test-results.json) passed"
+    fi
+    
+    # Error summary
     if [ ${#ERRORS[@]} -eq 0 ]; then
         echo -e "${GREEN}No errors found!${NC}"
     else
         echo -e "${RED}Found ${#ERRORS[@]} errors:${NC}"
+        echo -e "\nError Details:"
         printf '%s\n' "${ERRORS[@]}"
     fi
     

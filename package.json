@@ -62,8 +62,11 @@
     "format:php": "composer run-script format",
     "start": "wp-scripts start",
     "test": "npm-run-all --parallel test:*",
-    "test:php": "./vendor/bin/phpunit",
-    "test:js": "jest",
-    "test:e2e": "playwright test"
+    "test:php": "./vendor/bin/phpunit --testdox --coverage-html coverage",
+    "test:js": "jest --coverage",
+    "test:e2e": "playwright test",
+    "test:performance": "playwright test tests/performance/",
+    "test:report": "node scripts/generate-test-report.js",
+    "test:ci": "npm-run-all test:* test:report"
   }
 }
