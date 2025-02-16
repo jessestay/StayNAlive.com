@@ -696,9 +696,9 @@ Run install.sh again after these changes.
 
 ---
 
-_****_
+_**User**_
 
-
+What does this mean? And can the script's AI detect this next time and automatically fix errors like this?
 
 ---
 

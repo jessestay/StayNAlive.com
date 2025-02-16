@@ -283,9 +283,14 @@ mkdir -p build/css
 
 # Build assets
 echo -e "${BLUE}Building assets...${NC}"
-if ! npm run build; then
-    echo -e "${RED}Failed to build assets.${NC}"
-    exit 1
+if ! npm run build 2> build-error.log; then
+    error_msg=$(cat build-error.log)
+    fix_with_ai "$error_msg" "package.json"
+    # Try build again after potential fix
+    if ! npm run build; then
+        echo -e "${RED}Failed to build assets.${NC}"
+        exit 1
+    fi
 fi
 
 # Create production build
@@ -331,63 +336,109 @@ fix_with_ai() {
     echo -e "${BLUE}AI attempting to fix error in ${file}:${NC}"
     echo -e "${RED}${error_msg}${NC}"
     
-    # Create context from current environment
-    local context=""
-    if [ -f "$file" ]; then
-        context+="File contents of ${file}:\n"
-        context+=$(cat "$file")
-        context+="\n\nError message:\n${error_msg}"
-    fi
-    
-    # Ask for permission to proceed with AI fix
-    echo -e "${YELLOW}AI would like to attempt fixing this error. Proceed? (y/n)${NC}"
-    read -r proceed
-    
-    if [[ "$proceed" =~ ^[Yy]$ ]]; then
-        if [ -f "$file" ]; then
-            # Create backup
-            cp "$file" "${file}.backup"
+    # Detect and fix dependency issues
+    if [[ $error_msg == *"Cannot find module"* ]]; then
+        local missing_module=$(echo "$error_msg" | grep -o "'.*'" | head -1 | tr -d "'")
+        echo -e "${YELLOW}Detected missing module: ${missing_module}${NC}"
+        
+        # Ask for permission to fix
+        echo -e "${YELLOW}Would you like me to fix this dependency issue? (y/n)${NC}"
+        read -r proceed
+        
+        if [[ "$proceed" =~ ^[Yy]$ ]]; then
+            # Clean install approach
+            echo "Attempting to fix dependencies..."
+            rm -rf node_modules package-lock.json
             
-            # Apply AI fix (using local context only)
-            if [ -f "fix-all.sh" ]; then
-                ./fix-all.sh "$file"
-            else
-                # Basic fixes based on error patterns
-                case "$error_msg" in
-                    *"syntax error"*)
-                        # Fix PHP syntax
-                        sed -i '' 's/[^;]$/&;/' "$file"
-                        ;;
-                    *"undefined variable"*)
-                        # Add variable declaration
-                        sed -i '' "1i\\$undefined_var = '';" "$file"
-                        ;;
-                    *"missing semicolon"*)
-                        # Add missing semicolons
-                        sed -i '' 's/\([^;]\)$/\1;/' "$file"
-                        ;;
-                    *)
-                        echo -e "${RED}Unable to automatically fix this error${NC}"
-                        mv "${file}.backup" "$file"
-                        return 1
-                        ;;
-                esac
+            # Install ajv explicitly if it's the issue
+            if [[ $missing_module == *"ajv"* ]]; then
+                npm install --save-dev ajv@latest ajv-keywords@latest
             fi
             
-            # Verify fix worked
-            if php -l "$file" > /dev/null 2>&1; then
-                echo -e "${GREEN}Fix applied successfully!${NC}"
-                rm "${file}.backup"
+            # Reinstall dependencies
+            npm install --legacy-peer-deps --no-audit
+            
+            # Verify fix
+            if npm run build:js > /dev/null 2>&1; then
+                echo -e "${GREEN}Successfully fixed dependency issue!${NC}"
                 return 0
             else
-                echo -e "${RED}Fix failed, restoring backup${NC}"
-                mv "${file}.backup" "$file"
+                echo -e "${RED}Fix attempt failed. Rolling back...${NC}"
+                git checkout package.json package-lock.json
+                npm install --legacy-peer-deps --no-audit
                 return 1
             fi
         fi
-    else
-        echo -e "${YELLOW}Skipping AI fix${NC}"
-        return 1
+    fi
+    
+    # Handle stylelint config issues
+    if [[ $error_msg == *"Could not find \"stylelint-config-standard\""* ]]; then
+        echo -e "${YELLOW}Detected missing stylelint config. Would you like me to fix it? (y/n)${NC}"
+        read -r proceed
+        
+        if [[ "$proceed" =~ ^[Yy]$ ]]; then
+            npm install --save-dev stylelint-config-standard
+            
+            # Update .stylelintrc.json
+            cat > .stylelintrc.json << 'EOL'
+{
+    "extends": [
+        "stylelint-config-standard",
+        "@wordpress/stylelint-config"
+    ],
+    "rules": {
+        "no-descending-specificity": null,
+        "selector-class-pattern": null
+    }
+}
+EOL
+            return 0
+        fi
+    fi
+
+    ERRORS+=("$error_msg")
+    echo -e "${RED}Error: $error_msg${NC}"
+    
+    if [ -n "$file" ]; then
+        # Create backup
+        cp "$file" "${file}.backup"
+        
+        # Apply AI fix (using local context only)
+        if [ -f "fix-all.sh" ]; then
+            ./fix-all.sh "$file"
+        else
+            # Basic fixes based on error patterns
+            case "$error_msg" in
+                *"syntax error"*)
+                    # Fix PHP syntax
+                    sed -i '' 's/[^;]$/&;/' "$file"
+                    ;;
+                *"undefined variable"*)
+                    # Add variable declaration
+                    sed -i '' "1i\\$undefined_var = '';" "$file"
+                    ;;
+                *"missing semicolon"*)
+                    # Add missing semicolons
+                    sed -i '' 's/\([^;]\)$/\1;/' "$file"
+                    ;;
+                *)
+                    echo -e "${RED}Unable to automatically fix this error${NC}"
+                    mv "${file}.backup" "$file"
+                    return 1
+                    ;;
+            esac
+        fi
+        
+        # Verify fix worked
+        if php -l "$file" > /dev/null 2>&1; then
+            echo -e "${GREEN}Fix applied successfully!${NC}"
+            rm "${file}.backup"
+            return 0
+        else
+            echo -e "${RED}Fix failed, restoring backup${NC}"
+            mv "${file}.backup" "$file"
+            return 1
+        fi
     fi
 }
 
