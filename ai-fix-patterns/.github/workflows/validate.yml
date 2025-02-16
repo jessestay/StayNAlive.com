@@ -1,10 +1,11 @@
-name: Validate Patterns
+name: Pattern Validation
 
 on: [push, pull_request]
 
 jobs:
-  validate:
+  pattern-validation:
     runs-on: ubuntu-latest
+    name: Validate Pattern Files
     steps:
       - uses: actions/checkout@v2
       
@@ -17,7 +18,10 @@ jobs:
         run: npm install -g ajv-cli
         
       - name: Validate Patterns
+        id: validate-patterns
         run: |
+          echo "Validating pattern files against schema..."
           for pattern in patterns/*.json; do
+            echo "Checking $pattern"
             ajv validate -s schemas/pattern.schema.json -d "$pattern"
           done 
