@@ -293,4 +293,36 @@ verify_recovery() {
             return 1
             ;;
     esac
+}
+
+# Syntax error recovery
+recover_from_syntax_error() {
+    local error_msg="$1"
+    local file="$2"
+    
+    # Fix PHP comment spacing
+    if [[ $error_msg == *"FileComment.SpacingAfterComment"* ]]; then
+        sed -i '' '/^\/\*\*/,/\*\//{ /\*\//{ x; p; }; H; d; }; x; p' "$file"
+        return 0
+    fi
+
+    # Fix PHP inline comment endings
+    if [[ $error_msg == *"InlineComment.InvalidEndChar"* ]]; then
+        sed -i '' 's/\/\/ \([A-Za-z].*[^.]\)$/\/\/ \1./' "$file"
+        return 0
+    fi
+
+    # Fix Yoda conditions
+    if [[ $error_msg == *"YodaConditions.NotYoda"* ]]; then
+        sed -i '' 's/if (\$\([a-zA-Z_]*\) [=!]== \(.*\))/if (\2 [=!]== \$\1)/' "$file"
+        return 0
+    fi
+
+    # Fix whitespace at end of line
+    if [[ $error_msg == *"SuperfluousWhitespace.EndLine"* ]]; then
+        sed -i '' 's/[[:space:]]*$//' "$file"
+        return 0
+    fi
+
+    # Rest of existing code...
 } 
