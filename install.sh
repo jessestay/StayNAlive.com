@@ -4,6 +4,7 @@
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
+YELLOW='\033[1;33m'
 NC='\033[0m'
 
 echo -e "${BLUE}Installing Stay N Alive Theme...${NC}"
@@ -311,4 +312,45 @@ echo -e "${GREEN}Installation complete!${NC}"
 echo -e "Theme zip created at: ${BLUE}dist/staynalive.zip${NC}"
 echo -e "You can now install this theme in WordPress through:"
 echo -e "1. WordPress Admin > Appearance > Themes > Add New > Upload Theme"
-echo -e "2. Or copy the contents of ${BLUE}dist/staynalive${NC} to your wp-content/themes directory" 
+echo -e "2. Or copy the contents of ${BLUE}dist/staynalive${NC} to your wp-content/themes directory"
+
+# Error tracking
+ERRORS=()
+WARNINGS=()
+
+# Function to log errors
+log_error() {
+    ERRORS+=("$1")
+    echo -e "${RED}Error: $1${NC}"
+}
+
+# Function to log warnings
+log_warning() {
+    WARNINGS+=("$1")
+    echo -e "${YELLOW}Warning: $1${NC}"
+}
+
+# Function to display summary
+display_summary() {
+    echo -e "\n${BLUE}Build Summary:${NC}"
+    if [ ${#ERRORS[@]} -eq 0 ]; then
+        echo -e "${GREEN}No errors found!${NC}"
+    else
+        echo -e "${RED}Found ${#ERRORS[@]} errors:${NC}"
+        printf '%s\n' "${ERRORS[@]}"
+    fi
+    
+    if [ ${#WARNINGS[@]} -gt 0 ]; then
+        echo -e "${YELLOW}Found ${#WARNINGS[@]} warnings:${NC}"
+        printf '%s\n' "${WARNINGS[@]}"
+    fi
+}
+
+# Add error handling to commands
+if ! npm install; then
+    log_error "Failed to install npm dependencies"
+fi
+
+if ! composer install; then
+    log_error "Failed to install composer dependencies"
+fi 
