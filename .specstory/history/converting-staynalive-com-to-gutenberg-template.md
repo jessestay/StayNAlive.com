@@ -101,6 +101,7 @@ To complete the conversion:
 Would you like me to help with any specific template or styling conversion from your current theme?
 
 Alternative approach: You could also use a hybrid approach by:
+
 1. Keeping your current theme
 2. Adding Gutenberg block support via `add_theme_support('editor-styles')`
 3. Gradually converting templates to blocks
@@ -120,6 +121,7 @@ _**Assistant**_
 Yes, that would be much easier! To effectively convert your current theme, I'll need:
 
 1. Main template files:
+
 - header.php
 - footer.php
 - index.php
@@ -127,15 +129,18 @@ Yes, that would be much easier! To effectively convert your current theme, I'll 
 - page.php (if different from single.php)
 
 2. Style files:
+
 - style.css
 - Any additional CSS files
 
 3. Functions file:
+
 - functions.php
 
 4. Any custom template files you're using
 
 With these files, I can:
+
 1. Match your existing design exactly
 2. Convert PHP templates to block-based templates
 3. Preserve your current styling and functionality
@@ -157,25 +162,25 @@ Here's header.php:
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-   
-	<meta charset="UTF-8"/>
+
+ <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<link rel="pingback" href="/xmlrpc.php"/>
+ <link rel="pingback" href="/xmlrpc.php"/>
 
-	<script type="text/javascript">
-		document.documentElement.className = 'js';
-	</script>
+ <script type="text/javascript">
+  document.documentElement.className = 'js';
+ </script>
 
-	<script>var et_site_url='';var et_post_id='36';function et_core_page_resource_fallback(a,b){"undefined"===typeof b&&(b=a.sheet.cssRules&&0===a.sheet.cssRules.length);b&&(a.onerror=null,a.onload=null,a.href?a.href=et_site_url+"/?et_core_page_resource="+a.id+et_post_id:a.src&&(a.src=et_site_url+"/?et_core_page_resource="+a.id+et_post_id))}
+ <script>var et_site_url='';var et_post_id='36';function et_core_page_resource_fallback(a,b){"undefined"===typeof b&&(b=a.sheet.cssRules&&0===a.sheet.cssRules.length);b&&(a.onerror=null,a.onload=null,a.href?a.href=et_site_url+"/?et_core_page_resource="+a.id+et_post_id:a.src&&(a.src=et_site_url+"/?et_core_page_resource="+a.id+et_post_id))}
 </script>
-	<?php
+ <?php
 if ( ! function_exists( '_wp_render_title_tag' ) ) {
-	function theme_slug_render_title() {
+ function theme_slug_render_title() {
 ?>
 <title><?php wp_title( '|', true, 'right' ); ?></title>
 <?php
-	}
-	add_action( 'wp_head', 'theme_slug_render_title' );
+ }
+ add_action( 'wp_head', 'theme_slug_render_title' );
 }
 ?>
 
@@ -184,28 +189,28 @@ if ( ! function_exists( '_wp_render_title_tag' ) ) {
 <link rel="dns-prefetch" href="https://s.w.org/"/>
 <link rel="alternate" type="application/rss+xml" title="Stay N Alive » Feed" href="/feed"/>
 <link rel="alternate" type="application/rss+xml" title="Stay N Alive » Comments Feed" href="/comments/feed"/>
-		<script type="text/javascript">
-			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/staynalive.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.3.2"}};
-			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
-		</script>
-		<meta content="Divi v.4.0.9" name="generator"/><style type="text/css">
+  <script type="text/javascript">
+   window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/staynalive.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.3.2"}};
+   !function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName["head"](0).appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+  </script>
+  <meta content="Divi v.4.0.9" name="generator"/><style type="text/css">
 img.wp-smiley,
 img.emoji {
-	display: inline !important;
-	border: none !important;
-	box-shadow: none !important;
-	height: 1em !important;
-	width: 1em !important;
-	margin: 0 .07em !important;
-	vertical-align: -0.1em !important;
-	background: none !important;
-	padding: 0 !important;
+ display: inline !important;
+ border: none !important;
+ box-shadow: none !important;
+ height: 1em !important;
+ width: 1em !important;
+ margin: 0 .07em !important;
+ vertical-align: -0.1em !important;
+ background: none !important;
+ padding: 0 !important;
 }
 </style>
-	<link rel="stylesheet" id="bxslider-css-css" href="/wp-content/plugins/kiwi-logo-carousel/third-party/jquery.bxslider/jquery.bxslider.css?ver=5.3.2" type="text/css" media=""/>
+ <link rel="stylesheet" id="bxslider-css-css" href="/wp-content/plugins/kiwi-logo-carousel/third-party/jquery.bxslider/jquery.bxslider.css?ver=5.3.2" type="text/css" media=""/>
 <link rel="stylesheet" id="kiwi-logo-carousel-styles-css" href="/wp-content/plugins/kiwi-logo-carousel/custom-styles.css?ver=5.3.2" type="text/css" media=""/>
 <link rel="stylesheet" id="wp-block-library-css" href="/wp-includes/css/dist/block-library/style.min.css?ver=5.3.2" type="text/css" media="all"/>
-	<style id="disable_divi_footer_css-css" media="">.current_year{display:inline}a.docs{color:red!important;font-size:25px}.sc_time{display:inline-block;padding-right:7px}.page-template-page-template-blank.page-template-page-template-blank-php #footer-editor-info{display:none!important}#footer-info{width:92%;float:none!important}</style>
+ <style id="disable_divi_footer_css-css" media="">.current_year{display:inline}a.docs{color:red!important;font-size:25px}.sc_time{display:inline-block;padding-right:7px}.page-template-page-template-blank.page-template-page-template-blank-php #footer-editor-info{display:none!important}#footer-info{width:92%;float:none!important}</style>
 <style id="custom-404-pro-css" media="all"></style>
 <link rel="stylesheet" id="et-shortcodes-css-css" href="https://web.archive.org/web/20171107040601cs_/http://staynalive.com/wp-content/themes/Divi/epanel/shortcodes/css/A.shortcodes.css,qver=3.0.34.pagespeed.cf.12c2MaOlNW.css" type="text/css" media="all"/>
 <link rel="stylesheet" id="et-shortcodes-responsive-css-css" href="https://web.archive.org/web/20171107040601cs_/http://staynalive.com/wp-content/themes/Divi/epanel/shortcodes/css/A.shortcodes_responsive.css,qver=3.0.34.pagespeed.cf.gfG_ljpb3h.css" type="text/css" media="all"/>
@@ -264,17 +269,17 @@ var et_core_api_spam_recaptcha = {"site_key":"","page_action":{"action":"staynal
 <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#product=ga"></script>
 <link rel="https://api.w.org/" href="/wp-json/"/>
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="/xmlrpc.php?rsd"/>
-<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="/wp-includes/wlwmanifest.xml"/> 
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="/wp-includes/wlwmanifest.xml"/>
 <meta name="generator" content="WordPress 5.3.2"/>
 <meta name="generator" content="WooCommerce 3.8.1"/>
 <link rel="shortlink" href="/"/>
 <link rel="alternate" type="application/json+oembed" href="/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fstaynalive.com%2F"/>
 <link rel="alternate" type="text/xml+oembed" href="/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fstaynalive.com%2F&amp;format=xml"/>
-			<meta property="fb:pages" content="125701787449506"/>
-			<style type="text/css" id="et-social-custom-css">
-				
-			</style><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>	<noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
-	
+   <meta property="fb:pages" content="125701787449506"/>
+   <style type="text/css" id="et-social-custom-css">
+
+   </style><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/> <noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
+
                 <!-- remarketable Code - Main -->
                 <script>
                 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -299,58 +304,54 @@ var et_core_api_spam_recaptcha = {"site_key":"","page_action":{"action":"staynal
 </head>
 <body class="home page-template-default page page-id-36 theme-Divi woocommerce-no-js et_monarch et_color_scheme_red et_button_custom_icon et_pb_button_helper_class et_fullwidth_nav et_fixed_nav et_show_nav et_primary_nav_dropdown_animation_fade et_secondary_nav_dropdown_animation_fade et_header_style_left et_pb_svg_logo et_pb_footer_columns3 et_cover_background et_pb_gutter windows et_pb_gutters3 et_pb_pagebuilder_layout et_no_sidebar et_divi_theme et-db et_minified_js et_minified_css">
   
- 
-	<div id="page-container">
+ <div id="page-container">
 
-	
-	
-			<header id="main-header" data-height-onload="60">
-			<div class="container clearfix et_menu_container">
-							<div class="logo_container">
-					<span class="logo_helper"></span>
-					<a href="/">
-						<img src="/wp-content/uploads/SNA-logo-final-black.svg" alt="Stay N Alive" id="logo" data-height-percentage="36"/>
-					</a>
-				</div>
-							<div id="et-top-navigation" data-height="60" data-fixed-height="60">
-											<nav id="top-menu-nav">
-						<ul id="top-menu" class="nav"><li id="menu-item-116" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-116"><a href="/services">Services</a></li>
+   <header id="main-header" data-height-onload="60">
+   <div class="container clearfix et_menu_container">
+       <div class="logo_container">
+     <span class="logo_helper"></span>
+     <a href="/">
+      <img src="/wp-content/uploads/SNA-logo-final-black.svg" alt="Stay N Alive" id="logo" data-height-percentage="36"/>
+     </a>
+    </div>
+       <div id="et-top-navigation" data-height="60" data-fixed-height="60">
+           <nav id="top-menu-nav">
+      <ul id="top-menu" class="nav"><li id="menu-item-116" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-116"><a href="/services">Services</a></li>
 <li id="menu-item-121" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-121"><a href="/clients">Clients</a></li>
 <li id="menu-item-115" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-115"><a href="/blog">The Blog</a></li>
 <li id="menu-item-118" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-118"><a href="/about">About SNA</a>
 <ul class="sub-menu">
-	<li id="menu-item-119" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-119"><a href="/jessestay">About Jesse</a></li>
-	<li id="menu-item-120" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-120"><a href="/jessestay/books">Jesse’s Books</a></li>
+ <li id="menu-item-119" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-119"><a href="/jessestay">About Jesse</a></li>
+ <li id="menu-item-120" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-120"><a href="/jessestay/books">Jesse’s Books</a></li>
 </ul>
 </li>
 <li id="menu-item-117" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-117"><a href="/contact">Contact</a></li>
-</ul>						</nav>
-					
-					<a href="/cart" class="et-cart-info">
-				<span></span>
-			</a>
-					
-										<div id="et_top_search">
-						<span id="et_search_icon"></span>
-					</div>
-					
-					<div id="et_mobile_nav_menu">
-				<div class="mobile_nav closed">
-					<span class="select_page">Select Page</span>
-					<span class="mobile_menu_bar mobile_menu_bar_toggle"></span>
-				</div>
-			</div>				</div> <!-- #et-top-navigation -->
-			</div> <!-- .container -->
-			<div class="et_search_outer">
-				<div class="container et_search_form_container">
-					<form role="search" method="get" class="et-search-form" action="/">
-					<input type="search" class="et-search-field" placeholder="Search …" value="" name="s" title="Search for:"/>					</form>
-					<span class="et_close_search_field"></span>
-				</div>
-			</div>
-		</header> <!-- #main-header -->
-			<div id="et-main-area">
-	
+</ul>      </nav>
+
+     <a href="/cart" class="et-cart-info">
+    <span></span>
+   </a>
+
+          <div id="et_top_search">
+      <span id="et_search_icon"></span>
+     </div>
+     
+     <div id="et_mobile_nav_menu">
+    <div class="mobile_nav closed">
+     <span class="select_page">Select Page</span>
+     <span class="mobile_menu_bar mobile_menu_bar_toggle"></span>
+    </div>
+   </div>    </div> <!-- #et-top-navigation -->
+   </div> <!-- .container -->
+   <div class="et_search_outer">
+    <div class="container et_search_form_container">
+     <form role="search" method="get" class="et-search-form" action="/">
+     <input type="search" class="et-search-field" placeholder="Search …" value="" name="s" title="Search for:"/>     </form>
+     <span class="et_close_search_field"></span>
+    </div>
+   </div>
+  </header> <!-- #main-header -->
+   <div id="et-main-area">
 
 ---
 
@@ -444,6 +445,7 @@ Let's also create a new stylesheet to maintain the existing design:
 To complete the conversion:
 
 1. Add this to theme.json:
+
 ```json:theme.json
 {
     // ... existing settings ...
@@ -465,6 +467,7 @@ To complete the conversion:
 ```
 
 2. Register the header styles in functions.php:
+
 ```php:functions.php
 add_action('wp_enqueue_scripts', function() {
     wp_enqueue_style('sna-header-styles', get_template_directory_uri() . '/assets/css/header.css');
@@ -472,6 +475,7 @@ add_action('wp_enqueue_scripts', function() {
 ```
 
 This conversion:
+
 - Uses native block navigation
 - Maintains existing design and functionality
 - Adds WooCommerce mini-cart block
@@ -488,17 +492,16 @@ Here's footer.php:
 
 <span class="et_pb_scroll_top et-pb-icon"></span>
 
+   <footer id="main-footer">
 
-			<footer id="main-footer">
-				
 <div class="container">
     <div id="footer-widgets" class="clearfix">
-		<div class="footer-widget"><div id="text-3" class="fwidget et_pb_widget widget_text">			<div class="textwidget"><p><img src="/wp-content/uploads/SNA-logo-final-white.png"/></p>
+  <div class="footer-widget"><div id="text-3" class="fwidget et_pb_widget widget_text">   <div class="textwidget"><p><img src="/wp-content/uploads/SNA-logo-final-white.png"/></p>
 <p>E. – info@staynalive.com</p>
 <p>P. – 801-853-8339</p>
 <p>L. – Salt Lake City, UT, USA</p>
 </div>
-		</div> <!-- end .fwidget --></div> <!-- end .footer-widget --><div class="footer-widget"><div id="googlemapswidget-2" class="fwidget et_pb_widget google-maps-widget"><p><a data-gmw-id="googlemapswidget-2" class="gmw-thumbnail-map gmw-lightbox-enabled" href="#gmw-dialog-googlemapswidget-2" title="Click to open a larger map"><img width="450" height="300" alt="Click to open a larger map" title="Click to open a larger map" src="https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyB5UXGleTjfdmWGLizMER67FQcX_nyDzQ4&amp;scale=1&amp;format=png&amp;zoom=10&amp;size=450x300&amp;language=en&amp;maptype=roadmap&amp;markers=size%3Amid%7Ccolor%3A0xff0000%7Clabel%3AA%7CSalt+Lake+City%2C+UT&amp;center=Salt+Lake+City%2C+UT&amp;visual_refresh=false&amp;style=feature:water|element:geometry|color:0xe9e9e9|lightness:17|&amp;style=feature:landscape|element:geometry|color:0xf5f5f5|lightness:20|&amp;style=feature:road.highway|element:geometry.fill|color:0xffffff|lightness:17|&amp;style=feature:road.highway|element:geometry.stroke|color:0xffffff|lightness:29|weight:0.2|&amp;style=feature:road.arterial|element:geometry|color:0xffffff|lightness:18|&amp;style=feature:road.local|element:geometry|color:0xffffff|lightness:16|&amp;style=feature:poi|element:geometry|color:0xf5f5f5|lightness:21|&amp;style=feature:poi.park|element:geometry|color:0xdedede|lightness:21|&amp;style=feature:all|element:labels.text.stroke|visibility:on|color:0xffffff|lightness:16|&amp;style=feature:all|element:labels.text.fill|saturation:36|color:0x333333|lightness:40|&amp;style=feature:all|element:labels.icon|visibility:off|&amp;style=feature:transit|element:geometry|color:0xf2f2f2|lightness:19|&amp;style=feature:administrative|element:geometry.fill|color:0xfefefe|lightness:20|&amp;style=feature:administrative|element:geometry.stroke|color:0xfefefe|lightness:17|weight:1.2|"></a></p></div> <!-- end .fwidget --></div> <!-- end .footer-widget --><div class="footer-widget">		<div id="recent-posts-3" class="fwidget et_pb_widget widget_recent_entries">		<h4 class="title">The Blog</h4>		<ul>
+  </div> <!-- end .fwidget --></div> <!-- end .footer-widget --><div class="footer-widget"><div id="googlemapswidget-2" class="fwidget et_pb_widget google-maps-widget"><p><a data-gmw-id="googlemapswidget-2" class="gmw-thumbnail-map gmw-lightbox-enabled" href="#gmw-dialog-googlemapswidget-2" title="Click to open a larger map"><img width="450" height="300" alt="Click to open a larger map" title="Click to open a larger map" src="https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyB5UXGleTjfdmWGLizMER67FQcX_nyDzQ4&amp;scale=1&amp;format=png&amp;zoom=10&amp;size=450x300&amp;language=en&amp;maptype=roadmap&amp;markers=size%3Amid%7Ccolor%3A0xff0000%7Clabel%3AA%7CSalt+Lake+City%2C+UT&amp;center=Salt+Lake+City%2C+UT&amp;visual_refresh=false&amp;style=feature:water|element:geometry|color:0xe9e9e9|lightness:17|&amp;style=feature:landscape|element:geometry|color:0xf5f5f5|lightness:20|&amp;style=feature:road.highway|element:geometry.fill|color:0xffffff|lightness:17|&amp;style=feature:road.highway|element:geometry.stroke|color:0xffffff|lightness:29|weight:0.2|&amp;style=feature:road.arterial|element:geometry|color:0xffffff|lightness:18|&amp;style=feature:road.local|element:geometry|color:0xffffff|lightness:16|&amp;style=feature:poi|element:geometry|color:0xf5f5f5|lightness:21|&amp;style=feature:poi.park|element:geometry|color:0xdedede|lightness:21|&amp;style=feature:all|element:labels.text.stroke|visibility:on|color:0xffffff|lightness:16|&amp;style=feature:all|element:labels.text.fill|saturation:36|color:0x333333|lightness:40|&amp;style=feature:all|element:labels.icon|visibility:off|&amp;style=feature:transit|element:geometry|color:0xf2f2f2|lightness:19|&amp;style=feature:administrative|element:geometry.fill|color:0xfefefe|lightness:20|&amp;style=feature:administrative|element:geometry.stroke|color:0xfefefe|lightness:17|weight:1.2|"></a></p></div> <!-- end .fwidget --></div> <!-- end .footer-widget --><div class="footer-widget">  <div id="recent-posts-3" class="fwidget et_pb_widget widget_recent_entries">  <h4 class="title">The Blog</h4>  <ul>
   
 <?php
 // Define our WP Query Parameters
@@ -519,50 +522,47 @@ wp_reset_postdata();
 ?>
 </ul>
 
-		</div> <!-- end .fwidget --></div> <!-- end .footer-widget -->    </div> <!-- #footer-widgets -->
+  </div> <!-- end .fwidget --></div> <!-- end .footer-widget -->    </div> <!-- #footer-widgets -->
 </div>    <!-- .container -->
 
-		
-				<div id="et-footer-nav">
-					<div class="container">
-						<ul id="menu-mainmenu" class="bottom-nav"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-116"><a href="/services">Services</a></li>
+    <div id="et-footer-nav">
+     <div class="container">
+      <ul id="menu-mainmenu" class="bottom-nav"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-116"><a href="/services">Services</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-121"><a href="/clients">Clients</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-115"><a href="/blog">The Blog</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-118"><a href="/about">About SNA</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-117"><a href="/contact">Contact</a></li>
-</ul>					</div>
-				</div> <!-- #et-footer-nav -->
+</ul>     </div>
+    </div> <!-- #et-footer-nav -->
 
-			
-				<div id="footer-bottom">
-					<div class="container clearfix">
-				<ul class="et-social-icons">
+    <div id="footer-bottom">
+     <div class="container clearfix">
+    <ul class="et-social-icons">
 
-	<li class="et-social-icon et-social-facebook">
-		<a href="http://facebook.com/staynalivellc" class="icon">
-			<span>Facebook</span>
-		</a>
-	</li>
-	<li class="et-social-icon et-social-twitter">
-		<a href="http://twitter.com/jesse" class="icon">
-			<span>Twitter</span>
-		</a>
-	</li>
-	<li class="et-social-icon et-social-rss">
-		<a href="/feed/" class="icon">
-			<span>RSS</span>
-		</a>
-	</li>
+ <li class="et-social-icon et-social-facebook">
+  <a href="http://facebook.com/staynalivellc" class="icon">
+   <span>Facebook</span>
+  </a>
+ </li>
+ <li class="et-social-icon et-social-twitter">
+  <a href="http://twitter.com/jesse" class="icon">
+   <span>Twitter</span>
+  </a>
+ </li>
+ <li class="et-social-icon et-social-rss">
+  <a href="/feed/" class="icon">
+   <span>RSS</span>
+  </a>
+ </li>
 
-</ul><p id="footer-info">Designed by <a href="http://www.elegantthemes.com/" title="Premium WordPress Themes">Elegant Themes</a> | Powered by <a href="http://www.wordpress.org/">WordPress</a></p>					</div>	<!-- .container -->
-				</div>
-			</footer> <!-- #main-footer -->
-		</div> <!-- #et-main-area -->
+</ul><p id="footer-info">Designed by <a href="http://www.elegantthemes.com/" title="Premium WordPress Themes">Elegant Themes</a> | Powered by <a href="http://www.wordpress.org/">WordPress</a></p>     </div> <!-- .container -->
+    </div>
+   </footer> <!-- #main-footer -->
+  </div> <!-- #et-main-area -->
 
+ </div> <!-- #page-container -->
 
-	</div> <!-- #page-container -->
-
-	<div id="footer-editor-info"><a style="color: #fff; vertical-align: middle;" href="http://ro.gerwil.co/">Designed in Dallas by&nbsp;&nbsp;<img style="height: 30px; width: auto; vertical-align: middle;" src="https://ro.gerwil.co/wp-content/uploads/RW-logo-white.svg" alt=""></a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #fff; vertical-align: middle;" href="https://launchedindfw.com/">This site was #LaunchedInDFW&nbsp;&nbsp;<img src="https://launchedindfw.com/l.php?img=w&amp;check=true" style="width:20px;height:auto;vertical-align:middle;"></a></div><script>jQuery(document).ready(function(){jQuery(".kiwi-logo-carousel-default").bxSlider({mode:"horizontal",speed:500,slideMargin:0,infiniteLoop:true,hideControlOnEnd:false,captions:false,ticker:false,tickerHover:false,adaptiveHeight:false,responsive:true,pager:false,controls:true,autoControls:false,minSlides:1,maxSlides:4,moveSlides:1,slideWidth:200,auto:true,pause:4000,useCSS:false});jQuery(".kiwi-logo-carousel-frontpage").bxSlider({mode:"horizontal",speed:500,slideMargin:0,infiniteLoop:true,hideControlOnEnd:false,captions:false,ticker:false,tickerHover:false,adaptiveHeight:false,responsive:true,pager:false,controls:true,autoControls:false,minSlides:1,maxSlides:4,moveSlides:1,slideWidth:300,auto:true,pause:4000,useCSS:false});});</script><script async>(function(s,u,m,o,j,v){j=u.createElement(m);v=u.getElementsByTagName(m)[0];j.async=1;j.src=o;j.dataset.sumoSiteId='cf9447007b5680000107220001ae2100831129008a174300c7fe55008d65eb00';j.dataset.sumoPlatform='wordpress';v.parentNode.insertBefore(j,v)})(window,document,'script','https://load.sumo.com/');</script>    <script type="application/javascript">
+ <div id="footer-editor-info"><a style="color: #fff; vertical-align: middle;" href="http://ro.gerwil.co/">Designed in Dallas by&nbsp;&nbsp;<img style="height: 30px; width: auto; vertical-align: middle;" src="https://ro.gerwil.co/wp-content/uploads/RW-logo-white.svg" alt=""></a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #fff; vertical-align: middle;" href="https://launchedindfw.com/">This site was #LaunchedInDFW&nbsp;&nbsp;<img src="https://launchedindfw.com/l.php?img=w&amp;check=true" style="width:20px;height:auto;vertical-align:middle;"></a></div><script>jQuery(document).ready(function(){jQuery(".kiwi-logo-carousel-default").bxSlider({mode:"horizontal",speed:500,slideMargin:0,infiniteLoop:true,hideControlOnEnd:false,captions:false,ticker:false,tickerHover:false,adaptiveHeight:false,responsive:true,pager:false,controls:true,autoControls:false,minSlides:1,maxSlides:4,moveSlides:1,slideWidth:200,auto:true,pause:4000,useCSS:false});jQuery(".kiwi-logo-carousel-frontpage").bxSlider({mode:"horizontal",speed:500,slideMargin:0,infiniteLoop:true,hideControlOnEnd:false,captions:false,ticker:false,tickerHover:false,adaptiveHeight:false,responsive:true,pager:false,controls:true,autoControls:false,minSlides:1,maxSlides:4,moveSlides:1,slideWidth:300,auto:true,pause:4000,useCSS:false});});</script><script async>(function(s,u,m,o,j,v){j=u.createElement(m);v=u.getElementsByTagName[m](0);j.async=1;j.src=o;j.dataset.sumoSiteId='cf9447007b5680000107220001ae2100831129008a174300c7fe55008d65eb00';j.dataset.sumoPlatform='wordpress';v.parentNode.insertBefore(j,v)})(window,document,'script','https://load.sumo.com/');</script>    <script type="application/javascript">
       var ajaxurl = "/wp-admin/admin-ajax.php";
 
       function sumo_add_woocommerce_coupon(code) {
@@ -596,25 +596,25 @@ wp_reset_postdata();
         });
       }
     </script>
-    	<script type="text/javascript">
-				var et_animation_data = [{"class":"et_pb_image_1","style":"slideLeft","repeat":"once","duration":"500ms","delay":"0ms","intensity":"10%","starting_opacity":"0%","speed_curve":"ease-in-out"}];
-			</script>
-	<div class="gmw-dialog" style="display: none;" data-map-height="550" data-map-width="550" data-thumb-height="300" data-thumb-width="450" data-map-skin="light" data-map-iframe-url="https://www.google.com/maps/embed/v1/place?q=Salt+Lake+City%2C+UT&amp;attribution_source=Stay+N+Alive&amp;attribution_web_url=https%3A%2F%2Fstaynalive.com&amp;attribution_ios_deep_link_id=comgooglemaps%3A%2F%2F%3Fdaddr%3DSalt+Lake+City%2C+UT&amp;maptype=roadmap&amp;zoom=14&amp;language=en&amp;key=AIzaSyB5UXGleTjfdmWGLizMER67FQcX_nyDzQ4" id="gmw-dialog-googlemapswidget-2" title="" data-close-button="0" data-show-title="0" data-measure-title="0" data-close-overlay="1" data-close-esc="0"><div class="gmw-map"></div></div>
+     <script type="text/javascript">
+    var et_animation_data = [{"class":"et_pb_image_1","style":"slideLeft","repeat":"once","duration":"500ms","delay":"0ms","intensity":"10%","starting_opacity":"0%","speed_curve":"ease-in-out"}];
+   </script>
+ <div class="gmw-dialog" style="display: none;" data-map-height="550" data-map-width="550" data-thumb-height="300" data-thumb-width="450" data-map-skin="light" data-map-iframe-url="https://www.google.com/maps/embed/v1/place?q=Salt+Lake+City%2C+UT&amp;attribution_source=Stay+N+Alive&amp;attribution_web_url=https%3A%2F%2Fstaynalive.com&amp;attribution_ios_deep_link_id=comgooglemaps%3A%2F%2F%3Fdaddr%3DSalt+Lake+City%2C+UT&amp;maptype=roadmap&amp;zoom=14&amp;language=en&amp;key=AIzaSyB5UXGleTjfdmWGLizMER67FQcX_nyDzQ4" id="gmw-dialog-googlemapswidget-2" title="" data-close-button="0" data-show-title="0" data-measure-title="0" data-close-overlay="1" data-close-esc="0"><div class="gmw-map"></div></div>
 <script>
     jQuery(document).ready(function () {
-		jQuery.post('?ga_action=googleanalytics_get_script', {action: 'googleanalytics_get_script'}, function(response) {
-			var s = document.createElement("script");
-			s.type = "text/javascript";
-			s.innerHTML = response;
-			jQuery("head").append(s);
-		});
+  jQuery.post('?ga_action=googleanalytics_get_script', {action: 'googleanalytics_get_script'}, function(response) {
+   var s = document.createElement("script");
+   s.type = "text/javascript";
+   s.innerHTML = response;
+   jQuery("head").append(s);
+  });
     });
-</script>	<script type="text/javascript">
-		var c = document.body.className;
-		c = c.replace(/woocommerce-no-js/, 'woocommerce-js');
-		document.body.className = c;
-	</script>
-	<script type="text/javascript" src="/wp-content/plugins/aspen-footer-editor/js/call.js?ver=1.1"></script>
+</script> <script type="text/javascript">
+  var c = document.body.className;
+  c = c.replace(/woocommerce-no-js/, 'woocommerce-js');
+  document.body.className = c;
+ </script>
+ <script type="text/javascript" src="/wp-content/plugins/aspen-footer-editor/js/call.js?ver=1.1"></script>
 <script type="text/javascript">
 /* Highlight Search Terms 1.5 ( RavanH - http://status301.net/wordpress-plugins/highlight-search-terms/ ) */
 var hlst_query = []; var hlst_areas = ["#groups-dir-list","#members-dir-list","div.bbp-topic-content,div.bbp-reply-content,li.bbp-forum-info,.bbp-topic-title,.bbp-reply-title","article","div.hentry","div.post","#content","#main","div.content","#middle","#container","div.container","div.page","#wrapper","body"];
@@ -692,7 +692,6 @@ var gmw_data = {"colorbox_css":"https:\/\/staynalive.com\/wp-content\/plugins\/g
 <?php //get_footer(); ?>
 </body>
 </html>
-
 
 ---
 
@@ -864,6 +863,7 @@ wp_enqueue_style('sna-footer-styles', get_template_directory_uri() . '/assets/cs
 ```
 
 This conversion:
+
 - Uses native block columns for the widget areas
 - Maintains the existing design and layout
 - Preserves social icons and navigation
@@ -878,62 +878,62 @@ _**User**_
 
 Here's index.php: <?php
 /**
- * The main template file
- *
- * This is the most generic template file in a WordPress theme
- * and one of the two required files for a theme (the other being style.css).
- * It is used to display a page when nothing more specific matches a query.
- * E.g., it puts together the home page when no home.php file exists.
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
- * @package blanktheme
+
+- The main template file
+-
+- This is the most generic template file in a WordPress theme
+- and one of the two required files for a theme (the other being style.css).
+- It is used to display a page when nothing more specific matches a query.
+- E.g., it puts together the home page when no home.php file exists.
+-
+- @link <https://developer.wordpress.org/themes/basics/template-hierarchy/>
+-
+- @package blanktheme
  */
 
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+ <main id="primary" class="site-main">
 
-		<?php
-		if ( have_posts() ) :
+  <?php
+  if ( have_posts() ) :
 
-			if ( is_home() && ! is_front_page() ) :
-				?>
-				<header>
-					<h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
-				</header>
-				<?php
-			endif;
+   if ( is_home() && ! is_front_page() ) :
+    ?>
+    <header>
+     <h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
+    </header>
+    <?php
+   endif;
 
-			/* Start the Loop */
-			while ( have_posts() ) :
-				the_post();
+   /_Start the Loop_/
+   while ( have_posts() ) :
+    the_post();
 
-				/*
-				 * Include the Post-Type-specific template for the content.
-				 * If you want to override this in a child theme, then include a file
-				 * called content-___.php (where ___ is the Post Type name) and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', get_post_type() );
+    /*
+     * Include the Post-Type-specific template for the content.
+     * If you want to override this in a child theme, then include a file
+     * called content-___.php (where ___ is the Post Type name) and that will be used instead.
+     */
+    get_template_part( 'template-parts/content', get_post_type() );
 
-			endwhile;
+   endwhile;
 
-			the_posts_navigation();
+   the_posts_navigation();
 
-		else :
+  else :
 
-			get_template_part( 'template-parts/content', 'none' );
+   get_template_part( 'template-parts/content', 'none' );
 
-		endif;
-		?>
+  endif;
+  ?>
 
-	</main><!-- #main -->
+ </main><!-- #main -->
 
 <?php
 get_sidebar();
 get_footer();
-
 
 ---
 
@@ -949,14 +949,14 @@ I'll help convert the index.php to a block-based template. Let's create index.ht
     <!-- wp:query {"className":"blog-posts"} -->
     <div class="wp-block-query blog-posts">
         <!-- wp:query-title {"type":"archive","className":"page-title"} /-->
-        
+
         <!-- wp:post-template -->
             <!-- wp:group {"className":"post-item"} -->
             <div class="wp-block-group post-item">
                 <!-- wp:post-featured-image {"isLink":true} /-->
-                
+
                 <!-- wp:post-title {"isLink":true} /-->
-                
+
                 <!-- wp:group {"className":"post-meta"} -->
                 <div class="wp-block-group post-meta">
                     <!-- wp:post-date /-->
@@ -964,7 +964,7 @@ I'll help convert the index.php to a block-based template. Let's create index.ht
                     <!-- wp:post-terms {"term":"category"} /-->
                 </div>
                 <!-- /wp:group -->
-                
+
                 <!-- wp:post-excerpt {"moreText":"Read More"} /-->
             </div>
             <!-- /wp:group -->
@@ -1038,7 +1038,7 @@ Let's also add some styles for the blog layout:
     .site-main {
         padding: 40px 20px;
     }
-    
+
     .post-meta {
         flex-direction: column;
         gap: 5px;
@@ -1083,41 +1083,38 @@ Here's single.php:
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+ <main id="primary" class="site-main">
 
-		<?php
-		while ( have_posts() ) :
-			the_post();
+  <?php
+  while ( have_posts() ) :
+   the_post();
 
-			get_template_part( 'template-parts/content', get_post_type() );
+   get_template_part( 'template-parts/content', get_post_type() );
 
-			the_post_navigation(
-				array(
-					'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'blanktheme' ) . '</span> <span class="nav-title">%title</span>',
-					'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'blanktheme' ) . '</span> <span class="nav-title">%title</span>',
-				)
-			);
+   the_post_navigation(
+    array(
+     'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'blanktheme' ) . '</span> <span class="nav-title">%title</span>',
+     'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'blanktheme' ) . '</span> <span class="nav-title">%title</span>',
+    )
+   );
 
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
+   // If comments are open or we have at least one comment, load up the comment template.
+   if ( comments_open() || get_comments_number() ) :
+    comments_template();
+   endif;
 
-		endwhile; // End of the loop.
-		?>
+  endwhile; // End of the loop.
+  ?>
 
-	</main><!-- #main -->
+ </main><!-- #main -->
 
 <?php
 get_sidebar();
 get_footer();
 
-
 ---
 
 _**Assistant**_
-
-
 
 I'll help convert the single.php to a block-based template. Let's create single.html:
 
@@ -1127,11 +1124,11 @@ I'll help convert the single.php to a block-based template. Let's create single.
 <!-- wp:group {"tagName":"main","className":"site-main single-post"} -->
 <main class="wp-block-group site-main single-post">
     <!-- wp:post-featured-image {"align":"wide"} /-->
-    
+
     <!-- wp:group {"className":"post-header"} -->
     <div class="wp-block-group post-header">
         <!-- wp:post-title {"level":1} /-->
-        
+
         <!-- wp:group {"className":"post-meta"} -->
         <div class="wp-block-group post-meta">
             <!-- wp:post-date /-->
@@ -1142,16 +1139,16 @@ I'll help convert the single.php to a block-based template. Let's create single.
         <!-- /wp:group -->
     </div>
     <!-- /wp:group -->
-    
+
     <!-- wp:post-content /-->
-    
+
     <!-- wp:group {"className":"post-navigation"} -->
     <div class="wp-block-group post-navigation">
         <!-- wp:post-navigation-link {"type":"previous","showTitle":true,"linkLabel":"Previous:"} /-->
         <!-- wp:post-navigation-link {"type":"next","showTitle":true,"linkLabel":"Next:"} /-->
     </div>
     <!-- /wp:group -->
-    
+
     <!-- wp:comments -->
     <div class="wp-block-comments">
         <!-- wp:comments-title /-->
@@ -1163,7 +1160,7 @@ I'll help convert the single.php to a block-based template. Let's create single.
                     <!-- wp:avatar {"size":40} /-->
                 </div>
                 <!-- /wp:column -->
-                
+
                 <!-- wp:column -->
                 <div class="wp-block-column">
                     <!-- wp:comment-author-name /-->
@@ -1180,13 +1177,13 @@ I'll help convert the single.php to a block-based template. Let's create single.
             </div>
             <!-- /wp:columns -->
         <!-- /wp:comment-template -->
-        
+
         <!-- wp:comments-pagination -->
             <!-- wp:comments-pagination-previous /-->
             <!-- wp:comments-pagination-numbers /-->
             <!-- wp:comments-pagination-next /-->
         <!-- /wp:comments-pagination -->
-        
+
         <!-- wp:post-comments-form /-->
     </div>
     <!-- /wp:comments -->
@@ -1259,18 +1256,18 @@ Let's add styles for single posts:
     .single-post {
         padding: 40px 20px;
     }
-    
+
     .post-meta {
         flex-direction: column;
         align-items: center;
         gap: 10px;
     }
-    
+
     .post-navigation {
         flex-direction: column;
         gap: 20px;
     }
-    
+
     .wp-block-post-navigation-link {
         max-width: 100%;
     }
@@ -1319,34 +1316,31 @@ Here's page.php:
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+ <main id="primary" class="site-main">
 
-		<?php
-		while ( have_posts() ) :
-			the_post();
+  <?php
+  while ( have_posts() ) :
+   the_post();
 
-			get_template_part( 'template-parts/content', 'page' );
+   get_template_part( 'template-parts/content', 'page' );
 
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
+   // If comments are open or we have at least one comment, load up the comment template.
+   if ( comments_open() || get_comments_number() ) :
+    comments_template();
+   endif;
 
-		endwhile; // End of the loop.
-		?>
+  endwhile; // End of the loop.
+  ?>
 
-	</main><!-- #main -->
+ </main><!-- #main -->
 
 <?php
 get_sidebar();
 get_footer();
 
-
 ---
 
 _**Assistant**_
-
-
 
 I'll help convert the page.php to a block-based template. Let's create page.html:
 
@@ -1360,9 +1354,9 @@ I'll help convert the page.php to a block-based template. Let's create page.html
         <!-- wp:post-title {"level":1,"align":"wide"} /-->
     </div>
     <!-- /wp:group -->
-    
+
     <!-- wp:post-content {"layout":{"inherit":true}} /-->
-    
+
     <!-- wp:comments {"className":"page-comments"} -->
     <div class="wp-block-comments page-comments">
         <!-- wp:comments-title /-->
@@ -1374,7 +1368,7 @@ I'll help convert the page.php to a block-based template. Let's create page.html
                     <!-- wp:avatar {"size":40} /-->
                 </div>
                 <!-- /wp:column -->
-                
+
                 <!-- wp:column -->
                 <div class="wp-block-column">
                     <!-- wp:comment-author-name /-->
@@ -1391,13 +1385,13 @@ I'll help convert the page.php to a block-based template. Let's create page.html
             </div>
             <!-- /wp:columns -->
         <!-- /wp:comment-template -->
-        
+
         <!-- wp:comments-pagination -->
             <!-- wp:comments-pagination-previous /-->
             <!-- wp:comments-pagination-numbers /-->
             <!-- wp:comments-pagination-next /-->
         <!-- /wp:comments-pagination -->
-        
+
         <!-- wp:post-comments-form /-->
     </div>
     <!-- /wp:comments -->
@@ -1465,7 +1459,7 @@ Let's add styles for pages:
     .page-content {
         padding: 40px 20px;
     }
-    
+
     .page-header h1 {
         font-size: 2em;
     }
@@ -1531,27 +1525,27 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
 # Generic
-	- Normalize
-	- Box sizing
+ - Normalize
+ - Box sizing
 # Base
-	- Typography
-	- Elements
-	- Links
-	- Forms
+ - Typography
+ - Elements
+ - Links
+ - Forms
 ## Layouts
 # Components
-	- Navigation
-	- Posts and pages
-	- Comments
-	- Widgets
-	- Media
-	- Captions
-	- Galleries
+ - Navigation
+ - Posts and pages
+ - Comments
+ - Widgets
+ - Media
+ - Captions
+ - Galleries
 # plugins
-	- Jetpack infinite scroll
+ - Jetpack infinite scroll
 # Utilities
-	- Accessibility
-	- Alignments
+ - Accessibility
+ - Alignments
 
 --------------------------------------------------------------*/
 
@@ -1565,19 +1559,16 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 /* Document
-	 ========================================================================== */
+  ========================================================================== */
 
 /**
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 
-
 ---
 
 _**Assistant**_
-
-
 
 I'll help convert the style.css to a block theme structure. We'll split this into theme.json settings and component-specific CSS files. First, let's update the theme metadata:
 
@@ -1798,27 +1789,27 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
 # Generic
-	- Normalize
-	- Box sizing
+ - Normalize
+ - Box sizing
 # Base
-	- Typography
-	- Elements
-	- Links
-	- Forms
+ - Typography
+ - Elements
+ - Links
+ - Forms
 ## Layouts
 # Components
-	- Navigation
-	- Posts and pages
-	- Comments
-	- Widgets
-	- Media
-	- Captions
-	- Galleries
+ - Navigation
+ - Posts and pages
+ - Comments
+ - Widgets
+ - Media
+ - Captions
+ - Galleries
 # plugins
-	- Jetpack infinite scroll
+ - Jetpack infinite scroll
 # Utilities
-	- Accessibility
-	- Alignments
+ - Accessibility
+ - Alignments
 
 --------------------------------------------------------------*/
 
@@ -1832,19 +1823,16 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 /* Document
-	 ========================================================================== */
+  ========================================================================== */
 
 /**
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 
-
 ---
 
 _**Assistant**_
-
-
 
 Let's create an RTL version of our theme styles. We'll update style-rtl.css to match our new theme:
 
@@ -1951,7 +1939,7 @@ Text Domain: staynalive
     .et-social-icons {
         float: none;
     }
-    
+
     .post-meta,
     .post-navigation {
         flex-direction: column;
@@ -1986,8 +1974,8 @@ Here's functions.php:
  */
 
 if ( ! defined( '_S_VERSION' ) ) {
-	// Replace the version number of the theme on each release.
-	define( '_S_VERSION', '1.0.0' );
+ // Replace the version number of the theme on each release.
+ define( '_S_VERSION', '1.0.0' );
 }
 
 /**
@@ -1998,85 +1986,85 @@ if ( ! defined( '_S_VERSION' ) ) {
  * as indicating support for post thumbnails.
  */
 function blanktheme_setup() {
-	/*
-		* Make theme available for translation.
-		* Translations can be filed in the /languages/ directory.
-		* If you're building a theme based on blanktheme, use a find and replace
-		* to change 'blanktheme' to the name of your theme in all the template files.
-		*/
-	load_theme_textdomain( 'blanktheme', get_template_directory() . '/languages' );
+ /*
+  * Make theme available for translation.
+  * Translations can be filed in the /languages/ directory.
+  * If you're building a theme based on blanktheme, use a find and replace
+  * to change 'blanktheme' to the name of your theme in all the template files.
+  */
+ load_theme_textdomain( 'blanktheme', get_template_directory() . '/languages' );
 
-	// Add default posts and comments RSS feed links to head.
-	add_theme_support( 'automatic-feed-links' );
+ // Add default posts and comments RSS feed links to head.
+ add_theme_support( 'automatic-feed-links' );
 
-	/*
-		* Let WordPress manage the document title.
-		* By adding theme support, we declare that this theme does not use a
-		* hard-coded <title> tag in the document head, and expect WordPress to
-		* provide it for us.
-		*/
-	add_theme_support( 'title-tag' );
+ /*
+  * Let WordPress manage the document title.
+  * By adding theme support, we declare that this theme does not use a
+  * hard-coded <title> tag in the document head, and expect WordPress to
+  * provide it for us.
+  */
+ add_theme_support( 'title-tag' );
 
-	/*
-		* Enable support for Post Thumbnails on posts and pages.
-		*
-		* @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
-		*/
-	add_theme_support( 'post-thumbnails' );
+ /*
+  * Enable support for Post Thumbnails on posts and pages.
+  *
+  * @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
+  */
+ add_theme_support( 'post-thumbnails' );
 
-	// This theme uses wp_nav_menu() in one location.
-	register_nav_menus(
-		array(
-			'menu-1' => esc_html__( 'Primary', 'blanktheme' ),
-		)
-	);
+ // This theme uses wp_nav_menu() in one location.
+ register_nav_menus(
+  array(
+   'menu-1' => esc_html__( 'Primary', 'blanktheme' ),
+  )
+ );
 
-	/*
-		* Switch default core markup for search form, comment form, and comments
-		* to output valid HTML5.
-		*/
-	add_theme_support(
-		'html5',
-		array(
-			'search-form',
-			'comment-form',
-			'comment-list',
-			'gallery',
-			'caption',
-			'style',
-			'script',
-		)
-	);
+ /*
+  * Switch default core markup for search form, comment form, and comments
+  * to output valid HTML5.
+  */
+ add_theme_support(
+  'html5',
+  array(
+   'search-form',
+   'comment-form',
+   'comment-list',
+   'gallery',
+   'caption',
+   'style',
+   'script',
+  )
+ );
 
-	// Set up the WordPress core custom background feature.
-	add_theme_support(
-		'custom-background',
-		apply_filters(
-			'blanktheme_custom_background_args',
-			array(
-				'default-color' => 'ffffff',
-				'default-image' => '',
-			)
-		)
-	);
+ // Set up the WordPress core custom background feature.
+ add_theme_support(
+  'custom-background',
+  apply_filters(
+   'blanktheme_custom_background_args',
+   array(
+    'default-color' => 'ffffff',
+    'default-image' => '',
+   )
+  )
+ );
 
-	// Add theme support for selective refresh for widgets.
-	add_theme_support( 'customize-selective-refresh-widgets' );
+ // Add theme support for selective refresh for widgets.
+ add_theme_support( 'customize-selective-refresh-widgets' );
 
-	/**
-	 * Add support for core custom logo.
-	 *
-	 * @link https://codex.wordpress.org/Theme_Logo
-	 */
-	add_theme_support(
-		'custom-logo',
-		array(
-			'height'      => 250,
-			'width'       => 250,
-			'flex-width'  => true,
-			'flex-height' => true,
-		)
-	);
+ /**
+  * Add support for core custom logo.
+  *
+  * @link https://codex.wordpress.org/Theme_Logo
+  */
+ add_theme_support(
+  'custom-logo',
+  array(
+   'height'      => 250,
+   'width'       => 250,
+   'flex-width'  => true,
+   'flex-height' => true,
+  )
+ );
 }
 add_action( 'after_setup_theme', 'blanktheme_setup' );
 
@@ -2088,7 +2076,7 @@ add_action( 'after_setup_theme', 'blanktheme_setup' );
  * @global int $content_width
  */
 function blanktheme_content_width() {
-	$GLOBALS['content_width'] = apply_filters( 'blanktheme_content_width', 640 );
+ $GLOBALS['content_width'] = apply_filters( 'blanktheme_content_width', 640 );
 }
 add_action( 'after_setup_theme', 'blanktheme_content_width', 0 );
 
@@ -2098,17 +2086,17 @@ add_action( 'after_setup_theme', 'blanktheme_content_width', 0 );
  * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
  */
 function blanktheme_widgets_init() {
-	register_sidebar(
-		array(
-			'name'          => esc_html__( 'Sidebar', 'blanktheme' ),
-			'id'            => 'sidebar-1',
-			'description'   => esc_html__( 'Add widgets here.', 'blanktheme' ),
-			'before_widget' => '<section id="%1$s" class="widget %2$s">',
-			'after_widget'  => '</section>',
-			'before_title'  => '<h2 class="widget-title">',
-			'after_title'   => '</h2>',
-		)
-	);
+ register_sidebar(
+  array(
+   'name'          => esc_html__( 'Sidebar', 'blanktheme' ),
+   'id'            => 'sidebar-1',
+   'description'   => esc_html__( 'Add widgets here.', 'blanktheme' ),
+   'before_widget' => '<section id="%1$s" class="widget %2$s">',
+   'after_widget'  => '</section>',
+   'before_title'  => '<h2 class="widget-title">',
+   'after_title'   => '</h2>',
+  )
+ );
 }
 add_action( 'widgets_init', 'blanktheme_widgets_init' );
 
@@ -2127,20 +2115,18 @@ array(
 }
 add_action( 'widgets_init', 'register_custom_widget_area' );
 
-
-
 /**
  * Enqueue scripts and styles.
  */
 function blanktheme_scripts() {
-	wp_enqueue_style( 'blanktheme-style', get_stylesheet_uri(), array(), _S_VERSION );
-	wp_style_add_data( 'blanktheme-style', 'rtl', 'replace' );
+ wp_enqueue_style( 'blanktheme-style', get_stylesheet_uri(), array(), _S_VERSION );
+ wp_style_add_data( 'blanktheme-style', 'rtl', 'replace' );
 
-	wp_enqueue_script( 'blanktheme-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
+ wp_enqueue_script( 'blanktheme-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
 
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
+ if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+  wp_enqueue_script( 'comment-reply' );
+ }
 }
 add_action( 'wp_enqueue_scripts', 'blanktheme_scripts' );
 
@@ -2168,16 +2154,12 @@ require get_template_directory() . '/inc/customizer.php';
  * Load Jetpack compatibility file.
  */
 if ( defined( 'JETPACK__VERSION' ) ) {
-	require get_template_directory() . '/inc/jetpack.php';
+ require get_template_directory() . '/inc/jetpack.php';
 }
-
-
 
 ---
 
 _**Assistant**_
-
-
 
 I'll help update the functions.php for our block theme. Here's the modernized version:
 
@@ -2202,28 +2184,28 @@ function staynalive_setup() {
 
     // Add default posts and comments RSS feed links
     add_theme_support('automatic-feed-links');
-    
+
     // Let WordPress manage the document title
     add_theme_support('title-tag');
-    
+
     // Enable support for Post Thumbnails
     add_theme_support('post-thumbnails');
-    
+
     // Add support for block styles
     add_theme_support('wp-block-styles');
-    
+
     // Add support for full and wide align blocks
     add_theme_support('align-wide');
-    
+
     // Add support for responsive embedded content
     add_theme_support('responsive-embeds');
-    
+
     // Add support for custom units
     add_theme_support('custom-units');
-    
+
     // Add support for editor styles
     add_theme_support('editor-styles');
-    
+
     // Enqueue editor styles
     add_editor_style('assets/css/editor-style.css');
 
@@ -2273,7 +2255,7 @@ function staynalive_scripts() {
         array(),
         STAYNALIVE_VERSION
     );
-    
+
     // RTL styles
     wp_style_add_data('staynalive-style', 'rtl', 'replace');
 
@@ -2370,39 +2352,38 @@ Here's customizer.js:
  */
 
 ( function( $ ) {
-	// Site title and description.
-	wp.customize( 'blogname', function( value ) {
-		value.bind( function( to ) {
-			$( '.site-title a' ).text( to );
-		} );
-	} );
-	wp.customize( 'blogdescription', function( value ) {
-		value.bind( function( to ) {
-			$( '.site-description' ).text( to );
-		} );
-	} );
+ // Site title and description.
+ wp.customize( 'blogname', function( value ) {
+  value.bind( function( to ) {
+   $( '.site-title a' ).text( to );
+  } );
+ } );
+ wp.customize( 'blogdescription', function( value ) {
+  value.bind( function( to ) {
+   $( '.site-description' ).text( to );
+  } );
+ } );
 
-	// Header text color.
-	wp.customize( 'header_textcolor', function( value ) {
-		value.bind( function( to ) {
-			if ( 'blank' === to ) {
-				$( '.site-title, .site-description' ).css( {
-					clip: 'rect(1px, 1px, 1px, 1px)',
-					position: 'absolute',
-				} );
-			} else {
-				$( '.site-title, .site-description' ).css( {
-					clip: 'auto',
-					position: 'relative',
-				} );
-				$( '.site-title a, .site-description' ).css( {
-					color: to,
-				} );
-			}
-		} );
-	} );
+ // Header text color.
+ wp.customize( 'header_textcolor', function( value ) {
+  value.bind( function( to ) {
+   if ( 'blank' === to ) {
+    $( '.site-title, .site-description' ).css( {
+     clip: 'rect(1px, 1px, 1px, 1px)',
+     position: 'absolute',
+    } );
+   } else {
+    $( '.site-title, .site-description' ).css( {
+     clip: 'auto',
+     position: 'relative',
+    } );
+    $( '.site-title a, .site-description' ).css( {
+     color: to,
+    } );
+   }
+  } );
+ } );
 }( jQuery ) );
-
 
 ---
 
@@ -2518,45 +2499,42 @@ Here's navigation.js:
  */
 
 ( function( $ ) {
-	// Site title and description.
-	wp.customize( 'blogname', function( value ) {
-		value.bind( function( to ) {
-			$( '.site-title a' ).text( to );
-		} );
-	} );
-	wp.customize( 'blogdescription', function( value ) {
-		value.bind( function( to ) {
-			$( '.site-description' ).text( to );
-		} );
-	} );
+ // Site title and description.
+ wp.customize( 'blogname', function( value ) {
+  value.bind( function( to ) {
+   $( '.site-title a' ).text( to );
+  } );
+ } );
+ wp.customize( 'blogdescription', function( value ) {
+  value.bind( function( to ) {
+   $( '.site-description' ).text( to );
+  } );
+ } );
 
-	// Header text color.
-	wp.customize( 'header_textcolor', function( value ) {
-		value.bind( function( to ) {
-			if ( 'blank' === to ) {
-				$( '.site-title, .site-description' ).css( {
-					clip: 'rect(1px, 1px, 1px, 1px)',
-					position: 'absolute',
-				} );
-			} else {
-				$( '.site-title, .site-description' ).css( {
-					clip: 'auto',
-					position: 'relative',
-				} );
-				$( '.site-title a, .site-description' ).css( {
-					color: to,
-				} );
-			}
-		} );
-	} );
+ // Header text color.
+ wp.customize( 'header_textcolor', function( value ) {
+  value.bind( function( to ) {
+   if ( 'blank' === to ) {
+    $( '.site-title, .site-description' ).css( {
+     clip: 'rect(1px, 1px, 1px, 1px)',
+     position: 'absolute',
+    } );
+   } else {
+    $( '.site-title, .site-description' ).css( {
+     clip: 'auto',
+     position: 'relative',
+    } );
+    $( '.site-title a, .site-description' ).css( {
+     color: to,
+    } );
+   }
+  } );
+ } );
 }( jQuery ) );
-
 
 ---
 
 _**Assistant**_
-
-
 
 For a block theme, we'll replace the traditional navigation.js with a modern version that handles mobile navigation and accessibility. Here's the updated version:
 
@@ -2572,7 +2550,7 @@ For a block theme, we'll replace the traditional navigation.js with a modern ver
             this.mobileMenu = document.querySelector('.wp-block-navigation__responsive-container');
             this.closeButton = document.querySelector('.wp-block-navigation__responsive-container-close');
             this.overlay = document.querySelector('.wp-block-navigation__responsive-container-overlay');
-            
+
             this.bindEvents();
             this.setupAccessibility();
         },
@@ -2614,11 +2592,11 @@ For a block theme, we'll replace the traditional navigation.js with a modern ver
             subMenus.forEach(menu => {
                 const toggle = menu.querySelector('.wp-block-navigation-submenu__toggle');
                 const content = menu.querySelector('.wp-block-navigation-submenu__content');
-                
+
                 if (toggle && content) {
                     toggle.setAttribute('aria-expanded', 'false');
                     content.setAttribute('aria-hidden', 'true');
-                    
+
                     toggle.addEventListener('click', (e) => {
                         e.preventDefault();
                         const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
@@ -2645,7 +2623,7 @@ For a block theme, we'll replace the traditional navigation.js with a modern ver
                 const isOpen = this.mobileMenu.classList.contains('is-menu-open');
                 this.mobileMenu.classList.toggle('is-menu-open');
                 document.body.style.overflow = isOpen ? '' : 'hidden';
-                
+
                 if (this.mobileToggle) {
                     this.mobileToggle.setAttribute('aria-expanded', !isOpen);
                 }
@@ -2656,7 +2634,7 @@ For a block theme, we'll replace the traditional navigation.js with a modern ver
             if (this.mobileMenu && this.mobileMenu.classList.contains('is-menu-open')) {
                 this.mobileMenu.classList.remove('is-menu-open');
                 document.body.style.overflow = '';
-                
+
                 if (this.mobileToggle) {
                     this.mobileToggle.setAttribute('aria-expanded', 'false');
                 }
@@ -2781,12 +2759,9 @@ Here's composer.json:
     }
 }
 
-
 ---
 
 _**Assistant**_
-
-
 
 I'll help update the composer.json for your theme. Here's the modernized version:
 
@@ -2922,6 +2897,7 @@ Also, let's add a .phpcs.xml.dist file for coding standards:
 ```
 
 This setup provides:
+
 - Modern dependency management
 - Proper coding standards enforcement
 - Development tooling
@@ -2946,13 +2922,13 @@ Here's package.json:
     "WordPress",
     "Theme"
   ],
-  "homepage": "https://github.com/Automattic/_s#readme",
+  "homepage": "<https://github.com/Automattic/_s#readme>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Automattic/_s.git"
+    "url": "git+<https://github.com/Automattic/_s.git>"
   },
   "bugs": {
-    "url": "https://github.com/Automattic/_s/issues"
+    "url": "<https://github.com/Automattic/_s/issues>"
   },
   "devDependencies": {
     "@wordpress/scripts": "^19.2.2",
@@ -2975,22 +2951,17 @@ Here's package.json:
   },
   "scripts": {
     "watch": "node-sass sass/ -o ./ --source-map true --output-style expanded --indent-type tab --indent-width 1 -w",
-    "compile:css": "node-sass sass/ -o ./ && stylelint '*.css' --fix || true && stylelint '*.css' --fix",
+    "compile:css": "node-sass sass/ -o ./ && stylelint '_.css' --fix || true && stylelint '_.css' --fix",
     "compile:rtl": "rtlcss style.css style-rtl.css",
-    "lint:scss": "wp-scripts lint-style 'sass/**/*.scss'",
-    "lint:js": "wp-scripts lint-js 'js/*.js'",
+    "lint:scss": "wp-scripts lint-style 'sass/**/_.scss'",
+    "lint:js": "wp-scripts lint-js 'js/_.js'",
     "bundle": "dir-archiver --src . --dest ../_s.zip --exclude .DS_Store .stylelintrc.json .eslintrc .git .gitattributes .github .gitignore README.md composer.json composer.lock node_modules vendor package-lock.json package.json .travis.yml phpcs.xml.dist sass style.css.map yarn.lock"
   }
 }
 
-
 ---
 
 _**Assistant**_
-
-
-
-
 
 I'll help update the package.json for your modern block theme. Here's the modernized version:
 
@@ -3053,7 +3024,6 @@ I'll help update the package.json for your modern block theme. Here's the modern
 }
 ```
 
-
 And let's add a postcss.config.js file for modern CSS processing:
 
 ```javascript:postcss.config.js
@@ -3074,7 +3044,6 @@ module.exports = {
 };
 ```
 
-
 Also, add a .prettierrc for consistent code formatting:
 
 ```json:.prettierrc
@@ -3088,7 +3057,6 @@ Also, add a .prettierrc for consistent code formatting:
   "arrowParens": "avoid"
 }
 ```
-
 
 And a .stylelintrc.json for CSS linting:
 
@@ -3107,8 +3075,8 @@ And a .stylelintrc.json for CSS linting:
 }
 ```
 
-
 Key updates:
+
 1. Modern build tooling with PostCSS
 2. WordPress scripts and environment tools
 3. Updated testing capabilities
@@ -3119,6 +3087,7 @@ Key updates:
 8. E2E and unit testing support
 
 The new setup provides:
+
 - Modern CSS features (nesting, custom properties)
 - Automated browser prefixing
 - Development environment
@@ -3143,17 +3112,17 @@ Hi. I'm a starter theme called `_s`, or `underscores`, if you like. I'm a theme 
 
 My ultra-minimal CSS might make me look like theme tartare but that means less stuff to get in your way when you're designing your awesome theme. Here are some of the other more interesting things you'll find here:
 
-* A modern workflow with a pre-made command-line interface to turn your project into a more pleasant experience.
-* A just right amount of lean, well-commented, modern, HTML5 templates.
-* A custom header implementation in `inc/custom-header.php`. Just add the code snippet found in the comments of `inc/custom-header.php` to your `header.php` template.
-* Custom template tags in `inc/template-tags.php` that keep your templates clean and neat and prevent code duplication.
-* Some small tweaks in `inc/template-functions.php` that can improve your theming experience.
-* A script at `js/navigation.js` that makes your menu a toggled dropdown on small screens (like your phone), ready for CSS artistry. It's enqueued in `functions.php`.
-* 2 sample layouts in `sass/layouts/` made using CSS Grid for a sidebar on either side of your content. Just uncomment the layout of your choice in `sass/style.scss`.
+- A modern workflow with a pre-made command-line interface to turn your project into a more pleasant experience.
+- A just right amount of lean, well-commented, modern, HTML5 templates.
+- A custom header implementation in `inc/custom-header.php`. Just add the code snippet found in the comments of `inc/custom-header.php` to your `header.php` template.
+- Custom template tags in `inc/template-tags.php` that keep your templates clean and neat and prevent code duplication.
+- Some small tweaks in `inc/template-functions.php` that can improve your theming experience.
+- A script at `js/navigation.js` that makes your menu a toggled dropdown on small screens (like your phone), ready for CSS artistry. It's enqueued in `functions.php`.
+- 2 sample layouts in `sass/layouts/` made using CSS Grid for a sidebar on either side of your content. Just uncomment the layout of your choice in `sass/style.scss`.
 Note: `.no-sidebar` styles are automatically loaded.
-* Smartly organized starter CSS in `style.css` that will help you to quickly get your design off the ground.
-* Full support for `WooCommerce plugin` integration with hooks in `inc/woocommerce.php`, styling override woocommerce.css with product gallery features (zoom, swipe, lightbox) enabled.
-* Licensed under GPLv2 or later. :) Use it to make something cool.
+- Smartly organized starter CSS in `style.css` that will help you to quickly get your design off the ground.
+- Full support for `WooCommerce plugin` integration with hooks in `inc/woocommerce.php`, styling override woocommerce.css with product gallery features (zoom, swipe, lightbox) enabled.
+- Licensed under GPLv2 or later. :) Use it to make something cool.
 
 Installation
 ---------------
@@ -3183,8 +3152,8 @@ Then, update the stylesheet header in `style.css`, the links in `footer.php` wit
 To start using all the tools that come with `_s`  you need to install the necessary Node.js and Composer dependencies :
 
 ```sh
-$ composer install
-$ npm install
+composer install
+npm install
 ```
 
 ### Available CLI commands
@@ -3205,14 +3174,9 @@ Now you're ready to go! The next step is easy to say, but harder to do: make an 
 
 Good luck!
 
-
 ---
 
 _**Assistant**_
-
-
-
-
 
 I'll help update the README.md for your modern block theme. Here's the modernized version:
 
@@ -3249,12 +3213,14 @@ git clone https://github.com/jessestay/staynalive.git
 ```
 
 2. Install dependencies:
+
 ```bash
 composer install
 npm install
 ```
 
 3. Build assets:
+
 ```bash
 npm run build
 ```
@@ -3309,6 +3275,7 @@ Global styles are managed through `theme.json`. Component-specific styles are in
 ## Deployment
 
 1. Build production assets:
+
 ```bash
 npm run build
 ```
@@ -3331,6 +3298,7 @@ This theme is licensed under the GPL-2.0+ license. See the [LICENSE](LICENSE) fi
 
 - Built with [WordPress](https://wordpress.org/)
 - Developed by [Jesse Stay](https://staynalive.com)
+
 ```
 
 
@@ -3364,51 +3332,51 @@ Here's 404.php:
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+ <main id="primary" class="site-main">
 
-		<section class="error-404 not-found">
-			<header class="page-header">
-				<h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'blanktheme' ); ?></h1>
-			</header><!-- .page-header -->
+  <section class="error-404 not-found">
+   <header class="page-header">
+    <h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'blanktheme' ); ?></h1>
+   </header><!-- .page-header -->
 
-			<div class="page-content">
-				<p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'blanktheme' ); ?></p>
+   <div class="page-content">
+    <p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'blanktheme' ); ?></p>
 
-					<?php
-					get_search_form();
+     <?php
+     get_search_form();
 
-					the_widget( 'WP_Widget_Recent_Posts' );
-					?>
+     the_widget( 'WP_Widget_Recent_Posts' );
+     ?>
 
-					<div class="widget widget_categories">
-						<h2 class="widget-title"><?php esc_html_e( 'Most Used Categories', 'blanktheme' ); ?></h2>
-						<ul>
-							<?php
-							wp_list_categories(
-								array(
-									'orderby'    => 'count',
-									'order'      => 'DESC',
-									'show_count' => 1,
-									'title_li'   => '',
-									'number'     => 10,
-								)
-							);
-							?>
-						</ul>
-					</div><!-- .widget -->
+     <div class="widget widget_categories">
+      <h2 class="widget-title"><?php esc_html_e( 'Most Used Categories', 'blanktheme' ); ?></h2>
+      <ul>
+       <?php
+       wp_list_categories(
+        array(
+         'orderby'    => 'count',
+         'order'      => 'DESC',
+         'show_count' => 1,
+         'title_li'   => '',
+         'number'     => 10,
+        )
+       );
+       ?>
+      </ul>
+     </div><!-- .widget -->
 
-					<?php
-					/* translators: %1$s: smiley */
-					$blanktheme_archive_content = '<p>' . sprintf( esc_html__( 'Try looking in the monthly archives. %1$s', 'blanktheme' ), convert_smilies( ':)' ) ) . '</p>';
-					the_widget( 'WP_Widget_Archives', 'dropdown=1', "after_title=</h2>$blanktheme_archive_content" );
+     <?php
+     /* translators: %1$s: smiley */
+     $blanktheme_archive_content = '<p>' . sprintf( esc_html__( 'Try looking in the monthly archives. %1$s', 'blanktheme' ), convert_smilies( ':)' ) ) . '</p>';
+     the_widget( 'WP_Widget_Archives', 'dropdown=1', "after_title=</h2>$blanktheme_archive_content" );
 
-					the_widget( 'WP_Widget_Tag_Cloud' );
-					?>
+     the_widget( 'WP_Widget_Tag_Cloud' );
+     ?>
 
-			</div><!-- .page-content -->
-		</section><!-- .error-404 -->
+   </div><!-- .page-content -->
+  </section><!-- .error-404 -->
 
-	</main><!-- #main -->
+ </main><!-- #main -->
 
 <?php
 get_footer();
@@ -3574,6 +3542,7 @@ wp_enqueue_style('sna-404-styles', get_template_directory_uri() . '/assets/css/4
 ```
 
 This conversion:
+
 1. Uses native blocks for layout
 2. Maintains helpful content for users
 3. Includes search functionality
@@ -3587,8 +3556,6 @@ Would you like me to adjust any part of the 404 page?
 ---
 
 _**User**_
-
-
 
 ---
 
@@ -3608,63 +3575,58 @@ Here's archive.php:
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+ <main id="primary" class="site-main">
 
-		<section class="error-404 not-found">
-			<header class="page-header">
-				<h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'blanktheme' ); ?></h1>
-			</header><!-- .page-header -->
+  <section class="error-404 not-found">
+   <header class="page-header">
+    <h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'blanktheme' ); ?></h1>
+   </header><!-- .page-header -->
 
-			<div class="page-content">
-				<p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'blanktheme' ); ?></p>
+   <div class="page-content">
+    <p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'blanktheme' ); ?></p>
 
-					<?php
-					get_search_form();
+     <?php
+     get_search_form();
 
-					the_widget( 'WP_Widget_Recent_Posts' );
-					?>
+     the_widget( 'WP_Widget_Recent_Posts' );
+     ?>
 
-					<div class="widget widget_categories">
-						<h2 class="widget-title"><?php esc_html_e( 'Most Used Categories', 'blanktheme' ); ?></h2>
-						<ul>
-							<?php
-							wp_list_categories(
-								array(
-									'orderby'    => 'count',
-									'order'      => 'DESC',
-									'show_count' => 1,
-									'title_li'   => '',
-									'number'     => 10,
-								)
-							);
-							?>
-						</ul>
-					</div><!-- .widget -->
+     <div class="widget widget_categories">
+      <h2 class="widget-title"><?php esc_html_e( 'Most Used Categories', 'blanktheme' ); ?></h2>
+      <ul>
+       <?php
+       wp_list_categories(
+        array(
+         'orderby'    => 'count',
+         'order'      => 'DESC',
+         'show_count' => 1,
+         'title_li'   => '',
+         'number'     => 10,
+        )
+       );
+       ?>
+      </ul>
+     </div><!-- .widget -->
 
-					<?php
-					/* translators: %1$s: smiley */
-					$blanktheme_archive_content = '<p>' . sprintf( esc_html__( 'Try looking in the monthly archives. %1$s', 'blanktheme' ), convert_smilies( ':)' ) ) . '</p>';
-					the_widget( 'WP_Widget_Archives', 'dropdown=1', "after_title=</h2>$blanktheme_archive_content" );
+     <?php
+     /* translators: %1$s: smiley */
+     $blanktheme_archive_content = '<p>' . sprintf( esc_html__( 'Try looking in the monthly archives. %1$s', 'blanktheme' ), convert_smilies( ':)' ) ) . '</p>';
+     the_widget( 'WP_Widget_Archives', 'dropdown=1', "after_title=</h2>$blanktheme_archive_content" );
 
-					the_widget( 'WP_Widget_Tag_Cloud' );
-					?>
+     the_widget( 'WP_Widget_Tag_Cloud' );
+     ?>
 
-			</div><!-- .page-content -->
-		</section><!-- .error-404 -->
+   </div><!-- .page-content -->
+  </section><!-- .error-404 -->
 
-	</main><!-- #main -->
+ </main><!-- #main -->
 
 <?php
 get_footer();
 
-
 ---
 
 _**Assistant**_
-
-
-
-
 
 I'll help convert the archive.php to a block-based template. Let's create archive.html:
 
@@ -3676,7 +3638,7 @@ I'll help convert the archive.php to a block-based template. Let's create archiv
     <!-- wp:group {"className":"archive-header","layout":{"type":"constrained"}} -->
     <div class="wp-block-group archive-header">
         <!-- wp:query-title {"type":"archive","textAlign":"center","fontSize":"x-large"} /-->
-        
+
         <!-- wp:term-description {"textAlign":"center"} /-->
     </div>
     <!-- /wp:group -->
@@ -3693,9 +3655,9 @@ I'll help convert the archive.php to a block-based template. Let's create archiv
                         <!-- wp:group {"className":"post-item"} -->
                         <div class="wp-block-group post-item">
                             <!-- wp:post-featured-image {"isLink":true,"height":"300px"} /-->
-                            
+
                             <!-- wp:post-title {"isLink":true,"fontSize":"large"} /-->
-                            
+
                             <!-- wp:group {"className":"post-meta","layout":{"type":"flex","flexWrap":"wrap"}} -->
                             <div class="wp-block-group post-meta">
                                 <!-- wp:post-date /-->
@@ -3703,7 +3665,7 @@ I'll help convert the archive.php to a block-based template. Let's create archiv
                                 <!-- wp:post-terms {"term":"category"} /-->
                             </div>
                             <!-- /wp:group -->
-                            
+
                             <!-- wp:post-excerpt {"moreText":"Read More"} /-->
                         </div>
                         <!-- /wp:group -->
@@ -3738,7 +3700,7 @@ I'll help convert the archive.php to a block-based template. Let's create archiv
                     <!-- wp:heading {"level":2} -->
                     <h2>Categories</h2>
                     <!-- /wp:heading -->
-                    
+
                     <!-- wp:categories {"showPostCounts":true} /-->
                 </div>
                 <!-- /wp:group -->
@@ -3748,7 +3710,7 @@ I'll help convert the archive.php to a block-based template. Let's create archiv
                     <!-- wp:heading {"level":2} -->
                     <h2>Tags</h2>
                     <!-- /wp:heading -->
-                    
+
                     <!-- wp:tag-cloud /-->
                 </div>
                 <!-- /wp:group -->
@@ -3763,7 +3725,6 @@ I'll help convert the archive.php to a block-based template. Let's create archiv
 
 <!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
 ```
-
 
 Let's add styles for the archive page:
 
@@ -3860,7 +3821,7 @@ Let's add styles for the archive page:
     .archive-layout {
         flex-direction: column;
     }
-    
+
     .archive-sidebar {
         padding-left: 0;
         margin-top: 60px;
@@ -3871,11 +3832,11 @@ Let's add styles for the archive page:
     .archive-page {
         padding: 40px 0;
     }
-    
+
     .archive-header {
         margin-bottom: 40px;
     }
-    
+
     .post-meta {
         flex-direction: column;
         gap: 5px;
@@ -3883,14 +3844,12 @@ Let's add styles for the archive page:
 }
 ```
 
-
 Add this to functions.php:
 
 ```php:functions.php
 // Add to staynalive_scripts()
 wp_enqueue_style('sna-archive-styles', get_template_directory_uri() . '/assets/css/archive.css', array(), STAYNALIVE_VERSION);
 ```
-
 
 This conversion:
 1. Uses native blocks for layout
@@ -3928,76 +3887,69 @@ Here's comments.php:
  * return early without loading the comments.
  */
 if ( post_password_required() ) {
-	return;
+ return;
 }
 ?>
 
 <div id="comments" class="comments-area">
 
-	<?php
-	// You can start editing here -- including this comment!
-	if ( have_comments() ) :
-		?>
-		<h2 class="comments-title">
-			<?php
-			$blanktheme_comment_count = get_comments_number();
-			if ( '1' === $blanktheme_comment_count ) {
-				printf(
-					/* translators: 1: title. */
-					esc_html__( 'One thought on &ldquo;%1$s&rdquo;', 'blanktheme' ),
-					'<span>' . wp_kses_post( get_the_title() ) . '</span>'
-				);
-			} else {
-				printf( 
-					/* translators: 1: comment count number, 2: title. */
-					esc_html( _nx( '%1$s thought on &ldquo;%2$s&rdquo;', '%1$s thoughts on &ldquo;%2$s&rdquo;', $blanktheme_comment_count, 'comments title', 'blanktheme' ) ),
-					number_format_i18n( $blanktheme_comment_count ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					'<span>' . wp_kses_post( get_the_title() ) . '</span>'
-				);
-			}
-			?>
-		</h2><!-- .comments-title -->
+ <?php
+ // You can start editing here -- including this comment!
+ if ( have_comments() ) :
+  ?>
+  <h2 class="comments-title">
+   <?php
+   $blanktheme_comment_count = get_comments_number();
+   if ( '1' === $blanktheme_comment_count ) {
+    printf(
+     /* translators: 1: title. */
+     esc_html__( 'One thought on &ldquo;%1$s&rdquo;', 'blanktheme' ),
+     '<span>' . wp_kses_post( get_the_title() ) . '</span>'
+    );
+   } else {
+    printf(
+     /* translators: 1: comment count number, 2: title. */
+     esc_html( _nx( '%1$s thought on &ldquo;%2$s&rdquo;', '%1$s thoughts on &ldquo;%2$s&rdquo;', $blanktheme_comment_count, 'comments title', 'blanktheme' ) ),
+     number_format_i18n( $blanktheme_comment_count ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+     '<span>' . wp_kses_post( get_the_title() ) . '</span>'
+    );
+   }
+   ?>
+  </h2><!-- .comments-title -->
 
-		<?php the_comments_navigation(); ?>
+  <?php the_comments_navigation(); ?>
 
-		<ol class="comment-list">
-			<?php
-			wp_list_comments(
-				array(
-					'style'      => 'ol',
-					'short_ping' => true,
-				)
-			);
-			?>
-		</ol><!-- .comment-list -->
+  <ol class="comment-list">
+   <?php
+   wp_list_comments(
+    array(
+     'style'      => 'ol',
+     'short_ping' => true,
+    )
+   );
+   ?>
+  </ol><!-- .comment-list -->
 
-		<?php
-		the_comments_navigation();
+  <?php
+  the_comments_navigation();
 
-		// If comments are closed and there are comments, let's leave a little note, shall we?
-		if ( ! comments_open() ) :
-			?>
-			<p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'blanktheme' ); ?></p>
-			<?php
-		endif;
+  // If comments are closed and there are comments, let's leave a little note, shall we?
+  if ( ! comments_open() ) :
+   ?>
+   <p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'blanktheme' ); ?></p>
+   <?php
+  endif;
 
-	endif; // Check for have_comments().
+ endif; // Check for have_comments().
 
-	comment_form();
-	?>
+ comment_form();
+ ?>
 
 </div><!-- #comments -->
-
 
 ---
 
 _**Assistant**_
-
-
-
-
-
-
 
 For a block theme, we'll handle comments through block patterns and templates. Let's create a comments pattern and styles:
 
@@ -4048,7 +4000,6 @@ For a block theme, we'll handle comments through block patterns and templates. L
 </div>
 <!-- /wp:group -->
 ```
-
 
 Let's add styles for comments:
 
@@ -4186,7 +4137,6 @@ Let's add styles for comments:
 }
 ```
 
-
 Add this to functions.php:
 
 ```php:functions.php
@@ -4208,8 +4158,8 @@ function staynalive_register_comments_pattern() {
 add_action('init', 'staynalive_register_comments_pattern');
 ```
 
-
 This approach:
+
 1. Uses native blocks for comments
 2. Maintains threaded comments
 3. Includes proper comment metadata
@@ -4244,119 +4194,112 @@ Here's front-page.php:
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
-		<div id="main-content">
-			<article id="post-36" class="post-36 page type-page status-publish hentry">
-				<div class="entry-content">
-					<div id="et-boc" class="et-boc">
-						<div class="et-l et-l--post">
-							<div class="et_builder_inner_content et_pb_gutters3">
+ <main id="primary" class="site-main">
+  <div id="main-content">
+   <article id="post-36" class="post-36 page type-page status-publish hentry">
+    <div class="entry-content">
+     <div id="et-boc" class="et-boc">
+      <div class="et-l et-l--post">
+       <div class="et_builder_inner_content et_pb_gutters3">
 
-		<?php
-		while ( have_posts() ) :
-			the_post();
+  <?php
+  while ( have_posts() ) :
+   the_post();
 
-			get_template_part( 'template-parts/content', 'page' );
+   get_template_part( 'template-parts/content', 'page' );
 
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
+   // If comments are open or we have at least one comment, load up the comment template.
+   if ( comments_open() || get_comments_number() ) :
+    comments_template();
+   endif;
 
-		endwhile; // End of the loop.
-		?>
-								<div class="et_pb_section et_pb_section_4 et_pb_with_background et_section_regular">
-									<div class="et_pb_row et_pb_row_5 et_pb_row_fullwidth et_pb_equal_columns et_pb_gutters1">
-										<div class="et_pb_column et_pb_column_1_2 et_pb_column_11 et_pb_css_mix_blend_mode_passthrough">
-											<div class="et_pb_module et_pb_image et_pb_image_1 et_animated et-waypoint"><span class="et_pb_image_wrap"><img title="" src="/wp-content/uploads/jesse-front-1.png" sizes="(max-width: 1400px) 100vw, 1400px" srcset=" /wp-content/uploads/jesse-front-1.png 1400w, /wp-content/uploads/jesse-front-1-300x171.png 300w, /wp-content/uploads/jesse-front-1-1024x585.png 1024w, /wp-content/uploads/jesse-front-1-610x349.png 610w, /wp-content/uploads/jesse-front-1-1080x617.png 1080w " alt="" /></span></div>
-										</div>
-										<!-- .et_pb_column -->
-										<div class="et_pb_column et_pb_column_1_4 et_pb_column_12 et_pb_css_mix_blend_mode_passthrough">
-											<div class="et_pb_module et_pb_text et_pb_text_3 et_pb_text_align_left et_pb_bg_layout_dark">
-												<div class="et_pb_text_inner">
-													<?php if ( is_active_sidebar( 'about-jesse-widget' ) ) : ?>
-													<div id="about-jesse-widget" class="about-jesse-widget">
-													<?php dynamic_sidebar( 'about-jesse-widget' ); ?>
-													</div>
-													<?php endif; ?>
+  endwhile; // End of the loop.
+  ?>
+        <div class="et_pb_section et_pb_section_4 et_pb_with_background et_section_regular">
+         <div class="et_pb_row et_pb_row_5 et_pb_row_fullwidth et_pb_equal_columns et_pb_gutters1">
+          <div class="et_pb_column et_pb_column_1_2 et_pb_column_11 et_pb_css_mix_blend_mode_passthrough">
+           <div class="et_pb_module et_pb_image et_pb_image_1 et_animated et-waypoint"><span class="et_pb_image_wrap"><img title="" src="/wp-content/uploads/jesse-front-1.png" sizes="(max-width: 1400px) 100vw, 1400px" srcset=" /wp-content/uploads/jesse-front-1.png 1400w, /wp-content/uploads/jesse-front-1-300x171.png 300w, /wp-content/uploads/jesse-front-1-1024x585.png 1024w, /wp-content/uploads/jesse-front-1-610x349.png 610w, /wp-content/uploads/jesse-front-1-1080x617.png 1080w " alt="" /></span></div>
+          </div>
+          <!-- .et_pb_column -->
+          <div class="et_pb_column et_pb_column_1_4 et_pb_column_12 et_pb_css_mix_blend_mode_passthrough">
+           <div class="et_pb_module et_pb_text et_pb_text_3 et_pb_text_align_left et_pb_bg_layout_dark">
+            <div class="et_pb_text_inner">
+             <?php if ( is_active_sidebar( 'about-jesse-widget' ) ) : ?>
+             <div id="about-jesse-widget" class="about-jesse-widget">
+             <?php dynamic_sidebar( 'about-jesse-widget' ); ?>
+             </div>
+             <?php endif; ?>
 
-												</div>
-											</div>
-											<!-- .et_pb_text -->
-											<div class="et_pb_button_module_wrapper et_pb_button_2_wrapper et_pb_button_alignment_left et_pb_module"><a class="et_pb_button et_pb_button_2 et_hover_enabled et_pb_bg_layout_dark" href="/about/jesse/">Read More</a > </a></div>
-										</div>
-										<!-- .et_pb_column -->
-										<div class="et_pb_column et_pb_column_1_4 et_pb_column_13 et_pb_css_mix_blend_mode_passthrough et-last-child">
-											<div class="et_pb_module et_pb_post_slider et_pb_post_slider_0 et_hover_enabled et_pb_slider et_pb_post_slider_image_background et_pb_slider_fullwidth_off et_pb_slider_no_arrows et_pb_slider_no_pagination et_pb_slider_with_overlay">
-												<div class="et_pb_slides">
-													<div class="et_pb_slide et_pb_media_alignment_center et_pb_bg_layout_dark" style="background-image: url('/wp-content/uploads/bat_triad_diagram.png');">
-														<div class="et_pb_slide_overlay_container"></div>
-															<div class="et_pb_container clearfix">
-																<div class="et_pb_slider_container_inner">
-																	<div class="et_pb_slide_description">
-																		<h2 class="et_pb_slide_title"><a href="/2018/01/bitcoin-use-cases-bat-crypto-token-brave-browser-show-glimpse-future-internet-browser.html">Bitcoin Use-Cases: BAT Crypto Token and Brave
+            </div>
+           </div>
+           <!-- .et_pb_text -->
+           <div class="et_pb_button_module_wrapper et_pb_button_2_wrapper et_pb_button_alignment_left et_pb_module"><a class="et_pb_button et_pb_button_2 et_hover_enabled et_pb_bg_layout_dark" href="/about/jesse/">Read More</a > </a></div>
+          </div>
+          <!-- .et_pb_column -->
+          <div class="et_pb_column et_pb_column_1_4 et_pb_column_13 et_pb_css_mix_blend_mode_passthrough et-last-child">
+           <div class="et_pb_module et_pb_post_slider et_pb_post_slider_0 et_hover_enabled et_pb_slider et_pb_post_slider_image_background et_pb_slider_fullwidth_off et_pb_slider_no_arrows et_pb_slider_no_pagination et_pb_slider_with_overlay">
+            <div class="et_pb_slides">
+             <div class="et_pb_slide et_pb_media_alignment_center et_pb_bg_layout_dark" style="background-image: url('/wp-content/uploads/bat_triad_diagram.png');">
+              <div class="et_pb_slide_overlay_container"></div>
+               <div class="et_pb_container clearfix">
+                <div class="et_pb_slider_container_inner">
+                 <div class="et_pb_slide_description">
+                  <h2 class="et_pb_slide_title"><a href="/2018/01/bitcoin-use-cases-bat-crypto-token-brave-browser-show-glimpse-future-internet-browser.html">Bitcoin Use-Cases: BAT Crypto Token and Brave
 Browser Show Glimpse That in the Future, the
 Internet IS the Browser!</a >
 </a></h2>
-																		<div class="et_pb_slide_content">
-																			<div>Back in 2009, before Bitcoin was invented, I
+                  <div class="et_pb_slide_content">
+                   <div>Back in 2009, before Bitcoin was invented, I
 talked about a world with an internet that had
 no login button. The idea was that, with open
 standards and open technologies built right
 into the browser you would be able to visit
 site-to-site on the...</div>
-																		</div>
-																		<div class="et_pb_button_wrapper"><a class="et_pb_button et_pb_more_button" href="/2018/01/bitcoin-use-cases-bat-crypto-token-brave-browser-show-glimpse-future-internet-browser.html">More</a > </a></div>
-																	</div>
-																	<!-- .et_pb_slide_description -->
+                  </div>
+                  <div class="et_pb_button_wrapper"><a class="et_pb_button et_pb_more_button" href="/2018/01/bitcoin-use-cases-bat-crypto-token-brave-browser-show-glimpse-future-internet-browser.html">More</a > </a></div>
+                 </div>
+                 <!-- .et_pb_slide_description -->
 
-																</div>
-															</div>
-															<!-- .et_pb_container -->
+                </div>
+               </div>
+               <!-- .et_pb_container -->
 
-													</div>
-													<!-- .et_pb_slide -->
+             </div>
+             <!-- .et_pb_slide -->
 
-												</div>
-												<!-- .et_pb_slides -->
+            </div>
+            <!-- .et_pb_slides -->
 
-											</div>
-											<!-- .et_pb_slider -->
+           </div>
+           <!-- .et_pb_slider -->
 
-										</div>
-										<!-- .et_pb_column -->
+          </div>
+          <!-- .et_pb_column -->
 
-									</div>
-									<!-- .et_pb_row -->
+         </div>
+         <!-- .et_pb_row -->
 
-								</div>
-							</div>
-							<!-- .et_builder_inner_content -->
+        </div>
+       </div>
+       <!-- .et_builder_inner_content -->
 
-						</div>
-						<!-- .et-l -->
+      </div>
+      <!-- .et-l -->
 
-					</div>
-					<!-- #et-boc -->
+     </div>
+     <!-- #et-boc -->
 
-				</div>
-			</article>
-		</div>
-	</main><!-- #main -->
+    </div>
+   </article>
+  </div>
+ </main><!-- #main -->
 
 <?php
 get_footer();
 
-
 ---
 
 _**Assistant**_
-
-
-
-
-
-
 
 I'll help convert the front-page.php to a block-based template. Let's create front-page.html:
 
@@ -4366,7 +4309,7 @@ I'll help convert the front-page.php to a block-based template. Let's create fro
 <!-- wp:group {"tagName":"main","className":"site-main front-page","layout":{"type":"constrained"}} -->
 <main class="wp-block-group site-main front-page">
     <!-- wp:post-content /-->
-    
+
     <!-- wp:group {"className":"featured-section","backgroundColor":"background","layout":{"type":"constrained"}} -->
     <div class="wp-block-group featured-section has-background-background-color has-background">
         <!-- wp:columns {"className":"featured-content","align":"wide"} -->
@@ -4388,11 +4331,11 @@ I'll help convert the front-page.php to a block-based template. Let's create fro
                     <!-- wp:heading {"level":2,"textColor":"background"} -->
                     <h2 class="has-background-color">About Jesse</h2>
                     <!-- /wp:heading -->
-                    
+
                     <!-- wp:paragraph -->
                     <p>{{ Dynamic content from 'about-jesse-widget' }}</p>
                     <!-- /wp:paragraph -->
-                    
+
                     <!-- wp:buttons -->
                     <div class="wp-block-buttons">
                         <!-- wp:button {"className":"read-more"} -->
@@ -4435,8 +4378,6 @@ I'll help convert the front-page.php to a block-based template. Let's create fro
 
 <!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
 ```
-
-
 
 Let's add styles for the front page:
 
@@ -4537,12 +4478,12 @@ Let's add styles for the front page:
     .featured-content {
         flex-direction: column;
     }
-    
+
     .about-section,
     .blog-preview {
         flex-basis: 100% !important;
     }
-    
+
     .post-cover {
         min-height: 400px;
     }
@@ -4552,19 +4493,17 @@ Let's add styles for the front page:
     .featured-section {
         margin-top: 40px;
     }
-    
+
     .about-section,
     .blog-preview {
         padding: 30px;
     }
-    
+
     .post-cover {
         min-height: 300px;
     }
 }
 ```
-
-
 
 Add this to functions.php:
 
@@ -4586,8 +4525,6 @@ function staynalive_widgets_init() {
 }
 add_action('widgets_init', 'staynalive_widgets_init');
 ```
-
-
 
 This conversion:
 1. Uses native blocks for layout
@@ -4613,79 +4550,82 @@ Here's custom-header.php:
  *
  * You can add an optional custom header image to header.php like so ...
  *
-	<?php the_header_image_tag(); ?>
- *
- * @link https://developer.wordpress.org/themes/functionality/custom-headers/
- *
- * @package blanktheme
+ <?php the_header_image_tag(); ?>
+
+-
+- @link <https://developer.wordpress.org/themes/functionality/custom-headers/>
+-
+- @package blanktheme
  */
 
 /**
- * Set up the WordPress core custom header feature.
- *
- * @uses blanktheme_header_style()
+
+- Set up the WordPress core custom header feature.
+-
+- @uses blanktheme_header_style()
  */
 function blanktheme_custom_header_setup() {
-	add_theme_support(
-		'custom-header',
-		apply_filters(
-			'blanktheme_custom_header_args',
-			array(
-				'default-image'      => '',
-				'default-text-color' => '000000',
-				'width'              => 1000,
-				'height'             => 250,
-				'flex-height'        => true,
-				'wp-head-callback'   => 'blanktheme_header_style',
-			)
-		)
-	);
+ add_theme_support(
+  'custom-header',
+  apply_filters(
+   'blanktheme_custom_header_args',
+   array(
+    'default-image'      => '',
+    'default-text-color' => '000000',
+    'width'              => 1000,
+    'height'             => 250,
+    'flex-height'        => true,
+    'wp-head-callback'   => 'blanktheme_header_style',
+   )
+  )
+ );
 }
 add_action( 'after_setup_theme', 'blanktheme_custom_header_setup' );
 
 if ( ! function_exists( 'blanktheme_header_style' ) ) :
-	/**
-	 * Styles the header image and text displayed on the blog.
-	 *
-	 * @see blanktheme_custom_header_setup().
-	 */
-	function blanktheme_header_style() {
-		$header_text_color = get_header_textcolor();
+ /**
+  *Styles the header image and text displayed on the blog.
+  *
+  *@see blanktheme_custom_header_setup().
+  */
+ function blanktheme_header_style() {
+  $header_text_color = get_header_textcolor();
 
-		/*
-		 * If no custom options for text are set, let's bail.
-		 * get_header_textcolor() options: Any hex value, 'blank' to hide text. Default: add_theme_support( 'custom-header' ).
-		 */
-		if ( get_theme_support( 'custom-header', 'default-text-color' ) === $header_text_color ) {
-			return;
-		}
+  /*
 
-		// If we get this far, we have custom styles. Let's do this.
-		?>
-		<style type="text/css">
-		<?php
-		// Has the text been hidden?
-		if ( ! display_header_text() ) :
-			?>
-			.site-title,
-			.site-description {
-				position: absolute;
-				clip: rect(1px, 1px, 1px, 1px);
-				}
-			<?php
-			// If the user has set a custom color for the text use that.
-		else :
-			?>
-			.site-title a,
-			.site-description {
-				color: #<?php echo esc_attr( $header_text_color ); ?>;
-			}
-		<?php endif; ?>
-		</style>
-		<?php
-	}
+- If no custom options for text are set, let's bail.
+- get_header_textcolor() options: Any hex value, 'blank' to hide text. Default: add_theme_support( 'custom-header' ).
+   */
+  if ( get_theme_support( 'custom-header', 'default-text-color' ) === $header_text_color ) {
+   return;
+  }
+
+  // If we get this far, we have custom styles. Let's do this.
+  ?>
+  <style type="text/css">
+  <?php
+  // Has the text been hidden?
+  if ( ! display_header_text() ) :
+   ?>
+   .site-title,
+   .site-description {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    }
+   <?php
+   // If the user has set a custom color for the text use that.
+  else :
+   ?>
+   .site-title a,
+   .site-description {
+    color: #<?php echo esc_attr( $header_text_color ); ?>;
+   }
+  <?php endif; ?>
+  </style>
+  <?php
+
+ }
 endif;
-
 
 ---
 
@@ -4834,6 +4774,7 @@ add_action('init', 'staynalive_register_header_pattern');
 ```
 
 This modern approach:
+
 1. Uses block patterns instead of PHP callbacks
 2. Supports featured images as header backgrounds
 3. Maintains responsive design
@@ -4865,26 +4806,26 @@ Here's customizer.php:
  * @param WP_Customize_Manager $wp_customize Theme Customizer object.
  */
 function blanktheme_customize_register( $wp_customize ) {
-	$wp_customize->get_setting( 'blogname' )->transport         = 'postMessage';
-	$wp_customize->get_setting( 'blogdescription' )->transport  = 'postMessage';
-	$wp_customize->get_setting( 'header_textcolor' )->transport = 'postMessage';
+ $wp_customize->get_setting( 'blogname' )->transport         = 'postMessage';
+ $wp_customize->get_setting( 'blogdescription' )->transport  = 'postMessage';
+ $wp_customize->get_setting( 'header_textcolor' )->transport = 'postMessage';
 
-	if ( isset( $wp_customize->selective_refresh ) ) {
-		$wp_customize->selective_refresh->add_partial(
-			'blogname',
-			array(
-				'selector'        => '.site-title a',
-				'render_callback' => 'blanktheme_customize_partial_blogname',
-			)
-		);
-		$wp_customize->selective_refresh->add_partial(
-			'blogdescription',
-			array(
-				'selector'        => '.site-description',
-				'render_callback' => 'blanktheme_customize_partial_blogdescription',
-			)
-		);
-	}
+ if ( isset( $wp_customize->selective_refresh ) ) {
+  $wp_customize->selective_refresh->add_partial(
+   'blogname',
+   array(
+    'selector'        => '.site-title a',
+    'render_callback' => 'blanktheme_customize_partial_blogname',
+   )
+  );
+  $wp_customize->selective_refresh->add_partial(
+   'blogdescription',
+   array(
+    'selector'        => '.site-description',
+    'render_callback' => 'blanktheme_customize_partial_blogdescription',
+   )
+  );
+ }
 }
 add_action( 'customize_register', 'blanktheme_customize_register' );
 
@@ -4894,7 +4835,7 @@ add_action( 'customize_register', 'blanktheme_customize_register' );
  * @return void
  */
 function blanktheme_customize_partial_blogname() {
-	bloginfo( 'name' );
+ bloginfo( 'name' );
 }
 
 /**
@@ -4903,17 +4844,16 @@ function blanktheme_customize_partial_blogname() {
  * @return void
  */
 function blanktheme_customize_partial_blogdescription() {
-	bloginfo( 'description' );
+ bloginfo( 'description' );
 }
 
 /**
  * Binds JS handlers to make Theme Customizer preview reload changes asynchronously.
  */
 function blanktheme_customize_preview_js() {
-	wp_enqueue_script( 'blanktheme-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-preview' ), _S_VERSION, true );
+ wp_enqueue_script( 'blanktheme-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-preview' ), _S_VERSION, true );
 }
 add_action( 'customize_preview_init', 'blanktheme_customize_preview_js' );
-
 
 ---
 
@@ -5101,57 +5041,56 @@ Here's jetpack.php:
  * See: https://jetpack.com/support/content-options/
  */
 function blanktheme_jetpack_setup() {
-	// Add theme support for Infinite Scroll.
-	add_theme_support(
-		'infinite-scroll',
-		array(
-			'container' => 'main',
-			'render'    => 'blanktheme_infinite_scroll_render',
-			'footer'    => 'page',
-		)
-	);
+ // Add theme support for Infinite Scroll.
+ add_theme_support(
+  'infinite-scroll',
+  array(
+   'container' => 'main',
+   'render'    => 'blanktheme_infinite_scroll_render',
+   'footer'    => 'page',
+  )
+ );
 
-	// Add theme support for Responsive Videos.
-	add_theme_support( 'jetpack-responsive-videos' );
+ // Add theme support for Responsive Videos.
+ add_theme_support( 'jetpack-responsive-videos' );
 
-	// Add theme support for Content Options.
-	add_theme_support(
-		'jetpack-content-options',
-		array(
-			'post-details' => array(
-				'stylesheet' => 'blanktheme-style',
-				'date'       => '.posted-on',
-				'categories' => '.cat-links',
-				'tags'       => '.tags-links',
-				'author'     => '.byline',
-				'comment'    => '.comments-link',
-			),
-			'featured-images' => array(
-				'archive' => true,
-				'post'    => true,
-				'page'    => true,
-			),
-		)
-	);
+ // Add theme support for Content Options.
+ add_theme_support(
+  'jetpack-content-options',
+  array(
+   'post-details' => array(
+    'stylesheet' => 'blanktheme-style',
+    'date'       => '.posted-on',
+    'categories' => '.cat-links',
+    'tags'       => '.tags-links',
+    'author'     => '.byline',
+    'comment'    => '.comments-link',
+   ),
+   'featured-images' => array(
+    'archive' => true,
+    'post'    => true,
+    'page'    => true,
+   ),
+  )
+ );
 }
 add_action( 'after_setup_theme', 'blanktheme_jetpack_setup' );
 
 if ( ! function_exists( 'blanktheme_infinite_scroll_render' ) ) :
-	/**
-	 * Custom render function for Infinite Scroll.
-	 */
-	function blanktheme_infinite_scroll_render() {
-		while ( have_posts() ) {
-			the_post();
-			if ( is_search() ) :
-				get_template_part( 'template-parts/content', 'search' );
-			else :
-				get_template_part( 'template-parts/content', get_post_type() );
-			endif;
-		}
-	}
+ /**
+  * Custom render function for Infinite Scroll.
+  */
+ function blanktheme_infinite_scroll_render() {
+  while ( have_posts() ) {
+   the_post();
+   if ( is_search() ) :
+    get_template_part( 'template-parts/content', 'search' );
+   else :
+    get_template_part( 'template-parts/content', get_post_type() );
+   endif;
+  }
+ }
 endif;
-
 
 ---
 
@@ -5241,22 +5180,24 @@ function staynalive_infinite_scroll_render() {
 }
 
 /**
- * Modify Jetpack's Content Options.
- *
- * @param array $options
- * @return array
+
+- Modify Jetpack's Content Options.
+-
+- @param array $options
+- @return array
  */
 function staynalive_jetpack_content_options($options) {
     $options['featured-images']['archive-default'] = true;
     $options['featured-images']['post-default'] = true;
     $options['featured-images']['page-default'] = true;
-    
+
     return $options;
 }
 add_filter('jetpack_content_options_defaults', 'staynalive_jetpack_content_options');
 
 /**
- * Add custom block styles for Jetpack blocks
+
+- Add custom block styles for Jetpack blocks
  */
 function staynalive_jetpack_block_styles() {
     if (!function_exists('register_block_style')) {
@@ -5274,14 +5215,15 @@ function staynalive_jetpack_block_styles() {
 add_action('init', 'staynalive_jetpack_block_styles');
 
 /**
- * Add custom CSS for Jetpack features
+
+- Add custom CSS for Jetpack features
  */
 function staynalive_jetpack_styles() {
     wp_add_inline_style('staynalive-style', '
         .infinite-scroll .wp-block-query-pagination {
             display: none;
         }
-        
+
         .infinite-loader {
             margin: 40px auto;
         }
@@ -5306,6 +5248,7 @@ function staynalive_jetpack_styles() {
     ');
 }
 add_action('wp_enqueue_scripts', 'staynalive_jetpack_styles');
+
 ```
 
 This modernized version:
@@ -5348,17 +5291,17 @@ Here's template-functions.php:
  * @return array
  */
 function blanktheme_body_classes( $classes ) {
-	// Adds a class of hfeed to non-singular pages.
-	if ( ! is_singular() ) {
-		$classes[] = 'hfeed';
-	}
+ // Adds a class of hfeed to non-singular pages.
+ if ( ! is_singular() ) {
+  $classes[] = 'hfeed';
+ }
 
-	// Adds a class of no-sidebar when there is no sidebar present.
-	if ( ! is_active_sidebar( 'sidebar-1' ) ) {
-		$classes[] = 'no-sidebar';
-	}
+ // Adds a class of no-sidebar when there is no sidebar present.
+ if ( ! is_active_sidebar( 'sidebar-1' ) ) {
+  $classes[] = 'no-sidebar';
+ }
 
-	return $classes;
+ return $classes;
 }
 add_filter( 'body_class', 'blanktheme_body_classes' );
 
@@ -5366,9 +5309,9 @@ add_filter( 'body_class', 'blanktheme_body_classes' );
  * Add a pingback url auto-discovery header for single posts, pages, or attachments.
  */
 function blanktheme_pingback_header() {
-	if ( is_singular() && pings_open() ) {
-		printf( '<link rel="pingback" href="%s">', esc_url( get_bloginfo( 'pingback_url' ) ) );
-	}
+ if ( is_singular() && pings_open() ) {
+  printf( '<link rel="pingback" href="%s">', esc_url( get_bloginfo( 'pingback_url' ) ) );
+ }
 }
 add_action( 'wp_head', 'blanktheme_pingback_header' );
 
@@ -5534,6 +5477,7 @@ add_filter('image_size_names_choose', 'staynalive_custom_image_sizes');
 ```
 
 This modernized version:
+
 1. Adds block-specific body classes
 2. Supports dark mode detection
 3. Enhances block attributes
@@ -5543,6 +5487,7 @@ This modernized version:
 7. Maintains performance
 
 Key features:
+
 - Better block integration
 - Enhanced template detection
 - Improved image optimization
@@ -5569,170 +5514,165 @@ Here's template-tags.php:
  */
 
 if ( ! function_exists( 'blanktheme_posted_on' ) ) :
-	/**
-	 * Prints HTML with meta information for the current post-date/time.
-	 */
-	function blanktheme_posted_on() {
-		$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
-		if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
-			$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
-		}
+ /**
+  * Prints HTML with meta information for the current post-date/time.
+  */
+ function blanktheme_posted_on() {
+  $time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+  if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
+   $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+  }
 
-		$time_string = sprintf(
-			$time_string,
-			esc_attr( get_the_date( DATE_W3C ) ),
-			esc_html( get_the_date() ),
-			esc_attr( get_the_modified_date( DATE_W3C ) ),
-			esc_html( get_the_modified_date() )
-		);
+  $time_string = sprintf(
+   $time_string,
+   esc_attr( get_the_date( DATE_W3C ) ),
+   esc_html( get_the_date() ),
+   esc_attr( get_the_modified_date( DATE_W3C ) ),
+   esc_html( get_the_modified_date() )
+  );
 
-		$posted_on = sprintf(
-			/* translators: %s: post date. */
-			esc_html_x( 'Posted on %s', 'post date', 'blanktheme' ),
-			'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
-		);
+  $posted_on = sprintf(
+   /* translators: %s: post date. */
+   esc_html_x( 'Posted on %s', 'post date', 'blanktheme' ),
+   '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
+  );
 
-		echo '<span class="posted-on">' . $posted_on . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+  echo '<span class="posted-on">' . $posted_on . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
-	}
+ }
 endif;
 
 if ( ! function_exists( 'blanktheme_posted_by' ) ) :
-	/**
-	 * Prints HTML with meta information for the current author.
-	 */
-	function blanktheme_posted_by() {
-		$byline = sprintf(
-			/* translators: %s: post author. */
-			esc_html_x( 'by %s', 'post author', 'blanktheme' ),
-			'<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span>'
-		);
+ /**
+  * Prints HTML with meta information for the current author.
+  */
+ function blanktheme_posted_by() {
+  $byline = sprintf(
+   /* translators: %s: post author. */
+   esc_html_x( 'by %s', 'post author', 'blanktheme' ),
+   '<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span>'
+  );
 
-		echo '<span class="byline"> ' . $byline . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+  echo '<span class="byline"> ' . $byline . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
-	}
+ }
 endif;
 
 if ( ! function_exists( 'blanktheme_entry_footer' ) ) :
-	/**
-	 * Prints HTML with meta information for the categories, tags and comments.
-	 */
-	function blanktheme_entry_footer() {
-		// Hide category and tag text for pages.
-		if ( 'post' === get_post_type() ) {
-			/* translators: used between list items, there is a space after the comma */
-			$categories_list = get_the_category_list( esc_html__( ', ', 'blanktheme' ) );
-			if ( $categories_list ) {
-				/* translators: 1: list of categories. */
-				printf( '<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'blanktheme' ) . '</span>', $categories_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			}
+ /**
+  * Prints HTML with meta information for the categories, tags and comments.
+  */
+ function blanktheme_entry_footer() {
+  // Hide category and tag text for pages.
+  if ( 'post' === get_post_type() ) {
+   /* translators: used between list items, there is a space after the comma */
+   $categories_list = get_the_category_list( esc_html__( ', ', 'blanktheme' ) );
+   if ( $categories_list ) {
+    /* translators: 1: list of categories. */
+    printf( '<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'blanktheme' ) . '</span>', $categories_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+   }
 
-			/* translators: used between list items, there is a space after the comma */
-			$tags_list = get_the_tag_list( '', esc_html_x( ', ', 'list item separator', 'blanktheme' ) );
-			if ( $tags_list ) {
-				/* translators: 1: list of tags. */
-				printf( '<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'blanktheme' ) . '</span>', $tags_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			}
-		}
+   /* translators: used between list items, there is a space after the comma */
+   $tags_list = get_the_tag_list( '', esc_html_x( ', ', 'list item separator', 'blanktheme' ) );
+   if ( $tags_list ) {
+    /* translators: 1: list of tags. */
+    printf( '<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'blanktheme' ) . '</span>', $tags_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+   }
+  }
 
-		if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
-			echo '<span class="comments-link">';
-			comments_popup_link(
-				sprintf(
-					wp_kses(
-						/* translators: %s: post title */
-						__( 'Leave a Comment<span class="screen-reader-text"> on %s</span>', 'blanktheme' ),
-						array(
-							'span' => array(
-								'class' => array(),
-							),
-						)
-					),
-					wp_kses_post( get_the_title() )
-				)
-			);
-			echo '</span>';
-		}
+  if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
+   echo '<span class="comments-link">';
+   comments_popup_link(
+    sprintf(
+     wp_kses(
+      /* translators: %s: post title */
+      __( 'Leave a Comment<span class="screen-reader-text"> on %s</span>', 'blanktheme' ),
+      array(
+       'span' => array(
+        'class' => array(),
+       ),
+      )
+     ),
+     wp_kses_post( get_the_title() )
+    )
+   );
+   echo '</span>';
+  }
 
-		edit_post_link(
-			sprintf(
-				wp_kses(
-					/* translators: %s: Name of current post. Only visible to screen readers */
-					__( 'Edit <span class="screen-reader-text">%s</span>', 'blanktheme' ),
-					array(
-						'span' => array(
-							'class' => array(),
-						),
-					)
-				),
-				wp_kses_post( get_the_title() )
-			),
-			'<span class="edit-link">',
-			'</span>'
-		);
-	}
+  edit_post_link(
+   sprintf(
+    wp_kses(
+     /* translators: %s: Name of current post. Only visible to screen readers */
+     __( 'Edit <span class="screen-reader-text">%s</span>', 'blanktheme' ),
+     array(
+      'span' => array(
+       'class' => array(),
+      ),
+     )
+    ),
+    wp_kses_post( get_the_title() )
+   ),
+   '<span class="edit-link">',
+   '</span>'
+  );
+ }
 endif;
 
 if ( ! function_exists( 'blanktheme_post_thumbnail' ) ) :
-	/**
-	 * Displays an optional post thumbnail.
-	 *
-	 * Wraps the post thumbnail in an anchor element on index views, or a div
-	 * element when on single views.
-	 */
-	function blanktheme_post_thumbnail() {
-		if ( post_password_required() || is_attachment() || ! has_post_thumbnail() ) {
-			return;
-		}
+ /**
+  * Displays an optional post thumbnail.
+  *
+  * Wraps the post thumbnail in an anchor element on index views, or a div
+  * element when on single views.
+  */
+ function blanktheme_post_thumbnail() {
+  if ( post_password_required() || is_attachment() || ! has_post_thumbnail() ) {
+   return;
+  }
 
-		if ( is_singular() ) :
-			?>
+  if ( is_singular() ) :
+   ?>
 
-			<div class="post-thumbnail">
-				<?php the_post_thumbnail(); ?>
-			</div><!-- .post-thumbnail -->
+   <div class="post-thumbnail">
+    <?php the_post_thumbnail(); ?>
+   </div><!-- .post-thumbnail -->
 
-		<?php else : ?>
+  <?php else : ?>
 
-			<a class="post-thumbnail" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
-				<?php
-					the_post_thumbnail(
-						'post-thumbnail',
-						array(
-							'alt' => the_title_attribute(
-								array(
-									'echo' => false,
-								)
-							),
-						)
-					);
-				?>
-			</a>
+   <a class="post-thumbnail" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
+    <?php
+     the_post_thumbnail(
+      'post-thumbnail',
+      array(
+       'alt' => the_title_attribute(
+        array(
+         'echo' => false,
+        )
+       ),
+      )
+     );
+    ?>
+   </a>
 
-			<?php
-		endif; // End is_singular().
-	}
+   <?php
+  endif; // End is_singular().
+ }
 endif;
 
 if ( ! function_exists( 'wp_body_open' ) ) :
-	/**
-	 * Shim for sites older than 5.2.
-	 *
-	 * @link https://core.trac.wordpress.org/ticket/12563
-	 */
-	function wp_body_open() {
-		do_action( 'wp_body_open' );
-	}
+ /**
+  *Shim for sites older than 5.2.
+  *
+  *@link <https://core.trac.wordpress.org/ticket/12563>
+  */
+ function wp_body_open() {
+  do_action( 'wp_body_open' );
+ }
 endif;
-
 
 ---
 
 _**Assistant**_
-
-
-
-
 
 For a block theme, we'll modernize the template tags to work with blocks and add some useful utilities. Here's the updated version:
 
@@ -5752,7 +5692,7 @@ For a block theme, we'll modernize the template tags to work with blocks and add
 function staynalive_post_meta($post = null) {
     $post = get_post($post);
     $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time>';
-    
+
     if (get_the_time('U', $post) !== get_the_modified_time('U', $post)) {
         $time_string = sprintf(
             '<time class="entry-date published" datetime="%1$s">%2$s</time>
@@ -5906,7 +5846,7 @@ function staynalive_post_navigation() {
     }
 
     echo '<nav class="post-navigation">';
-    
+
     if ($prev_post) {
         printf(
             '<div class="nav-previous">
@@ -5918,7 +5858,7 @@ function staynalive_post_navigation() {
             esc_html(get_the_title($prev_post))
         );
     }
-    
+
     if ($next_post) {
         printf(
             '<div class="nav-next">
@@ -5930,12 +5870,13 @@ function staynalive_post_navigation() {
             esc_html(get_the_title($next_post))
         );
     }
-    
+
     echo '</nav>';
 }
 ```
 
 This modernized version:
+
 1. Uses proper escaping
 2. Improves accessibility
 3. Adds better image handling
@@ -5945,6 +5886,7 @@ This modernized version:
 7. Follows WordPress coding standards
 
 Key improvements:
+
 - Better function organization
 - Enhanced meta information
 - Improved image handling
@@ -5973,58 +5915,51 @@ Here's search.php:
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+ <main id="primary" class="site-main">
 
-		<?php if ( have_posts() ) : ?>
+  <?php if ( have_posts() ) : ?>
 
-			<header class="page-header">
-				<h1 class="page-title">
-					<?php
-					/* translators: %s: search query. */
-					printf( esc_html__( 'Search Results for: %s', 'blanktheme' ), '<span>' . get_search_query() . '</span>' );
-					?>
-				</h1>
-			</header><!-- .page-header -->
+   <header class="page-header">
+    <h1 class="page-title">
+     <?php
+     /* translators: %s: search query. */
+     printf( esc_html__( 'Search Results for: %s', 'blanktheme' ), '<span>' . get_search_query() . '</span>' );
+     ?>
+    </h1>
+   </header><!-- .page-header -->
 
-			<?php
-			/* Start the Loop */
-			while ( have_posts() ) :
-				the_post();
+   <?php
+   /* Start the Loop */
+   while ( have_posts() ) :
+    the_post();
 
-				/**
-				 * Run the loop for the search to output the results.
-				 * If you want to overload this in a child theme then include a file
-				 * called content-search.php and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', 'search' );
+    /**
+     * Run the loop for the search to output the results.
+     * If you want to overload this in a child theme then include a file
+     * called content-search.php and that will be used instead.
+     */
+    get_template_part( 'template-parts/content', 'search' );
 
-			endwhile;
+   endwhile;
 
-			the_posts_navigation();
+   the_posts_navigation();
 
-		else :
+  else :
 
-			get_template_part( 'template-parts/content', 'none' );
+   get_template_part( 'template-parts/content', 'none' );
 
-		endif;
-		?>
+  endif;
+  ?>
 
-	</main><!-- #main -->
+ </main><!-- #main -->
 
 <?php
 get_sidebar();
 get_footer();
 
-
 ---
 
 _**Assistant**_
-
-
-
-
-
-
 
 I'll help convert the search.php to a block-based template. Let's create search.html:
 
@@ -6036,7 +5971,7 @@ I'll help convert the search.php to a block-based template. Let's create search.
     <!-- wp:group {"className":"search-header","layout":{"type":"constrained"}} -->
     <div class="wp-block-group search-header">
         <!-- wp:search {"label":"Search","buttonText":"Search","className":"search-form"} /-->
-        
+
         <!-- wp:query-title {"type":"search","textAlign":"center","fontSize":"x-large"} /-->
     </div>
     <!-- /wp:group -->
@@ -6053,16 +5988,16 @@ I'll help convert the search.php to a block-based template. Let's create search.
                         <!-- wp:group {"className":"search-item"} -->
                         <div class="wp-block-group search-item">
                             <!-- wp:post-featured-image {"isLink":true,"height":"200px"} /-->
-                            
+
                             <!-- wp:post-title {"isLink":true,"fontSize":"large"} /-->
-                            
+
                             <!-- wp:group {"className":"post-meta","layout":{"type":"flex","flexWrap":"wrap"}} -->
                             <div class="wp-block-group post-meta">
                                 <!-- wp:post-date /-->
                                 <!-- wp:post-terms {"term":"category"} /-->
                             </div>
                             <!-- /wp:group -->
-                            
+
                             <!-- wp:post-excerpt {"moreText":"Read More"} /-->
                         </div>
                         <!-- /wp:group -->
@@ -6091,7 +6026,7 @@ I'll help convert the search.php to a block-based template. Let's create search.
                     <!-- wp:heading {"level":2} -->
                     <h2>Categories</h2>
                     <!-- /wp:heading -->
-                    
+
                     <!-- wp:categories {"showPostCounts":true} /-->
                 </div>
                 <!-- /wp:group -->
@@ -6101,7 +6036,7 @@ I'll help convert the search.php to a block-based template. Let's create search.
                     <!-- wp:heading {"level":2} -->
                     <h2>Tags</h2>
                     <!-- /wp:heading -->
-                    
+
                     <!-- wp:tag-cloud /-->
                 </div>
                 <!-- /wp:group -->
@@ -6116,8 +6051,6 @@ I'll help convert the search.php to a block-based template. Let's create search.
 
 <!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
 ```
-
-
 
 Let's add styles for the search page:
 
@@ -6213,7 +6146,7 @@ Let's add styles for the search page:
     .search-layout {
         flex-direction: column;
     }
-    
+
     .search-sidebar {
         padding-left: 0;
         margin-top: 60px;
@@ -6224,11 +6157,11 @@ Let's add styles for the search page:
     .search-page {
         padding: 40px 0;
     }
-    
+
     .search-header {
         margin-bottom: 40px;
     }
-    
+
     .post-meta {
         flex-direction: column;
         gap: 5px;
@@ -6236,16 +6169,12 @@ Let's add styles for the search page:
 }
 ```
 
-
-
 Add this to functions.php:
 
 ```php:functions.php
 // Add to staynalive_scripts()
 wp_enqueue_style('sna-search-styles', get_template_directory_uri() . '/assets/css/search.css', array(), STAYNALIVE_VERSION);
 ```
-
-
 
 This conversion:
 1. Uses native blocks for layout
@@ -6274,14 +6203,13 @@ Here's sidebar.php:
  */
 
 if ( ! is_active_sidebar( 'sidebar-1' ) ) {
-	return;
+ return;
 }
 ?>
 
 <aside id="secondary" class="widget-area">
-	<?php dynamic_sidebar( 'sidebar-1' ); ?>
+ <?php dynamic_sidebar( 'sidebar-1' ); ?>
 </aside><!-- #secondary -->
-
 
 ---
 
@@ -6459,6 +6387,7 @@ wp_enqueue_style('sna-sidebar-styles', get_template_directory_uri() . '/assets/c
 ```
 
 This modern approach:
+
 1. Uses blocks instead of widgets
 2. Provides consistent styling
 3. Improves accessibility
@@ -6489,56 +6418,49 @@ Here's content-none.php:
 ?>
 
 <section class="no-results not-found">
-	<header class="page-header">
-		<h1 class="page-title"><?php esc_html_e( 'Nothing Found', 'blanktheme' ); ?></h1>
-	</header><!-- .page-header -->
+ <header class="page-header">
+  <h1 class="page-title"><?php esc_html_e( 'Nothing Found', 'blanktheme' ); ?></h1>
+ </header><!-- .page-header -->
 
-	<div class="page-content">
-		<?php
-		if ( is_home() && current_user_can( 'publish_posts' ) ) :
+ <div class="page-content">
+  <?php
+  if ( is_home() && current_user_can( 'publish_posts' ) ) :
 
-			printf(
-				'<p>' . wp_kses(
-					/* translators: 1: link to WP admin new post page. */
-					__( 'Ready to publish your first post? <a href="%1$s">Get started here</a>.', 'blanktheme' ),
-					array(
-						'a' => array(
-							'href' => array(),
-						),
-					)
-				) . '</p>',
-				esc_url( admin_url( 'post-new.php' ) )
-			);
+   printf(
+    '<p>' . wp_kses(
+     /_translators: 1: link to WP admin new post page._/
+     __( 'Ready to publish your first post? <a href="%1$s">Get started here</a>.', 'blanktheme' ),
+     array(
+      'a' => array(
+       'href' => array(),
+      ),
+     )
+    ) . '</p>',
+    esc_url( admin_url( 'post-new.php' ) )
+   );
 
-		elseif ( is_search() ) :
-			?>
+  elseif ( is_search() ) :
+   ?>
 
-			<p><?php esc_html_e( 'Sorry, but nothing matched your search terms. Please try again with some different keywords.', 'blanktheme' ); ?></p>
-			<?php
-			get_search_form();
+   <p><?php esc_html_e( 'Sorry, but nothing matched your search terms. Please try again with some different keywords.', 'blanktheme' ); ?></p>
+   <?php
+   get_search_form();
 
-		else :
-			?>
+  else :
+   ?>
 
-			<p><?php esc_html_e( 'It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help.', 'blanktheme' ); ?></p>
-			<?php
-			get_search_form();
+   <p><?php esc_html_e( 'It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help.', 'blanktheme' ); ?></p>
+   <?php
+   get_search_form();
 
-		endif;
-		?>
-	</div><!-- .page-content -->
+  endif;
+  ?>
+ </div><!-- .page-content -->
 </section><!-- .no-results -->
-
 
 ---
 
 _**Assistant**_
-
-
-
-
-
-
 
 For a block theme, we'll convert this to a block pattern for "no results" content. Let's create a pattern:
 
@@ -6580,9 +6502,6 @@ For a block theme, we'll convert this to a block pattern for "no results" conten
 <!-- /wp:group -->
 ```
 
-
-
-
 Let's also create a sub-pattern for the context-specific messages:
 
 ```html:patterns/no-results-message.html
@@ -6596,9 +6515,6 @@ Let's also create a sub-pattern for the context-specific messages:
 </div>
 <!-- /wp:group -->
 ```
-
-
-
 
 Add styles for the no results content:
 
@@ -6695,9 +6611,6 @@ Add styles for the no results content:
 }
 ```
 
-
-
-
 Register the patterns in functions.php:
 
 ```php:functions.php
@@ -6731,10 +6644,8 @@ add_action('init', 'staynalive_register_no_results_patterns');
 wp_enqueue_style('sna-no-results-styles', get_template_directory_uri() . '/assets/css/no-results.css', array(), STAYNALIVE_VERSION);
 ```
 
-
-
-
 This modern approach:
+
 1. Uses block patterns
 2. Provides context-specific messages
 3. Includes helpful suggestions
@@ -6765,101 +6676,87 @@ Here's content-page.php:
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	
-	<div class="entry-content">
-		<?php if (!is_front_page() && the_title()) { ?> <!--only post this if not the home page and there's a title-->
-		<div class="et_pb_section  et_pb_section_0 et_pb_with_background et_section_regular" style="background-image: url(/wp-content/uploads/2024/12/jesse-front-bkg-3546149.jpg);padding:2%">
-				
-				
-					
-					<div class=" et_pb_row et_pb_row_0 et_pb_gutters1 et_pb_row_fullwidth">
-				
-				<div class="et_pb_column et_pb_column_1_2  et_pb_column_0" style="z-index:auto">
-				
-				<div class="" style="max-height:350px;max-width:350px" style="text-align:right">
-				<?php blanktheme_post_thumbnail(); ?>
-			</div>
-			</div> 
-						
-						<!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_2  et_pb_column_1">
-				
-				<div class="et_pb_module et_pb_post_title   et_pb_post_title_0 et_pb_bg_layout_dark">
-				
-				
-				<header class="et_pb_title_container">
-					<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
-				</header>
-				
-			</div><div class="et_pb_text et_pb_module et_pb_bg_layout_dark et_pb_text_0">
-				
+
+ <div class="entry-content">
+  <?php if (!is_front_page() && the_title()) { ?> <!--only post this if not the home page and there's a title-->
+  <div class="et_pb_section  et_pb_section_0 et_pb_with_background et_section_regular" style="background-image: url(/wp-content/uploads/2024/12/jesse-front-bkg-3546149.jpg);padding:2%">
+
+     <div class=" et_pb_row et_pb_row_0 et_pb_gutters1 et_pb_row_fullwidth">
+    
+    <div class="et_pb_column et_pb_column_1_2  et_pb_column_0" style="z-index:auto">
+    
+    <div class="" style="max-height:350px;max-width:350px" style="text-align:right">
+    <?php blanktheme_post_thumbnail(); ?>
+   </div>
+   </div>
+
+      <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_2  et_pb_column_1">
+    
+    <div class="et_pb_module et_pb_post_title   et_pb_post_title_0 et_pb_bg_layout_dark">
+    
+    
+    <header class="et_pb_title_container">
+     <?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
+    </header>
+    
+   </div><div class="et_pb_text et_pb_module et_pb_bg_layout_dark et_pb_text_0">
+
 <p>
 <!--subtitle can go here-->
-						</p>
+      </p>
 
-			</div> <!-- .et_pb_text -->
-						
-			</div> <!-- .et_pb_column -->
-						
-					
-			</div> <!-- .et_pb_row -->
+   </div> <!-- .et_pb_text -->
 
-				
-			</div> <!-- .et_pb_section -->
-		
-			
-		</div>
-	
-					<?php } ?> <!-- end check for homepage -->
-	<div style="padding:2%">
-		<?php
-		the_content();
+   </div> <!-- .et_pb_column -->
 
-		wp_link_pages(
-			array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'blanktheme' ),
-				'after'  => '</div>',
-			)
-		);
-		?>
-	</div> <!-- for padding -->
-	</div><!-- .entry-content -->
+   </div> <!-- .et_pb_row -->
 
-	<?php if ( get_edit_post_link() ) : ?>
-		<footer class="entry-footer">
-			<?php
-			edit_post_link(
-				sprintf(
-					wp_kses(
-						/* translators: %s: Name of current post. Only visible to screen readers */
-						__( 'Edit <span class="screen-reader-text">%s</span>', 'blanktheme' ),
-						array(
-							'span' => array(
-								'class' => array(),
-							),
-						)
-					),
-					wp_kses_post( get_the_title() )
-				),
-				'<span class="edit-link">',
-				'</span>'
-			);
-			?>
-		</footer><!-- .entry-footer -->
-	<?php endif; ?>
+   </div> <!-- .et_pb_section -->
+  
+  </div>
+
+     <?php } ?> <!-- end check for homepage -->
+ <div style="padding:2%">
+  <?php
+  the_content();
+
+  wp_link_pages(
+   array(
+    'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'blanktheme' ),
+    'after'  => '</div>',
+   )
+  );
+  ?>
+ </div> <!-- for padding -->
+ </div><!-- .entry-content -->
+
+ <?php if ( get_edit_post_link() ) : ?>
+  <footer class="entry-footer">
+   <?php
+   edit_post_link(
+    sprintf(
+     wp_kses(
+      /* translators: %s: Name of current post. Only visible to screen readers */
+      __( 'Edit <span class="screen-reader-text">%s</span>', 'blanktheme' ),
+      array(
+       'span' => array(
+        'class' => array(),
+       ),
+      )
+     ),
+     wp_kses_post( get_the_title() )
+    ),
+    '<span class="edit-link">',
+    '</span>'
+   );
+   ?>
+  </footer><!-- .entry-footer -->
+ <?php endif; ?>
 </article><!-- #post-<?php the_ID(); ?> -->
-
 
 ---
 
 _**Assistant**_
-
-
-
-
-
-
-
-
 
 For a block theme, we'll convert this to a block pattern for page content. Let's create a pattern:
 
@@ -6914,9 +6811,6 @@ For a block theme, we'll convert this to a block pattern for page content. Let's
 </article>
 <!-- /wp:group -->
 ```
-
-
-
 
 Add styles for the page content:
 
@@ -7037,9 +6931,6 @@ Add styles for the page content:
 }
 ```
 
-
-
-
 Register the pattern in functions.php:
 
 ```php:functions.php
@@ -7060,10 +6951,8 @@ function staynalive_register_page_content_pattern() {
 add_action('init', 'staynalive_register_page_content_pattern');
 ```
 
-
-
-
 This modern approach:
+
 1. Uses block patterns
 2. Maintains the hero section
 3. Supports featured images
@@ -7094,42 +6983,33 @@ Here's content-search.php:
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header">
-		<?php the_title( sprintf( '<h2 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h2>' ); ?>
+ <header class="entry-header">
+  <?php the_title( sprintf( '<h2 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h2>' ); ?>
 
-		<?php if ( 'post' === get_post_type() ) : ?>
-		<div class="entry-meta">
-			<?php
-			blanktheme_posted_on();
-			blanktheme_posted_by();
-			?>
-		</div><!-- .entry-meta -->
-		<?php endif; ?>
-	</header><!-- .entry-header -->
+  <?php if ( 'post' === get_post_type() ) : ?>
+  <div class="entry-meta">
+   <?php
+   blanktheme_posted_on();
+   blanktheme_posted_by();
+   ?>
+  </div><!-- .entry-meta -->
+  <?php endif; ?>
+ </header><!-- .entry-header -->
 
-	<?php blanktheme_post_thumbnail(); ?>
+ <?php blanktheme_post_thumbnail(); ?>
 
-	<div class="entry-summary">
-		<?php the_excerpt(); ?>
-	</div><!-- .entry-summary -->
+ <div class="entry-summary">
+  <?php the_excerpt(); ?>
+ </div><!-- .entry-summary -->
 
-	<footer class="entry-footer">
-		<?php blanktheme_entry_footer(); ?>
-	</footer><!-- .entry-footer -->
+ <footer class="entry-footer">
+  <?php blanktheme_entry_footer(); ?>
+ </footer><!-- .entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->
-
 
 ---
 
 _**Assistant**_
-
-
-
-
-
-
-
-
 
 For a block theme, we'll convert this to a block pattern for search results. Let's create a pattern:
 
@@ -7179,10 +7059,6 @@ For a block theme, we'll convert this to a block pattern for search results. Let
 </article>
 <!-- /wp:group -->
 ```
-
-
-
-
 
 Add styles for search results:
 
@@ -7324,10 +7200,6 @@ Add styles for search results:
 }
 ```
 
-
-
-
-
 Register the pattern in functions.php:
 
 ```php:functions.php
@@ -7351,11 +7223,8 @@ add_action('init', 'staynalive_register_search_result_pattern');
 wp_enqueue_style('sna-search-results-styles', get_template_directory_uri() . '/assets/css/search-results.css', array(), STAYNALIVE_VERSION);
 ```
 
-
-
-
-
 This modern approach:
+
 1. Uses block patterns
 2. Improves layout structure
 3. Better meta information
@@ -7407,19 +7276,17 @@ blanktheme includes support for WooCommerce and for Infinite Scroll in Jetpack.
 == Changelog ==
 
 = 1.0 - May 12 2015 =
-* Initial release
+
+- Initial release
 
 == Credits ==
 
-* Based on Underscores https://underscores.me/, (C) 2012-2020 Automattic, Inc., [GPLv2 or later](https://www.gnu.org/licenses/gpl-2.0.html)
-* normalize.css https://necolas.github.io/normalize.css/, (C) 2012-2018 Nicolas Gallagher and Jonathan Neal, [MIT](https://opensource.org/licenses/MIT)
-
+- Based on Underscores <https://underscores.me/>, (C) 2012-2020 Automattic, Inc., [GPLv2 or later](https://www.gnu.org/licenses/gpl-2.0.html)
+- normalize.css <https://necolas.github.io/normalize.css/>, (C) 2012-2018 Nicolas Gallagher and Jonathan Neal, [MIT](https://opensource.org/licenses/MIT)
 
 ---
 
 _**Assistant**_
-
-
 
 Let's update the readme.txt for your modern block theme:
 
@@ -7519,6 +7386,7 @@ GNU General Public License for more details.
 ```
 
 Key updates:
+
 1. Modern requirements
 2. Block theme features
 3. Updated installation
@@ -7539,18 +7407,13 @@ Place your theme language files in this directory.
 
 Please visit the following links to learn more about translating WordPress themes:
 
-https://make.wordpress.org/polyglots/teams/
-https://developer.wordpress.org/themes/functionality/localization/
-https://developer.wordpress.org/reference/functions/load_theme_textdomain/
-
+<https://make.wordpress.org/polyglots/teams/>
+<https://developer.wordpress.org/themes/functionality/localization/>
+<https://developer.wordpress.org/reference/functions/load_theme_textdomain/>
 
 ---
 
 _**Assistant**_
-
-
-
-
 
 Let's update the languages readme to be more helpful for modern block themes:
 
@@ -7612,8 +7475,8 @@ If you need help with translations:
 3. Contact the theme author at https://staynalive.com/contact/
 ```
 
-
 Key updates:
+
 1. Block theme specifics
 2. Modern tools
 3. Clear instructions
@@ -7637,6 +7500,7 @@ _**Assistant**_
 I'll help clean up the theme while maintaining its design. Here's what we should do:
 
 1. **Remove Unnecessary Files**
+
 ```bash
 # Remove legacy template files
 rm content-none.php
@@ -7655,6 +7519,7 @@ rm -r template-parts/
 ```
 
 2. **Organize Files Structure**
+
 ```
 staynalive/
 ├── assets/
@@ -7855,18 +7720,21 @@ add_action('widgets_init', 'staynalive_widgets_init');
 ```
 
 5. **Clean up CSS files**:
+
 - Combine common styles into a `base.css`
 - Use CSS custom properties for colors and typography
 - Remove duplicate styles
 - Organize media queries consistently
 
 6. **Optimize Block Patterns**:
+
 - Move all patterns to dedicated files
 - Use consistent naming conventions
 - Remove redundant markup
 - Improve accessibility
 
 7. **Update theme.json**:
+
 - Remove unused settings
 - Organize color palette
 - Define consistent spacing units
@@ -8102,6 +7970,7 @@ img {
 ```
 
 Would you like me to continue with the next set of changes? I can:
+
 1. Create a new directory structure
 2. Update pattern organization
 3. Clean up template files
@@ -8303,6 +8172,7 @@ Let's create a component CSS file:
 ```
 
 Would you like me to continue with:
+
 1. More block templates
 2. Additional component styles
 3. Utility classes
@@ -8543,6 +8413,7 @@ wp.domReady(() => {
 ```
 
 Would you like me to continue with:
+
 1. More template files (archive, search, 404)
 2. Additional component styles (footer, sidebar)
 3. Block patterns for common layouts
@@ -8801,6 +8672,7 @@ Let's focus on completing the essential templates and their corresponding styles
 ```
 
 Would you like me to continue with:
+
 1. Archive template and styles
 2. Search template and styles
 3. Block patterns for common content sections
@@ -9034,6 +8906,7 @@ Let's focus on creating the archive and search templates next, as they're essent
 ```
 
 Would you like me to continue with:
+
 1. Block patterns for common content sections
 2. Additional utility classes
 3. RTL support
@@ -9256,6 +9129,7 @@ Let's focus on creating block patterns for common content sections, as these wil
 ```
 
 Would you like me to continue with:
+
 1. More content patterns (CTA, testimonials, etc.)
 2. RTL support
 3. Additional utility classes
@@ -9466,6 +9340,7 @@ add_action('wp_enqueue_scripts', 'staynalive_rtl_support');
 ```
 
 Would you like me to:
+
 1. Add more RTL adjustments for specific components
 2. Create RTL-specific block patterns
 3. Add language switcher functionality
@@ -9700,6 +9575,7 @@ add_action('init', 'staynalive_add_language_switcher_to_header');
 ```
 
 Would you like me to:
+
 1. Add more RTL-specific patterns
 2. Enhance the language switcher functionality
 3. Add bidirectional text support
@@ -9932,6 +9808,7 @@ document.addEventListener('DOMContentLoaded', function() {
 ```
 
 Would you like me to:
+
 1. Add more RTL patterns (contact form, testimonials, etc.)
 2. Enhance bidirectional text support
 3. Add language-specific templates
@@ -9948,8 +9825,6 @@ _**User**_
 ---
 
 _**Assistant**_
-
-
 
 Let's add more RTL patterns, enhance bidirectional text support, and create language-specific styles:
 
@@ -10180,6 +10055,7 @@ add_action('wp_enqueue_scripts', 'staynalive_language_specific_styles');
 ```
 
 Would you like me to:
+
 1. Add more RTL patterns (testimonials, pricing tables, etc.)
 2. Create language-specific templates
 3. Add more bidirectional text utilities
@@ -10398,6 +10274,7 @@ _**Assistant**_
 Yes, since you're converting to a modern block theme, you can delete these legacy files and directories:
 
 1. Template files that are now handled by block templates:
+
 ```bash
 rm header.php
 rm footer.php
@@ -10411,11 +10288,13 @@ rm index.php  # Unless used as a fallback
 ```
 
 2. Legacy template parts:
+
 ```bash
 rm -r template-parts/
 ```
 
 3. Legacy includes that are now handled by blocks:
+
 ```bash
 rm inc/customizer.php
 rm inc/jetpack.php
@@ -10424,6 +10303,7 @@ rm inc/template-tags.php  # If all functions moved to block patterns
 ```
 
 4. Legacy CSS files:
+
 ```bash
 rm layouts/
 rm assets/css/custom-header.css
@@ -10431,12 +10311,14 @@ rm assets/css/editor-style-classic.css
 ```
 
 5. Legacy JavaScript:
+
 ```bash
 rm assets/js/customizer.js
 rm assets/js/skip-link-focus-fix.js
 ```
 
 6. Unused or deprecated files:
+
 ```bash
 rm screenshot.png  # If not updated for the new theme
 rm style-rtl.css   # Since RTL is now handled differently
@@ -10444,6 +10326,7 @@ rm style.css       # If using theme.json exclusively
 ```
 
 Keep:
+
 1. `functions.php`
 2. `theme.json`
 3. Block templates in `templates/` directory
@@ -10508,6 +10391,7 @@ rm ./style.css      # If using theme.json exclusively
 ```
 
 You can also use the `ls` command first to verify the files exist:
+
 ```bash
 ls ./template-parts/
 ls ./inc/
@@ -10527,8 +10411,6 @@ I don't see a header.php or footer.php or sidebar.php or any of those in the bas
 
 _**Assistant**_
 
-
-
 Let me check the files we've been working with. From our previous interactions, I see we've been working with a block theme that already has:
 
 1. Templates in `templates/` directory
@@ -10542,6 +10424,7 @@ You're right - we don't have those legacy files to delete because this theme was
 The current structure is already clean and modern. The only potential cleanup might be:
 
 1. Ensuring all CSS files are properly organized in the structure we discussed:
+
 ```bash
 assets/css/
 ├── base/
@@ -10552,6 +10435,7 @@ assets/css/
 ```
 
 2. Adding index.php files to prevent directory listing:
+
 ```bash
 touch assets/index.php
 touch assets/css/index.php
@@ -10573,8 +10457,6 @@ I just gave you access to everything. Can you try the cleanup again?
 
 _**Assistant**_
 
-
-
 Ah, now I can see the actual files. Here are the files that can be safely removed since we're using a modern block theme approach:
 
 ```bash
@@ -10587,6 +10469,7 @@ rm ./readme.txt
 ```
 
 Keep these files:
+
 1. `theme.json` - Essential for block themes
 2. `functions.php` - Contains core theme functionality
 3. `package.json` - Needed for build process
@@ -10596,6 +10479,7 @@ Keep these files:
 7. `.phpcs.xml.dist` - PHP code standards config
 
 The theme appears to already be quite clean and modern. Would you like me to:
+
 1. Review any of these files for modernization?
 2. Update any of the configuration files?
 3. Add any missing modern tooling files?
@@ -10610,11 +10494,10 @@ Anything else I should remove for you to clean this up?
 
 _**Assistant**_
 
-
-
-Let me check the current structure. Based on the files you've shown, we should keep those core configuration files you listed. 
+Let me check the current structure. Based on the files you've shown, we should keep those core configuration files you listed.
 
 Could you show me the output of:
+
 ```bash
 ls -R
 ```
@@ -10622,6 +10505,7 @@ ls -R
 This would help me see all directories and files in the theme to identify what can be safely removed while maintaining the modern block theme structure. Without seeing the full directory structure, I can't make specific recommendations about what to remove.
 
 The files you listed are all essential:
+
 1. `theme.json` - Core block theme configuration
 2. `package.json` - NPM dependencies and scripts
 3. `functions.php` - Core PHP functionality
@@ -10641,8 +10525,6 @@ Here you go.
 ---
 
 _**Assistant**_
-
-
 
 Thanks! Now I can see the complete structure. Here's what we can safely remove:
 
@@ -10673,6 +10555,7 @@ rm ./assets/js/editor-customization.js  # Combine with editor.js
 ```
 
 Then reorganize the CSS structure:
+
 ```bash
 # Move component CSS files to proper locations
 mv ./assets/css/components/* ./assets/css/components/
@@ -10687,6 +10570,7 @@ mv ./assets/css/language-specific.css ./assets/css/base/
 ```
 
 The resulting structure will be cleaner:
+
 ```
 assets/
 ├── css/
@@ -10746,6 +10630,7 @@ rm assets/js/editor-customization.js
 ```
 
 Then let's organize the CSS structure:
+
 ```bash
 # Create base directory if it doesn't exist
 mkdir -p assets/css/base
@@ -10767,8 +10652,6 @@ Go ahead
 ---
 
 _**Assistant**_
-
-
 
 Executing the cleanup commands:
 
@@ -10803,6 +10686,7 @@ mv assets/css/language-specific.css assets/css/base/
 ```
 
 Now I'll need to update the functions.php to reflect these CSS changes. Would you like me to:
+
 1. Update the CSS enqueue functions to match the new structure
 2. Update the file paths in theme.json
 3. Update package.json scripts to handle the new CSS organization
@@ -10994,6 +10878,7 @@ function staynalive_scripts() {
 ```
 
 These updates:
+
 1. Organize CSS loading in a more structured way
 2. Simplify theme.json to focus on core settings
 3. Update build scripts to handle the new CSS organization
@@ -11227,6 +11112,7 @@ I'll help create a flexible "link in bio" template that supports social media co
 ```
 
 Would you like me to:
+
 1. Add support for social media embeds (Instagram, TikTok)
 2. Create additional style variations for the links and cards
 3. Add animation effects
@@ -11484,6 +11370,7 @@ document.addEventListener('DOMContentLoaded', function() {
 ```
 
 Would you like me to:
+
 1. Add more style variations
 2. Create additional animation effects
 3. Add social media integration
@@ -11762,6 +11649,7 @@ document.addEventListener('DOMContentLoaded', () => new SocialFeed());
 ```
 
 Would you like me to:
+
 1. Add more social media platform integrations
 2. Create additional animation effects
 3. Add more color scheme options
@@ -12069,6 +11957,7 @@ function get_instagram_feed() {
 ```
 
 Would you like me to continue with:
+
 1. Social media API integration details
 2. More animation effects
 3. Additional block patterns
@@ -12292,6 +12181,7 @@ function get_twitter_feed() {
 ```
 
 Would you like me to:
+
 1. Add more social media integrations (LinkedIn, Pinterest, etc.)
 2. Create more animation effects
 3. Add more block patterns
@@ -12312,6 +12202,7 @@ _**Assistant**_
 Let me analyze the current staynalive.com versus our new theme structure:
 
 Current staynalive.com features:
+
 1. Clean, professional design with a focus on content
 2. Strong personal branding elements
 3. Blog-centric layout
@@ -12321,6 +12212,7 @@ Current staynalive.com features:
 7. Social media integration
 
 Our new theme structure has some differences:
+
 1. More modern, block-based approach
 2. Stronger focus on social media feeds and link-in-bio style presentation
 3. Different header structure
@@ -12330,6 +12222,7 @@ Our new theme structure has some differences:
 To maintain consistency with the current site while leveraging the new features, we should:
 
 1. Add a traditional blog template:
+
 ```html:templates/blog.html
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 
@@ -12379,6 +12272,7 @@ To maintain consistency with the current site while leveraging the new features,
 ```
 
 2. Add author sidebar pattern:
+
 ```html:patterns/sidebar-author.html
 <!-- wp:group {"className":"sidebar-author","layout":{"type":"constrained"}} -->
 <div class="wp-block-group sidebar-author">
@@ -12406,6 +12300,7 @@ To maintain consistency with the current site while leveraging the new features,
 ```
 
 3. Update the styles to match current branding:
+
 ```css:assets/css/base/theme.css
 :root {
     /* Match current site colors */
@@ -12422,6 +12317,7 @@ To maintain consistency with the current site while leveraging the new features,
 ```
 
 Would you like me to:
+
 1. Create more patterns to match current site features
 2. Adjust the layout structure to better match current site
 3. Update the color scheme and typography
@@ -12676,6 +12572,7 @@ Looking at the current staynalive.com, let me help adjust our theme to better ma
 ```
 
 Would you like me to:
+
 1. Update the blog layout to match current site
 2. Adjust the sidebar styling
 3. Match the current site's typography and spacing
@@ -12692,8 +12589,6 @@ _**User**_
 ---
 
 _**Assistant**_
-
-
 
 Let's update the blog layout, sidebar styling, and typography to match the current site:
 
@@ -12887,6 +12782,7 @@ Let's update the blog layout, sidebar styling, and typography to match the curre
 ```
 
 Would you like me to:
+
 1. Add more sidebar widgets
 2. Enhance the blog post styling
 3. Add pagination styles
@@ -12903,8 +12799,6 @@ Alright now how can I install this theme?
 ---
 
 _**Assistant**_
-
-
 
 To install this theme, you'll need to:
 
@@ -12948,6 +12842,7 @@ zip -r staynalive-theme.zip staynalive-theme -x ".*" -x "__MACOSX"
 ```
 
 4. Install via WordPress:
+
 - Go to Appearance > Themes
 - Click "Add New"
 - Click "Upload Theme"
@@ -12956,6 +12851,7 @@ zip -r staynalive-theme.zip staynalive-theme -x ".*" -x "__MACOSX"
 - After installation, click "Activate"
 
 5. Alternative installation via FTP:
+
 - Connect to your server via FTP
 - Navigate to wp-content/themes/
 - Upload the entire staynalive-theme folder
@@ -12963,6 +12859,7 @@ zip -r staynalive-theme.zip staynalive-theme -x ".*" -x "__MACOSX"
 - Find "Stay N Alive" and click "Activate"
 
 6. Post-installation:
+
 ```php
 // Add to functions.php to ensure all features are registered
 add_action('after_setup_theme', function() {
@@ -12975,6 +12872,7 @@ add_action('after_setup_theme', function() {
 ```
 
 Would you like me to:
+
 1. Create an installation script
 2. Add theme setup instructions
 3. Create a development environment setup
@@ -12991,8 +12889,6 @@ _**User**_
 ---
 
 _**Assistant**_
-
-
 
 I'll help create a complete development and deployment setup:
 
@@ -13156,11 +13052,13 @@ composer install
 ```
 
 2. Start development environment:
+
 ```bash
 npm run dev
 ```
 
 3. Watch for changes:
+
 ```bash
 npm run watch
 ```
@@ -13168,11 +13066,13 @@ npm run watch
 ## Building for Production
 
 1. Build assets:
+
 ```bash
 npm run build
 ```
 
 2. Create production zip:
+
 ```bash
 ./install.sh
 ```
@@ -13186,12 +13086,14 @@ The theme is automatically deployed when changes are pushed to the main branch.
 ### Manual Deployment
 
 1. Build the theme:
+
 ```bash
 npm run build
 ./install.sh
 ```
 
 2. Upload via WordPress admin or FTP:
+
 - WordPress: Appearance > Themes > Add New > Upload Theme
 - FTP: Upload contents of `dist/staynalive` to `wp-content/themes/staynalive`
 
@@ -13202,6 +13104,7 @@ npm run build
 - `npm run watch` - Watch for changes
 - `npm run lint` - Lint all files
 - `npm run format` - Format all files
+
 ```
 
 Would you like me to:
@@ -13245,12 +13148,14 @@ cd staynalive
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 composer install
 ```
 
 3. Start development environment:
+
 ```bash
 npm run dev
 ```
@@ -13291,6 +13196,7 @@ staynalive/
 ### Building for Production
 
 1. Run the installation script:
+
 ```bash
 chmod +x install.sh
 ./install.sh
@@ -13314,6 +13220,7 @@ The theme is automatically deployed to production when changes are pushed to the
 ### GitHub Actions Setup
 
 Required secrets for deployment:
+
 - `HOST` - Production server hostname
 - `USERNAME` - SSH username
 - `SSH_KEY` - SSH private key
@@ -13321,12 +13228,14 @@ Required secrets for deployment:
 ### Manual Deployment
 
 1. Build the theme:
+
 ```bash
 npm run build
 ./install.sh
 ```
 
 2. Upload via FTP:
+
 - Upload contents of `dist/staynalive` to `wp-content/themes/staynalive`
 - Activate theme in WordPress admin
 
@@ -13353,6 +13262,7 @@ GPL-2.0-or-later
 ## Support
 
 For support, please open an issue in the GitHub repository.
+
 ```
 
 This README.md provides:
@@ -13403,12 +13313,14 @@ A modern block-based WordPress theme for Stay N Alive, featuring full site editi
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    composer install
    ```
 
 3. Start development environment:
+
    ```bash
    npm run dev
    ```
@@ -13449,6 +13361,7 @@ staynalive/
 ### Building for Production
 
 1. Run the installation script:
+
    ```bash
    chmod +x install.sh
    ./install.sh
@@ -13472,6 +13385,7 @@ The theme is automatically deployed to production when changes are pushed to the
 ### GitHub Actions Setup
 
 Required secrets for deployment:
+
 - `HOST` - Production server hostname
 - `USERNAME` - SSH username
 - `SSH_KEY` - SSH private key
@@ -13479,6 +13393,7 @@ Required secrets for deployment:
 ### Manual Deployment
 
 1. Build the theme:
+
    ```bash
    npm run build
    ./install.sh
@@ -13511,6 +13426,7 @@ GPL-2.0-or-later
 ## Support
 
 For support, please open an issue in the GitHub repository.
+
 ```
 
 Would you like me to:
@@ -13540,16 +13456,19 @@ npm error ERESOLVE unable to resolve dependency tree
 ```
 
 2. Missing Composer:
+
 ```bash
 install.sh: line 21: composer: command not found
 ```
 
 3. Missing npm-run-all:
+
 ```bash
 sh: npm-run-all: command not found
 ```
 
 4. Missing index.php:
+
 ```bash
 cp: index.php: No such file or directory
 ```
@@ -13557,6 +13476,7 @@ cp: index.php: No such file or directory
 Let's fix these issues:
 
 1. First, update package.json to fix dependency conflicts:
+
 ```json:package.json
 {
   "devDependencies": {
@@ -13577,6 +13497,7 @@ Let's fix these issues:
 ```
 
 2. Update install.sh to handle missing dependencies:
+
 ```bash:install.sh
 #!/bin/bash
 
@@ -13614,12 +13535,14 @@ npm install -D npm-run-all
 ```
 
 3. Create a proper index.php:
+
 ```php:index.php
 <?php
 // Silence is golden
 ```
 
 Would you like me to:
+
 1. Update the GitHub workflow to handle these issues
 2. Add error handling to the build process
 3. Create a development environment setup script
@@ -13825,6 +13748,7 @@ exit 0
 ````
 
 Would you like me to:
+
 1. Add more validation scripts
 2. Enhance the development environment
 3. Add more build optimizations
@@ -13962,6 +13886,7 @@ Yes, the script is stopping because Composer isn't installed. Let's modify the i
 ```
 
 This updated script:
+
 1. Detects OS and offers to install Composer if missing
 2. Provides better error handling
 3. Adds more detailed status messages
@@ -13969,6 +13894,7 @@ This updated script:
 5. Handles missing files/directories gracefully
 
 Try running it again. It should now either:
+
 1. Install Composer for you (if you choose yes)
 2. Or provide clear instructions on how to install it manually
 
@@ -13981,8 +13907,6 @@ Anything else that needs to be fixed here?
 ---
 
 _**Assistant**_
-
-
 
 Yes, there are a few issues to fix:
 
@@ -14095,6 +14019,7 @@ fi
 ````
 
 Would you like me to:
+
 1. Add more error handling
 2. Include additional dependency checks
 3. Add cleanup functionality
@@ -14112,11 +14037,6 @@ Now I'm getting this error.
 
 _**Assistant**_
 
-
-
 ---
 
-
-
 ---
-

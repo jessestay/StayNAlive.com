@@ -48,16 +48,19 @@ console.log('Theme initialized');
 ```
 
 After adding these:
+
 ```bash
 npm install
 npm run build
 ```
 
 Alternative approach:
+
 1. Disable JS validation temporarily by removing validate:js from package.json scripts
 2. Use a simpler build process without webpack/eslint until needed
 
 The security vulnerabilities are non-critical for local development, but should be addressed before production by running:
+
 ```bash
 npm audit fix --force
 ```
@@ -105,6 +108,7 @@ And fix the unused variable in social-feed.js:
 ````
 
 Alternative approaches:
+
 1. Disable ESLint for specific lines using `// eslint-disable-line`
 2. Switch back to WordPress ESLint config and install additional dependencies
 3. Temporarily disable JS validation by removing validate:js from package.json scripts
@@ -184,8 +188,6 @@ Just 1 error now
 
 _**Assistant**_
 
-
-
 Let's fix the unused error parameter in social-feed.js by either using it or prefixing with underscore:
 
 ````javascript:assets/js/social-feed.js
@@ -240,18 +242,21 @@ The quickest fix is to run PHPCBF (PHP Code Beautifier and Fixer) which can auto
 If you prefer to fix manually, here are the key changes needed:
 
 1. Convert spaces to tabs in PHP files:
+
 ```php:inc/template-tags.php
 // ... existing code ...
 // Replace leading spaces with tabs for indentation
 ```
 
 2. Add newlines to end of files:
+
 ```php:inc/social-feeds.php
 // ... existing code ...
 // Add newline at end
 ```
 
 3. Add package tags to PHP files:
+
 ```php:inc/social-feeds.php
 <?php
 /**
@@ -262,6 +267,7 @@ If you prefer to fix manually, here are the key changes needed:
 ```
 
 Alternative approaches:
+
 1. Configure your editor to use tabs instead of spaces for PHP files
 2. Add an .editorconfig file to enforce consistent formatting
 3. Add pre-commit hooks to run PHPCBF automatically
@@ -293,6 +299,7 @@ This error is coming from an incompatibility with the WordPress Coding Standards
 ````
 
 2. Then run:
+
 ````bash
 composer update
 ````
@@ -342,8 +349,6 @@ I'm getting these errors now.
 ---
 
 _**Assistant**_
-
-
 
 These are mostly documentation and coding style errors. Let's fix the main categories:
 
@@ -432,17 +437,12 @@ The most critical fixes are the security-related escaping issues. The others are
 
 _**User**_
 
-Still getting these errors when running install.sh
+Let's go through and try to fix as many lint errors as possible so there aren't any more install.sh errors anymore.
 
 ---
 
 _**Assistant**_
 
-
-
 ---
 
-
-
 ---
-

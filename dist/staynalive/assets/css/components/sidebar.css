@@ -1,0 +1,109 @@
+.sidebar-widget {
+    margin-bottom: 45px;
+    padding: 30px;
+    background: var(--wp--preset--color--light);
+    border-radius: 8px;
+}
+
+.widget-title {
+    font-family: var(--wp--preset--font-family--heading);
+    font-size: var(--wp--preset--font-size--medium);
+    font-weight: 600;
+    margin: 0 0 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--wp--preset--color--primary);
+}
+
+/* Author Widget */
+.sidebar-author {
+    text-align: center;
+}
+
+.author-image {
+    margin: 0 auto 20px;
+    width: 150px !important;
+    height: 150px !important;
+}
+
+.author-image img {
+    border: 4px solid var(--wp--preset--color--white);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.author-name {
+    font-family: var(--wp--preset--font-family--heading);
+    font-size: var(--wp--preset--font-size--large);
+    margin: 0 0 15px;
+}
+
+.author-bio {
+    font-size: var(--wp--preset--font-size--small);
+    line-height: 1.6;
+    color: var(--wp--preset--color--secondary);
+    margin: 0 0 20px;
+}
+
+.author-social {
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Search Widget */
+.sidebar-search .wp-block-search__inside-wrapper {
+    border: 1px solid var(--wp--preset--color--secondary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.sidebar-search .wp-block-search__input {
+    border: none;
+    padding: 12px;
+}
+
+.sidebar-search .wp-block-search__button {
+    margin: 0;
+    padding: 12px;
+    background: var(--wp--preset--color--primary);
+    color: var(--wp--preset--color--white);
+}
+
+/* Categories Widget */
+.sidebar-categories ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-categories li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--wp--preset--color--secondary);
+}
+
+.sidebar-categories a {
+    color: var(--wp--preset--color--dark);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.sidebar-categories a:hover {
+    color: var(--wp--preset--color--primary);
+}
+
+/* Recent Posts Widget */
+.sidebar-recent-posts .wp-block-latest-posts {
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-recent-posts .wp-block-latest-posts__post-title {
+    display: block;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 5px;
+}
+
+.sidebar-recent-posts .wp-block-latest-posts__post-date {
+    font-size: var(--wp--preset--font-size--small);
+    color: var(--wp--preset--color--secondary);
+} 

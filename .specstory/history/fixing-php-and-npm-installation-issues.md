@@ -21,6 +21,7 @@ There are dependency conflicts with Prettier and some security vulnerabilities.
 Here's how to fix:
 
 1. First, upgrade PHP:
+
 ```bash
 # For macOS with Homebrew
 brew update
@@ -49,11 +50,13 @@ brew upgrade php
 ```
 
 Alternative solutions:
+
 1. Use nvm to manage multiple PHP versions
 2. Use Docker to containerize the development environment
 3. Create a GitHub Codespace with the correct PHP version
 
 After implementing these changes, run:
+
 ```bash
 npm install --force
 composer install
@@ -123,6 +126,7 @@ touch src/index.js
 ```
 
 These changes will:
+
 - Add ESLint configuration
 - Create minimal src directory for webpack
 - Make CSS build/validate optional if no files exist
@@ -134,7 +138,4 @@ Alternative approach: Remove unused build steps from package.json if you don't n
 
 ---
 
-
-
 ---
-

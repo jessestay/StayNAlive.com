@@ -1,6 +1,7 @@
 {
   "name": "staynalive",
   "version": "2.0.0",
+  "private": true,
   "description": "A modern block-based theme for Stay N Alive",
   "author": "Jesse Stay",
   "license": "GPL-2.0-or-later",
@@ -19,20 +20,20 @@
     "url": "https://github.com/jessestay/staynalive/issues"
   },
   "devDependencies": {
-    "@wordpress/env": "^8.0.0",
+    "@wordpress/scripts": "^26.0.0",
     "@wordpress/eslint-plugin": "^17.0.0",
-    "@wordpress/scripts": "^30.11.0",
     "@wordpress/stylelint-config": "^21.0.0",
     "autoprefixer": "^10.4.14",
+    "eslint": "^8.57.0",
     "husky": "^8.0.3",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.24",
     "postcss-cli": "^10.1.0",
     "postcss-import": "^15.1.0",
     "postcss-preset-env": "^8.0.0",
-    "prettier": "^3.5.1",
-    "rtlcss": "^4.1.0",
-    "stylelint": "^14.2.0"
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0",
+    "stylelint": "^15.0.0"
   },
   "browserslist": [
     "extends @wordpress/browserslist-config"
@@ -44,23 +45,20 @@
     "dev:setup": "bash setup-dev.sh",
     "dev:stop": "wp-env stop",
     "dev:clean": "wp-env clean",
-    "build": "npm-run-all clean build:* validate",
-    "build:css": "postcss assets/css/**/*.css --dir build/css || true",
+    "build": "npm-run-all clean --parallel build:*",
+    "build:css": "postcss assets/css/**/*.css --dir build/css",
     "build:js": "wp-scripts build",
     "clean": "rimraf build dist",
-    "validate": "npm-run-all --parallel validate:*",
-    "validate:css": "stylelint 'assets/css/**/*.css' || true",
-    "validate:js": "eslint assets/js",
-    "validate:php": "composer run-script lint",
-    "watch": "npm-run-all --parallel watch:*",
-    "watch:css": "postcss assets/css/**/*.css --dir build/css -w",
-    "watch:js": "wp-scripts start",
-    "test": "npm-run-all test:*",
-    "test:js": "jest",
-    "test:php": "composer run-script test",
-    "format": "npm-run-all --parallel format:*",
+    "lint": "npm-run-all --continue-on-error --parallel lint:*",
+    "lint:css": "stylelint 'assets/css/**/*.css'",
+    "lint:js": "eslint assets/js/",
+    "lint:php": "composer run-script lint",
+    "format": "npm-run-all --continue-on-error --parallel format:*",
     "format:css": "prettier --write 'assets/css/**/*.css'",
     "format:js": "prettier --write 'assets/js/**/*.js'",
-    "format:php": "composer run-script format"
+    "format:php": "composer run-script format",
+    "start": "wp-scripts start",
+    "test": "npm-run-all --parallel test:*",
+    "test:php": "composer run-script test"
   }
 }

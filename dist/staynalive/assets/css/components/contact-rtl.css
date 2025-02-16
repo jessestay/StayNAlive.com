@@ -1,0 +1,47 @@
+.contact-section-rtl {
+    padding: var(--spacing-lg) var(--spacing-md);
+}
+
+.contact-form-rtl form {
+    margin-top: var(--spacing-lg);
+}
+
+.contact-form-rtl .form-row {
+    margin-bottom: var(--spacing-md);
+}
+
+.contact-form-rtl label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 500;
+}
+
+.contact-form-rtl input,
+.contact-form-rtl textarea {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-family: var(--wp--preset--font-family--arabic);
+}
+
+.contact-form-rtl .form-submit {
+    text-align: left;
+}
+
+.contact-form-rtl button {
+    margin-top: var(--spacing-md);
+}
+
+/* RTL-specific input styles */
+.contact-form-rtl input[type="text"],
+.contact-form-rtl input[type="email"],
+.contact-form-rtl textarea {
+    text-align: right;
+}
+
+/* Placeholder text alignment */
+.contact-form-rtl input::placeholder,
+.contact-form-rtl textarea::placeholder {
+    text-align: right;
+} 

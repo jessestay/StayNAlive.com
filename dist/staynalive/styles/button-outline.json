@@ -1,0 +1,15 @@
+{
+    "name": "outline",
+    "label": "Outline",
+    "settings": {
+        "border": {
+            "width": "2px",
+            "style": "solid",
+            "color": "var(--wp--preset--color--primary)"
+        },
+        "color": {
+            "background": "transparent",
+            "text": "var(--wp--preset--color--primary)"
+        }
+    }
+} 
