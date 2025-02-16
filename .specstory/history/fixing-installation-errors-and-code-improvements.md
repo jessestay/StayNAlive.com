@@ -2091,6 +2091,58 @@ Would you like me to implement these changes?
 
 ---
 
+_**User**_
+
+Yes
+
+---
+
+_**Assistant**_
+
+Let's add the Prettier config and then run install.sh again:
+
+`````javascript:.prettierrc.js
+module.exports = {
+    ...require('@wordpress/prettier-config'),
+    tabWidth: 4,
+    useTabs: false,
+    printWidth: 100,
+    singleQuote: true,
+    trailingComma: 'es5',
+    bracketSpacing: true,
+    arrowParens: 'avoid',
+    endOfLine: 'lf'
+};
+`````
+
+We also need to add prettier as a dependency:
+
+`````diff:package.json
+  "devDependencies": {
+    "@wordpress/eslint-plugin": "^17.0.0",
+    "@wordpress/scripts": "^26.0.0",
+    "@wordpress/stylelint-config": "^21.0.0",
++   "@wordpress/prettier-config": "^2.17.0",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.57.0",
++   "eslint-config-prettier": "^8.8.0",
++   "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.24",
+    "postcss-cli": "^10.1.0",
+    "postcss-import": "^15.1.0",
+    "postcss-preset-env": "^8.0.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0",
+    "stylelint": "^15.0.0"
+  }
+`````
+
+This should fix the remaining JavaScript formatting issues. Let me know if you'd like me to make any other changes.
+
+---
+
 
 
 ---
