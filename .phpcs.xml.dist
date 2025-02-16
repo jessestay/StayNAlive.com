@@ -23,6 +23,8 @@
     <rule ref="WordPress">
         <!-- Allow short array syntax -->
         <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
+        <exclude name="WordPress.PHP.YodaConditions.NotYoda"/>
     </rule>
     <rule ref="WordPress-Core"/>
     <rule ref="WordPress-Docs"/>

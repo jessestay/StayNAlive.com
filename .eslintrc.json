@@ -1,10 +1,17 @@
 {
     "extends": [
-        "@wordpress/eslint-plugin/esnext"
+        "eslint:recommended"
     ],
     "env": {
         "browser": true,
         "es6": true
+    },
+    "globals": {
+        "wp": "readonly"
+    },
+    "rules": {
+        "no-redeclare": ["error", { "builtinGlobals": false }],
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
     },
     "parserOptions": {
         "ecmaVersion": 2021,

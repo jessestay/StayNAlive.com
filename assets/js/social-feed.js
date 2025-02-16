@@ -44,9 +44,9 @@ class SocialFeed {
             });
 
             this.renderFeed(this.currentFeed);
-        } catch (error) {
-            console.error('Error loading social feeds:', error);
-            this.handleError(error);
+        } catch (_error) {
+            console.error('Failed to fetch social feed');
+            this.handleError();
         }
     }
 
@@ -148,7 +148,7 @@ class SocialFeed {
         return new Intl.NumberFormat('en-US', { notation: 'compact' }).format(num);
     }
 
-    handleError(error) {
+    handleError() {
         const errorMessage = document.createElement('div');
         errorMessage.className = 'feed-error';
         errorMessage.innerHTML = `
