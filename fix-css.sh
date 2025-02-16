@@ -9,9 +9,7 @@ echo -e "${BLUE}Fixing CSS files...${NC}"
 
 # Convert spaces to tabs
 find assets/css -name "*.css" -type f -exec sed -i '' 's/^    /\t/g' {} \;
-
-# Add newlines at end of files
-find assets/css -name "*.css" -type f -exec sed -i '' -e '$a\' {} \;
+find assets/css -name "*.css" -type f -exec sed -i '' 's/^        /\t\t/g' {} \;
 
 # Fix color formats (#ffffff -> #fff, etc)
 find assets/css -name "*.css" -type f -exec sed -i '' \
@@ -27,5 +25,11 @@ find assets/css -name "*.css" -type f -exec sed -i '' 's/rgba([0-9]\+,[0-9]\+,[0
 
 # Add empty lines before rules
 find assets/css -name "*.css" -type f -exec sed -i '' 's/}\([^}]*{[^}]*}\)/}\n\n\1/g' {} \;
+
+# Remove trailing whitespace
+find assets/css -name "*.css" -type f -exec sed -i '' 's/[[:space:]]*$//' {} \;
+
+# Ensure newline at end of file
+find assets/css -name "*.css" -type f -exec sed -i '' -e '$a\' {} \;
 
 echo -e "${GREEN}CSS files fixed!${NC}" 

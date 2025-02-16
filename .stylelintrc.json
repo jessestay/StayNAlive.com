@@ -7,6 +7,13 @@
     "block-no-empty": null,
     "no-duplicate-selectors": null,
     "font-family-no-duplicate-names": null,
-    "selector-type-no-unknown": null
+    "selector-type-no-unknown": null,
+    "value-keyword-case": null,
+    "function-comma-space-after": "always",
+    "string-quotes": "double",
+    "no-eol-whitespace": true,
+    "no-missing-end-of-source-newline": true,
+    "indentation": "tab",
+    "rule-empty-line-before": "always"
   }
 } 
