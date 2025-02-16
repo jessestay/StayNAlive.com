@@ -1,0 +1,108 @@
+/*!
+Theme Name: Stay N Alive
+Theme URI: https://staynalive.com
+Author: Jesse Stay
+Author URI: https://staynalive.com
+Description: A modern block-based theme for Stay N Alive - RTL Version
+Version: 2.0.0
+Requires at least: 6.0
+Tested up to: 6.4
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: staynalive
+*/
+
+/* RTL overrides for theme-specific styles */
+:root {
+    direction: rtl;
+    unicode-bidi: embed;
+}
+
+/* Global utility classes RTL versions */
+.alignleft {
+    float: right;
+    margin-left: 1.5em;
+    margin-right: 0;
+    margin-bottom: 1.5em;
+}
+
+.alignright {
+    float: left;
+    margin-right: 1.5em;
+    margin-left: 0;
+    margin-bottom: 1.5em;
+}
+
+/* Header RTL adjustments */
+.et-top-navigation {
+    flex-direction: row-reverse;
+}
+
+.logo_container {
+    margin-left: 30px;
+    margin-right: 0;
+}
+
+.wp-block-navigation {
+    flex-direction: row-reverse;
+}
+
+/* Footer RTL adjustments */
+.et-social-icons {
+    float: left;
+}
+
+.et-social-icons li {
+    margin-right: 20px;
+    margin-left: 0;
+}
+
+.footer-info {
+    text-align: right;
+}
+
+/* Blog and Post RTL adjustments */
+.post-meta {
+    flex-direction: row-reverse;
+}
+
+.post-navigation {
+    flex-direction: row-reverse;
+}
+
+.wp-block-post-navigation-link.has-text-align-right {
+    text-align: left;
+}
+
+.wp-block-post-navigation-link.has-text-align-left {
+    text-align: right;
+}
+
+/* Comments RTL adjustments */
+.comment-author .avatar {
+    float: right;
+    margin-left: 1em;
+    margin-right: 0;
+}
+
+.comment-metadata {
+    margin-right: 50px;
+    margin-left: 0;
+}
+
+.comment-content {
+    margin-right: 50px;
+    margin-left: 0;
+}
+
+@media (max-width: 768px) {
+    .et-social-icons {
+        float: none;
+    }
+    
+    .post-meta,
+    .post-navigation {
+        flex-direction: column;
+    }
+} 

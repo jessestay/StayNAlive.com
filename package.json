@@ -1,0 +1,56 @@
+{
+  "name": "staynalive",
+  "version": "2.0.0",
+  "description": "A modern block-based theme for Stay N Alive",
+  "author": "Jesse Stay",
+  "license": "GPL-2.0-or-later",
+  "keywords": [
+    "WordPress",
+    "Theme",
+    "Blocks",
+    "FSE"
+  ],
+  "homepage": "https://staynalive.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jessestay/staynalive.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jessestay/staynalive/issues"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^26.0.0",
+    "@wordpress/env": "^8.0.0",
+    "@wordpress/stylelint-config": "^21.0.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "postcss-cli": "^10.1.0",
+    "postcss-import": "^15.1.0",
+    "postcss-preset-env": "^8.4.2",
+    "prettier": "^2.8.8",
+    "rtlcss": "^4.1.0",
+    "stylelint": "^15.7.0"
+  },
+  "browserslist": [
+    "extends @wordpress/browserslist-config"
+  ],
+  "scripts": {
+    "start": "wp-scripts start",
+    "build": "wp-scripts build",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "lint:pkg-json": "wp-scripts lint-pkg-json",
+    "packages-update": "wp-scripts packages-update",
+    "plugin-zip": "wp-scripts plugin-zip",
+    "postbuild": "npm run build:css",
+    "build:css": "postcss assets/css/*.css --dir build/css",
+    "watch:css": "postcss assets/css/*.css --dir build/css -w",
+    "build:rtl": "rtlcss style.css style-rtl.css",
+    "dev": "wp-env start",
+    "dev:stop": "wp-env stop",
+    "dev:destroy": "wp-env destroy",
+    "test:e2e": "wp-scripts test-e2e",
+    "test:unit": "wp-scripts test-unit-js"
+  }
+} 

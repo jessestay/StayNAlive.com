@@ -1,0 +1,86 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"site-main search-page","layout":{"type":"constrained"}} -->
+<main class="wp-block-group site-main search-page">
+    <!-- wp:group {"className":"search-header","layout":{"type":"constrained"}} -->
+    <div class="wp-block-group search-header">
+        <!-- wp:search {"label":"Search","buttonText":"Search","className":"search-form"} /-->
+        
+        <!-- wp:query-title {"type":"search","textAlign":"center","fontSize":"x-large"} /-->
+    </div>
+    <!-- /wp:group -->
+
+    <!-- wp:group {"className":"search-content","layout":{"type":"constrained","contentSize":"1100px"}} -->
+    <div class="wp-block-group search-content">
+        <!-- wp:columns {"className":"search-layout"} -->
+        <div class="wp-block-columns search-layout">
+            <!-- wp:column {"width":"70%"} -->
+            <div class="wp-block-column" style="flex-basis:70%">
+                <!-- wp:query {"queryId":1,"query":{"inherit":true},"layout":{"type":"default"}} -->
+                <div class="wp-block-query">
+                    <!-- wp:post-template -->
+                        <!-- wp:group {"className":"search-item"} -->
+                        <div class="wp-block-group search-item">
+                            <!-- wp:post-featured-image {"isLink":true,"height":"200px"} /-->
+                            
+                            <!-- wp:post-title {"isLink":true,"fontSize":"large"} /-->
+                            
+                            <!-- wp:group {"className":"post-meta","layout":{"type":"flex","flexWrap":"wrap"}} -->
+                            <div class="wp-block-group post-meta">
+                                <!-- wp:post-date /-->
+                                <!-- wp:post-terms {"term":"category"} /-->
+                            </div>
+                            <!-- /wp:group -->
+                            
+                            <!-- wp:post-excerpt {"moreText":"Read More"} /-->
+                        </div>
+                        <!-- /wp:group -->
+                    <!-- /wp:post-template -->
+
+                    <!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"}} -->
+                        <!-- wp:query-pagination-previous /-->
+                        <!-- wp:query-pagination-numbers /-->
+                        <!-- wp:query-pagination-next /-->
+                    <!-- /wp:query-pagination -->
+
+                    <!-- wp:query-no-results -->
+                        <!-- wp:paragraph {"className":"no-results"} -->
+                        <p class="no-results">No results found. Try a different search.</p>
+                        <!-- /wp:paragraph -->
+                    <!-- /wp:query-no-results -->
+                </div>
+                <!-- /wp:query -->
+            </div>
+            <!-- /wp:column -->
+
+            <!-- wp:column {"width":"30%","className":"search-sidebar"} -->
+            <div class="wp-block-column search-sidebar" style="flex-basis:30%">
+                <!-- wp:group {"className":"widget categories"} -->
+                <div class="wp-block-group widget categories">
+                    <!-- wp:heading {"level":2} -->
+                    <h2>Categories</h2>
+                    <!-- /wp:heading -->
+                    
+                    <!-- wp:categories {"showPostCounts":true} /-->
+                </div>
+                <!-- /wp:group -->
+
+                <!-- wp:group {"className":"widget tags"} -->
+                <div class="wp-block-group widget tags">
+                    <!-- wp:heading {"level":2} -->
+                    <h2>Tags</h2>
+                    <!-- /wp:heading -->
+                    
+                    <!-- wp:tag-cloud /-->
+                </div>
+                <!-- /wp:group -->
+            </div>
+            <!-- /wp:column -->
+        </div>
+        <!-- /wp:columns -->
+    </div>
+    <!-- /wp:group -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /--> 

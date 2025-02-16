@@ -1,0 +1,66 @@
+{
+    "name": "jessestay/staynalive",
+    "type": "wordpress-theme",
+    "description": "A modern block-based theme for Stay N Alive",
+    "keywords": [
+        "WordPress",
+        "Themes",
+        "Blocks",
+        "FSE"
+    ],
+    "homepage": "https://staynalive.com",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Jesse Stay",
+            "homepage": "https://staynalive.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "composer/installers": "^2.0",
+        "wordpress/core-implementation": ">=6.0"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "wp-coding-standards/wpcs": "^3.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "wptrt/wpthemereview": "^0.3.0",
+        "php-parallel-lint/php-parallel-lint": "^1.3",
+        "wp-cli/i18n-command": "^2.4"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "scripts": {
+        "lint:php": "@php ./vendor/bin/parallel-lint --exclude .git --exclude vendor .",
+        "lint:wpcs": "@php ./vendor/bin/phpcs",
+        "lint:fix": "@php ./vendor/bin/phpcbf",
+        "make-pot": "wp i18n make-pot . languages/staynalive.pot",
+        "check-cs": [
+            "@php ./vendor/bin/phpcs --standard=WordPress"
+        ],
+        "fix-cs": [
+            "@php ./vendor/bin/phpcbf --standard=WordPress"
+        ],
+        "test": [
+            "@lint:php",
+            "@lint:wpcs"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/jessestay/staynalive/issues",
+        "source": "https://github.com/jessestay/staynalive"
+    },
+    "extra": {
+        "wordpress-install-dir": "public",
+        "installer-paths": {
+            "public/wp-content/themes/{$name}/": ["type:wordpress-theme"]
+        }
+    }
+} 
