@@ -46,9 +46,9 @@ class SocialFeed {
     /**
      * Render feed data
      *
-     * @param {Object} data Feed data to render
+     * @param {Object} _data Feed data to render
      */
-    renderFeed(data) {
+    renderFeed(_data) {
         const container = document.querySelector('.social-feed');
         if (!container) {
         }

@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Handle keyboard navigation within dropdown
         dropdown.addEventListener('keydown', e => {
-            const currentLink = document.activeElement;
+            const currentLink = event.target.ownerDocument.activeElement;
             const currentIndex = Array.from(links).indexOf(currentLink);
 
             switch (e.key) {

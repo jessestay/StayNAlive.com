@@ -9,10 +9,12 @@ echo -e "${BLUE}Fixing PHP files...${NC}"
 
 # Fix inline comments
 find . -name "*.php" -type f -exec sed -i '' 's/\/\/ \([A-Za-z]\+.*[^.!?]\)$/\/\/ \1./' {} \;
+find . -name "*.php" -type f -exec sed -i '' 's/\/\/ Silence is golden$/\/\/ Silence is golden./' {} \;
 
 # Add blank line after file comment
 find . -name "*.php" -type f -exec sed -i '' '/\*\//a\
-' {} \;
+
+/' {} \;
 
 # Fix Yoda conditions
 find . -name "*.php" -type f -exec sed -i '' 's/\([^!]\)\([=<>]\+\) *null/null \2 \1/g' {} \;
