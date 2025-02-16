@@ -1,0 +1,23 @@
+name: Validate Patterns
+
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          
+      - name: Install ajv-cli
+        run: npm install -g ajv-cli
+        
+      - name: Validate Patterns
+        run: |
+          for pattern in patterns/*.json; do
+            ajv validate -s schemas/pattern.schema.json -d "$pattern"
+          done 

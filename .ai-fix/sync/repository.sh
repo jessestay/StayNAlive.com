@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PATTERN_REPO_URL="https://api.github.com/repos/your-org/ai-fix-patterns"
+PATTERN_REPO_URL="https://api.github.com/repos/jessestay/ai-fix-patterns"
 
 # Sync patterns with central repository
 sync_patterns() {

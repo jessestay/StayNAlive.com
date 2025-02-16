@@ -3638,7 +3638,70 @@ This error shows up:
 
 _**Assistant**_
 
+Let's fix the syntax error in `.ai-fix/sync/repository.sh`. The issue is with the closing brace. Here's the corrected version:
 
+``````diff:.ai-fix/sync/repository.sh
+#!/bin/bash
+
+PATTERN_REPO_URL="https://api.github.com/repos/your-org/ai-fix-patterns"
+
+# Sync patterns with central repository
+sync_patterns() {
+    # Check if we have access token
+    if [ -z "$PATTERN_REPO_TOKEN" ]; then
+        echo -e "${YELLOW}No access token found for pattern repository${NC}"
+        return 1
+    fi
+    
+    # Upload new patterns
+    find .ai-fix/patterns -name "*.json" -mtime -1 | while read -r pattern_file; do
+        # Only sync successful patterns
+        if jq -e '.success_rate > 0.8' "$pattern_file" > /dev/null; then
+            curl -X POST \
+                -H "Authorization: token $PATTERN_REPO_TOKEN" \
+                -H "Content-Type: application/json" \
+                -d @"$pattern_file" \
+                "$PATTERN_REPO_URL/contents/patterns/$(basename "$pattern_file")"
+        fi
+    done
+    
+    # Download new patterns
+    curl -s \
+        -H "Authorization: token $PATTERN_REPO_TOKEN" \
+        "$PATTERN_REPO_URL/contents/patterns" | \
+    jq -r '.[] | .download_url' | while read -r url; do
+        curl -s "$url" > ".ai-fix/patterns/$(basename "$url")"
+    done
+}
+``````
+
+The issue was:
+1. Malformed if statement closure
+2. Missing proper function closure
+3. Incorrect brace placement
+
+The fix:
+1. Properly closed the if statement
+2. Properly closed the function
+3. Fixed brace alignment
+
+Would you like me to:
+1. Add error checking to the sync function
+2. Add more repository sync features
+3. Add pattern validation
+4. Add sync retry logic
+
+---
+
+_**User**_
+
+Guide me through creating the ai-fix-patterns repo and update all scripts to match it. Update your-org to jessestay
+
+---
+
+_**Assistant**_
+
+I'll help you create and set up the ai-fix
 
 ---
 
