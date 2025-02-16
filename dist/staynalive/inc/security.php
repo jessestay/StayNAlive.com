@@ -13,8 +13,8 @@ add_filter('xmlrpc_enabled', '__return_false');
 remove_action('wp_head', 'wp_generator');
 
 // Disable file editing in admin.
-if (!defined('DISALLOW_FILE_EDIT')) {
-	define('DISALLOW_FILE_EDIT', true);
+if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
+	define( 'DISALLOW_FILE_EDIT', true );
 }
 
 // Add security headers

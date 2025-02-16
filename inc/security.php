@@ -2,7 +2,7 @@
 /**
  * Security enhancements for the theme
  *
- * @package StayNAlive
+ * @package staynalive
  */
 namespace StayNAlive;
 
@@ -13,8 +13,8 @@ add_filter('xmlrpc_enabled', '__return_false');
 remove_action('wp_head', 'wp_generator');
 
 // Disable file editing in admin.
-if (!defined('DISALLOW_FILE_EDIT')) {
-	define('DISALLOW_FILE_EDIT', true);
+if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
+	define( 'DISALLOW_FILE_EDIT', true );
 }
 
 // Add security headers
@@ -32,7 +32,7 @@ add_action(
 add_filter(
 	'wp_handle_upload_prefilter',
 	function ( $file ) {
-		if ( $file['type'] === 'image/svg+xml' ) {
+		if ( 'image/svg+xml' === $file['type'] ) {
 			if ( ! sanitize_svg( $file['tmp_name'] ) ) {
 				$file['error'] = 'Invalid SVG file';
 			}

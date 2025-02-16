@@ -1,12 +1,12 @@
-/* global wp */
-
 /**
  * Block Editor customizations and enhancements
  */
 
+const { registerBlockStyle, unregisterBlockStyle } = wp.blocks;
+
 wp.domReady(() => {
     // Register custom block styles
-    wp.blocks.registerBlockStyle('core/button', {
+    registerBlockStyle('core/button', {
         name: 'outline',
         label: 'Outline',
     });
@@ -21,7 +21,7 @@ wp.domReady(() => {
     });
 
     // Add custom block variations
-    wp.blocks.registerBlockVariation('core/group', {
+    registerBlockVariation('core/group', {
         name: 'content-section',
         title: 'Content Section',
         attributes: {
@@ -35,7 +35,7 @@ wp.domReady(() => {
     });
 
     // Add custom block patterns category
-    wp.blocks.registerBlockPattern('staynalive/header-with-cta', {
+    registerBlockPattern('staynalive/header-with-cta', {
         title: 'Header with CTA',
         content: `<!-- wp:group -->...<!-- /wp:group -->`,
     });

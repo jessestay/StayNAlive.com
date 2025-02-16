@@ -2,7 +2,7 @@
 /**
  * Language Switcher functionality
  *
- * @package StayNAlive
+ * @package staynalive
  */
 /**
  * Generate language switcher HTML
@@ -91,3 +91,11 @@ function staynalive_language_switcher_scripts() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'staynalive_language_switcher_scripts' );
+
+/**
+ * Initialize language switcher.
+ */
+function staynalive_init_language_switcher() {
+	add_action( 'init', 'staynalive_add_language_switcher_to_header' );
+	add_action( 'wp_enqueue_scripts', 'staynalive_language_switcher_scripts' );
+}

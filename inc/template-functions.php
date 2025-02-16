@@ -4,7 +4,6 @@
  *
  * @package staynalive
  */
-@package StayNAlive
 
 /**
  * Add custom classes to the body
@@ -30,12 +29,12 @@ function staynalive_body_classes( $classes ) {
 		}
 	}
 
-	// Add dark mode class if enabled
+	// Add dark mode class if enabled.
 	if ( wp_get_global_styles( array( 'color' ) )['isDark'] ) {
 		$classes[] = 'is-dark-theme';
 	}
 
-	// Add class for featured image
+	// Add class for featured image.
 	if ( is_singular() && has_post_thumbnail() ) {
 		$classes[] = 'has-featured-image';
 	}
@@ -62,7 +61,7 @@ add_action( 'wp_head', 'staynalive_pingback_header' );
  * @return array Modified block attributes.
  */
 function staynalive_block_attributes( $attributes, $block ) {
-	// Add animation attributes to group blocks
+	// Add animation attributes to group blocks.
 	if ( 'core/group' === $block['blockName'] ) {
 		$attributes['data-animate'] = true;
 	}
@@ -79,7 +78,7 @@ add_filter( 'block_type_metadata_settings', 'staynalive_block_attributes', 10, 2
  * @return string Modified block HTML.
  */
 function staynalive_render_block( $block_content, $block ) {
-	// Add lazy loading to images outside of cover blocks
+	// Add lazy loading to images outside of cover blocks.
 	if ( 'core/image' === $block['blockName'] &&
 		! has_block( 'core/cover', $block['innerHTML'] ) ) {
 		$block_content = str_replace( '<img', '<img loading="lazy"', $block_content );

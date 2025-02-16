@@ -46,13 +46,15 @@ class SocialFeed {
     /**
      * Render feed data
      *
-     * @param {Object} _data Feed data to render
+     * @param {Object} data Feed data to render
      */
-    renderFeed(_data) {
+    renderFeed(data) {
         const container = document.querySelector('.social-feed');
         if (!container) {
+            return;
         }
-        // Render implementation
+
+        container.innerHTML = this.formatFeedData(data);
     }
 
     /**
@@ -65,6 +67,21 @@ class SocialFeed {
         if (container) {
             container.innerHTML = `<p class="error">Failed to load social feed: ${error.message}</p>`;
         }
+    }
+
+    /**
+     * Format feed data for display
+     * 
+     * @param {Object} data Feed data to format
+     * @return {string} Formatted HTML
+     */
+    formatFeedData(data) {
+        return data.map(item => `
+            <div class="social-feed-item">
+                <h3>${item.title}</h3>
+                <p>${item.content}</p>
+            </div>
+        `).join('');
     }
 }
 

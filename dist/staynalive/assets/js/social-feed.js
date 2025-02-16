@@ -51,8 +51,10 @@ class SocialFeed {
     renderFeed(data) {
         const container = document.querySelector('.social-feed');
         if (!container) {
+            return;
         }
-        // Render implementation
+
+        container.innerHTML = this.formatFeedData(data);
     }
 
     /**

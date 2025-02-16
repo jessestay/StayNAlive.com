@@ -117,8 +117,7 @@
 /* Loading States */
 
 .loading-skeleton {
-	background:
- linear-gradient(90deg, var(--color-border) 0%, var(--color-background) 50%, var(--color-border) 100%);
+	background: linear-gradient(90deg, var(--color-border) 0%, var(--color-background) 50%, var(--color-border) 100%);
 	background-size: 200% 100%;
 	animation: loading 1.5s infinite;
 }
@@ -160,8 +159,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background:
- linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+	background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
 	transform: translateX(-100%);
 }
 
@@ -179,8 +177,7 @@
 }
 
 .shimmer-effect {
-	background:
- linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+	background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
 	background-size: 200% 100%;
 	animation: shimmer 1.5s infinite;
 }
