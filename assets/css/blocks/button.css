@@ -15,6 +15,7 @@
 }
 
 /* Outline Style */
+
 .is-style-outline .wp-block-button__link {
 	background-color: transparent;
 	border: 2px solid var(--color-primary);
@@ -24,4 +25,4 @@
 .is-style-outline .wp-block-button__link:hover {
 	background-color: var(--color-primary);
 	color: var(--color-background);
-} 
+}

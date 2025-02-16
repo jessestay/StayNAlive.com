@@ -1,4 +1,5 @@
 :root {
+
 	/* Colors */
 	--color-primary: var(--wp--preset--color--primary);
 	--color-background: var(--wp--preset--color--background);
@@ -9,26 +10,27 @@
 	/* Typography */
 	--font-primary: var(--wp--preset--font-family--primary);
 	--font-secondary: var(--wp--preset--font-family--secondary);
-	
+
 	/* Spacing */
 	--spacing-xs: 0.5rem;
 	--spacing-sm: 1rem;
 	--spacing-md: 2rem;
 	--spacing-lg: 4rem;
-	
+
 	/* Layout */
 	--container-width: 1200px;
 	--content-width: 800px;
-	
+
 	/* Transitions */
 	--transition-default: all 0.2s ease;
-	
+
 	/* Border Radius */
 	--radius-sm: 4px;
 	--radius-md: 8px;
 }
 
 /* Base Styles */
+
 body {
 	font-family: var(--font-primary);
 	color: var(--color-text);
@@ -51,6 +53,7 @@ img {
 }
 
 /* Layout Utilities */
+
 .container {
 	max-width: var(--container-width);
 	margin: 0 auto;
@@ -63,10 +66,11 @@ img {
 }
 
 /* Common Components */
+
 .card {
 	background: var(--color-background);
 	border-radius: var(--radius-md);
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	padding: var(--spacing-md);
 }
 
@@ -85,7 +89,8 @@ img {
 
 /* Responsive Utilities */
 @media (max-width: 768px) {
+
 	:root {
-	    --spacing-lg: 2rem;
+		--spacing-lg: 2rem;
 	}
-} 
+}

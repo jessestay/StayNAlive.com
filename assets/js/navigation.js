@@ -5,11 +5,17 @@
 (() => {
     const navigation = {
         init() {
-            this.mobileToggle = document.querySelector('.wp-block-navigation__responsive-container-open');
+            this.mobileToggle = document.querySelector(
+                '.wp-block-navigation__responsive-container-open'
+            );
             this.mobileMenu = document.querySelector('.wp-block-navigation__responsive-container');
-            this.closeButton = document.querySelector('.wp-block-navigation__responsive-container-close');
-            this.overlay = document.querySelector('.wp-block-navigation__responsive-container-overlay');
-            
+            this.closeButton = document.querySelector(
+                '.wp-block-navigation__responsive-container-close'
+            );
+            this.overlay = document.querySelector(
+                '.wp-block-navigation__responsive-container-overlay'
+            );
+
             this.bindEvents();
             this.setupAccessibility();
         },
@@ -31,7 +37,7 @@
             }
 
             // Close on escape key
-            document.addEventListener('keydown', (e) => {
+            document.addEventListener('keydown', e => {
                 if (e.key === 'Escape') {
                     this.closeMobileMenu();
                 }
@@ -51,12 +57,12 @@
             subMenus.forEach(menu => {
                 const toggle = menu.querySelector('.wp-block-navigation-submenu__toggle');
                 const content = menu.querySelector('.wp-block-navigation-submenu__content');
-                
+
                 if (toggle && content) {
                     toggle.setAttribute('aria-expanded', 'false');
                     content.setAttribute('aria-hidden', 'true');
-                    
-                    toggle.addEventListener('click', (e) => {
+
+                    toggle.addEventListener('click', e => {
                         e.preventDefault();
                         const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
                         toggle.setAttribute('aria-expanded', !isExpanded);
@@ -66,7 +72,7 @@
             });
 
             // Handle keyboard navigation
-            document.addEventListener('keydown', (e) => {
+            document.addEventListener('keydown', e => {
                 if (e.key === 'Tab') {
                     document.body.classList.add('user-is-tabbing');
                 }
@@ -82,7 +88,7 @@
                 const isOpen = this.mobileMenu.classList.contains('is-menu-open');
                 this.mobileMenu.classList.toggle('is-menu-open');
                 document.body.style.overflow = isOpen ? '' : 'hidden';
-                
+
                 if (this.mobileToggle) {
                     this.mobileToggle.setAttribute('aria-expanded', !isOpen);
                 }
@@ -93,12 +99,12 @@
             if (this.mobileMenu && this.mobileMenu.classList.contains('is-menu-open')) {
                 this.mobileMenu.classList.remove('is-menu-open');
                 document.body.style.overflow = '';
-                
+
                 if (this.mobileToggle) {
                     this.mobileToggle.setAttribute('aria-expanded', 'false');
                 }
             }
-        }
+        },
     };
 
     // Initialize when DOM is ready
@@ -107,4 +113,4 @@
     } else {
         navigation.init();
     }
-})(); 
+})();

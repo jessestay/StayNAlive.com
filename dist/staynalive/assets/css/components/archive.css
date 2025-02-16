@@ -24,7 +24,7 @@
 .archive-card {
 	background: var(--color-background);
 	border-radius: var(--radius-md);
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	padding: var(--spacing-md);
 	height: 100%;
 	display: flex;
@@ -34,7 +34,7 @@
 
 .archive-card:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .archive-card .wp-block-post-title {
@@ -64,11 +64,12 @@
 }
 
 @media (max-width: 768px) {
+
 	.archive-page {
-	    padding: var(--spacing-md) var(--spacing-sm);
+		padding: var(--spacing-md) var(--spacing-sm);
 	}
-	
+
 	.wp-block-post-template {
-	    grid-template-columns: 1fr !important;
+		grid-template-columns: 1fr !important;
 	}
-} 
+}

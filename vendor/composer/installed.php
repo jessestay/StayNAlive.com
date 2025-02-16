@@ -3,7 +3,7 @@
         'name' => 'jessestay/staynalive',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '90a056ee6a8728d2cc9703e09461514371123637',
+        'reference' => '9d511854819fb6682b495bf4281c72e4d59f4389',
         'type' => 'wordpress-theme',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'jessestay/staynalive' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '90a056ee6a8728d2cc9703e09461514371123637',
+            'reference' => '9d511854819fb6682b495bf4281c72e4d59f4389',
             'type' => 'wordpress-theme',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

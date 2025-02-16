@@ -58,6 +58,7 @@
 }
 
 /* RTL Support */
+
 .rtl .language-switcher {
 	margin-left: 0;
 	margin-right: var(--spacing-md);
@@ -69,6 +70,7 @@
 }
 
 /* Add to existing file */
+
 .language-switcher-dropdown.is-active {
 	display: block;
 }
@@ -93,8 +95,9 @@
 
 /* Add support for reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
 	.language-switcher-toggle,
 	.language-switcher-dropdown {
-	    transition: none;
+		transition: none;
 	}
-} 
+}

@@ -14,7 +14,7 @@
 }
 
 .bio-avatar img {
-	box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .bio-name {
@@ -49,7 +49,7 @@
 
 .bio-link-button .wp-block-button__link:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .social-feed {
@@ -71,7 +71,7 @@
 	background: var(--color-background);
 	border-radius: var(--radius-md);
 	overflow: hidden;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	transition: transform 0.2s;
 }
 
@@ -100,16 +100,18 @@
 }
 
 @media (max-width: 768px) {
+
 	.social-grid {
-	    grid-template-columns: 1fr;
+		grid-template-columns: 1fr;
 	}
-	
+
 	.bio-link-button .wp-block-button__link {
-	    padding: var(--spacing-sm);
+		padding: var(--spacing-sm);
 	}
 }
 
 /* Button Style Variations */
+
 .bio-link-button .is-style-gradient .wp-block-button__link {
 	background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
 	border: none;
@@ -132,19 +134,30 @@
 
 /* Animation Effects */
 @keyframes float {
-	0% { transform: translateY(0); }
-	50% { transform: translateY(-10px); }
-	100% { transform: translateY(0); }
+
+	0% {
+		transform: translateY(0);
+	}
+
+	50% {
+		transform: translateY(-10px);
+	}
+
+	100% {
+		transform: translateY(0);
+	}
 }
 
 @keyframes fadeInUp {
+
 	to {
-	    opacity: 1;
-	    transform: translateY(0);
+		opacity: 1;
+		transform: translateY(0);
 	}
 }
 
 /* Enhanced About Section */
+
 .about-section {
 	padding: var(--spacing-xl) var(--spacing-md);
 	position: relative;
@@ -154,7 +167,7 @@
 .about-image {
 	border-radius: var(--radius-lg);
 	overflow: hidden;
-	box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 	transform: rotate(-3deg);
 	transition: transform 0.3s ease;
 }
@@ -170,7 +183,7 @@
 }
 
 .about-title::after {
-	content: '';
+	content: "";
 	display: block;
 	width: 60px;
 	height: 3px;
@@ -185,6 +198,7 @@
 }
 
 /* Color Scheme Selector */
+
 .color-scheme-selector {
 	position: fixed;
 	bottom: var(--spacing-md);
@@ -200,7 +214,7 @@
 	border-radius: 50%;
 	cursor: pointer;
 	border: 2px solid var(--color-background);
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	transition: transform 0.2s;
 }
 
@@ -209,6 +223,7 @@
 }
 
 /* Color Schemes */
+
 [data-theme="default"] {
 	--color-primary: #0073aa;
 	--color-accent: #00a0d2;
@@ -227,4 +242,4 @@
 [data-theme="ocean"] {
 	--color-primary: #1a535c;
 	--color-accent: #4ecdc4;
-} 
+}

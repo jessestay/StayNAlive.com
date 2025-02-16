@@ -91,31 +91,33 @@
 }
 
 @media (max-width: 980px) {
+
 	.featured-content {
-	    flex-direction: column;
+		flex-direction: column;
 	}
-	
+
 	.about-section,
 	.blog-preview {
-	    flex-basis: 100% !important;
+		flex-basis: 100% !important;
 	}
-	
+
 	.post-cover {
-	    min-height: 400px;
+		min-height: 400px;
 	}
 }
 
 @media (max-width: 768px) {
+
 	.featured-section {
-	    margin-top: 40px;
+		margin-top: 40px;
 	}
-	
+
 	.about-section,
 	.blog-preview {
-	    padding: 30px;
+		padding: 30px;
 	}
-	
+
 	.post-cover {
-	    min-height: 300px;
+		min-height: 300px;
 	}
-} 
+}

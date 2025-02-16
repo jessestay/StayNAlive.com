@@ -1,14 +1,16 @@
 /* Arabic Styles */
+
 [lang="ar"] {
+
 	/* Typography */
 	--font-primary: var(--wp--preset--font-family--arabic);
 	--line-height-base: 1.8;
 	--letter-spacing: 0;
-	
+
 	/* Spacing adjustments for Arabic */
 	--paragraph-margin: 1.5em 0;
 	--heading-margin: 1.2em 0 0.8em;
-	
+
 	/* Text direction */
 	direction: rtl;
 	text-align: right;
@@ -26,18 +28,21 @@
 }
 
 /* Persian/Farsi Styles */
+
 [lang="fa"] {
-	--font-primary: 'Vazirmatn', var(--wp--preset--font-family--arabic);
+	--font-primary: "Vazirmatn", var(--wp--preset--font-family--arabic);
 	--line-height-base: 1.8;
 }
 
 /* Hebrew Styles */
+
 [lang="he"] {
-	--font-primary: 'Rubik', sans-serif;
+	--font-primary: "Rubik", sans-serif;
 	--line-height-base: 1.6;
 }
 
 /* Bidirectional Text Support */
+
 .bidi-auto {
 	unicode-bidi: embed;
 	direction: auto;
@@ -48,18 +53,21 @@
 }
 
 /* Numbers in RTL context */
+
 .rtl .numbers {
 	direction: ltr;
 	display: inline-block;
 }
 
 /* Date formatting for RTL */
+
 .rtl .wp-block-post-date {
 	direction: ltr;
 	display: inline-block;
 }
 
 /* Mixed content containers */
+
 .mixed-content {
 	unicode-bidi: isolate;
 }
@@ -73,11 +81,13 @@
 }
 
 /* Language-specific font sizes */
-[lang="ar"] h1, [lang="fa"] h1 {
+
+[lang="ar"] h1,
+[lang="fa"] h1 {
 	font-size: 2.2em; /* Slightly larger for better readability */
 }
 
-[lang="ar"] .wp-block-navigation, 
+[lang="ar"] .wp-block-navigation,
 [lang="fa"] .wp-block-navigation,
 [lang="he"] .wp-block-navigation {
 	font-size: 1.1em; /* Larger navigation text for RTL languages */
@@ -85,13 +95,14 @@
 
 /* Mobile Adjustments */
 @media (max-width: 768px) {
-	[lang="ar"] h1, 
+
+	[lang="ar"] h1,
 	[lang="fa"] h1,
 	[lang="he"] h1 {
-	    font-size: 1.8em;
+		font-size: 1.8em;
 	}
-	
+
 	.rtl .mobile-stack {
-	    flex-direction: column-reverse;
+		flex-direction: column-reverse;
 	}
-} 
+}

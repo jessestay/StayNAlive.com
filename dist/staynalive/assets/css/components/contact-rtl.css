@@ -34,6 +34,7 @@
 }
 
 /* RTL-specific input styles */
+
 .contact-form-rtl input[type="text"],
 .contact-form-rtl input[type="email"],
 .contact-form-rtl textarea {
@@ -41,7 +42,8 @@
 }
 
 /* Placeholder text alignment */
+
 .contact-form-rtl input::placeholder,
 .contact-form-rtl textarea::placeholder {
 	text-align: right;
-} 
+}

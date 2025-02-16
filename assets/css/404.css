@@ -67,15 +67,16 @@
 }
 
 @media (max-width: 768px) {
+
 	.error-404 {
-	    padding: 40px 0;
+		padding: 40px 0;
 	}
-	
+
 	.error-widgets {
-	    flex-direction: column;
+		flex-direction: column;
 	}
-	
+
 	.widget {
-	    width: 100%;
+		width: 100%;
 	}
-} 
+}

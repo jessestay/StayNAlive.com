@@ -80,11 +80,12 @@
 }
 
 @media (max-width: 768px) {
+
 	.no-results {
-	    padding: 40px 20px;
+		padding: 40px 20px;
 	}
-	
+
 	.no-results-header {
-	    margin-bottom: 30px;
+		margin-bottom: 30px;
 	}
-} 
+}

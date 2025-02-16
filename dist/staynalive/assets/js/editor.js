@@ -2,18 +2,18 @@ wp.domReady(() => {
     // Add custom block styles
     wp.blocks.registerBlockStyle('core/group', {
         name: 'card',
-        label: 'Card'
+        label: 'Card',
     });
-    
+
     wp.blocks.registerBlockStyle('core/group', {
         name: 'glass',
-        label: 'Glass'
+        label: 'Glass',
     });
-    
+
     // Remove unwanted block patterns
     wp.blocks.unregisterBlockPattern('core/query-standard-posts');
     wp.blocks.unregisterBlockPattern('core/query-grid-posts');
-    
+
     // Add custom block variations
     wp.blocks.registerBlockVariation('core/group', {
         name: 'content-section',
@@ -22,8 +22,8 @@ wp.domReady(() => {
             className: 'content-section',
             layout: {
                 type: 'constrained',
-                contentSize: '800px'
-            }
-        }
+                contentSize: '800px',
+            },
+        },
     });
-}); 
+});

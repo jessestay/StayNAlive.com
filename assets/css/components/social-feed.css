@@ -19,7 +19,7 @@
 }
 
 .social-tab::after {
-	content: '';
+	content: "";
 	position: absolute;
 	bottom: -2px;
 	left: 0;
@@ -48,13 +48,13 @@
 	background: var(--color-background);
 	border-radius: var(--radius-md);
 	overflow: hidden;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .social-card:hover {
 	transform: translateY(-5px);
-	box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .social-media-content {
@@ -99,14 +99,16 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
 	.social-card,
 	.social-tab::after {
-	    transition: none;
+		transition: none;
 	}
 }
 
 @media (max-width: 768px) {
+
 	.social-feed-grid {
-	    grid-template-columns: 1fr;
+		grid-template-columns: 1fr;
 	}
-} 
+}

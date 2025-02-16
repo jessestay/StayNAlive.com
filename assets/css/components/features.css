@@ -21,13 +21,13 @@
 	padding: var(--spacing-md);
 	background: var(--color-background);
 	border-radius: var(--radius-md);
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	transition: var(--transition-default);
 }
 
 .feature-card:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .feature-icon {
@@ -42,11 +42,12 @@
 }
 
 @media (max-width: 768px) {
+
 	.features-section {
-	    padding: var(--spacing-md) var(--spacing-sm);
+		padding: var(--spacing-md) var(--spacing-sm);
 	}
-	
+
 	.features-grid {
-	    flex-direction: column;
+		flex-direction: column;
 	}
-} 
+}

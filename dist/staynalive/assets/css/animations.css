@@ -1,49 +1,83 @@
 /* Entrance Animations */
 @keyframes slideInUp {
+
 	from {
-	    transform: translateY(20px);
-	    opacity: 0;
+		transform: translateY(20px);
+		opacity: 0;
 	}
+
 	to {
-	    transform: translateY(0);
-	    opacity: 1;
+		transform: translateY(0);
+		opacity: 1;
 	}
 }
 
 @keyframes fadeIn {
-	from { opacity: 0; }
-	to { opacity: 1; }
+
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
 }
 
 @keyframes scaleIn {
+
 	from {
-	    transform: scale(0.9);
-	    opacity: 0;
+		transform: scale(0.9);
+		opacity: 0;
 	}
+
 	to {
-	    transform: scale(1);
-	    opacity: 1;
+		transform: scale(1);
+		opacity: 1;
 	}
 }
 
 /* Add to existing animations.css */
 @keyframes floatIn {
-	0% { transform: translateY(-20px); opacity: 0; }
-	100% { transform: translateY(0); opacity: 1; }
+
+	0% {
+		transform: translateY(-20px);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateY(0);
+		opacity: 1;
+	}
 }
 
 @keyframes pulseScale {
-	0% { transform: scale(1); }
-	50% { transform: scale(1.05); }
-	100% { transform: scale(1); }
+
+	0% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.05);
+	}
+
+	100% {
+		transform: scale(1);
+	}
 }
 
 @keyframes shimmer {
-	0% { background-position: -200% 0; }
-	100% { background-position: 200% 0; }
+
+	0% {
+		background-position: -200% 0;
+	}
+
+	100% {
+		background-position: 200% 0;
+	}
 }
 
 /* Apply animations */
+
 .social-card {
 	opacity: 0;
 	animation: slideInUp 0.6s ease forwards;
@@ -62,6 +96,7 @@
 }
 
 /* Hover Effects */
+
 .social-card {
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -80,50 +115,53 @@
 }
 
 /* Loading States */
+
 .loading-skeleton {
-	background: linear-gradient(90deg, 
-	    var(--color-border) 0%, 
-	    var(--color-background) 50%, 
-	    var(--color-border) 100%);
+	background:
+ linear-gradient(90deg, var(--color-border) 0%, var(--color-background) 50%, var(--color-border) 100%);
 	background-size: 200% 100%;
 	animation: loading 1.5s infinite;
 }
 
 @keyframes loading {
-	from { background-position: 200% 0; }
-	to { background-position: -200% 0; }
+
+	from {
+		background-position: 200% 0;
+	}
+
+	to {
+		background-position: -200% 0;
+	}
 }
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
+
 	.social-card,
 	.bio-avatar,
 	.bio-name,
 	.bio-tagline {
-	    animation: none;
-	    opacity: 1;
+		animation: none;
+		opacity: 1;
 	}
 }
 
 /* Button Hover Effects */
+
 .bio-link-button .wp-block-button__link {
 	position: relative;
 	overflow: hidden;
 }
 
 .bio-link-button .wp-block-button__link::after {
-	content: '';
+	content: "";
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(
-	    120deg,
-	    transparent,
-	    rgba(255, 255, 255, 0.2),
-	    transparent
-	);
+	background:
+ linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
 	transform: translateX(-100%);
 }
 
@@ -141,12 +179,8 @@
 }
 
 .shimmer-effect {
-	background: linear-gradient(
-	    90deg,
-	    transparent 0%,
-	    rgba(255, 255, 255, 0.2) 50%,
-	    transparent 100%
-	);
+	background:
+ linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
 	background-size: 200% 100%;
 	animation: shimmer 1.5s infinite;
-} 
+}

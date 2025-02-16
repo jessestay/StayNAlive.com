@@ -41,12 +41,13 @@
 }
 
 @media (max-width: 768px) {
+
 	.site-main {
-	    padding: 40px 20px;
+		padding: 40px 20px;
 	}
-	
+
 	.post-meta {
-	    flex-direction: column;
-	    gap: 5px;
+		flex-direction: column;
+		gap: 5px;
 	}
-} 
+}

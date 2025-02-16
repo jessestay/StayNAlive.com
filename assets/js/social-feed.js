@@ -12,7 +12,7 @@ class SocialFeed {
             instagram: [],
             tiktok: [],
             youtube: [],
-            twitter: []
+            twitter: [],
         };
         this.init();
     }
@@ -51,7 +51,6 @@ class SocialFeed {
     renderFeed(data) {
         const container = document.querySelector('.social-feed');
         if (!container) {
-            return;
         }
         // Render implementation
     }
@@ -69,4 +68,4 @@ class SocialFeed {
     }
 }
 
-export default SocialFeed; 
+export default SocialFeed;

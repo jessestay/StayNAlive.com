@@ -15,6 +15,7 @@
 }
 
 /* Author Widget */
+
 .sidebar-author {
 	text-align: center;
 }
@@ -27,7 +28,7 @@
 
 .author-image img {
 	border: 4px solid var(--wp--preset--color--white);
-	box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .author-name {
@@ -49,6 +50,7 @@
 }
 
 /* Search Widget */
+
 .sidebar-search .wp-block-search__inside-wrapper {
 	border: 1px solid var(--wp--preset--color--secondary);
 	border-radius: 4px;
@@ -68,6 +70,7 @@
 }
 
 /* Categories Widget */
+
 .sidebar-categories ul {
 	margin: 0;
 	padding: 0;
@@ -91,6 +94,7 @@
 }
 
 /* Recent Posts Widget */
+
 .sidebar-recent-posts .wp-block-latest-posts {
 	margin: 0;
 	padding: 0;
@@ -106,4 +110,4 @@
 .sidebar-recent-posts .wp-block-latest-posts__post-date {
 	font-size: var(--wp--preset--font-size--small);
 	color: var(--wp--preset--color--secondary);
-} 
+}

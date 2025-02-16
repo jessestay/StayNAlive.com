@@ -33,13 +33,13 @@
 
 .page-title-content h1 {
 	margin: 0 0 20px;
-	text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .page-subtitle {
 	font-size: 1.2em;
 	opacity: 0.9;
-	text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .page-content-area {
@@ -93,22 +93,23 @@
 }
 
 @media (max-width: 768px) {
+
 	.page-hero-content {
-	    flex-direction: column;
-	    padding: 20px;
+		flex-direction: column;
+		padding: 20px;
 	}
-	
+
 	.page-thumbnail {
-	    text-align: center;
-	    margin-bottom: 20px;
+		text-align: center;
+		margin-bottom: 20px;
 	}
-	
+
 	.page-title-content {
-	    padding-left: 0;
-	    text-align: center;
+		padding-left: 0;
+		text-align: center;
 	}
-	
+
 	.page-content-area {
-	    padding: 20px;
+		padding: 20px;
 	}
-} 
+}

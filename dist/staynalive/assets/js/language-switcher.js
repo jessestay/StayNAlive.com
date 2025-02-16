@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const languageSwitchers = document.querySelectorAll('.language-switcher');
 
     languageSwitchers.forEach(switcher => {
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
+        document.addEventListener('click', e => {
             if (!switcher.contains(e.target)) {
                 button.setAttribute('aria-expanded', 'false');
                 dropdown.classList.remove('is-active');
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Keyboard navigation
-        button.addEventListener('keydown', (e) => {
+        button.addEventListener('keydown', e => {
             if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 button.setAttribute('aria-expanded', 'true');
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Handle keyboard navigation within dropdown
-        dropdown.addEventListener('keydown', (e) => {
+        dropdown.addEventListener('keydown', e => {
             const currentLink = document.activeElement;
             const currentIndex = Array.from(links).indexOf(currentLink);
 
@@ -60,4 +60,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-}); 
+});

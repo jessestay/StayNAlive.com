@@ -55,22 +55,23 @@
 }
 
 @media (max-width: 768px) {
+
 	.single-post {
-	    padding: 40px 20px;
+		padding: 40px 20px;
 	}
-	
+
 	.post-meta {
-	    flex-direction: column;
-	    align-items: center;
-	    gap: 10px;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
 	}
-	
+
 	.post-navigation {
-	    flex-direction: column;
-	    gap: 20px;
+		flex-direction: column;
+		gap: 20px;
 	}
-	
+
 	.wp-block-post-navigation-link {
-	    max-width: 100%;
+		max-width: 100%;
 	}
-} 
+}

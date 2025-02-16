@@ -1,7 +1,7 @@
 .post-card {
 	background: var(--color-background);
 	border-radius: var(--radius-md);
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	padding: var(--spacing-md);
 	margin-bottom: var(--spacing-lg);
 	transition: var(--transition-default);
@@ -9,7 +9,7 @@
 
 .post-card:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .post-card .post-meta {
@@ -29,4 +29,4 @@
 	text-decoration: none;
 	font-weight: 500;
 	margin-top: var(--spacing-sm);
-} 
+}
