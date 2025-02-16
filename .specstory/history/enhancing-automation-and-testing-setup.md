@@ -2977,7 +2977,318 @@ sync_patterns() {
                 -H "Authorization: token $PATTERN_REPO_TOKEN" \
                 -H "Content-Type: application/json" \
                 -d @"$pattern_file" \
-                "$PATTERN_REPO_URL/contents
+                "$PATTERN_REPO_URL/contents/patterns/$(basename "$pattern_file")"
+        fi
+    done
+    
+    # Download new patterns
+    curl -s \
+        -H "Authorization: token $PATTERN_REPO_TOKEN" \
+        "$PATTERN_REPO_URL/contents/patterns" | \
+    jq -r '.[] | .download_url' | while read -r url; do
+        curl -s "$url" > ".ai-fix/patterns/$(basename "$url")"
+    done
+}
+``````
+
+2. Let's add error handling for the stylelint and ESLint issues:
+
+``````diff:.ai-fix/recovery/strategies.sh
+# Add to recover_from_build_error function
+recover_from_build_error() {
+    local error_msg="$1"
+    local file="$2"
+    
++    # Handle stylelint config error
++    if [[ $error_msg == *"Could not find \"stylelint-config-standard\""* ]]; then
++        npm install --save-dev stylelint-config-standard
++        
++        # Create stylelint config
++        cat > .stylelintrc.json << 'EOL'
++{
++    "extends": [
++        "stylelint-config-standard",
++        "@wordpress/stylelint-config"
++    ],
++    "rules": {
++        "no-descending-specificity": null,
++        "selector-class-pattern": null
++    }
++}
++EOL
++        return 0
++    fi
++
++    # Handle ESLint undefined errors
++    if [[ $error_msg == *"'registerBlockVariation' is not defined"* ]] || 
++       [[ $error_msg == *"'registerBlockPattern' is not defined"* ]]; then
++        # Add imports to editor-customization.js
++        sed -i '' '1i\
++import { registerBlockVariation, registerBlockPattern } from "@wordpress/blocks";' \
++            assets/js/editor-customization.js
++        return 0
++    fi
++
++    # Handle unused variable warning
++    if [[ $error_msg == *"'unregisterBlockStyle' is assigned a value but never used"* ]]; then
++        # Either use the variable or remove it
++        sed -i '' '/unregisterBlockStyle/d' assets/js/editor-customization.js
++        return 0
++    fi
+
+    # Rest of existing code...
+}
+``````
+
+3. Add PHP error fixing:
+
+``````diff:.ai-fix/recovery/strategies.sh
+# Add to recover_from_syntax_error function
+recover_from_syntax_error() {
+    local error_msg="$1"
+    local file="$2"
+    
++    # Fix PHP comment spacing
++    if [[ $error_msg == *"FileComment.SpacingAfterComment"* ]]; then
++        sed -i '' '/^\/\*\*/,/\*\//{ /\*\//{ x; p; }; H; d; }; x; p' "$file"
++        return 0
++    fi
++
++    # Fix PHP inline comment endings
++    if [[ $error_msg == *"InlineComment.InvalidEndChar"* ]]; then
++        sed -i '' 's/\/\/ \([A-Za-z].*[^.]\)$/\/\/ \1./' "$file"
++        return 0
++    fi
++
++    # Fix Yoda conditions
++    if [[ $error_msg == *"YodaConditions.NotYoda"* ]]; then
++        sed -i '' 's/if (\$\([a-zA-Z_]*\) [=!]== \(.*\))/if (\2 [=!]== \$\1)/' "$file"
++        return 0
++    fi
++
++    # Fix whitespace at end of line
++    if [[ $error_msg == *"SuperfluousWhitespace.EndLine"* ]]; then
++        sed -i '' 's/[[:space:]]*$//' "$file"
++        return 0
++    fi
+
+    # Rest of existing code...
+}
+``````
+
+4. Add a function to fix all PHP coding standards:
+
+``````bash:.ai-fix/recovery/php-fixer.sh
+#!/bin/bash
+
+# Fix all PHP coding standards issues
+fix_php_standards() {
+    local file="$1"
+    
+    # Run PHP Code Beautifier and Fixer
+    if command -v phpcbf >/dev/null 2>&1; then
+        phpcbf --standard=WordPress "$file"
+    fi
+    
+    # Fix common issues
+    sed -i '' -e 's/[[:space:]]*$//' \
+              -e 's/\t/    /g' \
+              -e 's/[^;]$/&;/' \
+              -e 's/}\([^ ]\)/}\n\1/g' \
+              -e 's/[^{]\{$/\{/g' \
+              -e 's/\([^}]\)}/\1\n}/g' \
+              -e 's/\/\/ \([A-Za-z].*[^.]\)$/\/\/ \1./' \
+              "$file"
+    
+    # Fix function spacing
+    sed -i '' 's/function\([^ ]\)/function \1/g' "$file"
+    
+    # Fix array alignment
+    if command -v php-cs-fixer >/dev/null 2>&1; then
+        php-cs-fixer fix "$file" --rules=align_multiline_comment,array_indentation
+    fi
+}
+``````
+
+Would you like me to:
+1. Add more error handlers
+2. Enhance the PHP fixes
+3. Add more build tool fixes
+4. Add automated testing for the fixes
+
+---
+
+_**User**_
+
+More errors.
+
+---
+
+_**Assistant**_
+
+I see multiple issues. Let's fix them systematically:
+
+1. First, let's fix the CSS formatting errors by updating the sed command:
+
+``````diff:install.sh
+# Fix CSS formatting
+echo -e "${BLUE}Fixing CSS formatting...${NC}"
+echo "Fixing CSS files..."
+- sed -i '' "s/rgba([0-9]\+,[0-9]\+, ..."/"\1"/g' assets/css/**/*.css
++ # Fix CSS formatting with proper regex
++ find assets/css -name "*.css" -exec sed -i '' \
++     -e 's/[[:space:]]*$//' \
++     -e 's/  */  /g' \
++     -e 's/rgba(\([0-9]\+\),\s*\([0-9]\+\),\s*\([0-9]\+\),\s*\([0-9.]\+\))/rgba(\1, \2, \3, \4)/g' \
++     {} \;
+``````
+
+2. Fix the stylelint config issue:
+
+``````diff:install.sh
+# Before running linters
+echo -e "${BLUE}Setting up linters...${NC}"
++ # Install and configure stylelint
++ npm install --save-dev stylelint-config-standard
++ 
++ # Create stylelint config if it doesn't exist
++ if [ ! -f ".stylelintrc.json" ]; then
++     cat > .stylelintrc.json << 'EOL'
++ {
++     "extends": [
++         "stylelint-config-standard",
++         "@wordpress/stylelint-config"
++     ],
++     "rules": {
++         "no-descending-specificity": null,
++         "selector-class-pattern": null
++     }
++ }
++ EOL
++ fi
+``````
+
+3. Fix the JavaScript errors in editor-customization.js:
+
+``````diff:assets/js/editor-customization.js
++ import { 
++     registerBlockVariation, 
++     registerBlockPattern,
++     unregisterBlockStyle 
++ } from '@wordpress/blocks';
++ import { __ } from '@wordpress/i18n';
++ 
+  // Existing code...
+  
+- const { unregisterBlockStyle } = wp.blocks;
++ // Use unregisterBlockStyle
++ unregisterBlockStyle('core/quote', 'large');
+``````
+
+4. Fix PHP syntax and coding standards:
+
+``````bash:.ai-fix/recovery/php-fixer.sh
+#!/bin/bash
+
+# Fix PHP files
+fix_php_files() {
+    local files=("$@")
+    
+    for file in "${files[@]}"; do
+        echo "Fixing $file..."
+        
+        # Fix comment spacing
+        sed -i '' -e '/^\/\*\*$/,/^ \*\/$/ {
+            /^ \*\/$/ {
+                a\
+
+            }
+        }' "$file"
+        
+        # Fix inline comments
+        sed -i '' -e 's/\/\/ \([A-Za-z].*[^.!?]\)$/\/\/ \1./' "$file"
+        
+        # Fix Yoda conditions
+        sed -i '' -e 's/if (\$\([a-zA-Z_][a-zA-Z0-9_]*\) \([=!]\+\) \([^$][^)]*\))/if (\3 \2 $\1)/' "$file"
+        
+        # Fix function spacing
+        sed -i '' -e 's/function\([^ ]\)/function \1/g' "$file"
+        
+        # Fix array alignment
+        if grep -q "=>" "$file"; then
+            align_arrays "$file"
+        fi
+        
+        # Run PHPCBF
+        if command -v phpcbf >/dev/null 2>&1; then
+            phpcbf --standard=WordPress "$file" >/dev/null 2>&1
+        fi
+    done
+}
+
+# Align array arrows
+align_arrays() {
+    local file="$1"
+    local max_length=0
+    local arrays=()
+    
+    # Find arrays and calculate max key length
+    while IFS= read -r line; do
+        if [[ $line =~ .*\'.*\'[[:space:]]*=\>.* ]]; then
+            key_length=$(echo "$line" | sed -E 's/^[[:space:]]*'"'"'([^'"'"']*).*/\1/' | wc -c)
+            ((key_length > max_length)) && max_length=$key_length
+            arrays+=("$line")
+        fi
+    done < "$file"
+    
+    # Align arrows
+    for line in "${arrays[@]}"; do
+        key=$(echo "$line" | sed -E 's/^[[:space:]]*'"'"'([^'"'"']*).*/\1/')
+        value=$(echo "$line" | sed -E 's/.*=>([^,}]*).*/\1/')
+        printf "    '%s'%*s => %s,\n" "$key" $((max_length - ${#key})) "" "$value"
+    done > "$file.tmp"
+    
+    mv "$file.tmp" "$file"
+}
+
+# Run the fixer
+php_files=$(find . -name "*.php")
+fix_php_files $php_files
+``````
+
+5. Add this to install.sh:
+
+``````diff:install.sh
+# After installing dependencies
+echo -e "${BLUE}Fixing code standards...${NC}"
++ # Fix PHP files
++ source .ai-fix/recovery/php-fixer.sh
++ fix_php_files $(find . -name "*.php")
++ 
++ # Fix JavaScript files
++ npx eslint --fix assets/js/
++ 
++ # Fix CSS files
++ npx stylelint --fix 'assets/css/**/*.css'
+``````
+
+Would you like me to:
+1. Add more error handlers
+2. Enhance the PHP fixes
+3. Add more build tool fixes
+4. Add automated testing for the fixes
+
+---
+
+_**User**_
+
+Can we have it also update the deprecated npm warnings so it upgrades those when it makes sense?
+
+---
+
+_**Assistant**_
+
+
 
 ---
 

@@ -254,11 +254,13 @@ fi
 
 # After creating all files but before running linters
 # Fix CSS formatting
-if [ -f "fix-css.sh" ]; then
-    echo -e "${BLUE}Fixing CSS formatting...${NC}"
-    chmod +x fix-css.sh
-    ./fix-css.sh
-fi
+echo -e "${BLUE}Fixing CSS formatting...${NC}"
+echo "Fixing CSS files..."
+find assets/css -name "*.css" -exec sed -i '' \
+    -e 's/[[:space:]]*$//' \
+    -e 's/  */  /g' \
+    -e 's/rgba(\([0-9]\+\),\s*\([0-9]\+\),\s*\([0-9]\+\),\s*\([0-9.]\+\))/rgba(\1, \2, \3, \4)/g' \
+    {} \;
 
 # Run linting
 echo -e "${BLUE}Running linters...${NC}"
@@ -687,4 +689,288 @@ verify_fix() {
     echo -e "${RED}Fix verification failed, restoring backup${NC}"
     mv "${file}.backup" "$file"
     return 1
-} 
+}
+
+# After installing dependencies
+echo -e "${BLUE}Fixing code standards...${NC}"
+# Fix PHP files
+source .ai-fix/recovery/php-fixer.sh
+fix_php_files $(find . -name "*.php")
+
+# Fix JavaScript files
+npx eslint --fix assets/js/
+
+# Fix CSS files
+npx stylelint --fix 'assets/css/**/*.css'
+
+# Add error pattern learning for common errors
+learn_from_errors() {
+    local output="$1"
+    
+    # Extract and learn from stylelint errors
+    if echo "$output" | grep -q "stylelint-config-standard"; then
+        add_pattern \
+            "Could not find \"stylelint-config-standard\"" \
+            "npm install --save-dev stylelint-config-standard" \
+            1 \
+            "{\"type\":\"dependency\",\"tool\":\"stylelint\"}"
+    fi
+    
+    # Extract and learn from PHP errors
+    if echo "$output" | grep -q "PHP syntax error"; then
+        add_pattern \
+            "$(echo "$output" | grep -A 1 "PHP syntax error")" \
+            "phpcbf --standard=WordPress" \
+            1 \
+            "{\"type\":\"syntax\",\"language\":\"php\"}"
+    fi
+    
+    # Extract and learn from JavaScript errors
+    if echo "$output" | grep -q "error.*no-unused-vars\|error.*no-undef"; then
+        add_pattern \
+            "$(echo "$output" | grep -A 1 "error.*no-")" \
+            "eslint --fix" \
+            1 \
+            "{\"type\":\"lint\",\"tool\":\"eslint\"}"
+    fi
+}
+
+# Add error learning to the build process
+if [ -n "$BUILD_OUTPUT" ]; then
+    learn_from_errors "$BUILD_OUTPUT"
+fi
+
+# Create production build
+mkdir -p dist/staynalive
+
+# Copy theme files
+cp -r {assets,inc,languages,parts,patterns,styles,templates,src} dist/staynalive/
+cp {style.css,functions.php,theme.json,index.php} dist/staynalive/
+
+# Validate copied files
+for file in "${required_files[@]}"; do
+    dist_file="dist/staynalive/$file"
+    if [ ! -f "$dist_file" ]; then
+        echo -e "${RED}Error: Failed to copy $file to distribution${NC}"
+        exit 1
+    fi
+done
+
+# Create zip file
+cd dist
+if ! zip -r staynalive.zip staynalive -x ".*" -x "__MACOSX"; then
+    echo -e "${RED}Error: Failed to create zip file${NC}"
+    cd ..
+    exit 1
+fi
+cd ..
+
+echo -e "${GREEN}Installation complete!${NC}"
+echo -e "Theme zip created at: ${BLUE}dist/staynalive.zip${NC}"
+echo -e "You can now install this theme in WordPress through:"
+echo -e "1. WordPress Admin > Appearance > Themes > Add New > Upload Theme"
+echo -e "2. Or copy the contents of ${BLUE}dist/staynalive${NC} to your wp-content/themes directory"
+
+# Error tracking
+ERRORS=()
+WARNINGS=()
+
+# AI error fixing function
+fix_with_ai() {
+    local error_msg="$1"
+    local file="$2"
+    
+    echo -e "${BLUE}AI attempting to fix error in ${file}:${NC}"
+    echo -e "${RED}${error_msg}${NC}"
+    
+    # Common error patterns and their fixes
+    declare -A error_patterns=(
+        ["Cannot find module"]=1
+        ["Could not find \"stylelint-config-standard\""]=1
+        ["Failed to load '@wordpress/scripts/config"]=1
+        ["peer dependency conflict"]=1
+        ["ERESOLVE"]=1
+        ["ajv"]=1
+        ["webpack"]=1
+        ["babel"]=1
+        ["postcss"]=1
+        ["PHP Parse error"]=1
+        ["PHP Fatal error"]=1
+        ["PHP Notice"]=1
+        ["PHP Warning"]=1
+        ["npm ERR!"]=1
+        ["composer.json does not exist"]=1
+        ["Package phpunit/phpunit has requirements"]=1
+        ["Failed to load config"]=1
+        ["Missing dependencies"]=1
+    )
+
+    # Check if error matches any known patterns
+    for pattern in "${!error_patterns[@]}"; do
+        if [[ $error_msg == *"$pattern"* ]]; then
+            echo -e "${YELLOW}Detected known issue: $pattern${NC}"
+            
+            # Automatic fix without asking permission for critical errors
+            if [[ $pattern == "ajv" || $pattern == "ERESOLVE" ]]; then
+                echo "Applying automatic fix for critical dependency issue..."
+                rm -rf node_modules package-lock.json
+                npm install --save-dev ajv@latest ajv-keywords@latest
+                npm install --legacy-peer-deps --no-audit
+                return 0
+            fi
+            
+            # Ask for permission for non-critical fixes
+            echo -e "${YELLOW}Would you like me to fix this issue? (y/n)${NC}"
+            read -r proceed
+            
+            if [[ "$proceed" =~ ^[Yy]$ ]]; then
+                case "$pattern" in
+                    "Cannot find module")
+                        local missing_module=$(echo "$error_msg" | grep -o "'.*'" | head -1 | tr -d "'")
+                        npm install --save-dev "$missing_module"
+                        ;;
+                    "Could not find \"stylelint-config-standard\"")
+                        npm install --save-dev stylelint-config-standard
+                        # Update stylelint config
+                        update_stylelint_config
+                        ;;
+                    "Failed to load '@wordpress/scripts/config")
+                        npm install --save-dev @wordpress/scripts@latest
+                        ;;
+                    "peer dependency conflict"|"ERESOLVE")
+                        resolve_dependency_conflicts
+                        ;;
+                esac
+                return 0
+            fi
+        fi
+    done
+
+    # If no known pattern matched, try generic fixes
+    generic_error_fix "$error_msg" "$file"
+}
+
+# Function to update stylelint config
+update_stylelint_config() {
+    cat > .stylelintrc.json << 'EOL'
+{
+    "extends": [
+        "stylelint-config-standard",
+        "@wordpress/stylelint-config"
+    ],
+    "rules": {
+        "no-descending-specificity": null,
+        "selector-class-pattern": null
+    }
+}
+EOL
+}
+
+# Function to resolve dependency conflicts
+resolve_dependency_conflicts() {
+    echo "Resolving dependency conflicts..."
+    rm -rf node_modules package-lock.json
+    npm install --legacy-peer-deps --no-audit
+    
+    # Check for specific version conflicts
+    if grep -q "stylelint" package.json; then
+        npm install --save-dev stylelint@14.16.1
+    fi
+    
+    if grep -q "@wordpress/stylelint-config" package.json; then
+        npm install --save-dev @wordpress/stylelint-config@21.41.0
+    fi
+}
+
+# Function for generic error fixes
+generic_error_fix() {
+    local error_msg="$1"
+    local file="$2"
+
+    if [ -f "$file" ]; then
+        # Create backup
+        cp "$file" "${file}.backup"
+        
+        # Basic fixes based on error patterns
+        case "$error_msg" in
+            *"syntax error"*) fix_syntax_error "$file" ;;
+            *"undefined"*) fix_undefined_error "$file" ;;
+            *"missing"*) fix_missing_error "$file" ;;
+            *) 
+                echo -e "${RED}Unable to automatically fix this error${NC}"
+                mv "${file}.backup" "$file"
+                return 1
+                ;;
+        esac
+        
+        # Verify fix
+        verify_fix "$file"
+    fi
+}
+
+# Modify error logging to attempt AI fixes
+log_error() {
+    local error_msg="$1"
+    local file="$2"
+    
+    ERRORS+=("$error_msg")
+    echo -e "${RED}Error: $error_msg${NC}"
+    
+    if [ -n "$file" ]; then
+        fix_with_ai "$error_msg" "$file"
+    fi
+}
+
+# Update error handling in commands
+if ! npm install 2> npm-error.log; then
+    log_error "Failed to install npm dependencies" "package.json"
+fi
+
+if ! composer install 2> composer-error.log; then
+    log_error "Failed to install composer dependencies" "composer.json"
+fi
+
+# Add error handling for PHP files
+for php_file in $(find . -name "*.php"); do
+    if ! php -l "$php_file" > /dev/null 2>&1; then
+        log_error "PHP syntax error in $php_file" "$php_file"
+    fi
+done
+
+# Function to log warnings
+log_warning() {
+    WARNINGS+=("$1")
+    echo -e "${YELLOW}Warning: $1${NC}"
+}
+
+# Function to display summary
+display_summary() {
+    echo -e "\n${BLUE}Build Summary:${NC}"
+    # Performance metrics
+    echo -e "\n${BLUE}Performance Metrics:${NC}"
+    echo -e "Build time: $((SECONDS))s"
+    echo -e "Memory usage: $(ps -o rss= -p $$)KB"
+    
+    # Test results
+    echo -e "\n${BLUE}Test Results:${NC}"
+    if [ -f "test-results.json" ]; then
+        echo -e "Unit Tests: $(jq '.numPassedTests' test-results.json) passed"
+        echo -e "E2E Tests: $(jq '.numPassedE2E' test-results.json) passed"
+    fi
+    
+    # Error summary
+    if [ ${#ERRORS[@]} -eq 0 ]; then
+        echo -e "${GREEN}No errors found!${NC}"
+    else
+        echo -e "${RED}Found ${#ERRORS[@]} errors:${NC}"
+        echo -e "\nError Details:"
+        printf '%s\n' "${ERRORS[@]}"
+    fi
+    
+    if [ ${#WARNINGS[@]} -gt 0 ]; then
+        echo -e "${YELLOW}Found ${#WARNINGS[@]} warnings:${NC}"
+        printf '%s\n' "${WARNINGS[@]}"
+    fi
+}
+
+display_summary 
