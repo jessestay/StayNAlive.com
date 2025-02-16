@@ -3407,6 +3407,241 @@ _**User**_
 
 ---
 
+_**Assistant**_
+
+You're right - let's enhance the AI error handling to be more persistent and comprehensive. Here's how we'll improve it:
+
+1. First, let's add a recursive error fixing function:
+
+``````diff:.ai-fix/recovery/strategies.sh
++ # Maximum retry attempts
++ MAX_RETRIES=3
++ 
++ # Recursive error fixing
++ fix_until_resolved() {
++     local error_msg="$1"
++     local file="$2"
++     local attempt="${3:-1}"
++     
++     echo -e "${BLUE}Fix attempt $attempt for $file${NC}"
++     
++     # Try to fix the error
++     if fix_with_ai "$error_msg" "$file"; then
++         # Verify the fix worked
++         if verify_fix "$file"; then
++             echo -e "${GREEN}Fix successful!${NC}"
++             return 0
++         fi
++     fi
++     
++     # If we haven't exceeded max retries, try again with a different strategy
++     if [ "$attempt" -lt "$MAX_RETRIES" ]; then
++         echo -e "${YELLOW}Fix attempt $attempt failed, trying alternative approach...${NC}"
++         # Get new error message if available
++         local new_error=$(get_current_errors "$file")
++         fix_until_resolved "${new_error:-$error_msg}" "$file" $((attempt + 1))
++     else
++         echo -e "${RED}Maximum fix attempts reached for $file${NC}"
++         return 1
++     fi
++ }
++ 
++ # Get current errors for a file
++ get_current_errors() {
++     local file="$1"
++     
++     case "${file##*.}" in
++         php)
++             php -l "$file" 2>&1 || phpcs "$file" 2>&1
++             ;;
++         js)
++             eslint "$file" 2>&1
++             ;;
++         css)
++             stylelint "$file" 2>&1
++             ;;
++         *)
++             return 1
++             ;;
++     esac
++ }
+``````
+
+2. Update the main error handling in install.sh:
+
+``````diff:install.sh
+# After installing dependencies
+echo -e "${BLUE}Fixing code standards...${NC}"
+
++ # Track all errors
++ declare -A ALL_ERRORS
++ 
++ # Function to handle all errors
++ handle_all_errors() {
++     local error_type="$1"
++     local error_msg="$2"
++     local file="$3"
++     
++     # Add to error tracking
++     ALL_ERRORS["${file}:${error_type}"]="$error_msg"
++     
++     # Try to fix until resolved
++     if fix_until_resolved "$error_msg" "$file"; then
++         unset ALL_ERRORS["${file}:${error_type}"]
++         return 0
++     fi
++     return 1
++ }
++ 
++ # Function to fix all remaining errors
++ fix_remaining_errors() {
++     local fixed_count=0
++     local total_errors=${#ALL_ERRORS[@]}
++     
++     echo -e "${BLUE}Attempting to fix $total_errors remaining errors...${NC}"
++     
++     for key in "${!ALL_ERRORS[@]}"; do
++         local file="${key%:*}"
++         local error_type="${key#*:}"
++         local error_msg="${ALL_ERRORS[$key]}"
++         
++         if fix_until_resolved "$error_msg" "$file"; then
++             ((fixed_count++))
++             unset ALL_ERRORS["$key"]
++         fi
++     done
++     
++     echo -e "${GREEN}Fixed $fixed_count out of $total_errors errors${NC}"
++     return $(( ${#ALL_ERRORS[@]} == 0 ))
++ }
++ 
++ # Update error handling in commands
++ if ! npm install --legacy-peer-deps --no-audit 2> npm-error.log; then
++     handle_all_errors "npm" "$(cat npm-error.log)" "package.json"
++ fi
++ 
++ # Handle stylelint errors
++ if ! npx stylelint 'assets/css/**/*.css' --fix 2> stylelint-error.log; then
++     handle_all_errors "stylelint" "$(cat stylelint-error.log)" ".stylelintrc.json"
++ fi
++ 
++ # Handle ESLint errors
++ if ! npx eslint --fix assets/js/ 2> eslint-error.log; then
++     while read -r file; do
++         if [ -f "$file" ]; then
++             handle_all_errors "eslint" "$(cat eslint-error.log)" "$file"
++         fi
++     done < <(find assets/js -name "*.js")
++ fi
++ 
++ # Handle PHP errors
++ while read -r file; do
++     if ! php -l "$file" > /dev/null 2>&1; then
++         handle_all_errors "php" "$(php -l "$file" 2>&1)" "$file"
++     fi
++     if ! phpcs "$file" > /dev/null 2>&1; then
++         handle_all_errors "phpcs" "$(phpcs "$file" 2>&1)" "$file"
++     fi
++ done < <(find . -name "*.php")
++ 
++ # Try to fix any remaining errors
++ if [ ${#ALL_ERRORS[@]} -gt 0 ]; then
++     echo -e "${YELLOW}Some errors remain. Attempting final fixes...${NC}"
++     if ! fix_remaining_errors; then
++         echo -e "${RED}Some errors could not be automatically fixed.${NC}"
++         echo -e "${YELLOW}Please review the remaining errors manually:${NC}"
++         for key in "${!ALL_ERRORS[@]}"; do
++             echo -e "${RED}${key}:${NC}"
++             echo "${ALL_ERRORS[$key]}"
++         done
++         exit 1
++     fi
++ fi
+``````
+
+3. Add more specific error handlers:
+
+``````diff:.ai-fix/recovery/strategies.sh
++ # Handle WordPress-specific errors
++ handle_wordpress_errors() {
++     local error_msg="$1"
++     local file="$2"
++     
++     # Fix Yoda conditions
++     if [[ $error_msg == *"YodaConditions.NotYoda"* ]]; then
++         sed -i '' -E 's/if \((\$[a-zA-Z_][a-zA-Z0-9_]*) ([=!><]+) ([^)]+)\)/if (\3 \2 \1)/g' "$file"
++     fi
++     
++     # Fix comment spacing
++     if [[ $error_msg == *"FileComment.SpacingAfterComment"* ]]; then
++         sed -i '' -e '/^\/\*\*$/,/\*\// { /\*\//a\
++ 
++         }' "$file"
++     fi
++     
++     # Fix inline comments
++     if [[ $error_msg == *"InlineComment.InvalidEndChar"* ]]; then
++         sed -i '' -e 's/\/\/ \([A-Za-z].*[^.!?]\)$/\/\/ \1./' "$file"
++     fi
++ }
++ 
++ # Handle JavaScript-specific errors
++ handle_javascript_errors() {
++     local error_msg="$1"
++     local file="$2"
++     
++     # Fix undefined variables
++     if [[ $error_msg == *"is not defined"* ]]; then
++         local var=$(echo "$error_msg" | grep -o "'.*'" | head -1 | tr -d "'")
++         if [[ -n "$var" ]]; then
++             sed -i '' "1i\\
++ import { $var } from '@wordpress/blocks';" "$file"
++         fi
++     fi
++     
++     # Fix unused variables
++     if [[ $error_msg == *"is assigned a value but never used"* ]]; then
++         local var=$(echo "$error_msg" | grep -o "'.*'" | head -1 | tr -d "'")
++         if [[ -n "$var" ]]; then
++             # Try to find a use for the variable or remove it
++             if grep -q "wp.blocks" "$file"; then
++                 sed -i '' "s/const { .*$var.* } = wp.blocks/import { $var } from '@wordpress/blocks'/" "$file"
++             else
++                 sed -i '' "/$var/d" "$file"
++             fi
++         fi
++     fi
++ }
+``````
+
+This enhanced system will:
+1. Keep trying to fix errors until they're resolved
+2. Track all errors and their fixes
+3. Use multiple strategies for each error
+4. Provide detailed feedback on what it's trying
+5. Handle WordPress-specific issues better
+6. Never give up until everything is fixed or max retries reached
+
+Would you like me to:
+1. Add more error patterns
+2. Enhance the retry strategies
+3. Add more specific handlers
+4. Add error reporting and analytics
+
+---
+
+_**User**_
+
+This error shows up: 
+
+---
+
+_**Assistant**_
+
+
+
+---
+
 
 
 ---
