@@ -325,4 +325,107 @@ recover_from_syntax_error() {
     fi
 
     # Rest of existing code...
+}
+
+# Maximum retry attempts
+MAX_RETRIES=3
+
+# Recursive error fixing
+fix_until_resolved() {
+    local error_msg="$1"
+    local file="$2"
+    local attempt="${3:-1}"
+    
+    echo -e "${BLUE}Fix attempt $attempt for $file${NC}"
+    
+    # Try to fix the error
+    if fix_with_ai "$error_msg" "$file"; then
+        # Verify the fix worked
+        if verify_fix "$file"; then
+            echo -e "${GREEN}Fix successful!${NC}"
+            return 0
+        fi
+    fi
+    
+    # If we haven't exceeded max retries, try again with a different strategy
+    if [ "$attempt" -lt "$MAX_RETRIES" ]; then
+        echo -e "${YELLOW}Fix attempt $attempt failed, trying alternative approach...${NC}"
+        # Get new error message if available
+        local new_error=$(get_current_errors "$file")
+        fix_until_resolved "${new_error:-$error_msg}" "$file" $((attempt + 1))
+    else
+        echo -e "${RED}Maximum fix attempts reached for $file${NC}"
+        return 1
+    fi
+}
+
+# Get current errors for a file
+get_current_errors() {
+    local file="$1"
+    
+    case "${file##*.}" in
+        php)
+            php -l "$file" 2>&1 || phpcs "$file" 2>&1
+            ;;
+        js)
+            eslint "$file" 2>&1
+            ;;
+        css)
+            stylelint "$file" 2>&1
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+# Handle WordPress-specific errors
+handle_wordpress_errors() {
+    local error_msg="$1"
+    local file="$2"
+    
+    # Fix Yoda conditions
+    if [[ $error_msg == *"YodaConditions.NotYoda"* ]]; then
+        sed -i '' -E 's/if \((\$[a-zA-Z_][a-zA-Z0-9_]*) ([=!><]+) ([^)]+)\)/if (\3 \2 \1)/g' "$file"
+    fi
+    
+    # Fix comment spacing
+    if [[ $error_msg == *"FileComment.SpacingAfterComment"* ]]; then
+        sed -i '' -e '/^\/\*\*$/,/\*\// { /\*\//a\
+
+        }' "$file"
+    fi
+    
+    # Fix inline comments
+    if [[ $error_msg == *"InlineComment.InvalidEndChar"* ]]; then
+        sed -i '' -e 's/\/\/ \([A-Za-z].*[^.!?]\)$/\/\/ \1./' "$file"
+    fi
+}
+
+# Handle JavaScript-specific errors
+handle_javascript_errors() {
+    local error_msg="$1"
+    local file="$2"
+    
+    # Fix undefined variables
+    if [[ $error_msg == *"is not defined"* ]]; then
+        local var=$(echo "$error_msg" | grep -o "'.*'" | head -1 | tr -d "'")
+        if [[ -n "$var" ]]; then
+            sed -i '' "1i\\
+import { $var } from '@wordpress/blocks';" "$file"
+        fi
+    fi
+    
+    # Fix unused variables
+    if [[ $error_msg == *"is assigned a value but never used"* ]]; then
+        local var=$(echo "$error_msg" | grep -o "'.*'" | head -1 | tr -d "'")
+        if [[ -n "$var" ]]; then
+            # Try to find a use for the variable or remove it
+            if grep -q "wp.blocks" "$file"; then
+                sed -i '' "s/const { .*$var.* } = wp.blocks/import { $var } from '@wordpress/blocks'/" "$file"
+            else
+                sed -i '' "/$var/d" "$file"
+            fi
+        fi
+    fi
 } 

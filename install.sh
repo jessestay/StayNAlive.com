@@ -693,51 +693,90 @@ verify_fix() {
 
 # After installing dependencies
 echo -e "${BLUE}Fixing code standards...${NC}"
-# Fix PHP files
-source .ai-fix/recovery/php-fixer.sh
-fix_php_files $(find . -name "*.php")
 
-# Fix JavaScript files
-npx eslint --fix assets/js/
+# Track all errors
+declare -A ALL_ERRORS
 
-# Fix CSS files
-npx stylelint --fix 'assets/css/**/*.css'
-
-# Add error pattern learning for common errors
-learn_from_errors() {
-    local output="$1"
+# Function to handle all errors
+handle_all_errors() {
+    local error_type="$1"
+    local error_msg="$2"
+    local file="$3"
     
-    # Extract and learn from stylelint errors
-    if echo "$output" | grep -q "stylelint-config-standard"; then
-        add_pattern \
-            "Could not find \"stylelint-config-standard\"" \
-            "npm install --save-dev stylelint-config-standard" \
-            1 \
-            "{\"type\":\"dependency\",\"tool\":\"stylelint\"}"
-    fi
+    # Add to error tracking
+    ALL_ERRORS["${file}:${error_type}"]="$error_msg"
     
-    # Extract and learn from PHP errors
-    if echo "$output" | grep -q "PHP syntax error"; then
-        add_pattern \
-            "$(echo "$output" | grep -A 1 "PHP syntax error")" \
-            "phpcbf --standard=WordPress" \
-            1 \
-            "{\"type\":\"syntax\",\"language\":\"php\"}"
+    # Try to fix until resolved
+    if fix_until_resolved "$error_msg" "$file"; then
+        unset ALL_ERRORS["${file}:${error_type}"]
+        return 0
     fi
-    
-    # Extract and learn from JavaScript errors
-    if echo "$output" | grep -q "error.*no-unused-vars\|error.*no-undef"; then
-        add_pattern \
-            "$(echo "$output" | grep -A 1 "error.*no-")" \
-            "eslint --fix" \
-            1 \
-            "{\"type\":\"lint\",\"tool\":\"eslint\"}"
-    fi
+    return 1
 }
 
-# Add error learning to the build process
-if [ -n "$BUILD_OUTPUT" ]; then
-    learn_from_errors "$BUILD_OUTPUT"
+# Function to fix all remaining errors
+fix_remaining_errors() {
+    local fixed_count=0
+    local total_errors=${#ALL_ERRORS[@]}
+    
+    echo -e "${BLUE}Attempting to fix $total_errors remaining errors...${NC}"
+    
+    for key in "${!ALL_ERRORS[@]}"; do
+        local file="${key%:*}"
+        local error_type="${key#*:}"
+        local error_msg="${ALL_ERRORS[$key]}"
+        
+        if fix_until_resolved "$error_msg" "$file"; then
+            ((fixed_count++))
+            unset ALL_ERRORS["$key"]
+        fi
+    done
+    
+    echo -e "${GREEN}Fixed $fixed_count out of $total_errors errors${NC}"
+    return $(( ${#ALL_ERRORS[@]} == 0 ))
+}
+
+# Update error handling in commands
+if ! npm install --legacy-peer-deps --no-audit 2> npm-error.log; then
+    handle_all_errors "npm" "$(cat npm-error.log)" "package.json"
+fi
+
+# Handle stylelint errors
+if ! npx stylelint 'assets/css/**/*.css' --fix 2> stylelint-error.log; then
+    handle_all_errors "stylelint" "$(cat stylelint-error.log)" ".stylelintrc.json"
+fi
+
+# Handle ESLint errors
+if ! npx eslint --fix assets/js/ 2> eslint-error.log; then
+    while read -r file; do
+        if [ -f "$file" ]; then
+            handle_all_errors "eslint" "$(cat eslint-error.log)" "$file"
+        fi
+    done < <(find assets/js -name "*.js")
+fi
+
+# Handle PHP errors
+while read -r file; do
+    if ! php -l "$file" > /dev/null 2>&1; then
+        handle_all_errors "php" "$(php -l "$file" 2>&1)" "$file"
+    fi
+    if ! phpcs "$file" > /dev/null 2>&1; then
+        handle_all_errors "phpcs" "$(phpcs "$file" 2>&1)" "$file"
+    fi
+done < <(find . -name "*.php")
+
+# Try to fix any remaining errors
+if [ ${#ALL_ERRORS[@]} -gt 0 ]; then
+    echo -e "${YELLOW}Some errors remain. Attempting final fixes...${NC}"
+    if ! fix_remaining_errors; then
+        echo -e "${RED}Some errors could not be automatically fixed.${NC}"
+        echo -e "${YELLOW}Please review the remaining errors manually:${NC}"
+        for key in "${!ALL_ERRORS[@]}"; do
+            echo -e "${RED}${key}:${NC}"
+            echo "${ALL_ERRORS[$key]}"
+        done
+        exit 1
+    fi
 fi
 
 # Create production build

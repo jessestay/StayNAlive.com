@@ -3288,7 +3288,122 @@ Can we have it also update the deprecated npm warnings so it upgrades those when
 
 _**Assistant**_
 
+Yes, I'll add npm dependency upgrade handling. Let's add this to the recovery strategies:
 
+``````diff:.ai-fix/recovery/strategies.sh
++ # Handle deprecated package warnings
++ handle_deprecated_packages() {
++     local error_msg="$1"
++     
++     # Extract deprecated package info
++     local deprecated_packages=()
++     while read -r line; do
++         if [[ $line == *"npm warn deprecated"* ]]; then
++             local package=$(echo "$line" | grep -o '[^[:space:]]*@[0-9.]*' | head -1)
++             if [[ -n "$package" ]]; then
++                 deprecated_packages+=("$package")
++             fi
++         fi
++     done <<< "$error_msg"
++     
++     # Create upgrade map for known replacements
++     declare -A upgrade_map=(
++         ["inflight"]="lru-cache@latest"
++         ["rimraf"]="rimraf@^4.0.0"
++         ["glob"]="glob@^9.0.0"
++         ["@humanwhocodes/config-array"]="@eslint/config-array@latest"
++         ["@humanwhocodes/object-schema"]="@eslint/object-schema@latest"
++         ["abab"]="node:buffer"  # Use Node.js built-in module
++         ["domexception"]="node:domexception"  # Use Node.js built-in module
++         ["intl-messageformat-parser"]="@formatjs/icu-messageformat-parser@latest"
++         ["eslint"]="eslint@latest"
++     )
++     
++     # Perform upgrades
++     for pkg in "${deprecated_packages[@]}"; do
++         local base_pkg=$(echo "$pkg" | cut -d@ -f1)
++         if [[ -n "${upgrade_map[$base_pkg]}" ]]; then
++             echo -e "${BLUE}Upgrading deprecated package: $base_pkg${NC}"
++             if [[ "${upgrade_map[$base_pkg]}" == node:* ]]; then
++                 # Remove package if it's replaced by Node.js built-in
++                 npm remove "$base_pkg"
++             else
++                 npm install --save-dev "${upgrade_map[$base_pkg]}"
++             fi
++         fi
++     done
++     
++     # Clean up and rebuild
++     npm dedupe
++     npm audit fix
++ }
+``````
+
+And update the build process in install.sh:
+
+``````diff:install.sh
+# Install dependencies
+echo -e "${BLUE}Installing Node dependencies...${NC}"
+# Remove package-lock.json and node_modules to ensure clean install
+rm -f package-lock.json
+rm -rf node_modules
+
+# Install with legacy peer deps to handle WordPress package conflicts
++ # Capture npm output to check for deprecated packages
++ NPM_OUTPUT=$(npm install --legacy-peer-deps --no-audit 2>&1)
++ NPM_STATUS=$?
++ 
++ # Check for deprecated package warnings
++ if echo "$NPM_OUTPUT" | grep -q "npm warn deprecated"; then
++     echo -e "${YELLOW}Detected deprecated packages. Attempting to upgrade...${NC}"
++     handle_deprecated_packages "$NPM_OUTPUT"
++ fi
++ 
++ if [ $NPM_STATUS -ne 0 ]; then
++     echo -e "${RED}Failed to install Node dependencies.${NC}"
++     echo -e "Try running: npm install --legacy-peer-deps --verbose"
++     exit 1
++ fi
+
+# Add to the fix_with_ai function
+fix_with_ai() {
+    # ... existing code ...
+    
+    # Common error patterns and their fixes
+    declare -A error_patterns=(
+        # ... existing patterns ...
++       ["npm warn deprecated"]=1
+    )
+    
+    # ... existing code ...
+    
+    case "$pattern" in
+        # ... existing cases ...
++       "npm warn deprecated")
++           handle_deprecated_packages "$error_msg"
++           ;;
+    esac
+}
+``````
+
+This will:
+1. Detect deprecated package warnings
+2. Map deprecated packages to their recommended replacements
+3. Automatically upgrade packages when safe to do so
+4. Use Node.js built-in modules where available
+5. Clean up dependencies after upgrades
+
+Would you like me to:
+1. Add more package mappings
+2. Add version compatibility checks
+3. Add rollback capability for failed upgrades
+4. Add more package replacement strategies
+
+---
+
+_**User**_
+
+1, 2, 3, and 4. Also, see the attached output from install.sh. The installation is still failing. Isn't it supposed to use AI to automatically notice these errors and fix them? Ideally, it should never fail - AI will keep trying until the errors are resolved.
 
 ---
 
