@@ -212,22 +212,48 @@ verify_recovery() {
     local error_type="$1"
     local file="$2"
     
+    # Create verification point
+    create_rollback_point "verify_${error_type}"
+    
     case "$error_type" in
         "build")
-            npm run build >/dev/null 2>&1
-            return $?
+            # Run build with verification
+            if npm run build; then
+                # Verify build output
+                if [[ -d "build" && -f "build/index.js" ]]; then
+                    # Run tests if available
+                    npm test >/dev/null 2>&1 && return 0
+                fi
+            fi
+            # Rollback if verification failed
+            rollback_to_point "verify_${error_type}"
+            return 1
             ;;
         "dependency")
-            npm install >/dev/null 2>&1
-            return $?
+            # Verify all dependencies
+            if npm install && npm ls >/dev/null 2>&1; then
+                # Check for peer dependency issues
+                if ! npm ls | grep -i "peer" >/dev/null 2>&1; then
+                    return 0
+                fi
+            fi
+            rollback_to_point "verify_${error_type}"
+            return 1
             ;;
         "syntax")
             if [[ "$file" == *.php ]]; then
-                php -l "$file" >/dev/null 2>&1
+                # Run PHP syntax check and PHPCS
+                if php -l "$file" && phpcs "$file"; then
+                    return 0
+                fi
             elif [[ "$file" == *.js ]]; then
-                eslint "$file" >/dev/null 2>&1
+                # Run ESLint and Prettier
+                if eslint "$file" && prettier --check "$file"; then
+                    return 0
+                fi
             fi
-            return $?
+            rollback_to_point "verify_${error_type}"
+            return 1
             ;;
     esac
 } 
