@@ -6,6 +6,8 @@
         <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
         <exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound"/>
         <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
+        <exclude name="WordPress.PHP.YodaConditions.NotYoda"/>
+        <exclude name="Squiz.PHP.CommentedOutCode.Found"/>
     </rule>
 
     <config name="minimum_supported_wp_version" value="6.0"/>
