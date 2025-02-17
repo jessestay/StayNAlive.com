@@ -230,15 +230,15 @@ if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
  */
 function get_social_feed_items( $feed_type ) {
 	$options = get_option( 'staynalive_social_media', array() );
-	
+
 	if ( 'instagram' === $feed_type ) {
 		return get_instagram_feed();
 	}
-	
+
 	if ( 'twitter' === $feed_type ) {
 		return get_twitter_feed();
 	}
-	
+
 	return array();
 }
 
@@ -248,17 +248,17 @@ function get_social_feed_items( $feed_type ) {
  * @param array $data Raw feed data.
  * @return array Processed feed data.
  */
-function process_feed_data($data) {
-	if (!is_array($data)) {
+function process_feed_data( $data ) {
+	if ( ! is_array( $data ) ) {
 		return array();
 	}
-	
+
 	return array_map(
-		function($item) {
+		function ( $item ) {
 			return array(
 				'id'      => $item['id'] ?? '',
 				'content' => $item['content'] ?? '',
-				'link'    => $item['link'] ?? ''
+				'link'    => $item['link'] ?? '',
 			);
 		},
 		$data

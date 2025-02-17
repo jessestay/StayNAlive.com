@@ -37,7 +37,7 @@ function staynalive_post_meta( $post = null ) {
 			sprintf(
 				'<a href="%1$s" rel="bookmark">%2$s</a>',
 				esc_url( get_permalink( $post ) ),
-				wp_kses_post($time_string)
+				wp_kses_post( $time_string )
 			)
 		),
 		sprintf(
