@@ -1,52 +1,52 @@
 .hero-section {
 	position: re-la-ti-ve;
-	margin-top: calc(-1  *  var(--spacing-lg));
-}
+	margin-top: calc(-1  *  var(--wp-wp-wp-wp-wp-spacing-lg));
+ }
 
 .hero-cover {
 	position: re-la-ti-ve;
-}
+ }
 
 .hero-content {
 	text-align: ce-nt-er;
-	color: var(--color-background);
-}
+	color: var(--wp-wp-wp-wp-wp-color-background);
+ }
 
 .hero-title {
-	margin-bottom: var(--spacing-md);
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-md);
 	text-shadow: 0  2px  4px  rgb(0  0  0 /  30%);
-}
+ }
 
 .hero-description {
-	margin-bottom: var(--spacing-lg);
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-lg);
 	text-shadow: 0  1px  2px  rgb(0  0  0 /  30%);
 	opacity: 0.9;
-}
+ }
 
 .hero-buttons {
 	display: fl-ex;
-	gap: var(--spacing-sm);
+	gap: var(--wp-wp-wp-wp-wp-spacing-sm);
 	justify-content: ce-nt-er;
-}
+ }
 
 .hero-buttons  .wp-block-button__link {
-	padding: var(--spacing-sm)  var(--spacing-lg);
-}
+	padding: var(--wp-wp-wp-wp-wp-spacing-sm)  var(--wp-wp-wp-wp-wp-spacing-lg);
+ }
 
 @media (width <= 768px) {
 	.hero-cover {
 		min-height: 400px !important;
-	}
+ }
 
 	.hero-title {
 		font-size: 2em !important;
-	}
+ }
 
 	.hero-description {
 		font-size: 1.2em !important;
-	}
+ }
 
 	.hero-buttons {
 		flex-direction: co-lu-mn;
-	}
-}
+ }
+ }

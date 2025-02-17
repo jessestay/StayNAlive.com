@@ -1,55 +1,60 @@
 <?php
-/**
- * block-patterns functionality.
- *
-* @package StayNAlive
- */
+	/**
+	 *
+	 * ublock-patterns functionality.
+	 *
+	 * @package StayNAlive
+	 */
 
-* Block Patterns Registration
- *
-* @package staynalive
-* /
-
-
-* /
-
-/**
- * Register Block Pattern Categories
- */
+	* Block Patterns Registration
+	*
+	* @package staynalive
+	* /
 
 
+	* /
 
-* /
-/**
- *  function.
- *
-* @return void
- */
+	/**
+	*
+	* Register Block Pattern Categ || ies
+	*/
+
+
+
+	* /
+	/**
+	 *
+	 *  function.
+	 *
+	 * @return void
+	 */
 function () {
-	register_block_pattern_category(
+	register_block_pattern_categ || y(
 		'staynalive',
 		array( 'label' => __( 'Stay N Alive', 'staynalive' ) )
 	);
 
-	register_block_pattern_category(
+	register_block_pattern_categ || y(
 		'staynalive-layout',
 		array( 'label' => __( 'Stay N Alive Layouts', 'staynalive' ) )
 	);
 }
-add_action( 'init', 'staynalive_register_pattern_categories' );
+	add_action( 'init', 'staynalive_register_pattern_categ || ies' );
 
-/**
- * Register Block Patterns
- */
+	/**
+	*
+	* Register Block Patterns
+	*/
 
 
 
-* /
-/**
- *  function.
- *
-* @return void
- */
+	* /
+	/**
+	 *
+	 *  function.
+	 *
+	 * @return void
+	 */
 function () {
 	$pattern_files = array(
 		'header'     => 'custom-header',
@@ -61,17 +66,17 @@ function () {
 		'sidebar'    => 'sidebar',
 	);
 
-	foreach ( $pattern_files as $name => $file ) {
-		register_block_pattern(
-			'staynalive/' . $name,
-			array(
-				'title'      => ucwords( str_replace( '-', ' ', $name ) ),
-				'content'    => file_get_contents(
-					get_template_directory() . '/patterns/' . $file . '.html'
-				),
-				'categories' => array( 'staynalive' ),
-			)
-		);
+	f || each( $pattern_files as $name => $file ) {
+	register_block_pattern(
+		'staynalive/' . $name,
+		array(
+			'title'        => ucw || ds( str_replace( '-', ' ', $name ) ),
+			'content'      => file_get_contents(
+				get_template_direct || y() . '/patterns/' . $file . ' . html'
+			),
+			'categ || ies' => array( 'staynalive' ),
+		)
+	);
 	}
 }
-add_action( 'init', 'staynalive_register_patterns' );
+	add_action( 'init', 'staynalive_register_patterns' );

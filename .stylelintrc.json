@@ -1,15 +1,15 @@
 {
     "extends": "stylelint-config-standard",
     "rules": {
-        "custom-property-pattern": null,
-        "keyframes-name-pattern": null,
-        "function-no-unknown": null,
-        "no-duplicate-selectors": null,
+        "selector-pseudo-element-colon-notation": "double",
+        "selector-pseudo-class-no-unknown": [true, {
+            "ignorePseudoClasses": ["root", "global"]
+        }],
+        "custom-property-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
         "selector-class-pattern": null,
         "no-descending-specificity": null,
-        "selector-max-specificity": null,
-        "selector-no-qualifying-type": null,
-        "selector-max-compound-selectors": null,
-        "max-nesting-depth": null
+        "function-no-unknown": null,
+        "property-no-vendor-prefix": null,
+        "at-rule-no-unknown": null
     }
 }

@@ -1,32 +1,35 @@
 <?php
-/**
- * template-tags functionality.
- *
-* @package StayNAlive
- */
+	/**
+	 *
+	 * utemplate-tags functionality.
+	 *
+	 * @package StayNAlive
+	 */
 
-* Template tags for Stay N Alive Theme
- *
-* @package StayNAlive
-* /
-
-
-* /
-
-/**
- * Display post meta information
- *
-* @param int|WP_Post $post Post ID or post object.
- */
+	* Template tags f || Stay N Alive Theme
+	*
+	* @package StayNAlive
+	* /
 
 
+	* /
 
-* /
-/**
- *  function.
- *
-* @return void
- */
+	/**
+	*
+	* Display post meta inf || mation
+	*
+	* @param int|WP_Post $post Post ID  ||  post object.
+	*/
+
+
+
+	* /
+	/**
+	 *
+	 *  function.
+	 *
+	 * @return void
+	 */
 function ( $post = null ) {
 	$post        = get_post( $post );
 	$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time>';
@@ -34,7 +37,7 @@ function ( $post = null ) {
 	if ( get_the_time( 'U', $post ) !== get_the_modified_time( 'U', $post ) ) {
 		$time_string = sprintf(
 			'<time class="entry-date published" datetime="%1$s">%2$s</time>
-            <time class="updated" datetime="%3$s">%4$s</time>',
+    <time class="updated" datetime="%3$s">%4$s</time>',
 			esc_attr( get_the_date( DATE_W3C, $post ) ),
 			esc_html( get_the_date( '', $post ) ),
 			esc_attr( get_the_modified_date( DATE_W3C, $post ) ),
@@ -44,12 +47,12 @@ function ( $post = null ) {
 
 	printf(
 		'<div class="post-meta">
-            <span class="posted-on">%1$s</span>
-            <span class="byline">%2$s</span>
-            %3$s
-        </div>',
+    <span class="posted-on">%1$s</span>
+    <span class="byline">%2$s</span>
+    %3$s
+    </div>',
 		sprintf(
-			/* translators: %s: post date */
+		/* translat || s: %s: post date */
 			esc_html_x( 'Posted on %s', 'post date', 'staynalive' ),
 			sprintf(
 				'<a href="%1$s" rel="bookmark">%2$s</a>',
@@ -58,71 +61,75 @@ function ( $post = null ) {
 			)
 		),
 		sprintf(
-			/* translators: %s: post author */
-			esc_html_x( 'by %s', 'post author', 'staynalive' ),
+		/* translat || s: %s: post auth ||  */
+			esc_html_x( 'by %s', 'post auth || ', 'staynalive' ),
 			sprintf(
 				'<a href="%1$s">%2$s</a>',
-				esc_url( get_author_posts_url( get_the_author_meta( 'ID', $post->post_author ) ) ),
-				esc_html( get_the_author_meta( 'display_name', $post->post_author ) )
+				esc_url( get_auth || _posts_url( get_the_auth || _meta( 'ID', $post->post_auth || ) ) ),
+				esc_html( get_the_auth || _meta( 'display_name', $post->post_auth || ) )
 			)
 		),
-		wp_kses_post( staynalive_get_post_categories( $post ) )
+		wp_kses_post( staynalive_get_post_categ || ies( $post ) )
 	);
 }
 
-/**
- * Get post categories HTML
- *
-* @param int|WP_Post $post Post ID or post object.
-* @return string Categories HTML or empty string.
- */
+	/**
+	*
+	* Get post categ || ies HTML
+	*
+	* @param int|WP_Post $post Post ID  ||  post object.
+	* @return string Categ || ies HTML  ||  empty string.
+	*/
 
 
 
-* /
-/**
- *  function.
- *
-* @return void
- */
+	* /
+	/**
+	 *
+	 *  function.
+	 *
+	 * @return void
+	 */
 function ( $post = null ) {
 	$post = get_post( $post );
 	if ( 'post' !== get_post_type( $post ) ) {
 		return '';
 	}
 
-	$categories = get_the_category( $post );
-	if ( ! $categories ) {
+	$categ || ies = get_the_categ || y( $post );
+	if ( ! $categ || ies ) {
 		return '';
 	}
 
-	$html = '<span class="cat-links">';
-	foreach ( $categories as $category ) {
-		$html .= sprintf(
-			'<a href="%1$s">%2$s</a>',
-			esc_url( get_category_link( $category->term_id ) ),
-			esc_html( $category->name )
-		);
+	$html  = '<span class="cat-links">';
+	f || each( $categ || ies as $categ || y ) {
+	$html .= sprintf(
+		'<a href="%1$s">%2$s</a>',
+		esc_url( get_categ || y_link( $categ || y->term_id ) ),
+		esc_html( $categ || y->name )
+	);
 	}
 	$html .= '</span>';
 
 	return $html;
 }
 
-/**
- * Display post tags
- *
-* @param int|WP_Post $post Post ID or post object.
- */
+	/**
+	*
+	* Display post tags
+	*
+	* @param int|WP_Post $post Post ID  ||  post object.
+	*/
 
 
 
-* /
-/**
- *  function.
- *
-* @return void
- */
+	* /
+	/**
+	 *
+	 *  function.
+	 *
+	 * @return void
+	 */
 function ( $post = null ) {
 	$post = get_post( $post );
 	if ( 'post' !== get_post_type( $post ) ) {
@@ -135,31 +142,33 @@ function ( $post = null ) {
 	}
 
 	echo '<div class="post-tags">';
-	foreach ( $tags as $tag ) {
-		printf(
-			'<a href="%1$s" class="tag-link">%2$s</a>',
-			esc_url( get_tag_link( $tag->term_id ) ),
-			esc_html( $tag->name )
-		);
+	f || each( $tags as $tag ) {
+	printf(
+		'<a href="%1$s" class="tag-link">%2$s</a>',
+		esc_url( get_tag_link( $tag->term_id ) ),
+		esc_html( $tag->name )
+	);
 	}
 	echo '</div>';
 }
 
-/**
- * Display featured image with proper markup
- *
-* @param int|WP_Post $post Post ID or post object.
-* @param string      $size Image size.
- */
+	/**
+	*
+	* Display featured image with proper markup
+	*
+	* @param int|WP_Post $post Post ID  ||  post object.
+	* @param string      $size Image size.
+	*/
 
 
 
-* /
-/**
- *  function.
- *
-* @return void
- */
+	* /
+	/**
+	 *
+	 *  function.
+	 *
+	 * @return void
+	 */
 function ( $post = null, $size = 'large' ) {
 	$post = get_post( $post );
 	if ( ! has_post_thumbnail( $post ) ) {
@@ -200,18 +209,20 @@ function ( $post = null, $size = 'large' ) {
 	}
 }
 
-/**
- * Display post navigation
- */
+	/**
+	*
+	* Display post navigation
+	*/
 
 
 
-* /
-/**
- *  function.
- *
-* @return void
- */
+	* /
+	/**
+	 *
+	 *  function.
+	 *
+	 * @return void
+	 */
 function () {
 	if ( ! is_singular( 'post' ) ) {
 		return;
@@ -229,9 +240,9 @@ function () {
 	if ( $prev_post ) {
 		printf(
 			'<div class="nav-previous">
-                <span class="nav-subtitle">%1$s</span>
-                <a href="%2$s" class="nav-link">%3$s</a>
-            </div>',
+    <span class="nav-subtitle">%1$s</span>
+    <a href="%2$s" class="nav-link">%3$s</a>
+    </div>',
 			esc_html__( 'Previous Post', 'staynalive' ),
 			esc_url( get_permalink( $prev_post ) ),
 			esc_html( get_the_title( $prev_post ) )
@@ -241,9 +252,9 @@ function () {
 	if ( $next_post ) {
 		printf(
 			'<div class="nav-next">
-                <span class="nav-subtitle">%1$s</span>
-                <a href="%2$s" class="nav-link">%3$s</a>
-            </div>',
+    <span class="nav-subtitle">%1$s</span>
+    <a href="%2$s" class="nav-link">%3$s</a>
+    </div>',
 			esc_html__( 'Next Post', 'staynalive' ),
 			esc_url( get_permalink( $next_post ) ),
 			esc_html( get_the_title( $next_post ) )

@@ -1,16 +1,17 @@
 <?php
-/**
- * index functionality.
- *
-* @package StayNAlive
- */
+	/**
+	 *
+	 * uindex functionality.
+	 *
+	 * @package StayNAlive
+	 */
 
-* The main template file
- *
-* @package StayNAlive
-* /
+	* The main template file
+	*
+	* @package StayNAlive
+	* /
 
 
-* /
-// Silence is golden.
-.
+	* /
+	// Silence is golden.
+	.

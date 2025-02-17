@@ -2,20 +2,15 @@
 > staynalive@2.0.0 preinstall
 > npx only-allow npm
 
-
-> staynalive@2.0.0 prepare
-> husky install
-
-husky - Git hooks installed
-
-up to date, audited 1604 packages in 14s
-
-340 packages are looking for funding
-  run `npm fund` for details
-
-8 vulnerabilities (3 low, 5 high)
-
-To address all issues (including breaking changes), run:
-  npm audit fix --force
-
-Run `npm audit` for details.
+npm error code EAGAIN
+npm error syscall spawn sh
+npm error path /Users/jessestay/Documents/Github Repositories/StayNAlive.com
+npm error errno -35
+npm error spawn sh EAGAIN
+npm error command sh -c only-allow npm
+npm error A complete log of this run can be found in: /Users/jessestay/.npm/_logs/2025-02-17T07_29_20_495Z-debug-0.log
+npm error code 221
+npm error path /Users/jessestay/Documents/Github Repositories/StayNAlive.com
+npm error command failed
+npm error command sh -c npx only-allow npm
+npm error A complete log of this run can be found in: /Users/jessestay/.npm/_logs/2025-02-17T07_28_51_619Z-debug-0.log

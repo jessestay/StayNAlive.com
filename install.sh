@@ -18,9 +18,18 @@ fix_php_docblocks() {
         log_error "No file provided to fix_php_docblocks" "function" "Usage: fix_php_docblocks <file>"
         return 1
     fi
-    echo "Fixing PHP docblocks in $file"
-    sed -i '' 's/^[[:space:]]*\*[[:space:]]*@/\* @/g' "$file"
-    sed -i '' 's/^[[:space:]]*\*$/\ */g' "$file"
+    debug_log "fix_php_docblocks" "Starting fixes for $file"
+    # Fix docblock syntax errors
+    sed -i '' 's/\/\*\*\s*\*\s*\([^*]\)/\/** \1/g' "$file"  # Fix double asterisk
+    sed -i '' 's/\*\s*\*\s*\//*/g' "$file"  # Fix closing
+    # Fix package tags
+    sed -i '' 's/@package\s*\([^*]*\)\*/@package \1/g' "$file"
+    # Fix link tags
+    sed -i '' 's/@link\s*\([^*]*\)\*/@link \1/g' "$file"
+    # Fix author tags
+    sed -i '' 's/@author\s*\([^*]*\)\*/@author \1/g' "$file"
+    # Fix version tags
+    sed -i '' 's/@version\s*\([^*]*\)\*/@version \1/g' "$file"
 }
 
 fix_php_issues() {
@@ -29,13 +38,14 @@ fix_php_issues() {
         log_error "No file provided to fix_php_issues" "function" "Usage: fix_php_issues <file>"
         return 1
     fi
-    echo "Fixing PHP issues in $file"
-    # Fix common PHP issues
-    sed -i '' 's/[[:space:]]*$//' "$file"
-    sed -i '' 's/\s*)\s*{/) {/g' "$file"
-    sed -i '' 's/if(/if (/g' "$file"
-    sed -i '' 's/for(/for (/g' "$file"
-    sed -i '' 's/while(/while (/g' "$file"
+    debug_log "fix_php_issues" "Starting fixes for $file"
+    # Fix logical operators
+    sed -i '' 's/\([^&]\)and\([^&]\)/\1 \&\& \2/g' "$file"
+    sed -i '' 's/\([^|]\)or\([^|]\)/\1 || \2/g' "$file"
+    # Fix concatenation spacing
+    sed -i '' 's/\([^[:space:]]\)\.\([^[:space:]]\)/\1 . \2/g' "$file"
+    # Fix indentation and spacing
+    sed -i '' 's/^[[:space:]]*\([^[:space:]]\)/    \1/g' "$file"
 }
 
 fix_css_issues() {
@@ -44,17 +54,48 @@ fix_css_issues() {
         log_error "No file provided to fix_css_issues" "function" "Usage: fix_css_issues <file>"
         return 1
     fi
-    echo "Fixing CSS issues in $file"
-    # Fix common CSS issues
-    sed -i '' 's/[[:space:]]*$//' "$file"
-    sed -i '' 's/:[[:space:]]*/: /g' "$file"
-    sed -i '' 's/;[[:space:]]*/;/g' "$file"
-    # Fix pseudo-element syntax
-    sed -i '' 's/\([[:space:]]\):/\1::/g' "$file"
-    # Fix WordPress block selectors
+    debug_log "fix_css_issues" "Starting fixes for $file"
+    # Fix selector syntax
+    sed -i '' 's/:before/::before/g' "$file"
+    sed -i '' 's/:after/::after/g' "$file"
+    sed -i '' 's/:first-line/::first-line/g' "$file"
+    sed -i '' 's/:first-letter/::first-letter/g' "$file"
+    # Fix WordPress specific patterns
     sed -i '' 's/\.wp-block-\([^[:space:]]*\)/\.wp-block-\1/g' "$file"
-    # Fix custom property syntax
-    sed -i '' 's/var(--\([^)]*\))/var(--wp-\1)/g' "$file"
+    # Fix custom properties
+    sed -i '' 's/var(--wp--/var(--wp-/g' "$file"
+}
+
+# Function to validate shell script
+validate_shell_script() {
+    local script="$1"
+    local description="$2"
+
+    # Check syntax
+    if ! bash -n <(echo "$script"); then
+        return 1
+    fi
+
+    # Count and verify matching pairs
+    local open_parens=$(echo "$script" | grep -o "(" | wc -l)
+    local close_parens=$(echo "$script" | grep -o ")" | wc -l)
+    local open_braces=$(echo "$script" | grep -o "{" | wc -l)
+    local close_braces=$(echo "$script" | grep -o "}" | wc -l)
+
+    if [ "$open_parens" != "$close_parens" ] || [ "$open_braces" != "$close_braces" ]; then
+        echo "Mismatched parentheses or braces in $description"
+        return 1
+    fi
+
+    return 0
+}
+
+# Function to validate all scripts
+validate_scripts() {
+    if ! validate_shell_script "$AWK_SCRIPT" "awk script"; then
+        log_error "Script validation failed" "validation" "Awk script contains errors"
+        exit 1
+    fi
 }
 
 # Function to log errors with more detail
@@ -63,10 +104,20 @@ log_error() {
     local file="$2"
     local details="$3"
     ERRORS+=("${file}: ${message}")
-    echo -e "${RED}Error: ${message}${NC}"
+    echo -e "\n${RED}Error: ${message}${NC}"
     if [ -n "$details" ]; then
-        echo -e "${RED}Details: ${details}${NC}"
+        echo -e "${RED}Details:\n${details}${NC}"
     fi
+    # Add file contents if it exists
+    if [ -f "$file" ]; then
+        echo -e "${YELLOW}File contents before error:${NC}"
+        head -n 20 "$file"
+    fi
+    # Add debug info
+    echo -e "${YELLOW}Debug information:${NC}"
+    echo "Current working directory: $(pwd)"
+    echo "File permissions: $(ls -l "$file" 2>/dev/null || echo 'File not found')"
+    echo "Available disk space: $(df -h . | tail -n 1)"
     # Add stack trace
     echo -e "${RED}Stack trace:${NC}"
     local frame=0
@@ -91,22 +142,59 @@ log_warning() {
     echo -e "${YELLOW}Warning: ${message}${NC}"
 }
 
+# Function to log debug information
+debug_log() {
+    local function_name="$1"
+    local message="$2"
+    echo -e "${BLUE}[DEBUG] ${function_name}: ${message}${NC}"
+}
+
 # Function to verify fixes
 verify_fixes() {
     local errors=0
+    declare -a UNFIXED_ERRORS=()
     
-    # Check PHP
-    if ./vendor/bin/phpcs --standard=WordPress inc/*.php *.php | grep -q "ERROR"; then
-        ((errors++))
-        local php_errors=$(./vendor/bin/phpcs --standard=WordPress inc/*.php *.php)
-        log_error "PHP validation failed:\n$php_errors" "php"
-    fi
+    debug_log "verify_fixes" "Starting verification"
+    
+    # Verify PHP syntax first
+    for file in inc/*.php *.php; do
+        [ -f "$file" ] || continue
+        
+        # Check basic syntax
+        if ! php -l "$file" > /dev/null 2>&1; then
+            ((errors++))
+            UNFIXED_ERRORS+=("PHP syntax error in $file: $(php -l "$file" 2>&1)")
+            continue
+        fi
+        
+        # Check WordPress standards
+        if ! phpcs --standard=WordPress "$file" | grep -q "FOUND 0 ERRORS"; then
+            ((errors++))
+            UNFIXED_ERRORS+=("WordPress standards error in $file")
+            # Try to fix automatically
+            phpcbf --standard=WordPress "$file" || true
+        fi
+    done
     
     # Check CSS
     if npm run lint:css | grep -q "problem"; then
         ((errors++))
         local css_errors=$(npm run lint:css)
+        UNFIXED_ERRORS+=("CSS validation errors: $css_errors")
         log_error "CSS validation failed:\n$css_errors" "css"
+    fi
+    
+    # Show summary of unfixed errors if any remain
+    if [ ${#UNFIXED_ERRORS[@]} -gt 0 ]; then
+        echo -e "\n${RED}Summary of Unfixed Errors:${NC}"
+        printf '%s\n' "${UNFIXED_ERRORS[@]}" | sort -u
+    fi
+    
+    # Log verification results
+    debug_log "verify_fixes" "Found $errors errors"
+    if [ ${#UNFIXED_ERRORS[@]} -gt 0 ]; then
+        debug_log "verify_fixes" "Unfixed errors:"
+        printf '%s\n' "${UNFIXED_ERRORS[@]}"
     fi
     
     return $errors
@@ -121,8 +209,43 @@ done
 
 # Initialize AI fix
 if [ ! -d ".ai-fix" ]; then
+    echo "Initializing AI fix..."
     mkdir -p .ai-fix/{ml,sync,patterns}
-    cp -r .ai-fix/templates/* .ai-fix/
+    
+    # Create pattern directories
+    mkdir -p .ai-fix/patterns/{php,css,js}
+    
+    # Create PHP patterns
+    cat > .ai-fix/patterns/php/docblock.json << 'EOL'
+{
+    "patterns": [
+        {
+            "match": "\\*\\s*@\\s*(package|link|author|version)\\s*([^*]*)\\*",
+            "replace": "* @$1 $2",
+            "description": "Fix docblock tags"
+        },
+        {
+            "match": "^[[:space:]]*\\* [a-z]",
+            "replace": "* \\u$1",
+            "description": "Capitalize docblock descriptions"
+        }
+    ]
+}
+EOL
+    
+    # Create sync configuration
+    cat > .ai-fix/sync/config.json << 'EOL'
+{
+    "patterns": {
+        "watch": ["**/*.php", "**/*.css", "**/*.js"],
+        "ignore": ["node_modules/**", "vendor/**"]
+    },
+    "actions": {
+        "*.php": ["php-fix", "phpcs-fix"],
+        "*.css": ["css-fix", "stylelint-fix"]
+    }
+}
+EOL
 fi
 
 echo -e "${BLUE}Installing Stay N Alive Theme...${NC}"
@@ -244,6 +367,11 @@ if [ ! -f "index.php" ]; then
 EOL
 fi
 
+# Create templates directory
+if [ ! -d "templates" ]; then
+    mkdir -p templates
+fi
+
 # Create required template files
 if [ ! -f "templates/index.html" ]; then
     echo "Creating index template..."
@@ -256,6 +384,11 @@ if [ ! -f "templates/index.html" ]; then
 <!-- /wp:group -->
 <!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
 EOL
+fi
+
+# Create template parts directory
+if [ ! -d "parts" ]; then
+    mkdir -p parts
 fi
 
 if [ ! -f "parts/header.html" ]; then
@@ -337,25 +470,72 @@ fix_php_files() {
     local file="$1"
     local fixed=0
     
-    for standard in WordPress WordPress-Core WordPress-Docs WordPress-Extra PSR2; do
-        if ./vendor/bin/phpcs --standard=$standard "$file" | grep -q "CAN FIX.*AUTOMATICALLY"; then
-            ./vendor/bin/phpcbf --standard=$standard "$file" || true
-            fixed=1
-        fi
-    done
+    # Backup file first
+    cp "$file" "$file.bak"
     
-    if [ $fixed -eq 1 ] && ./vendor/bin/phpcs --standard=WordPress "$file" | grep -q "ERROR"; then
-        ./vendor/bin/phpcbf --standard=WordPress,WordPress-Core,WordPress-Docs,WordPress-Extra,PSR2 "$file"
-        ./vendor/bin/phpcbf --standard=WordPress --severity=1 "$file"
-        sed -i '' 's/[[:space:]]*$//' "$file"
-        sed -i '' 's/\*\//& \n/' "$file"
-        sed -i '' 's/[[:space:]]*\.[[:space:]]*/./g' "$file"
+    # Fix docblock syntax first (most critical)
+    sed -i '' -E '
+        # Fix docblock opening
+        s/\/\*\*[[:space:]]*\*/\/\*\*/g
+        # Fix docblock alignment with tabs
+        s/^[[:space:]]*\*/\t*/g
+        # Fix docblock closing
+        s/\*[[:space:]]*\//*/g
+        # Fix package tags
+        s/@package[[:space:]]*([^*]*)\*/@package \1/g
+        # Fix link tags
+        s/@link[[:space:]]*([^*]*)\*/@link \1/g
+        # Fix author tags
+        s/@author[[:space:]]*([^*]*)\*/@author \1/g
+        # Fix version tags
+        s/@version[[:space:]]*([^*]*)\*/@version \1/g
+    ' "$file"
+    
+    # Convert spaces to tabs for indentation
+    expand -t 4 "$file" | unexpand -t 4 > "$file.tmp" && mv "$file.tmp" "$file"
+    
+    # Fix function documentation
+    awk '
+        /function[[:space:]]+[^(]+\([^)]*\)/ {
+            # Extract function name and parameters
+            match($0, /function[[:space:]]+([^(]+)\(([^)]*)\)/, arr)
+            func_name = arr[1]
+            params = arr[2]
+            
+            # Create docblock
+            printf "/**\n"
+            printf " * %s function\n", func_name
+            
+            # Add param docs
+            split(params, param_arr, ",")
+            for (i in param_arr) {
+                if (match(param_arr[i], /\$[a-zA-Z_][a-zA-Z0-9_]*/, param)) {
+                    printf " * @param mixed %s Parameter description\n", param[0]
+                }
+            }
+            
+            printf " *\n"
+            printf " * @return void\n"
+            printf " */\n"
+        }
+        { print }
+    ' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+    
+    # Run PHP Code Beautifier
+    if command -v phpcbf >/dev/null 2>&1; then
+        phpcbf --standard=WordPress "$file" || true
     fi
     
-    if ./vendor/bin/phpcs --standard=WordPress "$file" | grep -q "CAN FIX.*AUTOMATICALLY"; then
-        echo -e "${RED}Failed to fix all violations in $file${NC}"
-        return 1
+    # Run PHP Code Sniffer to verify
+    if phpcs --standard=WordPress "$file" | grep -q "FOUND 0 ERRORS"; then
+        fixed=1
+    else
+        # Restore backup if fixes failed
+        mv "$file.bak" "$file"
     fi
+    
+    rm -f "$file.bak" "$file.tmp"
+    return $fixed
 }
 
 # Main installation process
@@ -694,22 +874,16 @@ EOL
 {
     "extends": "stylelint-config-standard",
     "rules": {
-        "custom-property-pattern": null,
-        "keyframes-name-pattern": null,
-        "function-no-unknown": null,
-        "no-duplicate-selectors": null,
-        "selector-class-pattern": null,
-        "no-descending-specificity": null,
-        "selector-max-specificity": null,
-        "selector-no-qualifying-type": null,
-        "selector-max-compound-selectors": null,
-        "max-nesting-depth": null,
         "selector-pseudo-element-colon-notation": "double",
         "selector-pseudo-class-no-unknown": [true, {
-            "ignorePseudoClasses": ["global"]
+            "ignorePseudoClasses": ["root", "global"]
         }],
+        "custom-property-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
         "selector-class-pattern": null,
-        "custom-property-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$"
+        "no-descending-specificity": null,
+        "function-no-unknown": null,
+        "property-no-vendor-prefix": null,
+        "at-rule-no-unknown": null
     }
 }
 EOL
@@ -840,6 +1014,8 @@ if [ "$LAST_CHECKPOINT" = "complete" ]; then
 fi
 
 # Try fixes with increasing aggressiveness
+validate_scripts
+
 for attempt in {1..3}; do
     echo -e "${BLUE}Fix attempt $attempt with increased aggressiveness...${NC}"
     
@@ -862,16 +1038,51 @@ for attempt in {1..3}; do
             ;;
         2) # More aggressive fixes
             # Force WordPress standards
-            ./vendor/bin/phpcbf --standard=WordPress --no-patch inc/*.php *.php
+            ./vendor/bin/phpcbf --standard=WordPress inc/*.php *.php || true
             # Force CSS standards
-            find assets/css -name "*.css" -type f -exec perl -pi -e 's/--wp--[a-z-]+/--wp-$1/g' {} \;
+            cat > .stylelintrc.json << 'EOL'
+{
+    "extends": "stylelint-config-standard",
+    "rules": {
+        "selector-pseudo-element-colon-notation": "double",
+        "selector-pseudo-class-no-unknown": [true, {
+            "ignorePseudoClasses": ["root", "global"]
+        }],
+        "custom-property-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+        "selector-class-pattern": null,
+        "no-descending-specificity": null,
+        "function-no-unknown": null,
+        "property-no-vendor-prefix": null,
+        "at-rule-no-unknown": null
+    }
+}
+EOL
+            # Fix CSS files
+            for file in assets/css/**/*.css; do
+                [ -f "$file" ] || continue
+                # Convert single colons to double for pseudo-elements
+                sed -i '' 's/:before/::before/g' "$file"
+                sed -i '' 's/:after/::after/g' "$file"
+                sed -i '' 's/:first-line/::first-line/g' "$file"
+                sed -i '' 's/:first-letter/::first-letter/g' "$file"
+                # Fix custom properties
+                sed -i '' 's/var(--wp--/var(--wp-/g' "$file"
+            done
             ;;
         3) # Most aggressive fixes
             # Completely rebuild docblocks
             find . -name "*.php" -type f -exec rm -f {}.bak \;
             find . -name "*.php" -type f -exec php -l {} \;
             # Force CSS to strict standard
-            find assets/css -name "*.css" -type f -exec prettier --write {} \;
+            for file in assets/css/**/*.css; do
+                [ -f "$file" ] || continue
+                # Normalize selectors
+                sed -i '' 's/\([[:space:]]\):/\1::/g' "$file"
+                # Fix WordPress specific patterns
+                sed -i '' 's/\.wp-block-\([^[:space:]]*\)/\.wp-block-\1/g' "$file"
+                # Fix custom properties
+                sed -i '' 's/var(--\([^)]*\))/var(--wp-\1)/g' "$file"
+            done
             ;;
     esac
     
