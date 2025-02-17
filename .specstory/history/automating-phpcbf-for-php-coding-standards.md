@@ -1713,6 +1713,274 @@ _**Assistant**_
 
 
 
+You're right - we need to run PHPCBF first to fix the sniff violations. Let's modify the script to be more aggressive with fixes:
+
+``````diff:install.sh
+    echo -e "${BLUE}Fixing PHP files comprehensively...${NC}"
+    
++   # First run PHPCBF aggressively to fix all auto-fixable violations
++   echo -e "${BLUE}Running PHPCBF to fix standard violations...${NC}"
++   for standard in WordPress WordPress-Core WordPress-Docs WordPress-Extra; do
++       ./vendor/bin/phpcbf \
++           --standard=$standard \
++           --extensions=php \
++           --ignore=vendor/* \
++           --report-summary \
++           --report-source \
++           -v \
++           inc/*.php *.php || true
++   done
++
++   # Then run our custom fixes for anything that remains
+    for file in inc/*.php *.php; do
+        echo -e "${BLUE}Fixing $file...${NC}"
++       
++       # Create backup
++       cp "$file" "${file}.bak"
++       
+        # Fix file comment spacing
+        awk '
+            BEGIN { in_comment = 0; blank_line_added = 0 }
+            /^\/\*\*$/ { in_comment = 1; print; next }
+            in_comment == 1 { 
+                print
+                if ($0 ~ /^ \*\/$/) {
+                    print ""
+                    in_comment = 0
+                    blank_line_added = 1
+                }
+                next
+            }
+            blank_line_added == 1 { blank_line_added = 0 }
+            { print }
+        ' "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
+
+        # Fix Yoda conditions
+        php -r '
+            $content = file_get_contents("'$file'");
+            $content = preg_replace(
+                "/(\\\$[a-zA-Z_][a-zA-Z0-9_]*)\s*([=!><]{2,3})\s*(null|true|false|\d+|\"[^\"]*\"|\'[^\']*\')/",
+                "$3 $2 $1",
+                $content
+            );
+            file_put_contents("'$file'", $content);
+        '
+
+        # Fix function comments
+        php -r '
+            $content = file_get_contents("'$file'");
+            $content = preg_replace_callback(
+                "/function\s+([a-zA-Z0-9_]+)\s*\((.*?)\)\s*{/s",
+                function($matches) {
+                    $func_name = $matches[1];
+                    $params = array_filter(array_map("trim", explode(",", $matches[2])));
+                    
+                    $doc = "\n/**\n * " . ucfirst(str_replace("_", " ", $func_name)) . ".\n *\n";
+                    foreach($params as $param) {
+                        $type = "mixed";
+                        if (strpos($param, "array") !== false) $type = "array";
+                        if (strpos($param, "string") !== false) $type = "string";
+                        if (strpos($param, "int") !== false) $type = "int";
+                        if (strpos($param, "bool") !== false) $type = "bool";
+                        $param_name = trim(str_replace(["$", "array", "string", "int", "bool"], "", $param));
+                        $doc .= " * @param " . $type . " $" . $param_name . " Parameter description.\n";
+                    }
+                    $doc .= " * @return void\n */\n";
+                    return $doc . "function " . $matches[1] . "(" . $matches[2] . ") {";
+                },
+                $content
+            );
+            file_put_contents("'$file'", $content);
+        '
+
++       # Run PHPCBF one final time on the file
++       ./vendor/bin/phpcbf --standard=WordPress "$file" || true
++       
++       # Verify if fixes worked, if not restore backup
++       if ! ./vendor/bin/phpcs --standard=WordPress "$file" | grep -q "FOUND 0 ERRORS"; then
++           echo -e "${YELLOW}Fixes for $file failed, restoring backup${NC}"
++           mv "${file}.bak" "$file"
++       else
++           rm "${file}.bak"
++       fi
+    done
+``````
+
+This change:
+1. Runs PHPCBF multiple times with different standards
+2. Creates backups before attempting fixes
+3. Verifies fixes worked
+4. Restores from backup if fixes failed
+5. Adds more verbose output
+6. Uses a more aggressive approach to fixing violations
+
+The key was that we needed to:
+1. Run PHPCBF first
+2. Run it with multiple standards
+3. Add verification
+4. Add backup/restore
+5. Make the fixes more aggressive
+
+Let's try this and see if it fixes more of the violations.
+
+---
+
+_**User**_
+
+Fix it so you can't create any more code that produces syntax errors.
+
+---
+
+_**Assistant**_
+
+You're right. Let's be more systematic and careful. Here's a safer approach:
+
+``````diff:install.sh
+    echo -e "${BLUE}Fixing PHP files comprehensively...${NC}"
+    
++   # Create a temporary PHP script for fixes
++   cat > fix.php << 'EOPHP'
++   <?php
++   
++   class CodeFixer {
++       private $file;
++       private $content;
++   
++       public function __construct($file) {
++           $this->file = $file;
++           $this->content = file_get_contents($file);
++       }
++   
++       public function fixYodaConditions() {
++           $this->content = preg_replace(
++               '/(\$[a-zA-Z_][a-zA-Z0-9_]*)\s*([=!><]{2,3})\s*(null|true|false|\d+|"[^"]*"|\'[^\']*\')/',
++               '$3 $2 $1',
++               $this->content
++           );
++           return $this;
++       }
++   
++       public function fixDocBlocks() {
++           $this->content = preg_replace_callback(
++               '/function\s+([a-zA-Z0-9_]+)\s*\((.*?)\)\s*{/s',
++               function($matches) {
++                   $func_name = $matches[1];
++                   $params = array_filter(array_map('trim', explode(',', $matches[2])));
++                   
++                   $doc = "\n/**\n * " . ucfirst(str_replace('_', ' ', $func_name)) . ".\n *\n";
++                   foreach($params as $param) {
++                       $type = 'mixed';
++                       if (strpos($param, 'array') !== false) $type = 'array';
++                       if (strpos($param, 'string') !== false) $type = 'string';
++                       if (strpos($param, 'int') !== false) $type = 'int';
++                       if (strpos($param, 'bool') !== false) $type = 'bool';
++                       $param_name = trim(str_replace(['$', 'array', 'string', 'int', 'bool'], '', $param));
++                       $doc .= " * @param {$type} \${$param_name} Parameter description.\n";
++                   }
++                   $doc .= " * @return void\n */\n";
++                   return $doc . "function {$matches[1]}({$matches[2]}) {";
++               },
++               $this->content
++           );
++           return $this;
++       }
++   
++       public function save() {
++           return file_put_contents($this->file, $this->content);
++       }
++   }
++   
++   // Get file from command line argument
++   $file = $argv[1];
++   
++   try {
++       $fixer = new CodeFixer($file);
++       $fixer->fixYodaConditions()
++            ->fixDocBlocks()
++            ->save();
++       echo "Successfully fixed {$file}\n";
++   } catch (Exception $e) {
++       echo "Error fixing {$file}: " . $e->getMessage() . "\n";
++       exit(1);
++   }
++   EOPHP
++   
++   # Make the script executable
++   chmod +x fix.php
++   
+    # First run PHPCBF aggressively to fix all auto-fixable violations
+    echo -e "${BLUE}Running PHPCBF to fix standard violations...${NC}"
+    for standard in WordPress WordPress-Core WordPress-Docs WordPress-Extra; do
+        ./vendor/bin/phpcbf \
+            --standard=$standard \
+            --extensions=php \
+            --ignore=vendor/* \
+            --report-summary \
+            --report-source \
+            -v \
+            inc/*.php *.php || true
+    done
+    
+    # Then run our custom fixes for anything that remains
+    for file in inc/*.php *.php; do
+        echo -e "${BLUE}Fixing $file...${NC}"
+        
+        # Create backup
+        cp "$file" "${file}.bak"
+        
+-       # Fix file comment spacing
+-       awk '...'
+-       
+-       # Fix Yoda conditions
+-       php -r '...'
+-       
+-       # Fix function comments
+-       php -r '...'
++       # Run our PHP fixer script
++       if ! php fix.php "$file"; then
++           echo -e "${YELLOW}Custom fixes failed for $file, restoring backup${NC}"
++           mv "${file}.bak" "$file"
++           continue
++       fi
+        
+        # Run PHPCBF one final time on the file
+        ./vendor/bin/phpcbf --standard=WordPress "$file" || true
+        
+        # Verify if fixes worked, if not restore backup
+        if ! ./vendor/bin/phpcs --standard=WordPress "$file" | grep -q "FOUND 0 ERRORS"; then
+            echo -e "${YELLOW}Fixes for $file failed, restoring backup${NC}"
+            mv "${file}.bak" "$file"
+        else
+            rm "${file}.bak"
+        fi
+    done
++   
++   # Clean up
++   rm fix.php
+``````
+
+This approach:
+1. Uses a proper PHP class for fixes
+2. Handles errors properly
+3. Avoids shell script syntax issues
+4. Uses proper escaping
+5. Maintains backups
+6. Cleans up after itself
+7. Has better error reporting
+
+The key improvements:
+1. No more inline PHP code
+2. Proper error handling
+3. Better organization
+4. Safer string handling
+5. Cleaner syntax
+
+Would you like me to:
+1. Add more error checking
+2. Add debugging output
+3. Add more fix types
+4. Show expected output
+
 ---
 
 

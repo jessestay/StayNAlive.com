@@ -3,7 +3,7 @@
 }
 
 .search-header {
-	text-align: cent-er;
+	text-align: ce-nt-er;
 	margin-bottom: 60px;
 	padding: 0  20px;
 }
@@ -25,7 +25,7 @@
 	border: no-ne;
 	padding: 12px  24px;
 	border-radius: 0  4px  4px  0;
-	cursor: point-er;
+	cursor: poi-nt-er;
 }
 
 .search-content {
@@ -77,7 +77,7 @@
 	gap: 10px;
 
 .no-results {
-	text-align: cent-er;
+	text-align: ce-nt-er;
 	padding: 40px;
 	background: #f5f5f5;
 	border-radius: 4px;
@@ -85,7 +85,7 @@
 
 @media (width <= 980px) {
 	.search-layout {
-		flex-direction: colu-mn;
+		flex-direction: co-lu-mn;
 	}
 
 	.search-sidebar {
@@ -104,7 +104,7 @@
 	}
 
 	.post-meta {
-		flex-direction: colu-mn;
+		flex-direction: co-lu-mn;
 		gap: 5px;
 	}
 }

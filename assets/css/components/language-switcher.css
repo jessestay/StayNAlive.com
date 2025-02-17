@@ -1,5 +1,5 @@
 .language-switcher {
-	position: rela-ti-ve;
+	position: re-la-ti-ve;
 	display: in-li-ne-block;
 	margin-left: var(--spacing-md);
 }
@@ -9,7 +9,7 @@
 	align-items: ce-nt-er;
 	gap: var(--spacing-xs);
 	padding: var(--spacing-xs)  var(--spacing-sm);
-	background: transpa-re-nt;
+	background: trans-pa-re-nt;
 	border: 1px  sol-id  var(--color-border);
 	border-radius: var(--radius-sm);
 	cursor: poi-nt-er;
@@ -21,7 +21,7 @@
 }
 
 .language-switcher-dropdown {
-	position: abso-lu-te;
+	position: ab-so-lu-te;
 	top: 100%;
 	left: 0;
 	right: 0;
@@ -69,7 +69,7 @@
 	right: 0;
 }
 
-/*  Add  to  exis-ti-ng  fi-le  */
+/*  Add  to  ex-is-ti-ng  fi-le  */
 
 .language-switcher-dropdown.is-active {
 	display: blo-ck;

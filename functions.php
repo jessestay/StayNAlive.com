@@ -67,7 +67,6 @@ require_once STAYNALIVE_DIR . '/inc/language-switcher.php';
  *
  * @return void
  */
-
 function () {
 	// Theme support.
 .	add_theme_support( 'wp-block-styles' );
@@ -100,7 +99,6 @@ add_action( 'after_setup_theme', 'staynalive_setup' );
  *
  * @return void
  */
-
 function () {
 	// Base styles.
 .	wp_enqueue_style(
@@ -171,7 +169,6 @@ add_action( 'wp_enqueue_scripts', 'staynalive_scripts' );
  *
  * @return void
  */
-
 function () {
 	$styles = array(
 		'core/button' => array(
@@ -209,7 +206,6 @@ add_action( 'init', 'staynalive_register_block_styles' );
  *
  * @return void
  */
-
 function () {
 	remove_theme_support( 'core-block-patterns' );
 }
@@ -227,7 +223,6 @@ add_action( 'after_setup_theme', 'staynalive_disable_core_patterns' );
  *
  * @return void
  */
-
 function () {
 	register_sidebar(
 		array(
@@ -255,7 +250,6 @@ add_action( 'widgets_init', 'staynalive_widgets_init' );
  *
  * @return void
  */
-
 function () {
 	if ( is_rtl() ) {
 		wp_enqueue_style(

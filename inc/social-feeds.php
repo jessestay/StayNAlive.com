@@ -113,10 +113,8 @@ namespace StayNAlive\SocialFeeds;
 /**
  * Get instagram feed.
  *
- *
  * @return void
  */
-
 function get_instagram_feed() {
 	$options = get_option( 'staynalive_social_media', array() );
 	$token   = $options['instagram_token'] ?? '';
@@ -160,7 +158,6 @@ function get_instagram_feed() {
  *
  * @return void
  */
-
 function () {
 	$options    = get_option( 'staynalive_social_media', array() );
 	$api_key    = $options['youtube_api_key'] ?? '';
@@ -217,7 +214,6 @@ function () {
  *
  * @return void
  */
-
 function () {
 	$options      = get_option( 'staynalive_social_media', array() );
 	$bearer_token = $options['twitter_bearer_token'] ?? '';
@@ -273,7 +269,6 @@ if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
  *
  * @return void
  */
-
 function ( $feed_type ) {
 	$options = get_option( 'staynalive_social_media', array() );
 
@@ -303,7 +298,6 @@ function ( $feed_type ) {
  *
  * @return void
  */
-
 function ( $data ) {
 	if ( ! is_array( $data ) ) {
 		return array();

@@ -1,10 +1,10 @@
 .hero-section {
-	position: rela-ti-ve;
+	position: re-la-ti-ve;
 	margin-top: calc(-1  *  var(--spacing-lg));
 }
 
 .hero-cover {
-	position: rela-ti-ve;
+	position: re-la-ti-ve;
 }
 
 .hero-content {

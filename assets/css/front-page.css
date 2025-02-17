@@ -1,5 +1,5 @@
 .front-page {
-	overflow: hidd-en;
+	overflow: hi-dd-en;
 }
 
 .featured-section {
@@ -32,7 +32,7 @@
 .about-content {
 	height: 100%;
 	display: fl-ex;
-	flex-direction: colu-mn;
+	flex-direction: co-lu-mn;
 }
 
 .about-content  h2 {
@@ -45,7 +45,7 @@
 }
 
 .read-more  .wp-block-button__link {
-	background-color: transpare-nt;
+	background-color: transpa-re-nt;
 	border: 2px  sol-id  var(--wp-preset-color-background);
 	color: var(--wp-preset-color-background);
 }
@@ -83,7 +83,7 @@
 .post-cover  .wp-block-post-excerpt__more-link {
 	color: var(--wp-preset-color-background);
 	text-decoration: no-ne;
-	display: inli-ne-block;
+	display: in-li-ne-block;
 	margin-top: 20px;
 	border: 1px  sol-id  var(--wp-preset-color-background);
 	padding: 8px  16px;
@@ -92,7 +92,7 @@
 
 @media (width <= 980px) {
 	.featured-content {
-		flex-direction: colu-mn;
+		flex-direction: co-lu-mn;
 	}
 
 	.about-section,

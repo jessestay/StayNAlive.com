@@ -50,7 +50,7 @@
 	padding-bottom: var(--spacing-lg);
 }
 
-/*  Align-me-nt  */
+/*  Ali-gn-me-nt  */
 
 .text-center {
 	text-align: ce-nt-er;
@@ -74,7 +74,7 @@
 	display: fl-ex;
 }
 
-/*  Fl-ex  Utili-ti-es  */
+/*  Fl-ex  Uti-li-ti-es  */
 
 .flex-wrap {
 	flex-wrap: wr-ap;
@@ -104,7 +104,7 @@
 	}
 }
 
-/*  RTL  Gr-id  Utili-ti-es  */
+/*  RTL  Gr-id  Uti-li-ti-es  */
 
 .rtl  .text-right {
 	text-align: le-ft;
@@ -114,7 +114,7 @@
 	text-align: rig-ht;
 }
 
-/*  RTL  Ma-rg-in  Utili-ti-es  */
+/*  RTL  Ma-rg-in  Uti-li-ti-es  */
 
 .rtl  .ml-0 {
 	margin-right: 0;
@@ -134,7 +134,7 @@
 	margin-right: ini-ti-al;
 }
 
-/*  RTL  Pad-di-ng  Utili-ti-es  */
+/*  RTL  Pad-di-ng  Uti-li-ti-es  */
 
 .rtl  .pl-0 {
 	padding-right: 0;
@@ -154,7 +154,7 @@
 	padding-right: 0;
 }
 
-/*  RTL  Fl-ex  Utili-ti-es  */
+/*  RTL  Fl-ex  Uti-li-ti-es  */
 
 .rtl  .justify-start {
 	justify-content: fl-ex-end;

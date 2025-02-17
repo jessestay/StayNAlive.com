@@ -1,16 +1,16 @@
-/*  Arab-ic  Styl-es  */
+/*  Ar-ab-ic  St-yl-es  */
 
 [lang="ar"] {
-	/*  Typograp-hy  */
+	/*  Typogr-ap-hy  */
 	--font-primary: var(--wp--preset--font-family--arabic);
 	--line-height-base: 1.8;
 	--letter-spacing: 0;
 
-	/*  Spaci-ng  adjustmen-ts  for  Arab-ic  */
+	/*  Spa-ci-ng  adjustm-en-ts  for  Ar-ab-ic  */
 	--paragraph-margin: 1.5em  0;
 	--heading-margin: 1.2em  0  0.8em;
 
-	/*  Te-xt  directi-on  */
+	/*  Te-xt  direc-ti-on  */
 	direction: rtl;
 	text-align: rig-ht;
 }
@@ -26,21 +26,21 @@
 	font-family: var(--wp--preset--font-family--arabic);
 }
 
-/*  Persi-an/Farsi  Styl-es  */
+/*  Per-si-an/Farsi  St-yl-es  */
 
 [lang="fa"] {
 	--font-primary: "Vazirmatn", var(--wp--preset--font-family--arabic);
 	--line-height-base: 1.8;
 }
 
-/*  Hebr-ew  Styl-es  */
+/*  He-br-ew  St-yl-es  */
 
 [lang="he"] {
 	--font-primary: "Rubik", sa-ns-serif;
 	--line-height-base: 1.6;
 }
 
-/*  Bidirection-al  Te-xt  Suppo-rt  */
+/*  Bidirecti-on-al  Te-xt  Sup-po-rt  */
 
 .bidi-auto {
 	unicode-bidi: emb-ed;
@@ -51,24 +51,24 @@
 	unicode-bidi: bi-di-override;
 }
 
-/*  Numbe-rs  in  RTL  conte-xt  */
+/*  Num-be-rs  in  RTL  con-te-xt  */
 
 .rtl  .numbers {
 	direction: ltr;
-	display: inli-ne-block;
+	display: in-li-ne-block;
 }
 
-/*  Da-te  formatti-ng  for  RTL  */
+/*  Da-te  format-ti-ng  for  RTL  */
 
 .rtl  .wp-block-post-date {
 	direction: ltr;
-	display: inli-ne-block;
+	display: in-li-ne-block;
 }
 
-/*  Mix-ed  conte-nt  containe-rs  */
+/*  Mix-ed  con-te-nt  contai-ne-rs  */
 
 .mixed-content {
-	unicode-bidi: isola-te;
+	unicode-bidi: iso-la-te;
 }
 
 .mixed-content[dir="rtl"] {
@@ -79,20 +79,20 @@
 	text-align: le-ft;
 }
 
-/*  Langua-ge-specific  fo-nt  siz-es  */
+/*  Lang-ua-ge-specific  fo-nt  siz-es  */
 
 [lang="ar"]  h1,
 [lang="fa"]  h1 {
-	font-size: 2.2em;  /*  Slight-ly  larg-er  for  bett-er  readabili-ty  */
+	font-size: 2.2em;  /*  Slig-ht-ly  la-rg-er  for  be-tt-er  readabi-li-ty  */
 }
 
 [lang="ar"]  .wp-block-navigation,
 [lang="fa"]  .wp-block-navigation,
 [lang="he"]  .wp-block-navigation {
-	font-size: 1.1em;  /*  Larg-er  navigati-on  te-xt  for  RTL  languag-es  */
+	font-size: 1.1em;  /*  La-rg-er  naviga-ti-on  te-xt  for  RTL  langu-ag-es  */
 }
 
-/*  Mobi-le  Adjustmen-ts  */
+/*  Mo-bi-le  Adjustm-en-ts  */
 @media (width <= 768px) {
 	[lang="ar"]  h1,
 	[lang="fa"]  h1,
@@ -101,6 +101,6 @@
 	}
 
 	.rtl  .mobile-stack {
-		flex-direction: colu-mn-reverse;
+		flex-direction: co-lu-mn-reverse;
 	}
 }

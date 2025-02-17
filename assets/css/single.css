@@ -6,7 +6,7 @@
 
 .post-header {
 	margin: 40px  0;
-	text-align: cent-er;
+	text-align: ce-nt-er;
 }
 
 .post-meta {
@@ -14,7 +14,7 @@
 	font-size: 0.9em;
 	margin: 20px  0;
 	display: fl-ex;
-	justify-content: cent-er;
+	justify-content: ce-nt-er;
 	gap: 20px;
 	flex-wrap: wr-ap;
 }
@@ -60,13 +60,13 @@
 	}
 
 	.post-meta {
-		flex-direction: colu-mn;
-		align-items: cent-er;
+		flex-direction: co-lu-mn;
+		align-items: ce-nt-er;
 		gap: 10px;
 	}
 
 	.post-navigation {
-		flex-direction: colu-mn;
+		flex-direction: co-lu-mn;
 		gap: 20px;
 	}
 

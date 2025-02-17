@@ -3,7 +3,7 @@
 }
 
 .archive-header {
-	text-align: cent-er;
+	text-align: ce-nt-er;
 	margin-bottom: 60px;
 	padding: 0  20px;
 }
@@ -86,7 +86,7 @@
 
 @media (width <= 980px) {
 	.archive-layout {
-		flex-direction: colu-mn;
+		flex-direction: co-lu-mn;
 	}
 
 	.archive-sidebar {
@@ -105,7 +105,7 @@
 	}
 
 	.post-meta {
-		flex-direction: colu-mn;
+		flex-direction: co-lu-mn;
 		gap: 5px;
 	}
 }

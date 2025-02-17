@@ -17,7 +17,7 @@
 /*  Out-li-ne  Sty-le  */
 
 .is-style-outline  .wp-block-button__link {
-	background-color: transpa-re-nt;
+	background-color: trans-pa-re-nt;
 	border: 2px  sol-id  var(--color-primary);
 	color: var(--color-primary);
 }

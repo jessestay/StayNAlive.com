@@ -22,7 +22,7 @@
 .comment-meta {
 	display: fl-ex;
 	gap: 15px;
-	align-items: cent-er;
+	align-items: ce-nt-er;
 	margin-bottom: 10px;
 	font-size: 0.9em;
 }
@@ -55,7 +55,7 @@
 }
 
 .wp-block-comment-reply-link:hover {
-	text-decoration: underli-ne;
+	text-decoration: under-li-ne;
 }
 
 .wp-block-post-comments-form {
@@ -76,14 +76,14 @@
 .comment-form  inp-ut[type="text"],
 .comment-form  inp-ut[type="email"],
 .comment-form  inp-ut[type="url"],
-.comment-form  textar-ea {
+.comment-form  text-ar-ea {
 	width: 100%;
 	padding: 10px;
 	border: 1px  sol-id  #ddd;
 	border-radius: 4px;
 }
 
-.comment-form  textar-ea {
+.comment-form  text-ar-ea {
 	min-height: 150px;
 }
 
@@ -93,8 +93,8 @@
 	border: no-ne;
 	padding: 12px  24px;
 	border-radius: 4px;
-	cursor: point-er;
-	transition: opaci-ty  0.2s;
+	cursor: poi-nt-er;
+	transition: opa-ci-ty  0.2s;
 }
 
 .comment-form  .submit:hover {
@@ -112,7 +112,7 @@
 }
 
 .no-comments {
-	text-align: cent-er;
+	text-align: ce-nt-er;
 	padding: 20px;
 	background: #f5f5f5;
 	border-radius: 4px;
@@ -124,7 +124,7 @@
 	}
 
 	.comment-meta {
-		flex-direction: colu-mn;
+		flex-direction: co-lu-mn;
 		align-items: fl-ex-start;
 		gap: 5px;
 	}

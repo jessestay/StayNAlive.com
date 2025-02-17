@@ -10,24 +10,24 @@
 .social-tab {
 	padding: var(--spacing-sm)  var(--spacing-md);
 	border: no-ne;
-	background: transpa-re-nt;
+	background: trans-pa-re-nt;
 	color: var(--color-muted);
 	cursor: poi-nt-er;
 	font-weight: 500;
-	position: rela-ti-ve;
+	position: re-la-ti-ve;
 	transition: col-or  0.3s  ea-se;
 }
 
 .social-tab::after {
 	content: "";
-	position: abso-lu-te;
+	position: ab-so-lu-te;
 	bottom: -2px;
 	left: 0;
 	width: 100%;
 	height: 2px;
 	background: var(--color-primary);
 	transform: sc-al-ex(0);
-	transition: trans-fo-rm  0.3s  ea-se;
+	transition: tra-ns-fo-rm  0.3s  ea-se;
 }
 
 .social-tab.active {
@@ -49,22 +49,22 @@
 	border-radius: var(--radius-md);
 	overflow: hi-dd-en;
 	box-shadow: 0  2px  4px  rgb(0  0  0 /  10%);
-	transition: trans-fo-rm  0.3s  ea-se, box-shadow  0.3s  ea-se;
+	transition: tra-ns-fo-rm  0.3s  ea-se, box-shadow  0.3s  ea-se;
 }
 
 .social-card:hover {
-	transform: transl-at-ey(-5px);
+	transform: tran-sl-at-ey(-5px);
 	box-shadow: 0  8px  16px  rgb(0  0  0 /  10%);
 }
 
 .social-media-content {
-	position: rela-ti-ve;
+	position: re-la-ti-ve;
 	padding-bottom: 100%;
 }
 
 .social-media-content  img,
 .social-media-content  vid-eo {
-	position: abso-lu-te;
+	position: ab-so-lu-te;
 	top: 0;
 	left: 0;
 	width: 100%;

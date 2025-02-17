@@ -17,7 +17,7 @@
 }
 
 .contact-form-rtl  inp-ut,
-.contact-form-rtl  text-ar-ea {
+.contact-form-rtl  te-xt-ar-ea {
 	width: 100%;
 	padding: var(--spacing-sm);
 	border: 1px  sol-id  var(--color-border);
@@ -37,13 +37,13 @@
 
 .contact-form-rtl  inp-ut[type="text"],
 .contact-form-rtl  inp-ut[type="email"],
-.contact-form-rtl  text-ar-ea {
+.contact-form-rtl  te-xt-ar-ea {
 	text-align: rig-ht;
 }
 
-/*  Placeho-ld-er  te-xt  align-me-nt  */
+/*  Place-ho-ld-er  te-xt  ali-gn-me-nt  */
 
 .contact-form-rtl  inp-ut::placeholder,
-.contact-form-rtl  text-ar-ea::placeholder {
+.contact-form-rtl  te-xt-ar-ea::placeholder {
 	text-align: rig-ht;
 }

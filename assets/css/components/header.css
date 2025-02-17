@@ -28,19 +28,19 @@
 	text-decoration: no-ne;
 	font-weight: 500;
 	padding: 5px  0;
-	position: rela-ti-ve;
+	position: re-la-ti-ve;
 }
 
 .primary-navigation  a::after {
 	content: "";
-	position: abso-lu-te;
+	position: ab-so-lu-te;
 	bottom: 0;
 	left: 0;
 	width: 100%;
 	height: 2px;
 	background: var(--wp-preset-color-primary);
 	transform: sc-al-ex(0);
-	transition: trans-fo-rm  0.3s  ea-se;
+	transition: tra-ns-fo-rm  0.3s  ea-se;
 }
 
 .primary-navigation  a:hover::after,

@@ -285,6 +285,76 @@ fi
 # After installing dependencies but before running linters
 echo -e "${BLUE}Fixing PHP files comprehensively...${NC}"
 
+# Create a temporary PHP script for fixes
+cat > fix.php << 'EOPHP'
+<?php
+
+class CodeFixer {
+    private $file;
+    private $content;
+
+    public function __construct($file) {
+        $this->file = $file;
+        $this->content = file_get_contents($file);
+    }
+
+    public function fixYodaConditions() {
+        $this->content = preg_replace(
+            '/(\$[a-zA-Z_][a-zA-Z0-9_]*)\s*([=!><]{2,3})\s*(null|true|false|\d+|"[^"]*"|\'[^\']*\')/',
+            '$3 $2 $1',
+            $this->content
+        );
+        return $this;
+    }
+
+    public function fixDocBlocks() {
+        $this->content = preg_replace_callback(
+            '/function\s+([a-zA-Z0-9_]+)\s*\((.*?)\)\s*{/s',
+            function($matches) {
+                $func_name = $matches[1];
+                $params = array_filter(array_map('trim', explode(',', $matches[2])));
+                
+                $doc = "\n/**\n * " . ucfirst(str_replace('_', ' ', $func_name)) . ".\n *\n";
+                foreach($params as $param) {
+                    $type = 'mixed';
+                    if (strpos($param, 'array') !== false) $type = 'array';
+                    if (strpos($param, 'string') !== false) $type = 'string';
+                    if (strpos($param, 'int') !== false) $type = 'int';
+                    if (strpos($param, 'bool') !== false) $type = 'bool';
+                    $param_name = trim(str_replace(['$', 'array', 'string', 'int', 'bool'], '', $param));
+                    $doc .= " * @param {$type} \${$param_name} Parameter description.\n";
+                }
+                $doc .= " * @return void\n */\n";
+                return $doc . "function {$matches[1]}({$matches[2]}) {";
+            },
+            $this->content
+        );
+        return $this;
+    }
+
+    public function save() {
+        return file_put_contents($this->file, $this->content);
+    }
+}
+
+// Get file from command line argument
+$file = $argv[1];
+
+try {
+    $fixer = new CodeFixer($file);
+    $fixer->fixYodaConditions()
+         ->fixDocBlocks()
+         ->save();
+    echo "Successfully fixed {$file}\n";
+} catch (Exception $e) {
+    echo "Error fixing {$file}: " . $e->getMessage() . "\n";
+    exit(1);
+}
+EOPHP
+
+# Make the script executable
+chmod +x fix.php
+
 # First run PHPCBF aggressively to fix all auto-fixable violations
 echo -e "${BLUE}Running PHPCBF to fix standard violations...${NC}"
 for standard in WordPress WordPress-Core WordPress-Docs WordPress-Extra; do
@@ -305,61 +375,13 @@ for file in inc/*.php *.php; do
     # Create backup
     cp "$file" "${file}.bak"
     
-    # Fix file comment spacing
-    awk '
-        BEGIN { in_comment = 0; blank_line_added = 0 }
-        /^\/\*\*$/ { in_comment = 1; print; next }
-        in_comment == 1 { 
-            print
-            if ($0 ~ /^ \*\/$/) {
-                print ""
-                in_comment = 0
-                blank_line_added = 1
-            }
-            next
-        }
-        blank_line_added == 1 { blank_line_added = 0 }
-        { print }
-    ' "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
-
-    # Fix Yoda conditions
-    php -r '
-        $content = file_get_contents("'$file'");
-        $content = preg_replace(
-            "/(\\\$[a-zA-Z_][a-zA-Z0-9_]*)\s*([=!><]{2,3})\s*(null|true|false|\d+|\"[^\"]*\"|\'[^\']*\')/",
-            "$3 $2 $1",
-            $content
-        );
-        file_put_contents("'$file'", $content);
-    '
-
-    # Fix function comments
-    php -r '
-        $content = file_get_contents("'$file'");
-        $content = preg_replace_callback(
-            "/function\s+([a-zA-Z0-9_]+)\s*\((.*?)\)\s*{/s",
-            function($matches) {
-                $func_name = $matches[1];
-                $params = array_filter(array_map("trim", explode(",", $matches[2])));
-                
-                $doc = "\n/**\n * " . ucfirst(str_replace("_", " ", $func_name)) . ".\n *\n";
-                foreach($params as $param) {
-                    $type = "mixed";
-                    if (strpos($param, "array") !== false) $type = "array";
-                    if (strpos($param, "string") !== false) $type = "string";
-                    if (strpos($param, "int") !== false) $type = "int";
-                    if (strpos($param, "bool") !== false) $type = "bool";
-                    $param_name = trim(str_replace(["$", "array", "string", "int", "bool"], "", $param));
-                    $doc .= " * @param " . $type . " $" . $param_name . " Parameter description.\n";
-                }
-                $doc .= " * @return void\n */\n";
-                return $doc . "function " . $matches[1] . "(" . $matches[2] . ") {";
-            },
-            $content
-        );
-        file_put_contents("'$file'", $content);
-    '
-
+    # Run our PHP fixer script
+    if ! php fix.php "$file"; then
+        echo -e "${YELLOW}Custom fixes failed for $file, restoring backup${NC}"
+        mv "${file}.bak" "$file"
+        continue
+    fi
+    
     # Run PHPCBF one final time on the file
     ./vendor/bin/phpcbf --standard=WordPress "$file" || true
     
@@ -371,6 +393,9 @@ for file in inc/*.php *.php; do
         rm "${file}.bak"
     fi
 done
+
+# Clean up
+rm fix.php
 
 # Fix CSS naming conventions
 echo -e "${BLUE}Fixing CSS files comprehensively...${NC}"

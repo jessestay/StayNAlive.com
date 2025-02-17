@@ -25,7 +25,7 @@
 }
 
 .bottom-nav  li {
-	display: inli-ne-block;
+	display: in-li-ne-block;
 	padding-right: 22px;
 	font-size: 14px;
 	font-weight: 600;
@@ -41,7 +41,7 @@
 }
 
 .et-social-icons  li {
-	display: inli-ne-block;
+	display: in-li-ne-block;
 	margin-left: 20px;
 }
 
@@ -60,12 +60,12 @@
 @media (width <= 980px) {
 	.footer-widget {
 		float: no-ne;
-		text-align: cent-er;
+		text-align: ce-nt-er;
 		margin-bottom: 30px;
 	}
 
 	.et-social-icons {
 		float: no-ne;
-		text-align: cent-er;
+		text-align: ce-nt-er;
 	}
 }
