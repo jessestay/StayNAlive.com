@@ -60,6 +60,9 @@
 	// Add block validator
 	require_once get_template_directory() . '/inc/block-validator.php';
 
+	// Add theme compatibility checker
+	require_once get_template_directory() . '/inc/theme-check.php';
+
 	/**
 	*
 	* Theme Setup
@@ -306,3 +309,16 @@
 		);
 	}
 	add_action('wp_enqueue_scripts', 'staynalive_enqueue_assets');
+
+// Enable theme/plugin editors
+if (!defined('DISALLOW_FILE_EDIT')) {
+    define('DISALLOW_FILE_EDIT', false);
+}
+
+// Add theme editor capabilities
+function staynalive_add_editor_caps() {
+    $role = get_role('administrator');
+    $role->add_cap('edit_themes');
+    $role->add_cap('edit_theme_options');
+}
+add_action('admin_init', 'staynalive_add_editor_caps');

@@ -3,42 +3,11 @@
     "version": 2,
     "settings": {
         "appearanceTools": true,
-        "useRootPaddingAwareAlignments": true,
-        "color": {
-            "palette": [
-                {
-                    "slug": "primary",
-                    "color": "#1e73be",
-                    "name": "Primary"
-                }
-            ]
-        },
-        "typography": {
-            "fontFamilies": [
-                {
-                    "fontFamily": "Open Sans, sans-serif",
-                    "slug": "primary",
-                    "name": "Primary"
-                }
-            ]
-        },
         "layout": {
             "contentSize": "1200px",
             "wideSize": "1400px"
         }
     },
-    "templateParts": [
-        {
-            "name": "header",
-            "title": "Header",
-            "area": "header"
-        },
-        {
-            "name": "footer",
-            "title": "Footer",
-            "area": "footer"
-        }
-    ],
     "customTemplates": [
         {
             "name": "single",
@@ -61,7 +30,16 @@
             "postTypes": ["page"]
         }
     ],
-    "styles": {
-        "blocks": {}
-    }
+    "templateParts": [
+        {
+            "name": "header",
+            "title": "Header",
+            "area": "header"
+        },
+        {
+            "name": "footer",
+            "title": "Footer",
+            "area": "footer"
+        }
+    ]
 }
