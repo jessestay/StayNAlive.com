@@ -883,6 +883,231 @@ Can you review @https://www.billerickson.net/building-a-gutenberg-website/  and 
 
 _**Assistant**_
 
+After reviewing Bill Erickson's guide, here are the key things we need to add:
+
+1. First, let's fix theme.json to include font sizes and colors:
+
+```json:StayNAlive.com/theme.json
+{
+    "$schema": "https://schemas.wp.org/trunk/theme.json",
+    "version": 2,
+    "settings": {
+        "appearanceTools": true,
+        "layout": {
+            "contentSize": "1200px",
+            "wideSize": "1400px"
+        },
+        "typography": {
+            "fontSizes": [
+                {
+                    "name": "Small",
+                    "slug": "small",
+                    "size": "12px"
+                },
+                {
+                    "name": "Normal",
+                    "slug": "normal",
+                    "size": "16px"
+                },
+                {
+                    "name": "Large",
+                    "slug": "large",
+                    "size": "20px"
+                }
+            ]
+        },
+        "color": {
+            "palette": [
+                {
+                    "name": "Primary",
+                    "slug": "primary",
+                    "color": "#1e73be"
+                },
+                {
+                    "name": "Secondary",
+                    "slug": "secondary", 
+                    "color": "#666666"
+                }
+            ]
+        }
+    },
+    "styles": {
+        "blocks": {
+            "core/paragraph": {
+                "typography": {
+                    "fontSize": "var(--wp--preset--font-size--normal)"
+                }
+            }
+        }
+    }
+}
+```
+
+2. Add block style options to functions.php:
+
+```php:StayNAlive.com/functions.php
+// Add block styles
+function staynalive_register_block_styles() {
+    // Quote styles
+    register_block_style('core/quote', [
+        'name' => 'blue-quote',
+        'label' => __('Blue Quote', 'staynalive')
+    ]);
+
+    // Button styles  
+    register_block_style('core/button', [
+        'name' => 'outline',
+        'label' => __('Outline', 'staynalive')
+    ]);
+
+    // Unregister styles we don't want
+    unregister_block_style('core/quote', 'large');
+}
+add_action('init', 'staynalive_register_block_styles');
+
+// Disable custom font sizes
+add_theme_support('disable-custom-font-sizes');
+
+// Disable custom colors 
+add_theme_support('disable-custom-colors');
+```
+
+3. Add editor styles support:
+
+```php:StayNAlive.com/functions.php
+// Add editor styles
+add_theme_support('editor-styles');
+add_editor_style('assets/css/editor-style.css');
+```
+
+4. Create editor-style.css:
+
+```css:StayNAlive.com/assets/css/editor-style.css
+/* Editor width */
+.editor-post-title__block.wp-block {
+    max-width: var(--wp--custom--layout--content-size);
+}
+
+.wp-block {
+    max-width: var(--wp--custom--layout--content-size);
+}
+
+/* Wide alignment */
+.wp-block[data-align="wide"] {
+    max-width: var(--wp--custom--layout--wide-size);
+}
+
+/* Full alignment */
+.wp-block[data-align="full"] {
+    max-width: none;
+}
+
+/* Block styles */
+.is-style-outline .wp-block-button__link {
+    background: transparent;
+    border: 2px solid currentColor;
+}
+
+.is-style-blue-quote {
+    border-left-color: var(--wp--preset--color--primary);
+}
+```
+
+5. Add wide/full alignment support:
+
+```php:StayNAlive.com/functions.php
+// Add wide/full alignment
+add_theme_support('align-wide');
+```
+
+These changes will:
+- Add proper font size controls
+- Add theme color palette
+- Add custom block styles
+- Disable custom colors/font sizes for consistency
+- Add proper editor styles
+- Enable wide/full alignment
+
+The key difference from our previous implementation is the focus on providing a better editing experience through:
+- Consistent typography system
+- Limited but useful color options
+- Custom block styles
+- Proper editor width handling
+
+Let me know if you'd like me to explain any of these changes in more detail!
+
+---
+
+_**User**_
+
+The Theme Check Wordpress plugin gives these errors when I install this theme.
+
+WARNING: Your theme appears to be in the wrong directory for the theme name. The directory name must match the slug of the theme. This theme's correct slug and text-domain is stay-n-alive. (If this is a child theme, you can ignore this error.)
+WARNING: Could not find a copyright notice for the theme. A copyright notice is needed if your theme is licenced as GPL. Learn how to add a copyright notice (opens in a new window).
+REQUIRED: The theme uses remove_action wp_head wp_shortlink_wp_head in the file inc/performance.php. This is plugin-territory functionality and must not be used in themes. Use a plugin instead.
+Line 13: remove_action('wp_head', 'wp_shortlink_wp_head');
+REQUIRED: The theme uses remove_action wp_head wp_generator in the file inc/security.php. This is plugin-territory functionality and must not be used in themes. Use a plugin instead.
+Line 16: remove_action('wp_head', 'wp_generator');
+REQUIRED: The theme uses remove_action wp_head rsd_link in the file inc/performance.php. This is plugin-territory functionality and must not be used in themes. Use a plugin instead.
+Line 12: remove_action('wp_head', 'rsd_link');
+REQUIRED: No reference to add_theme_support( "title-tag" ) was found in the theme.
+REQUIRED: Could not find the file readme.txt in the theme.
+REQUIRED: Could not find wp_link_pages. See: wp_link_pages
+ <?php wp_link_pages( $args ); ?>
+REQUIRED: Could not find wp_head. See: wp_head
+ <?php wp_head(); ?>
+REQUIRED: Could not find wp_footer. See: wp_footer
+ <?php wp_footer(); ?>
+REQUIRED: Could not find wp_body_open action or function call at the very top of the body just after the opening body tag. See: wp_body_open
+ <?php wp_body_open(); ?>
+REQUIRED: Could not find post_class. See: post_class
+ <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+REQUIRED: Could not find language_attributes. See: language_attributes
+<html <?php language_attributes(); ?>
+REQUIRED: Could not find charset. There must be a charset defined in the Content-Type or the meta charset tag in the head.
+REQUIRED: Could not find body_class call in body tag. See: body_class
+ <?php body_class( $class ); ?>
+REQUIRED: Could not find add_theme_support( 'automatic-feed-links' ). See: add_theme_support
+ <?php add_theme_support( $feature ); ?>
+REQUIRED: Could not find DOCTYPE. See: https://codex.wordpress.org/HTML_to_XHTML
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"?>
+REQUIRED No screenshot detected! Please include a screenshot.png or screenshot.jpg.
+RECOMMENDED: This theme doesn't seem to support the standard avatar functions. Use get_avatar or wp_list_comments to add this support.
+RECOMMENDED: The theme doesn't have comment pagination code in it. Use paginate_comments_links() or the_comments_navigation or the_comments_pagination or next_comments_link() and previous_comments_link() to add comment pagination.
+RECOMMENDED: No reference to nav_menu's was found in the theme. Note that if your theme has a menu bar, it is required to use the WordPress nav_menu functionality for it.
+RECOMMENDED: No reference to register_block_style was found in the theme. Theme authors are encouraged to implement new block styles as a transition to block themes.
+RECOMMENDED: No reference to add_theme_support( "html5", $args ) was found in the theme. It is strongly recommended that the theme implement this functionality.
+RECOMMENDED: No reference to add_theme_support( "custom-logo", $args ) was found in the theme. It is recommended that the theme implement this functionality.
+RECOMMENDED: No reference to add_theme_support( "custom-header", $args ) was found in the theme. It is recommended that the theme implement this functionality if using an image for the header.
+RECOMMENDED: No reference to add_theme_support( "custom-background", $args ) was found in the theme. If the theme uses background images or solid colors for the background, then it is recommended that the theme implement this functionality.
+RECOMMENDED: No reference to add_editor_style() was found in the theme. It is recommended that the theme implement editor styling, so as to make the editor content match the resulting post output in the theme, for a better user experience.
+RECOMMENDED: Could not find the comment-reply script enqueued.
+RECOMMENDED: Could not find wp_list_comments. See: wp_list_comments
+ <?php wp_list_comments( $args ); ?>
+RECOMMENDED: Could not find comments_template. See: comments_template
+ <?php comments_template( $file, $separate_comments ); ?>
+RECOMMENDED: Could not find comment_form. See: comment_form
+ <?php comment_form(); ?>
+RECOMMENDED This theme doesn't seem to display tags. Modify it to display tags in appropriate locations.
+RECOMMENDED This theme contains no sidebars/widget areas. See Widgets API
+RECOMMENDED The theme doesn't have post pagination code in it. Use posts_nav_link() or paginate_links() or the_posts_pagination() or the_posts_navigation() or next_posts_link() and previous_posts_link() to add post pagination.
+RECOMMENDED No reference to the_post_thumbnail() was found in the theme. It is recommended that the theme implement this functionality instead of using custom fields for thumbnails.
+RECOMMENDED .wp-caption css class is recommended in your theme css.
+RECOMMENDED .wp-caption-text css class is recommended in your theme css.
+RECOMMENDED .sticky css class is recommended in your theme css.
+RECOMMENDED .gallery-caption css class is recommended in your theme css.
+RECOMMENDED .bypostauthor css class is recommended in your theme css.
+RECOMMENDED .alignright css class is recommended in your theme css.
+RECOMMENDED .alignleft css class is recommended in your theme css.
+RECOMMENDED .aligncenter css class is recommended in your theme css.
+INFO: Only one text-domain is being used in this theme. Make sure it matches the theme's slug correctly so that the theme will be compatible with WordPress.org language packs. The domain found is staynalive.
+INFO Tags: is either empty or missing in style.css header.
+INFO .screen-reader-text CSS class is generated by WordPress and needs to be styled with your theme CSS. See the Codex for an example implementation.
+
+---
+
+_**Assistant**_
+
 
 
 ---
