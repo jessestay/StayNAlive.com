@@ -254,52 +254,33 @@ fi
 
 # After installing dependencies but before running linters
 echo -e "${BLUE}Fixing PHP coding standards...${NC}"
-# Run PHPCBF to automatically fix violations that can be fixed
 if command -v ./vendor/bin/phpcbf >/dev/null 2>&1; then
     echo -e "${BLUE}Running PHPCBF to fix violations...${NC}"
-    # First run: Fix all automatically fixable violations
+    # First, configure WordPress standards
+    ./vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs,vendor/phpcompatibility/php-compatibility
+    
+    # Run PHPCBF with specific sniffs for common issues
+    ./vendor/bin/phpcbf --standard=WordPress \
+        --sniffs=WordPress.Files.FileName,WordPress.WhiteSpace.ControlStructureSpacing,WordPress.Arrays.ArrayDeclarationSpacing \
+        inc/*.php *.php
+    
+    # Run PHPCBF again for any remaining fixable issues
     ./vendor/bin/phpcbf --standard=WordPress inc/*.php *.php
     
-    # Second run: Fix specific remaining issues
-    for file in inc/*.php *.php; do
-        # Fix function comment style
-        if ./vendor/bin/phpcs "$file" | grep -q "You must use \"/**\" style comments for a function comment"; then
-            sed -i '' -e '/^[[:space:]]*\/\// {
-                N
-                s/\/\/ \(.*\)\n/\/\*\*\n * \1\n *\/\n/
-            }' "$file"
-        fi
-        
-        # Fix trailing whitespace
-        if ./vendor/bin/phpcs "$file" | grep -q "Whitespace found at end of line"; then
-            sed -i '' -e 's/[[:space:]]*$//' "$file"
-        fi
-        
-        # Fix missing comma in arrays
-        if ./vendor/bin/phpcs "$file" | grep -q "There should be a comma after the last array item"; then
-            sed -i '' -e '/^[[:space:]]*[^,[:space:]][[:space:]]*$/s/$/,/' "$file"
-        fi
+    # Check if any errors remain
+    if ./vendor/bin/phpcs --standard=WordPress inc/*.php *.php | grep -q "ERROR"; then
+        echo -e "${YELLOW}Some errors could not be automatically fixed. Running manual fixes...${NC}"
         
         # Fix file comment spacing
-        if ./vendor/bin/phpcs "$file" | grep -q "must be exactly one blank line after the file comment"; then
-            printf '%s\n' 'g/^\\*\\//a' '' '.' w | ed -s "$file"
-        fi
+        find inc/*.php *.php -type f -exec sed -i '' -e '/^\/\*\*$/,/^ \*\/$/{n;/^$/!i\
+        }' {} \;
         
         # Fix inline comment periods
-        if ./vendor/bin/phpcs "$file" | grep -q "Inline comments must end in full-stops"; then
-            sed -i '' -e 's/\/\/ \([A-Za-z].*[^.!?]\)$/\/\/ \1./' "$file"
-        fi
+        find inc/*.php *.php -type f -exec sed -i '' -e 's/\/\/ \([A-Za-z].*[^.!?]\)$/\/\/ \1./' {} \;
         
         # Fix Yoda conditions
-        if ./vendor/bin/phpcs "$file" | grep -q "Use Yoda Condition checks"; then
-            sed -i '' -e 's/\([^!]\)\([=<>][=<>]*\) *null/null \2 \1/g' "$file"
-            sed -i '' -e 's/\([^!]\)\([=<>][=<>]*\) *false/false \2 \1/g' "$file"
-            sed -i '' -e 's/\([^!]\)\([=<>][=<>]*\) *true/true \2 \1/g' "$file"
-        fi
-    done
-    
-    # Third run: Verify fixes
-    ./vendor/bin/phpcbf --standard=WordPress inc/*.php *.php
+        find inc/*.php *.php -type f -exec sed -i '' -e 's/\$\([a-zA-Z_]*\) === \(.*\)/\2 === \$\1/g' {} \;
+    fi
 else
     echo -e "${RED}PHPCBF not found. Please ensure composer dependencies are installed.${NC}"
     exit 1

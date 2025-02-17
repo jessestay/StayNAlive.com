@@ -514,7 +514,193 @@ Try running install.sh again. This should resolve the "invalid command code" err
 
 ---
 
-_****_
+_**User**_
+
+What does this mean?
+
+---
+
+_**Assistant**_
+
+The error is coming from the grep commands with the `+` repetition operator. Let's fix those by using a simpler grep pattern and let PHPCS do the heavy lifting:
+
+```diff:install.sh
+    # Second run: Fix specific remaining issues
+    for file in inc/*.php *.php; do
+        # Fix function comment style
+-       if ./vendor/bin/phpcs "$file" | grep -q "You must use \"/**\" style comments for a function comment"; then
++       if ./vendor/bin/phpcs "$file" | grep -q "style comments for a function"; then
+            sed -i '' -e '/^[[:space:]]*\/\// {
+                N
+                s/\/\/ \(.*\)\n/\/\*\*\n * \1\n *\/\n/
+            }' "$file"
+        fi
+        
+        # Fix trailing whitespace
+-       if ./vendor/bin/phpcs "$file" | grep -q "Whitespace found at end of line"; then
++       if ./vendor/bin/phpcs "$file" | grep -q "end of line"; then
+            sed -i '' -e 's/[[:space:]]*$//' "$file"
+        fi
+        
+        # Fix missing comma in arrays
+-       if ./vendor/bin/phpcs "$file" | grep -q "There should be a comma after the last array item"; then
++       if ./vendor/bin/phpcs "$file" | grep -q "comma after the last array"; then
+            sed -i '' -e '/^[[:space:]]*[^,[:space:]][[:space:]]*$/s/$/,/' "$file"
+        fi
+        
+        # Fix file comment spacing
+-       if ./vendor/bin/phpcs "$file" | grep -q "must be exactly one blank line after the file comment"; then
++       if ./vendor/bin/phpcs "$file" | grep -q "blank line after the file"; then
+            printf '%s\n' 'g/^\\*\\//a' '' '.' w | ed -s "$file"
+        fi
+        
+        # Fix inline comment periods
+-       if ./vendor/bin/phpcs "$file" | grep -q "Inline comments must end in full-stops"; then
++       if ./vendor/bin/phpcs "$file" | grep -q "comments must end in"; then
+            sed -i '' -e 's/\/\/ \([A-Za-z].*[^.!?]\)$/\/\/ \1./' "$file"
+        fi
+        
+        # Fix Yoda conditions
+-       if ./vendor/bin/phpcs "$file" | grep -q "Use Yoda Condition checks"; then
++       if ./vendor/bin/phpcs "$file" | grep -q "Yoda Condition"; then
+            sed -i '' -e 's/\([^!]\)\([=<>][=<>]*\) *null/null \2 \1/g' "$file"
+            sed -i '' -e 's/\([^!]\)\([=<>][=<>]*\) *false/false \2 \1/g' "$file"
+            sed -i '' -e 's/\([^!]\)\([=<>][=<>]*\) *true/true \2 \1/g' "$file"
+        fi
+    done
+```
+
+This change:
+1. Simplifies the grep patterns to avoid regex issues
+2. Still matches the same errors
+3. Removes the problematic repetition operators
+4. Makes the patterns more resilient
+
+Try running install.sh again. The grep errors should be resolved.
+
+---
+
+_**User**_
+
+What does this mean? Are we trying to fix too much?
+
+---
+
+_**Assistant**_
+
+Yes, we might be trying to fix too much at once. Let's simplify the approach:
+
+1. First, let's check if there are actually any errors to fix:
+
+```diff:install.sh
+# After installing dependencies but before running linters
+echo -e "${BLUE}Fixing PHP coding standards...${NC}"
+# Run PHPCBF to automatically fix violations that can be fixed
+if command -v ./vendor/bin/phpcbf >/dev/null 2>&1; then
+    echo -e "${BLUE}Running PHPCBF to fix violations...${NC}"
++   # Check if there are any errors first
++   if ./vendor/bin/phpcs --report=json inc/*.php *.php | grep -q '"errors": [1-9]'; then
+        # First run: Fix all automatically fixable violations
+        ./vendor/bin/phpcbf --standard=WordPress inc/*.php *.php
+-       
+-       # Second run: Fix specific remaining issues
+-       for file in inc/*.php *.php; do
+-           # All the specific fixes...
+-       done
+-       
+-       # Third run: Verify fixes
+-       ./vendor/bin/phpcbf --standard=WordPress inc/*.php *.php
++   else
++       echo -e "${GREEN}No PHP coding standard violations found${NC}"
+    fi
+else
+    echo -e "${RED}PHPCBF not found. Please ensure composer dependencies are installed.${NC}"
+    exit 1
+fi
+```
+
+This change:
+1. Only attempts fixes if there are actual errors
+2. Removes the complex manual fixes that might be causing issues
+3. Relies on PHPCBF's built-in fixing capabilities
+4. Provides clearer output about what's happening
+
+Let's try this simpler approach first and then add back specific fixes only if needed.
+
+---
+
+_**User**_
+
+Why isn't phpcbf auto-fixing these errors?
+
+---
+
+_**Assistant**_
+
+
+
+The issue is that PHPCBF isn't being run on all the errors. Let's modify the install.sh script to handle both PHPCS and PHPCBF properly:
+
+``````diff:install.sh
+# After installing dependencies but before running linters
+echo -e "${BLUE}Fixing PHP coding standards...${NC}"
+if command -v ./vendor/bin/phpcbf >/dev/null 2>&1; then
+    echo -e "${BLUE}Running PHPCBF to fix violations...${NC}"
++   # First, configure WordPress standards
++   ./vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs
++   
++   # Run PHPCBF with specific sniffs for common issues
++   ./vendor/bin/phpcbf --standard=WordPress \
++       --sniffs=Squiz.Commenting.FileComment,Squiz.Commenting.InlineComment,WordPress.PHP.YodaConditions \
++       inc/*.php *.php
++   
++   # Run PHPCBF again for any remaining fixable issues
++   ./vendor/bin/phpcbf --standard=WordPress inc/*.php *.php
++   
++   # Check if any errors remain
++   if ./vendor/bin/phpcs --standard=WordPress inc/*.php *.php | grep -q "ERROR"; then
++       echo -e "${YELLOW}Some errors could not be automatically fixed. Running manual fixes...${NC}"
++       
++       # Fix file comment spacing
++       find inc/*.php *.php -type f -exec sed -i '' -e '/^\/\*\*$/,/^ \*\/$/{n;/^$/!i\
++       }' {} \;
++       
++       # Fix inline comment periods
++       find inc/*.php *.php -type f -exec sed -i '' -e 's/\/\/ \([A-Za-z].*[^.!?]\)$/\/\/ \1./' {} \;
++       
++       # Fix Yoda conditions
++       find inc/*.php *.php -type f -exec sed -i '' -e 's/\$\([a-zA-Z_]*\) === \(.*\)/\2 === \$\1/g' {} \;
++   fi
+else
+    echo -e "${RED}PHPCBF not found. Please ensure composer dependencies are installed.${NC}"
+    exit 1
+fi
+``````
+
+This change:
+1. Explicitly configures WordPress standards
+2. Runs PHPCBF with specific sniffs for common issues
+3. Runs PHPCBF again for any remaining fixable issues
+4. Adds manual fixes for issues PHPCBF can't handle
+5. Provides better error reporting
+
+Would you like me to:
+1. Add more specific sniffs
+2. Add error pattern learning
+3. Add rollback functionality
+4. Show expected output
+
+Let's try this updated version and see if it catches more of the errors.
+
+---
+
+_**User**_
+
+Now what?
+
+---
+
+_**Assistant**_
 
 
 
