@@ -569,7 +569,13 @@ Would you like me to:
 
 ---
 
-_****_
+_**User**_
+
+How can I have it automatically use phpcbf to fix the marked violations auomatically?
+
+---
+
+_**Assistant**_
 
 
 
