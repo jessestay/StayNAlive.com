@@ -1,0 +1,21 @@
+@media (max-width: 980px) {
+    .et_mobile_menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        border-top: 3px solid #2ea3f2;
+        padding: 5%;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .et_mobile_menu.nav-open {
+        display: block;
+    }
+
+    .mobile_nav.opened .mobile_menu_bar:before {
+        content: "M";
+    }
+}

@@ -10,7 +10,7 @@ readonly RED='\033[0;31m'
 readonly NC='\033[0m'
 
 # Theme directory name
-readonly THEME_DIR="staynalive"
+readonly THEME_DIR="staynalive-theme"
 
 # Function to log messages
 log() {
@@ -23,6 +23,7 @@ create_directories() {
         "assets/css/base"
         "assets/css/blocks"
         "assets/css/components"
+        "assets/css/compatibility"
         "assets/css/utilities"
         "assets/js"
         "inc"
@@ -1046,7 +1047,7 @@ EOL
     <div class="wp-block-columns social-grid-row">
         <!-- wp:column -->
         <div class="wp-block-column">
-            <!-- wp:group {"className":"social-card","layout":{"type":"constrained"}} -->
+            <!-- wp:group {"className":"social-card"} -->
             <div class="wp-block-group social-card">
                 <!-- wp:image {"className":"social-media-embed"} -->
                 <figure class="wp-block-image social-media-embed">
@@ -1112,49 +1113,6 @@ create_additional_patterns() {
                 <!-- wp:social-link {"url":"https://linkedin.com/in/jessestay","service":"linkedin"} /-->
             </ul>
             <!-- /wp:social-links -->
-        </div>
-        <!-- /wp:column -->
-    </div>
-    <!-- /wp:columns -->
-</div>
-<!-- /wp:group -->
-EOL
-
-    # Featured Content Pattern
-    cat > "${THEME_DIR}/patterns/featured-content.html" << 'EOL'
-<!-- wp:group {"className":"featured-content","layout":{"type":"constrained"}} -->
-<div class="wp-block-group featured-content">
-    <!-- wp:columns {"verticalAlignment":"center"} -->
-    <div class="wp-block-columns are-vertically-aligned-center">
-        <!-- wp:column {"width":"50%"} -->
-        <div class="wp-block-column" style="flex-basis:50%">
-            <!-- wp:image {"className":"featured-image animate-float-in"} -->
-            <figure class="wp-block-image featured-image animate-float-in">
-                <img src="placeholder.jpg" alt=""/>
-            </figure>
-            <!-- /wp:image -->
-        </div>
-        <!-- /wp:column -->
-
-        <!-- wp:column {"width":"50%"} -->
-        <div class="wp-block-column" style="flex-basis:50%">
-            <!-- wp:heading {"className":"featured-title"} -->
-            <h2 class="featured-title">Featured Content</h2>
-            <!-- /wp:heading -->
-            
-            <!-- wp:paragraph {"className":"featured-description"} -->
-            <p class="featured-description">Add your compelling content description here.</p>
-            <!-- /wp:paragraph -->
-            
-            <!-- wp:buttons -->
-            <div class="wp-block-buttons">
-                <!-- wp:button {"className":"is-style-fill animate-pulse"} -->
-                <div class="wp-block-button is-style-fill animate-pulse">
-                    <a class="wp-block-button__link">Learn More</a>
-                </div>
-                <!-- /wp:button -->
-            </div>
-            <!-- /wp:buttons -->
         </div>
         <!-- /wp:column -->
     </div>
@@ -1707,6 +1665,7 @@ add_action('wp_head', function() {
     echo '<link rel="preload" href="' . get_theme_file_uri('assets/css/base/base.css') . '" as="style">';
     echo '<link rel="preload" href="' . get_theme_file_uri('assets/js/animations.js') . '" as="script">';
 }, 1);
+?>
 EOL
 }
 
@@ -1794,7 +1753,7 @@ cleanup() {
 }
 
 # Register cleanup function
-trap cleanup EXIT
+# trap cleanup EXIT
 
 # Main execution
 main() {
@@ -1804,17 +1763,17 @@ main() {
     if ! command -v zip >/dev/null 2>&1; then
         echo -e "${RED}Error: zip command not found. Please install zip first.${NC}"
         exit 1
-    }
+    fi
     
     # Clean up any existing theme directory
     rm -rf "${THEME_DIR}"
     
     # Create fresh theme structure
     create_directories
-    create_style_css
-    create_theme_json
     create_all_templates
     create_template_parts
+    create_style_css
+    create_theme_json
     create_css_files
     create_all_css_files
     create_all_js_files

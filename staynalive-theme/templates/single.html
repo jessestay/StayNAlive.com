@@ -1,0 +1,72 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"site-main single-post"} -->
+<main class="wp-block-group site-main single-post">
+    <!-- wp:post-featured-image {"align":"wide"} /-->
+
+    <!-- wp:group {"className":"post-header"} -->
+    <div class="wp-block-group post-header">
+        <!-- wp:post-title {"level":1} /-->
+
+        <!-- wp:group {"className":"post-meta"} -->
+        <div class="wp-block-group post-meta">
+            <!-- wp:post-date /-->
+            <!-- wp:post-author {"showAvatar":true} /-->
+            <!-- wp:post-terms {"term":"category"} /-->
+            <!-- wp:post-terms {"term":"post_tag"} /-->
+        </div>
+        <!-- /wp:group -->
+    </div>
+    <!-- /wp:group -->
+
+    <!-- wp:post-content /-->
+
+    <!-- wp:group {"className":"post-navigation"} -->
+    <div class="wp-block-group post-navigation">
+        <!-- wp:post-navigation-link {"type":"previous","showTitle":true,"linkLabel":"Previous:"} /-->
+        <!-- wp:post-navigation-link {"type":"next","showTitle":true,"linkLabel":"Next:"} /-->
+    </div>
+    <!-- /wp:group -->
+
+    <!-- wp:comments -->
+    <div class="wp-block-comments">
+        <!-- wp:comments-title /-->
+        <!-- wp:comment-template -->
+            <!-- wp:columns -->
+            <div class="wp-block-columns">
+                <!-- wp:column {"width":"40px"} -->
+                <div class="wp-block-column" style="flex-basis:40px">
+                    <!-- wp:avatar {"size":40} /-->
+                </div>
+                <!-- /wp:column -->
+
+                <!-- wp:column -->
+                <div class="wp-block-column">
+                    <!-- wp:comment-author-name /-->
+                    <!-- wp:group {"style":{"spacing":{"margin":{"top":"0px","bottom":"0px"}}}} -->
+                    <div class="wp-block-group">
+                        <!-- wp:comment-date /-->
+                        <!-- wp:comment-edit-link /-->
+                    </div>
+                    <!-- /wp:group -->
+                    <!-- wp:comment-content /-->
+                    <!-- wp:comment-reply-link /-->
+                </div>
+                <!-- /wp:column -->
+            </div>
+            <!-- /wp:columns -->
+        <!-- /wp:comment-template -->
+
+        <!-- wp:comments-pagination -->
+            <!-- wp:comments-pagination-previous /-->
+            <!-- wp:comments-pagination-numbers /-->
+            <!-- wp:comments-pagination-next /-->
+        <!-- /wp:comments-pagination -->
+
+        <!-- wp:post-comments-form /-->
+    </div>
+    <!-- /wp:comments -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
