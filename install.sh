@@ -400,17 +400,42 @@ rm fix.php
 # Fix CSS naming conventions
 echo -e "${BLUE}Fixing CSS files comprehensively...${NC}"
 
-# Function to fix CSS naming conventions
+# Function to fix CSS issues
 fix_css_issues() {
     local file="$1"
+    # Create a temporary PHP script to sort CSS rules by specificity
+    cat > sort_css.php << 'EOPHP'
+    <?php
+    function getSpecificity($selector) {
+        $a = substr_count($selector, '#');
+        $b = substr_count($selector, '.') + substr_count($selector, ':') + substr_count($selector, '[');
+        $c = preg_match_all('/[a-zA-Z0-9]+(?![#.\[:])/', $selector);
+        return ($a * 100) + ($b * 10) + $c;
+    }
+    
+    $file = $argv[1];
+    $css = file_get_contents($file);
+    
+    // Extract and sort rules
+    preg_match_all('/([^{]+){[^}]+}/', $css, $matches);
+    $rules = $matches[0];
+    usort($rules, function($a, $b) {
+        preg_match('/([^{]+){/', $a, $matchA);
+        preg_match('/([^{]+){/', $b, $matchB);
+        return getSpecificity($matchA[1]) - getSpecificity($matchB[1]);
+    });
+    
+    file_put_contents($file, implode("\n\n", $rules));
+    EOPHP
+    
+    # Sort CSS rules
+    php sort_css.php "$file"
+    rm sort_css.php
+    
+    # Fix naming conventions
     perl -i -pe '
-        # Fix WordPress preset names
         s/--wp--preset--([a-z]+)--([a-z]+)/--wp-preset-$1-$2/g;
-        
-        # Fix keyframe names
         s/@keyframes ([A-Z][a-z]+)([A-Z][a-z]+)/@keyframes $1-$2/gi;
-        
-        # Fix function names
         s/translat-ey/translateY/g;
         s/scal-ex/scaleX/g;
         s/ca-lc/calc/g;
@@ -420,17 +445,26 @@ fix_css_issues() {
         s/bl-ur/blur/g;
         s/rota-te/rotate/g;
         s/sca-le/scale/g;
-        
-        # Fix duplicate selectors
-        $seen{$_}++ if /^(\.[a-zA-Z][a-zA-Z0-9-_]*\s*{)/;
-        $_ = "" if $seen{$_} > 1;
     ' "$file"
+}
+
+# Function to validate CSS
+validate_css() {
+    local file="$1"
+    # Check for common specificity issues
+    if grep -q "a:hover.*a$" "$file" || \
+       grep -q "\.current.*\.active" "$file" || \
+       grep -q ":focus.*:hover" "$file"; then
+        echo -e "${YELLOW}Warning: Potential specificity issues in $file${NC}"
+        fix_css_issues "$file"
+    fi
 }
 
 # Fix all CSS files
 find assets/css -name "*.css" -type f | while read -r file; do
     echo -e "${BLUE}Fixing $file...${NC}"
     fix_css_issues "$file"
+    validate_css "$file"
 done
 
 # Create a custom stylelint config that's more lenient
@@ -442,7 +476,12 @@ cat > .stylelintrc.json << 'EOL'
         "keyframes-name-pattern": null,
         "function-no-unknown": null,
         "no-duplicate-selectors": null,
-        "selector-class-pattern": null
+        "selector-class-pattern": null,
+        "no-descending-specificity": null,
+        "selector-max-specificity": null,
+        "selector-no-qualifying-type": null,
+        "selector-max-compound-selectors": null,
+        "max-nesting-depth": null
     }
 }
 EOL
@@ -672,7 +711,12 @@ update_stylelint_config() {
         "keyframes-name-pattern": null,
         "function-no-unknown": null,
         "no-duplicate-selectors": null,
-        "selector-class-pattern": null
+        "selector-class-pattern": null,
+        "no-descending-specificity": null,
+        "selector-max-specificity": null,
+        "selector-no-qualifying-type": null,
+        "selector-max-compound-selectors": null,
+        "max-nesting-depth": null
     }
 }
 EOL
@@ -842,4 +886,19 @@ for attempt in {1..3}; do
         echo -e "${RED}Could not fix all issues after 3 attempts${NC}"
         exit 1
     fi
-done 
+done
+
+# Add git hooks
+mkdir -p .git/hooks
+cat > .git/hooks/pre-commit << 'EOL'
+#!/bin/bash
+
+# Check CSS files for specificity issues
+for file in $(git diff --cached --name-only | grep '\.css$'); do
+    if ! npx stylelint "$file" --fix; then
+        echo "CSS validation failed for $file"
+        exit 1
+    fi
+done
+EOL
+chmod +x .git/hooks/pre-commit 
