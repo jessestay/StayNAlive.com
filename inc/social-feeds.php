@@ -109,7 +109,7 @@ function get_instagram_feed() {
 		return new \WP_Error( 'missing_token', 'Instagram token is required' );
 	}
 
-	// Cache key based on token
+	// Cache key based on token.
 	$cache_key = 'instagram_feed_' . md5( $token );
 	$cached    = get_transient( $cache_key );
 
@@ -117,7 +117,7 @@ function get_instagram_feed() {
 		return $cached;
 	}
 
-	// Fetch and process feed
+	// Fetch and process feed.
 	$response = wp_remote_get( "https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink&access_token={$token}" );
 
 	if ( is_wp_error( $response ) ) {

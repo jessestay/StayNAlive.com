@@ -17,7 +17,7 @@ if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
 	define( 'DISALLOW_FILE_EDIT', true );
 }
 
-// Add security headers
+// Add security headers.
 add_action(
 	'send_headers',
 	function () {
@@ -28,7 +28,7 @@ add_action(
 	}
 );
 
-// Sanitize SVG uploads
+// Sanitize SVG uploads.
 add_filter(
 	'wp_handle_upload_prefilter',
 	function ( $file ) {

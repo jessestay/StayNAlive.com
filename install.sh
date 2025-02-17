@@ -211,10 +211,21 @@ cleanup() {
     if [ -d "build" ]; then
         rm -rf build
     fi
+    if [ -f "composer.json.backup" ]; then
+        mv composer.json.backup composer.json
+    fi
+    if [ -f "vendor/squizlabs/php_codesniffer/CodeSniffer.conf.backup" ]; then
+        mv vendor/squizlabs/php_codesniffer/CodeSniffer.conf.backup vendor/squizlabs/php_codesniffer/CodeSniffer.conf
+    fi
 }
 
-# Trap errors
-trap 'echo -e "${RED}Installation failed${NC}"; cleanup; exit 1' ERR INT TERM
+# Trap errors and cleanup
+trap cleanup EXIT
+
+# Backup existing files
+if [ -f "composer.json" ]; then
+    cp composer.json composer.json.backup
+fi
 
 # Install dependencies
 echo -e "${BLUE}Installing Node dependencies...${NC}"
@@ -241,14 +252,33 @@ if [ -d "vendor" ]; then
 fi
 
 # Install PHP Compatibility first
-if ! composer require --dev phpcompatibility/php-compatibility:^9.3; then
-    echo -e "${RED}Failed to install PHP Compatibility.${NC}"
-    exit 1
+# Ensure composer.json exists
+if [ ! -f "composer.json" ]; then
+    echo "Creating composer.json..."
+    cat > composer.json << 'EOL'
+{
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7.2",
+        "wp-coding-standards/wpcs": "^3.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
+EOL
 fi
 
-# Install other dev dependencies
-if ! composer require --dev dealerdirect/phpcodesniffer-composer-installer:^1.0 wp-coding-standards/wpcs:^3.0 squizlabs/php_codesniffer:^3.7.2; then
-    echo -e "${RED}Failed to install dev dependencies.${NC}"
+if ! composer require --dev \
+    squizlabs/php_codesniffer:^3.7.2 \
+    phpcsstandards/phpcsutils:^1.0 \
+    phpcsstandards/phpcsextra:^1.0 \
+    phpcompatibility/php-compatibility:^9.3 \
+    dealerdirect/phpcodesniffer-composer-installer:^1.0 \
+    wp-coding-standards/wpcs:^3.0; then
+    echo -e "${RED}Failed to install PHP Compatibility.${NC}"
     exit 1
 fi
 
@@ -257,15 +287,33 @@ echo -e "${BLUE}Fixing PHP coding standards...${NC}"
 if command -v ./vendor/bin/phpcbf >/dev/null 2>&1; then
     echo -e "${BLUE}Running PHPCBF to fix violations...${NC}"
     # First, configure WordPress standards
-    ./vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs,vendor/phpcompatibility/php-compatibility
+    # Verify PHPCS installation
+    if ! ./vendor/bin/phpcs -i > /dev/null 2>&1; then
+        echo -e "${RED}PHPCS installation appears to be broken. Attempting to fix...${NC}"
+        composer dump-autoload
+        composer run-script post-install-cmd
+    fi
+
+    # Set installed paths and verify
+    ./vendor/bin/phpcs --config-set installed_paths ../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility
+    if ! ./vendor/bin/phpcs -i | grep -q "WordPress"; then
+        echo -e "${RED}WordPress coding standards not properly installed${NC}"
+        exit 1
+    fi
     
     # Run PHPCBF with specific sniffs for common issues
+    # Use a more basic set of sniffs first
     ./vendor/bin/phpcbf --standard=WordPress \
-        --sniffs=WordPress.Files.FileName,WordPress.WhiteSpace.ControlStructureSpacing,WordPress.Arrays.ArrayDeclarationSpacing \
         inc/*.php *.php
     
     # Run PHPCBF again for any remaining fixable issues
-    ./vendor/bin/phpcbf --standard=WordPress inc/*.php *.php
+    if ! ./vendor/bin/phpcbf --standard=WordPress inc/*.php *.php; then
+        # If PHPCBF fails, try with individual files
+        for file in inc/*.php *.php; do
+            echo -e "${BLUE}Fixing $file...${NC}"
+            ./vendor/bin/phpcbf --standard=WordPress "$file" || true
+        done
+    fi
     
     # Check if any errors remain
     if ./vendor/bin/phpcs --standard=WordPress inc/*.php *.php | grep -q "ERROR"; then

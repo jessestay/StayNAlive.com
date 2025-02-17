@@ -16,19 +16,19 @@
 
 namespace StayNAlive;
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Constants
+// Constants.
 if ( ! defined( 'STAYNALIVE_VERSION' ) ) {
 	define( 'STAYNALIVE_VERSION', '1.0.0' );
 }
 define( 'STAYNALIVE_DIR', get_template_directory() );
 define( 'STAYNALIVE_URI', get_template_directory_uri() );
 
-// Autoload classes
+// Autoload classes.
 spl_autoload_register(
 	function ( $class ) {
 		if ( strpos( $class, 'StayNAlive\\' ) === 0 ) {
@@ -41,7 +41,7 @@ spl_autoload_register(
 	}
 );
 
-// Required files
+// Required files.
 require_once STAYNALIVE_DIR . '/inc/template-functions.php';
 require_once STAYNALIVE_DIR . '/inc/template-tags.php';
 require_once STAYNALIVE_DIR . '/inc/block-patterns.php';
@@ -51,7 +51,7 @@ require_once STAYNALIVE_DIR . '/inc/language-switcher.php';
  * Theme Setup
  */
 function staynalive_setup() {
-	// Theme support
+	// Theme support.
 	add_theme_support( 'wp-block-styles' );
 	add_theme_support( 'responsive-embeds' );
 	add_theme_support( 'editor-styles' );
@@ -62,10 +62,10 @@ function staynalive_setup() {
 	add_theme_support( 'align-wide' );
 	add_theme_support( 'custom-units' );
 
-	// Editor styles
+	// Editor styles.
 	add_editor_style( 'assets/css/editor-style.css' );
 
-	// Load translations
+	// Load translations.
 	load_theme_textdomain( 'staynalive', STAYNALIVE_DIR . '/languages' );
 }
 add_action( 'after_setup_theme', 'staynalive_setup' );
@@ -74,7 +74,7 @@ add_action( 'after_setup_theme', 'staynalive_setup' );
  * Enqueue scripts and styles
  */
 function staynalive_scripts() {
-	// Base styles
+	// Base styles.
 	wp_enqueue_style(
 		'staynalive-base',
 		STAYNALIVE_URI . '/assets/css/base/base.css',
@@ -82,7 +82,7 @@ function staynalive_scripts() {
 		STAYNALIVE_VERSION
 	);
 
-	// Component styles
+	// Component styles.
 	$components = array(
 		'header',
 		'footer',
@@ -104,7 +104,7 @@ function staynalive_scripts() {
 		);
 	}
 
-	// Block styles
+	// Block styles.
 	wp_enqueue_style(
 		'sna-button',
 		STAYNALIVE_URI . '/assets/css/blocks/button.css',
@@ -112,7 +112,7 @@ function staynalive_scripts() {
 		STAYNALIVE_VERSION
 	);
 
-	// Utilities
+	// Utilities.
 	wp_enqueue_style(
 		'sna-utilities',
 		STAYNALIVE_URI . '/assets/css/utilities/layout.css',
@@ -120,7 +120,7 @@ function staynalive_scripts() {
 		STAYNALIVE_VERSION
 	);
 
-	// Scripts
+	// Scripts.
 	wp_enqueue_script(
 		'staynalive-navigation',
 		STAYNALIVE_URI . '/assets/js/navigation.js',
