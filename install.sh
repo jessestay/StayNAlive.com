@@ -262,6 +262,21 @@ if command -v ./vendor/bin/phpcbf >/dev/null 2>&1; then
     
     # Second run: Fix specific remaining issues
     for file in inc/*.php *.php; do
+        # Fix function comment style
+        if grep -q "You must use \"/**\" style comments for a function comment" <(./vendor/bin/phpcs "$file"); then
+            sed -i '' '/^[[:space:]]*\/\// {N; s/\/\/ \(.*\)\n/\/\*\*\n * \1\n *\/\n/}' "$file"
+        fi
+        
+        # Fix trailing whitespace
+        if grep -q "Whitespace found at end of line" <(./vendor/bin/phpcs "$file"); then
+            sed -i '' 's/[[:space:]]*$//' "$file"
+        fi
+        
+        # Fix missing comma in arrays
+        if grep -q "There should be a comma after the last array item" <(./vendor/bin/phpcs "$file"); then
+            sed -i '' '/^[[:space:]]*[^,[:space:]]\+[[:space:]]*$/s/$/,/' "$file"
+        fi
+        
         # Fix file comment spacing
         if grep -q "must be exactly one blank line after the file comment" <(./vendor/bin/phpcs "$file"); then
             sed -i '' '/^\\*\\//a\\' "$file"
