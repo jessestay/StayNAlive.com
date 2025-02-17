@@ -2,11 +2,11 @@
 /**
  * template-functions functionality.
  *
- * @package StayNAlive
+* @package StayNAlive
  */
 
 * Template functions for Stay N Alive Theme
-*
+ *
 * @package staynalive
 * /
 
@@ -16,8 +16,8 @@
 /**
  * Add custom classes to the body
  *
- * @param array $classes Existing body classes.
- * @return array Modified body classes.
+* @param array $classes Existing body classes.
+* @return array Modified body classes.
  */
 
 
@@ -26,7 +26,7 @@
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function ( $classes ) {
 	// Add class for archive pages.
@@ -70,7 +70,7 @@ add_filter( 'body_class', 'staynalive_body_classes' );
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function () {
 	if ( is_singular() && pings_open() ) {
@@ -82,9 +82,9 @@ add_action( 'wp_head', 'staynalive_pingback_header' );
 /**
  * Add custom block attributes
  *
- * @param array $attributes Default block attributes.
- * @param array $block Block data.
- * @return array Modified block attributes.
+* @param array $attributes Default block attributes.
+* @param array $block Block data.
+* @return array Modified block attributes.
  */
 
 
@@ -93,7 +93,7 @@ add_action( 'wp_head', 'staynalive_pingback_header' );
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function ( $attributes, $block ) {
 	// Add animation attributes to group blocks.
@@ -108,9 +108,9 @@ add_filter( 'block_type_metadata_settings', 'staynalive_block_attributes', 10, 2
 /**
  * Modify block wrapper
  *
- * @param string $block_content Block HTML content.
- * @param array  $block Block data.
- * @return string Modified block HTML.
+* @param string $block_content Block HTML content.
+* @param array  $block Block data.
+* @return string Modified block HTML.
  */
 
 
@@ -119,7 +119,7 @@ add_filter( 'block_type_metadata_settings', 'staynalive_block_attributes', 10, 2
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function ( $block_content, $block ) {
 	// Add lazy loading to images outside of cover blocks.
@@ -142,7 +142,7 @@ add_filter( 'render_block', 'staynalive_render_block', 10, 2 );
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function () {
 	$blocks = array(
@@ -186,7 +186,7 @@ add_action( 'init', 'staynalive_block_styles' );
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function () {
 	add_image_size( 'featured-large', 1200, 600, true );
@@ -198,8 +198,8 @@ add_action( 'after_setup_theme', 'staynalive_image_sizes' );
 /**
  * Add image sizes to block editor
  *
- * @param array $sizes Existing sizes.
- * @return array Modified sizes.
+* @param array $sizes Existing sizes.
+* @return array Modified sizes.
  */
 
 
@@ -208,7 +208,7 @@ add_action( 'after_setup_theme', 'staynalive_image_sizes' );
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function ( $sizes ) {
 	return array_merge(

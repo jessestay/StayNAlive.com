@@ -2,12 +2,12 @@
 /**
  * security functionality.
  *
- * @package StayNAlive
+* @package StayNAlive
  */
- 
+
 * Security enhancements for the theme
  *
- * @package staynalive
+* @package staynalive
  */
 
 

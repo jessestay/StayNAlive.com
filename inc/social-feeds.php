@@ -2,12 +2,12 @@
 /**
  * social-feeds functionality.
  *
- * @package StayNAlive
+* @package StayNAlive
  */
- 
+
 * Social feed functionality
  *
- * @package StayNAlive
+* @package StayNAlive
  */
 
 
@@ -113,7 +113,7 @@ namespace StayNAlive\SocialFeeds;
 /**
  * Get instagram feed.
  *
- * @return void
+* @return void
  */
 function get_instagram_feed() {
 	$options = get_option( 'staynalive_social_media', array() );
@@ -147,16 +147,16 @@ function get_instagram_feed() {
 /**
  * Get YouTube feed data
  *
- * @return array|WP_Error Feed data or error object
+* @return array|WP_Error Feed data or error object
  */
 
 
- 
+
 */
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function () {
 	$options    = get_option( 'staynalive_social_media', array() );
@@ -203,16 +203,16 @@ function () {
 /**
  * Retrieve Twitter feed data
  *
- * @return array|WP_Error Feed data or error object
+* @return array|WP_Error Feed data or error object
  */
 
 
- 
+
 */
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function () {
 	$options      = get_option( 'staynalive_social_media', array() );
@@ -257,17 +257,17 @@ if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
 /**
  * Get social feed items.
  *
- * @param string $feed_type Type of feed to retrieve.
- * @return array Array of feed items.
+* @param string $feed_type Type of feed to retrieve.
+* @return array Array of feed items.
  */
 
 
- 
+
 */
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function ( $feed_type ) {
 	$options = get_option( 'staynalive_social_media', array() );
@@ -286,17 +286,17 @@ function ( $feed_type ) {
 /**
  * Process feed data.
  *
- * @param array $data Raw feed data.
- * @return array Processed feed data.
+* @param array $data Raw feed data.
+* @return array Processed feed data.
  */
 
 
- 
+
 */
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function ( $data ) {
 	if ( ! is_array( $data ) ) {

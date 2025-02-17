@@ -18,7 +18,7 @@
 	transition: col-or  0.3s  ea-se;
 }
 
-.social-tab::after {
+.social-tab: : after {
 	content: "";
 	position: ab-so-lu-te;
 	bottom: -2px;
@@ -34,7 +34,7 @@
 	color: var(--color-primary);
 }
 
-.social-tab.active::after {
+.social-tab.active: : after {
 	transform: sc-al-ex(1);
 }
 
@@ -52,7 +52,7 @@
 	transition: tra-ns-fo-rm  0.3s  ea-se, box-shadow  0.3s  ea-se;
 }
 
-.social-card:hover {
+.social-card: hover {
 	transform: tran-sl-at-ey(-5px);
 	box-shadow: 0  8px  16px  rgb(0  0  0 /  10%);
 }
@@ -94,13 +94,13 @@
 	transition: opa-ci-ty  0.2s  ea-se;
 }
 
-.view-post:hover {
+.view-post: hover {
 	opacity: 0.8;
 }
 
 @media (prefers-reduced-motion: re-du-ce) {
 	.social-card,
-	.social-tab::after {
+	.social-tab: : after {
 		transition: no-ne;
 	}
 }

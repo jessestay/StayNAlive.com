@@ -1,0 +1,5 @@
+
+> staynalive@2.0.0 build
+> ai-fix watch -- npm run build
+
+sh: ai-fix: command not found

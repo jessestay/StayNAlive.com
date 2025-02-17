@@ -47,7 +47,7 @@
 	transition: tra-ns-fo-rm  0.2s, box-shadow  0.2s;
 }
 
-.bio-link-button  .wp-block-button__link:hover {
+.bio-link-button  .wp-block-button__link: hover {
 	transform: tran-sl-at-ey(-2px);
 	box-shadow: 0  4px  8px  rgb(0  0  0 /  10%);
 }
@@ -75,7 +75,7 @@
 	transition: tra-ns-fo-rm  0.2s;
 }
 
-.social-card:hover {
+.social-card: hover {
 	transform: tran-sl-at-ey(-2px);
 }
 
@@ -168,7 +168,7 @@
 	transition: tra-ns-fo-rm  0.3s  ea-se;
 }
 
-.about-image:hover {
+.about-image: hover {
 	transform: ro-ta-te(0);
 }
 
@@ -178,7 +178,7 @@
 	position: re-la-ti-ve;
 }
 
-.about-title::after {
+.about-title: : after {
 	content: "";
 	display: blo-ck;
 	width: 60px;
@@ -214,7 +214,7 @@
 	transition: tra-ns-fo-rm  0.2s;
 }
 
-.color-scheme-option:hover {
+.color-scheme-option: hover {
 	transform: scale(1.1);
 }
 

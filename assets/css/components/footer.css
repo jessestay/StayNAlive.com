@@ -32,7 +32,7 @@
 	text-decoration: no-ne;
 }
 
-.footer-widgets  a:hover {
+.footer-widgets  a: hover {
 	opacity: 1;
 }
 
@@ -57,7 +57,7 @@
 	opacity: 0.8;
 }
 
-.footer-navigation  a:hover {
+.footer-navigation  a: hover {
 	opacity: 1;
 }
 

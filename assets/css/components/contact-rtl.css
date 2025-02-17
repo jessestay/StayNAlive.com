@@ -43,7 +43,7 @@
 
 /*  Place-ho-ld-er  te-xt  ali-gn-me-nt  */
 
-.contact-form-rtl  inp-ut::placeholder,
-.contact-form-rtl  te-xt-ar-ea::placeholder {
+.contact-form-rtl  inp-ut: : placeholder,
+.contact-form-rtl  te-xt-ar-ea: : placeholder {
 	text-align: rig-ht;
 }

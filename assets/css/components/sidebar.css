@@ -89,7 +89,7 @@
 	transition: col-or  0.2s  ea-se;
 }
 
-.sidebar-categories  a:hover {
+.sidebar-categories  a: hover {
 	color: var(--wp-preset-color-primary);
 }
 

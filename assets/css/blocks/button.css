@@ -10,7 +10,7 @@
 	transition: var(--transition-default);
 }
 
-.wp-block-button__link:hover {
+.wp-block-button__link: hover {
 	opacity: 0.9;
 }
 
@@ -22,7 +22,7 @@
 	color: var(--color-primary);
 }
 
-.is-style-outline  .wp-block-button__link:hover {
+.is-style-outline  .wp-block-button__link: hover {
 	background-color: var(--color-primary);
 	color: var(--color-background);
 }

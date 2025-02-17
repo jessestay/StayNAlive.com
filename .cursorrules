@@ -1,0 +1,86 @@
+# Shell script validation rules
+VALIDATE_SHELL_SCRIPTS:
+  - Run shellcheck on all shell scripts before submitting
+  - Verify all if/fi, case/esac pairs match
+  - Test heredoc (<<) syntax and EOL markers
+  - Ensure no duplicate code blocks
+  - Test script locally before suggesting changes
+  - Check for proper error handling
+  - Verify variable quoting and escaping
+  - Validate file paths exist
+  - Check for proper exit codes
+  - Ensure cleanup on error
+  - Verify functions are defined before they're used
+  - Check for command existence before using them
+  - Validate dependencies are installed before running commands
+  - Use local paths to binaries instead of assuming global installation
+  - Test for file/directory write permissions before operations
+  - Run bash -n to check syntax before submitting ANY shell script
+  - Count and verify matching pairs of: (), {}, [], if/fi, case/esac
+  - Validate all heredoc markers are unique and properly closed
+  - No nested heredocs unless absolutely necessary
+  - Test ALL code paths before submitting
+  - Use shellcheck with ALL optional checks enabled
+  - Verify script works with set -e enabled
+  - Test script with bash -x for debugging
+  - Maintain proper indentation for readability
+  - No copy-paste without full validation
+
+# Code quality rules
+CODE_QUALITY:
+  - No syntax errors allowed
+  - All code must be tested before submission
+  - Include error handling for all operations
+  - Add comments for complex logic
+  - Use consistent formatting
+  - Follow shell scripting best practices
+  - Validate all user input
+  - Check for race conditions
+  - Proper logging and debugging support
+  - Verify resource cleanup
+  - Stop at first error unless explicitly told to continue
+  - Don't clean up until successful completion
+  - Use checkpoints to resume from last successful step
+  - Verify each step before proceeding to next
+  - Keep backups until successful validation
+  - Run static analysis before ANY code submission
+  - No submissions with known syntax errors
+  - Test edge cases explicitly
+  - Verify script works in clean environment
+  - Document all assumptions and prerequisites
+
+# Response rules
+RESPONSE_QUALITY:
+  - No excuses for errors
+  - Test all code before suggesting
+  - Provide complete solutions
+  - Include error prevention
+  - Show debugging steps
+  - Explain fixes clearly
+  - Verify all dependencies
+  - Check edge cases
+  - Include rollback options
+  - Validate complete workflow
+  - Show actual test output when suggesting fixes
+  - Verify suggestions work with provided error messages
+  - Don't assume commands or tools are installed
+  - Check file contents before suggesting edits
+  - Consider the full context of the error message
+  - NEVER submit code with syntax errors
+  - Test ALL code before submitting
+  - No partial or incomplete solutions
+  - Verify syntax before suggesting changes
+  - Run full validation suite before responding
+
+# Checkpoint management
+CHECKPOINT_RULES:
+  - Save state before risky operations
+  - Verify checkpoint file exists and is writable
+  - Include timestamp with checkpoints
+  - Keep checkpoint history for rollbacks
+  - Clear checkpoints only after successful completion
+  - Validate checkpoint data before using
+  - Handle missing or corrupt checkpoints gracefully
+  - Document checkpoint stages
+  - Test checkpoint restoration
+  - Include cleanup in checkpoint system 

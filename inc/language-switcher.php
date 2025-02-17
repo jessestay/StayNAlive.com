@@ -2,11 +2,11 @@
 /**
  * language-switcher functionality.
  *
- * @package StayNAlive
+* @package StayNAlive
  */
 
 * Language Switcher functionality
-*
+ *
 * @package staynalive
 * /
 
@@ -15,7 +15,7 @@
 /**
  * Generate language switcher HTML
  *
- * @return string Language switcher markup
+* @return string Language switcher markup
  */
 
 
@@ -24,7 +24,7 @@
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function () {
 	if ( ! function_exists( 'pll_the_languages' ) ) {
@@ -47,21 +47,21 @@ function () {
 	ob_start();
 	?>
 	<div class="language-switcher">
-		<button class="language-switcher-toggle" 
+		<button class="language-switcher-toggle"
 				aria-expanded="false"
 				aria-controls="language-switcher-dropdown"
 				aria-label="<?php esc_attr_e( 'Select language', 'staynalive' ); ?>">
 			<span class="current-language"><?php echo esc_html( $current_lang ); ?></span>
 			<span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>
 		</button>
-		<ul id="language-switcher-dropdown" 
+		<ul id="language-switcher-dropdown"
 			class="language-switcher-dropdown"
 			role="listbox"
 			aria-label="<?php esc_attr_e( 'Available languages', 'staynalive' ); ?>">
 			<?php foreach ( $languages as $lang ) : ?>
 				<li role="option" aria-selected="<?php echo $lang['current_lang'] ? 'true' : 'false'; ?>"
 					class="<?php echo $lang['current_lang'] ? 'current' : ''; ?>">
-					<a href="<?php echo esc_url( $lang['url'] ); ?>" 
+					<a href="<?php echo esc_url( $lang['url'] ); ?>"
 						lang="<?php echo esc_attr( $lang['locale'] ); ?>"
 						hreflang="<?php echo esc_attr( $lang['locale'] ); ?>">
 						<?php echo esc_html( $lang['name'] ); ?>
@@ -84,7 +84,7 @@ function () {
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function () {
 	if ( function_exists( 'pll_the_languages' ) ) {
@@ -114,7 +114,7 @@ add_action( 'init', 'staynalive_add_language_switcher_to_header' );
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function () {
 	wp_enqueue_script(
@@ -137,7 +137,7 @@ add_action( 'wp_enqueue_scripts', 'staynalive_language_switcher_scripts' );
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function () {
 	add_action( 'init', 'staynalive_add_language_switcher_to_header' );

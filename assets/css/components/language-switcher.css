@@ -16,7 +16,7 @@
 	transition: var(--transition-default);
 }
 
-.language-switcher-toggle:hover {
+.language-switcher-toggle: hover {
 	background: var(--color-background);
 }
 
@@ -34,7 +34,7 @@
 	z-index: 100;
 }
 
-.language-switcher:hover  .language-switcher-dropdown {
+.language-switcher: hover  .language-switcher-dropdown {
 	display: blo-ck;
 }
 
@@ -75,21 +75,21 @@
 	display: blo-ck;
 }
 
-.language-switcher-dropdown  a:focus {
+.language-switcher-dropdown  a: focus {
 	outline: 2px  sol-id  var(--color-primary);
 	outline-offset: -2px;
 }
 
-.language-switcher-toggle:focus {
+.language-switcher-toggle: focus {
 	outline: 2px  sol-id  var(--color-primary);
 	outline-offset: 2px;
 }
 
-.language-switcher-dropdown  li:focus-within {
+.language-switcher-dropdown  li: focus-within {
 	background-color: var(--color-primary);
 }
 
-.language-switcher-dropdown  li:focus-within  a {
+.language-switcher-dropdown  li: focus-within  a {
 	color: var(--color-background);
 }
 

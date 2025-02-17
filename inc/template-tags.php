@@ -2,11 +2,11 @@
 /**
  * template-tags functionality.
  *
- * @package StayNAlive
+* @package StayNAlive
  */
 
 * Template tags for Stay N Alive Theme
-*
+ *
 * @package StayNAlive
 * /
 
@@ -16,7 +16,7 @@
 /**
  * Display post meta information
  *
- * @param int|WP_Post $post Post ID or post object.
+* @param int|WP_Post $post Post ID or post object.
  */
 
 
@@ -25,7 +25,7 @@
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function ( $post = null ) {
 	$post        = get_post( $post );
@@ -73,8 +73,8 @@ function ( $post = null ) {
 /**
  * Get post categories HTML
  *
- * @param int|WP_Post $post Post ID or post object.
- * @return string Categories HTML or empty string.
+* @param int|WP_Post $post Post ID or post object.
+* @return string Categories HTML or empty string.
  */
 
 
@@ -83,7 +83,7 @@ function ( $post = null ) {
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function ( $post = null ) {
 	$post = get_post( $post );
@@ -112,7 +112,7 @@ function ( $post = null ) {
 /**
  * Display post tags
  *
- * @param int|WP_Post $post Post ID or post object.
+* @param int|WP_Post $post Post ID or post object.
  */
 
 
@@ -121,7 +121,7 @@ function ( $post = null ) {
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function ( $post = null ) {
 	$post = get_post( $post );
@@ -148,8 +148,8 @@ function ( $post = null ) {
 /**
  * Display featured image with proper markup
  *
- * @param int|WP_Post $post Post ID or post object.
- * @param string      $size Image size.
+* @param int|WP_Post $post Post ID or post object.
+* @param string      $size Image size.
  */
 
 
@@ -158,7 +158,7 @@ function ( $post = null ) {
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function ( $post = null, $size = 'large' ) {
 	$post = get_post( $post );
@@ -210,7 +210,7 @@ function ( $post = null, $size = 'large' ) {
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function () {
 	if ( ! is_singular( 'post' ) ) {

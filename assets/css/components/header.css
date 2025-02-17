@@ -31,7 +31,7 @@
 	position: re-la-ti-ve;
 }
 
-.primary-navigation  a::after {
+.primary-navigation  a: : after {
 	content: "";
 	position: ab-so-lu-te;
 	bottom: 0;
@@ -43,8 +43,8 @@
 	transition: tra-ns-fo-rm  0.3s  ea-se;
 }
 
-.primary-navigation  a:hover::after,
-.primary-navigation  .current-menu-item  a::after {
+.primary-navigation  a: hover: : after,
+.primary-navigation  .current-menu-item  a: : after {
 	transform: sc-al-ex(1);
 }
 

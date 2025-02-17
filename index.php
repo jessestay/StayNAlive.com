@@ -2,11 +2,11 @@
 /**
  * index functionality.
  *
- * @package StayNAlive
+* @package StayNAlive
  */
 
 * The main template file
-*
+ *
 * @package StayNAlive
 * /
 

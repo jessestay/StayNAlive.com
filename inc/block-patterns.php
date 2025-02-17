@@ -2,11 +2,11 @@
 /**
  * block-patterns functionality.
  *
- * @package StayNAlive
+* @package StayNAlive
  */
 
 * Block Patterns Registration
-*
+ *
 * @package staynalive
 * /
 
@@ -23,7 +23,7 @@
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function () {
 	register_block_pattern_category(
@@ -48,7 +48,7 @@ add_action( 'init', 'staynalive_register_pattern_categories' );
 /**
  *  function.
  *
- * @return void
+* @return void
  */
 function () {
 	$pattern_files = array(
