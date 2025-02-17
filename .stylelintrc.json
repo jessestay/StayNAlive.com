@@ -1,6 +1,7 @@
 {
   "extends": [
-    "stylelint-config-standard"
+    "stylelint-config-standard",
+    "@wordpress/stylelint-config"
   ],
   "rules": {
     "selector-class-pattern": null,

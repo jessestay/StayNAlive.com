@@ -2,7 +2,8 @@
  * Block Editor customizations and enhancements
  */
 
-const { registerBlockStyle, unregisterBlockStyle } = wp.blocks;
+import { registerBlockVariation, registerBlockPattern } from '@wordpress/blocks';
+const { registerBlockStyle } = wp.blocks;
 
 wp.domReady(() => {
     // Register custom block styles

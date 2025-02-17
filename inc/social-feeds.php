@@ -248,17 +248,17 @@ function get_social_feed_items( $feed_type ) {
  * @param array $data Raw feed data.
  * @return array Processed feed data.
  */
-function process_feed_data( $data ) {
-	if ( ! is_array( $data ) ) {
+function process_feed_data($data) {
+	if (!is_array($data)) {
 		return array();
 	}
 	
 	return array_map(
-		function( $item ) {
+		function($item) {
 			return array(
-				'id' => $item['id'] ?? '',
+				'id'      => $item['id'] ?? '',
 				'content' => $item['content'] ?? '',
-				'link' => $item['link'] ?? '',
+				'link'    => $item['link'] ?? ''
 			);
 		},
 		$data

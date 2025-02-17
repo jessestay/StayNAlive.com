@@ -4,4 +4,4 @@
  *
  * @package StayNAlive
  */
-// Silence is golden
+// Silence is golden.

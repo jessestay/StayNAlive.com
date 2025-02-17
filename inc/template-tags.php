@@ -49,7 +49,7 @@ function staynalive_post_meta( $post = null ) {
 				esc_html( get_the_author_meta( 'display_name', $post->post_author ) )
 			)
 		),
-		wp_kses_post(staynalive_get_post_categories($post))
+		wp_kses_post( staynalive_get_post_categories( $post ) )
 	);
 }
 
