@@ -394,6 +394,132 @@ This should fix the syntax error and allow the script to properly check and fix 
 
 ---
 
+_**User**_
+
+What does this mean?
+
+---
+
+_**Assistant**_
+
+I see three issues in the error output:
+
+1. `grep: repetition-operator operand invalid` - This is because of the `+` in our regex patterns
+2. `sed: 1: "/^\\*\\//a\\": invalid command code /` - This is because of differences in sed syntax between GNU and BSD (macOS) versions
+
+Let's fix these issues:
+
+```diff:install.sh
+    # Second run: Fix specific remaining issues
+    for file in inc/*.php *.php; do
+        # Fix function comment style
+        if ./vendor/bin/phpcs "$file" | grep -q "You must use \"/**\" style comments for a function comment"; then
+-           sed -i '' '/^[[:space:]]*\/\// {N; s/\/\/ \(.*\)\n/\/\*\*\n * \1\n *\/\n/}' "$file"
++           sed -i '' -e '/^[[:space:]]*\/\// {
++               N
++               s/\/\/ \(.*\)\n/\/\*\*\n * \1\n *\/\n/
++           }' "$file"
+        fi
+        
+        # Fix trailing whitespace
+        if ./vendor/bin/phpcs "$file" | grep -q "Whitespace found at end of line"; then
+            sed -i '' -e 's/[[:space:]]*$//' "$file"
+        fi
+        
+        # Fix missing comma in arrays
+        if ./vendor/bin/phpcs "$file" | grep -q "There should be a comma after the last array item"; then
+-           sed -i '' '/^[[:space:]]*[^,[:space:]]\+[[:space:]]*$/s/$/,/' "$file"
++           sed -i '' -e '/^[[:space:]]*[^,[:space:]][[:space:]]*$/s/$/,/' "$file"
+        fi
+        
+        # Fix file comment spacing
+        if ./vendor/bin/phpcs "$file" | grep -q "must be exactly one blank line after the file comment"; then
+-           sed -i '' '/^\\*\\//a\\' "$file"
++           sed -i '' -e '/^\\*\\//a\
++' "$file"
+        fi
+        
+        # Fix inline comment periods
+        if ./vendor/bin/phpcs "$file" | grep -q "Inline comments must end in full-stops"; then
+            sed -i '' -e 's/\/\/ \([A-Za-z].*[^.!?]\)$/\/\/ \1./' "$file"
+        fi
+        
+        # Fix Yoda conditions
+        if ./vendor/bin/phpcs "$file" | grep -q "Use Yoda Condition checks"; then
+-           sed -i '' 's/\([^!]\)\([=<>]\+\) *null/null \2 \1/g' "$file"
++           sed -i '' -e 's/\([^!]\)\([=<>][=<>]*\) *null/null \2 \1/g' "$file"
+-           sed -i '' 's/\([^!]\)\([=<>]\+\) *false/false \2 \1/g' "$file"
++           sed -i '' -e 's/\([^!]\)\([=<>][=<>]*\) *false/false \2 \1/g' "$file"
+-           sed -i '' 's/\([^!]\)\([=<>]\+\) *true/true \2 \1/g' "$file"
++           sed -i '' -e 's/\([^!]\)\([=<>][=<>]*\) *true/true \2 \1/g' "$file"
+        fi
+    done
+```
+
+These changes:
+1. Fix the `+` repetition operator by using `[=<>]*` instead
+2. Fix the BSD sed syntax for appending newlines
+3. Add `-e` flag to all sed commands for consistency
+4. Fix multiline sed commands
+
+Would you like me to:
+1. Add error checking for the sed commands
+2. Add backup files before making changes
+3. Add more detailed error reporting
+4. Create a macOS-specific version of the fixes
+
+---
+
+_**User**_
+
+I'm still getting that error
+
+---
+
+_**Assistant**_
+
+Let's fix the sed command for file comment spacing. The issue is with the BSD (macOS) version of sed and how it handles newlines. Here's the corrected version:
+
+```diff:install.sh
+        # Fix file comment spacing
+        if ./vendor/bin/phpcs "$file" | grep -q "must be exactly one blank line after the file comment"; then
+-           sed -i '' -e '/^\\*\\//a\
+-/' "$file"
++           printf '%s\n' 'g/^\\*\\//a' '' '.' w | ed -s "$file"
+        fi
+```
+
+This change:
+1. Uses `ed` instead of `sed` for adding newlines (more reliable on macOS)
+2. Uses `printf` to properly handle the newline insertion
+3. Maintains the same functionality but works on both BSD and GNU systems
+
+Let's also update the pattern in our AI fix patterns:
+
+```diff:ai-fix-patterns/patterns/php-file-comment-spacing.json
+{
+    "pattern": "There must be exactly one blank line after the file comment",
+-    "fix": "sed -i '' -e '/^\\*\\//a\\' \"$FILE\"",
++    "fix": "printf '%s\\n' 'g/^\\*\\//a' '' '.' w | ed -s \"$FILE\"",
+    "success_rate": 0.98,
+    "context": {
+        "type": "syntax",
+        "language": "php",
+        "tool": "phpcs"
+    }
+}
+```
+
+Try running install.sh again. This should resolve the "invalid command code" error.
+
+---
+
+_****_
+
+
+
+---
+
 
 
 ---

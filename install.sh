@@ -264,34 +264,37 @@ if command -v ./vendor/bin/phpcbf >/dev/null 2>&1; then
     for file in inc/*.php *.php; do
         # Fix function comment style
         if ./vendor/bin/phpcs "$file" | grep -q "You must use \"/**\" style comments for a function comment"; then
-            sed -i '' '/^[[:space:]]*\/\// {N; s/\/\/ \(.*\)\n/\/\*\*\n * \1\n *\/\n/}' "$file"
+            sed -i '' -e '/^[[:space:]]*\/\// {
+                N
+                s/\/\/ \(.*\)\n/\/\*\*\n * \1\n *\/\n/
+            }' "$file"
         fi
         
         # Fix trailing whitespace
         if ./vendor/bin/phpcs "$file" | grep -q "Whitespace found at end of line"; then
-            sed -i '' 's/[[:space:]]*$//' "$file"
+            sed -i '' -e 's/[[:space:]]*$//' "$file"
         fi
         
         # Fix missing comma in arrays
         if ./vendor/bin/phpcs "$file" | grep -q "There should be a comma after the last array item"; then
-            sed -i '' '/^[[:space:]]*[^,[:space:]]\+[[:space:]]*$/s/$/,/' "$file"
+            sed -i '' -e '/^[[:space:]]*[^,[:space:]][[:space:]]*$/s/$/,/' "$file"
         fi
         
         # Fix file comment spacing
         if ./vendor/bin/phpcs "$file" | grep -q "must be exactly one blank line after the file comment"; then
-            sed -i '' '/^\\*\\//a\\' "$file"
+            printf '%s\n' 'g/^\\*\\//a' '' '.' w | ed -s "$file"
         fi
         
         # Fix inline comment periods
         if ./vendor/bin/phpcs "$file" | grep -q "Inline comments must end in full-stops"; then
-            sed -i '' 's/\/\/ \([A-Za-z].*[^.!?]\)$/\/\/ \1./' "$file"
+            sed -i '' -e 's/\/\/ \([A-Za-z].*[^.!?]\)$/\/\/ \1./' "$file"
         fi
         
         # Fix Yoda conditions
         if ./vendor/bin/phpcs "$file" | grep -q "Use Yoda Condition checks"; then
-            sed -i '' 's/\([^!]\)\([=<>]\+\) *null/null \2 \1/g' "$file"
-            sed -i '' 's/\([^!]\)\([=<>]\+\) *false/false \2 \1/g' "$file"
-            sed -i '' 's/\([^!]\)\([=<>]\+\) *true/true \2 \1/g' "$file"
+            sed -i '' -e 's/\([^!]\)\([=<>][=<>]*\) *null/null \2 \1/g' "$file"
+            sed -i '' -e 's/\([^!]\)\([=<>][=<>]*\) *false/false \2 \1/g' "$file"
+            sed -i '' -e 's/\([^!]\)\([=<>][=<>]*\) *true/true \2 \1/g' "$file"
         fi
     done
     
