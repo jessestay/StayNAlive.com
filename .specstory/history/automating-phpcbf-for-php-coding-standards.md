@@ -115,7 +115,13 @@ These patterns will help automatically fix specific types of PHP coding standard
 
 ---
 
-_****_
+_**User**_
+
+What did we miss this time. Still getting Installation failed. I want you to fix ALL errors listed. Don't stop until all of them are fixed!
+
+---
+
+_**Assistant**_
 
 
 
