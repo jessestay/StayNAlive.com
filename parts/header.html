@@ -1,6 +1,27 @@
 <!-- wp:group {"tagName":"header","className":"site-header"} -->
 <header class="wp-block-group site-header">
-    <!-- wp:site-title /-->
-    <!-- wp:navigation /-->
+    <!-- wp:group {"className":"header-content container"} -->
+    <div class="wp-block-group header-content container">
+        <!-- wp:group {"className":"logo-container"} -->
+        <div class="wp-block-group logo-container">
+            <!-- wp:site-logo {"width":250} /-->
+            <!-- wp:site-title {"fontSize":"large"} /-->
+        </div>
+        <!-- /wp:group -->
+
+        <!-- wp:navigation {"className":"primary-navigation"} -->
+        <!-- wp:navigation-link {"label":"Services","url":"/services"} /-->
+        <!-- wp:navigation-link {"label":"Clients","url":"/clients"} /-->
+        <!-- wp:navigation-link {"label":"The Blog","url":"/blog"} /-->
+        <!-- wp:navigation-submenu {"label":"About SNA","url":"/about"} -->
+            <!-- wp:navigation-link {"label":"About Jesse","url":"/jessestay"} /-->
+            <!-- wp:navigation-link {"label":"Jesse's Books","url":"/jessestay/books"} /-->
+        <!-- /wp:navigation-submenu -->
+        <!-- wp:navigation-link {"label":"Contact","url":"/contact"} /-->
+        <!-- /wp:navigation -->
+
+        <!-- wp:search {"className":"header-search"} /-->
+    </div>
+    <!-- /wp:group -->
 </header>
 <!-- /wp:group -->

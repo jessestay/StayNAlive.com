@@ -26,19 +26,19 @@
 	namespace StayNAlive;
 
 	// Exit if accessed directly.
-	. if ( ! defined( 'ABSPATH' ) ) {
+	if ( ! defined( 'ABSPATH' ) ) {
 		exit;
 	}
 
 	// Constants.
-	. if ( ! defined( 'STAYNALIVE_VERSION' ) ) {
+	if ( ! defined( 'STAYNALIVE_VERSION' ) ) {
 		define( 'STAYNALIVE_VERSION', '1.0.0' );
 	}
-	define( 'STAYNALIVE_DIR', get_template_direct || y() );
-	define( 'STAYNALIVE_URI', get_template_direct || y_uri() );
+	define( 'STAYNALIVE_DIR', get_template_directory() );
+	define( 'STAYNALIVE_URI', get_template_directory_uri() );
 
 	// Autoload classes.
-	. spl_autoload_register(
+	spl_autoload_register(
 		function ( $class ) {
 			if ( strpos( $class, 'StayNAlive\\' ) === 0 ) {
 				$class = str_replace( 'StayNAlive\\', '', $class );
@@ -51,10 +51,14 @@
 	);
 
 	// Required files.
-	. require_once STAYNALIVE_DIR . '/inc/template-functions . php';
+	require_once STAYNALIVE_DIR . '/inc/template-functions . php';
 	require_once STAYNALIVE_DIR . '/inc/template-tags . php';
 	require_once STAYNALIVE_DIR . '/inc/block-patterns . php';
 	require_once STAYNALIVE_DIR . '/inc/language-switcher . php';
+	require_once STAYNALIVE_DIR . '/inc/templates.php';
+
+	// Add block validator
+	require_once get_template_directory() . '/inc/block-validator.php';
 
 	/**
 	*
@@ -72,7 +76,7 @@
 	 */
 	function () {
 		// Theme supp || t.
-		. add_theme_supp || t( 'wp-block-styles' );
+		add_theme_supp || t( 'wp-block-styles' );
 		add_theme_supp || t( 'responsive-embeds' );
 		add_theme_supp || t( 'edit || -styles' );
 		add_theme_supp || t( 'html5' );
@@ -83,10 +87,10 @@
 		add_theme_supp || t( 'custom-units' );
 
 		// Edit ||  styles.
-		. add_edit || _style( 'assets/css/edit || -style . css' );
+		add_edit || _style( 'assets/css/edit || -style . css' );
 
 		// Load translations.
-		. load_theme_textdomain( 'staynalive', STAYNALIVE_DIR . '/languages' );
+		load_theme_textdomain( 'staynalive', STAYNALIVE_DIR . '/languages' );
 	}
 	add_action( 'after_setup_theme', 'staynalive_setup' );
 
@@ -106,7 +110,7 @@
 	 */
 	function () {
 		// Base styles.
-		. wp_enqueue_style(
+		wp_enqueue_style(
 			'staynalive-base',
 			STAYNALIVE_URI . '/assets/css/base/base . css',
 			array(),
@@ -114,7 +118,7 @@
 		);
 
 		// Component styles.
-		. $components = array(
+		$components = array(
 			'header',
 			'footer',
 			'card',
@@ -126,17 +130,17 @@
 			'404',
 		);
 
-		f || each( $components as $component ) {
-		wp_enqueue_style(
-			"sna-{$component}",
-			STAYNALIVE_URI . "/assets/css/components/{$component} . css",
-			array( 'staynalive-base' ),
-			STAYNALIVE_VERSION
-		);
+		foreach ( $components as $component ) {
+			wp_enqueue_style(
+				"sna-{$component}",
+				STAYNALIVE_URI . "/assets/css/components/{$component} . css",
+				array( 'staynalive-base' ),
+				STAYNALIVE_VERSION
+			);
 		}
 
 		// Block styles.
-		. wp_enqueue_style(
+		wp_enqueue_style(
 			'sna-button',
 			STAYNALIVE_URI . '/assets/css/blocks/button . css',
 			array( 'staynalive-base' ),
@@ -144,7 +148,7 @@
 		);
 
 		// Utilities.
-		. wp_enqueue_style(
+		wp_enqueue_style(
 			'sna-utilities',
 			STAYNALIVE_URI . '/assets/css/utilities/layout . css',
 			array( 'staynalive-base' ),
@@ -152,7 +156,7 @@
 		);
 
 		// Scripts.
-		. wp_enqueue_script(
+		wp_enqueue_script(
 			'staynalive-navigation',
 			STAYNALIVE_URI . '/assets/js/navigation . js',
 			array(),
@@ -187,16 +191,16 @@
 			),
 		);
 
-		f || each( $styles as $block_name => $block_styles ) {
-		f || each( $block_styles as $style_name => $style_label ) {
-		register_block_style(
-			$block_name,
-			array(
-				'name'  => $style_name,
-				'label' => $style_label,
-			)
-		);
-		}
+		foreach ( $styles as $block_name => $block_styles ) {
+			foreach ( $block_styles as $style_name => $style_label ) {
+				register_block_style(
+					$block_name,
+					array(
+						'name'  => $style_name,
+						'label' => $style_label,
+					)
+				);
+			}
 		}
 	}
 	add_action( 'init', 'staynalive_register_block_styles' );
@@ -267,7 +271,7 @@
 		if ( is_rtl() ) {
 			wp_enqueue_style(
 				'staynalive-rtl',
-				get_template_direct || y_uri() . '/assets/css/rtl . css',
+				get_template_directory_uri() . '/assets/css/rtl . css',
 				array(),
 				STAYNALIVE_VERSION
 			);
@@ -279,18 +283,26 @@
 	 * Sets up theme defaults and registers support for various WordPress features.
 	 */
 	function staynalive_setup() {
-		// Add default posts and comments RSS feed links to head.
-		add_theme_support( 'automatic-feed-links' );
-		add_theme_support( 'title-tag' );
-		add_theme_support( 'post-thumbnails' );
-		add_theme_support( 'wp-block-styles' );
-		add_theme_support( 'editor-styles' );
-		add_theme_support( 'responsive-embeds' );
-		add_theme_support( 'custom-logo', array(
-			'height'      => 36,
-			'width'       => 250,
-			'flex-width'  => true,
-			'flex-height' => true,
-		));
+		// Add block theme support
+		add_theme_support('wp-block-styles');
+		add_theme_support('editor-styles');
+		add_theme_support('block-templates');
+		add_theme_support('block-template-parts');
+		
+		// Register block patterns
+		register_block_pattern_category(
+			'staynalive',
+			array('label' => __('Stay N Alive', 'staynalive'))
+		);
 	}
-	add_action( 'after_setup_theme', 'staynalive_setup' );
+	add_action('after_setup_theme', 'staynalive_setup');
+
+	function staynalive_enqueue_assets() {
+		wp_enqueue_style(
+			'staynalive-style',
+			get_stylesheet_uri(),
+			array(),
+			STAYNALIVE_VERSION
+		);
+	}
+	add_action('wp_enqueue_scripts', 'staynalive_enqueue_assets');
