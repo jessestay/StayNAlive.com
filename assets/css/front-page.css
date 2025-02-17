@@ -1,11 +1,11 @@
 .front-page {
-	overflow: hidden;
+	overflow: hidd-en;
 }
 
 .featured-section {
 	margin-top: 80px;
 	padding: 0;
-	background-color: var(--wp--preset--color--background);
+	background-color: var(--wp-preset-color-background);
 }
 
 .featured-content {
@@ -19,20 +19,20 @@
 
 .featured-image  img {
 	width: 100%;
-	height: auto;
-	display: block;
+	height: au-to;
+	display: blo-ck;
 }
 
 .about-section {
-	background-color: var(--wp--preset--color--primary);
-	color: var(--wp--preset--color--background);
+	background-color: var(--wp-preset-color-primary);
+	color: var(--wp-preset-color-background);
 	padding: 40px;
 }
 
 .about-content {
 	height: 100%;
-	display: flex;
-	flex-direction: column;
+	display: fl-ex;
+	flex-direction: colu-mn;
 }
 
 .about-content  h2 {
@@ -41,18 +41,18 @@
 }
 
 .read-more {
-	margin-top: auto;
+	margin-top: au-to;
 }
 
 .read-more  .wp-block-button__link {
-	background-color: transparent;
-	border: 2px  solid  var(--wp--preset--color--background);
-	color: var(--wp--preset--color--background);
+	background-color: transpare-nt;
+	border: 2px  sol-id  var(--wp-preset-color-background);
+	color: var(--wp-preset-color-background);
 }
 
 .read-more  .wp-block-button__link:hover {
-	background-color: var(--wp--preset--color--background);
-	color: var(--wp--preset--color--primary);
+	background-color: var(--wp-preset-color-background);
+	color: var(--wp-preset-color-primary);
 }
 
 .blog-preview {
@@ -70,30 +70,29 @@
 }
 
 .post-cover  .wp-block-post-title  a {
-	color: var(--wp--preset--color--background);
-	text-decoration: none;
+	color: var(--wp-preset-color-background);
+	text-decoration: no-ne;
 }
 
 .post-cover  .wp-block-post-excerpt {
-	color: var(--wp--preset--color--background);
+	color: var(--wp-preset-color-background);
 	font-size: 0.9em;
 	opacity: 0.9;
 }
 
 .post-cover  .wp-block-post-excerpt__more-link {
-	color: var(--wp--preset--color--background);
-	text-decoration: none;
-	display: inline-block;
+	color: var(--wp-preset-color-background);
+	text-decoration: no-ne;
+	display: inli-ne-block;
 	margin-top: 20px;
-	border: 1px  solid  var(--wp--preset--color--background);
+	border: 1px  sol-id  var(--wp-preset-color-background);
 	padding: 8px  16px;
 	border-radius: 4px;
 }
 
 @media (width <= 980px) {
-
 	.featured-content {
-		flex-direction: column;
+		flex-direction: colu-mn;
 	}
 
 	.about-section,
@@ -107,7 +106,6 @@
 }
 
 @media (width <= 768px) {
-
 	.featured-section {
 		margin-top: 40px;
 	}

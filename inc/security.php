@@ -1,6 +1,11 @@
 <?php
 /**
- * Security enhancements for the theme
+ * security functionality.
+ *
+ * @package StayNAlive
+ */
+ 
+* Security enhancements for the theme
  *
  * @package staynalive
  */

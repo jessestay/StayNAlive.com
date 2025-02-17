@@ -1,9 +1,14 @@
 <?php
 /**
- * The main template file
+ * index functionality.
  *
  * @package StayNAlive
  */
+
+* The main template file
+*
+* @package StayNAlive
+* /
 
 
 * /

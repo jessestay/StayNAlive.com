@@ -3,19 +3,19 @@
 }
 
 .archive-header {
-	text-align: center;
+	text-align: cent-er;
 	margin-bottom: 60px;
 	padding: 0  20px;
 }
 
 .archive-header  h1 {
 	margin-bottom: 20px;
-	color: var(--wp--preset--color--primary);
+	color: var(--wp-preset-color-primary);
 }
 
 .term-description {
 	max-width: 700px;
-	margin: 0  auto;
+	margin: 0  au-to;
 	font-size: 1.1em;
 	color: #666;
 }
@@ -42,7 +42,7 @@
 .post-featured-image  img {
 	width: 100%;
 	height: 300px;
-	object-fit: cover;
+	object-fit: cov-er;
 	border-radius: 4px;
 }
 
@@ -57,12 +57,12 @@
 .widget  h2 {
 	margin-bottom: 20px;
 	padding-bottom: 10px;
-	border-bottom: 2px  solid  var(--wp--preset--color--primary);
+	border-bottom: 2px  sol-id  var(--wp-preset-color-primary);
 }
 
 .wp-block-categories-list,
 .wp-block-tag-cloud {
-	list-style: none;
+	list-style: no-ne;
 	padding: 0;
 	margin: 0;
 }
@@ -71,25 +71,22 @@
 	margin-bottom: 10px;
 }
 
-.wp-block-tag-cloud {
-	display: flex;
-	flex-wrap: wrap;
+	display: fl-ex;
+	flex-wrap: wr-ap;
 	gap: 10px;
-}
 
 .wp-block-query-pagination {
 	margin-top: 40px;
 }
 
 .wp-block-query-pagination-numbers {
-	display: flex;
+	display: fl-ex;
 	gap: 10px;
 }
 
 @media (width <= 980px) {
-
 	.archive-layout {
-		flex-direction: column;
+		flex-direction: colu-mn;
 	}
 
 	.archive-sidebar {
@@ -99,7 +96,6 @@
 }
 
 @media (width <= 768px) {
-
 	.archive-page {
 		padding: 40px  0;
 	}
@@ -109,7 +105,8 @@
 	}
 
 	.post-meta {
-		flex-direction: column;
+		flex-direction: colu-mn;
 		gap: 5px;
 	}
+}
 }

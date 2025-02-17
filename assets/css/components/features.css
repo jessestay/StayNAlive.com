@@ -3,7 +3,7 @@
 }
 
 .features-header {
-	text-align: cent-er;
+	text-align: ce-nt-er;
 	margin-bottom: var(--spacing-lg);
 }
 
@@ -17,7 +17,7 @@
 }
 
 .feature-card {
-	text-align: cent-er;
+	text-align: ce-nt-er;
 	padding: var(--spacing-md);
 	background: var(--color-background);
 	border-radius: var(--radius-md);
@@ -26,7 +26,7 @@
 }
 
 .feature-card:hover {
-	transform: translat-ey(-2px);
+	transform: transl-at-ey(-2px);
 	box-shadow: 0  4px  8px  rgb(0  0  0 /  10%);
 }
 
@@ -42,12 +42,11 @@
 }
 
 @media (width <= 768px) {
-
 	.features-section {
 		padding: var(--spacing-md)  var(--spacing-sm);
 	}
 
 	.features-grid {
-		flex-direction: colu-mn;
+		flex-direction: co-lu-mn;
 	}
 }

@@ -8,7 +8,7 @@
 }
 
 .post-card:hover {
-	transform: translat-ey(-2px);
+	transform: transl-at-ey(-2px);
 	box-shadow: 0  4px  8px  rgb(0  0  0 /  10%);
 }
 
@@ -24,7 +24,7 @@
 }
 
 .post-card  .wp-block-post-excerpt__more-link {
-	display: inli-ne-block;
+	display: in-li-ne-block;
 	color: var(--color-primary);
 	text-decoration: no-ne;
 	font-weight: 500;

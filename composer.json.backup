@@ -1,0 +1,29 @@
+{
+    "name": "jessestay/staynalive",
+    "description": "A modern block-based WordPress theme",
+    "type": "wordpress-theme",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7.2",
+        "wp-coding-standards/wpcs": "^3.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "phpcsstandards/phpcsutils": "^1.0",
+        "phpcsstandards/phpcsextra": "^1.0"
+    },
+    "scripts": {
+        "lint": "phpcs",
+        "format": "phpcbf",
+        "test": "phpunit",
+        "post-install-cmd": [
+            "phpcs --config-show"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

@@ -14,10 +14,10 @@
 	border-bottom: 2px  sol-id  var(--wp-preset-color-primary);
 }
 
-/*  Auth-or  Widg-et  */
+/*  Au-th-or  Wi-dg-et  */
 
 .sidebar-author {
-	text-align: cent-er;
+	text-align: ce-nt-er;
 }
 
 .author-image {
@@ -45,16 +45,16 @@
 }
 
 .author-social {
-	justify-content: cent-er;
+	justify-content: ce-nt-er;
 	gap: 15px;
 }
 
-/*  Sear-ch  Widg-et  */
+/*  Se-ar-ch  Wi-dg-et  */
 
 .sidebar-search  .wp-block-search__inside-wrapper {
 	border: 1px  sol-id  var(--wp-preset-color-secondary);
 	border-radius: 4px;
-	overflow: hidd-en;
+	overflow: hi-dd-en;
 }
 
 .sidebar-search  .wp-block-search__input {
@@ -69,7 +69,7 @@
 	color: var(--wp-preset-color-white);
 }
 
-/*  Categori-es  Widg-et  */
+/*  Catego-ri-es  Wi-dg-et  */
 
 .sidebar-categories  ul {
 	margin: 0;
@@ -93,7 +93,7 @@
 	color: var(--wp-preset-color-primary);
 }
 
-/*  Rece-nt  Pos-ts  Widg-et  */
+/*  Re-ce-nt  Pos-ts  Wi-dg-et  */
 
 .sidebar-recent-posts  .wp-block-latest-posts {
 	margin: 0;

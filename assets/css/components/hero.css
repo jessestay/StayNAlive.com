@@ -1,14 +1,14 @@
 .hero-section {
-	position: relati-ve;
-	margin-top: ca-lc(-1  *  var(--spacing-lg));
+	position: rela-ti-ve;
+	margin-top: calc(-1  *  var(--spacing-lg));
 }
 
 .hero-cover {
-	position: relati-ve;
+	position: rela-ti-ve;
 }
 
 .hero-content {
-	text-align: cent-er;
+	text-align: ce-nt-er;
 	color: var(--color-background);
 }
 
@@ -26,7 +26,7 @@
 .hero-buttons {
 	display: fl-ex;
 	gap: var(--spacing-sm);
-	justify-content: cent-er;
+	justify-content: ce-nt-er;
 }
 
 .hero-buttons  .wp-block-button__link {
@@ -34,7 +34,6 @@
 }
 
 @media (width <= 768px) {
-
 	.hero-cover {
 		min-height: 400px !important;
 	}
@@ -48,6 +47,6 @@
 	}
 
 	.hero-buttons {
-		flex-direction: colu-mn;
+		flex-direction: co-lu-mn;
 	}
 }

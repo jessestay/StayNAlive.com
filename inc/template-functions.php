@@ -1,9 +1,14 @@
 <?php
 /**
- * Template functions for Stay N Alive Theme
+ * template-functions functionality.
  *
- * @package staynalive
+ * @package StayNAlive
  */
+
+* Template functions for Stay N Alive Theme
+*
+* @package staynalive
+* /
 
 
 * /
@@ -14,6 +19,7 @@
  * @param array $classes Existing body classes.
  * @return array Modified body classes.
  */
+
 
 
 * /
@@ -59,6 +65,7 @@ add_filter( 'body_class', 'staynalive_body_classes' );
  */
 
 
+
 * /
 /**
  *  function.
@@ -79,6 +86,7 @@ add_action( 'wp_head', 'staynalive_pingback_header' );
  * @param array $block Block data.
  * @return array Modified block attributes.
  */
+
 
 
 * /
@@ -106,6 +114,7 @@ add_filter( 'block_type_metadata_settings', 'staynalive_block_attributes', 10, 2
  */
 
 
+
 * /
 /**
  *  function.
@@ -126,6 +135,7 @@ add_filter( 'render_block', 'staynalive_render_block', 10, 2 );
 /**
  * Add custom block styles
  */
+
 
 
 * /
@@ -171,6 +181,7 @@ add_action( 'init', 'staynalive_block_styles' );
  */
 
 
+
 * /
 /**
  *  function.
@@ -190,6 +201,7 @@ add_action( 'after_setup_theme', 'staynalive_image_sizes' );
  * @param array $sizes Existing sizes.
  * @return array Modified sizes.
  */
+
 
 
 * /

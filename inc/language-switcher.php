@@ -1,9 +1,14 @@
 <?php
 /**
- * Language Switcher functionality
+ * language-switcher functionality.
  *
- * @package staynalive
+ * @package StayNAlive
  */
+
+* Language Switcher functionality
+*
+* @package staynalive
+* /
 
 
 * /
@@ -12,6 +17,7 @@
  *
  * @return string Language switcher markup
  */
+
 
 
 * /
@@ -73,6 +79,7 @@ function () {
  */
 
 
+
 * /
 /**
  *  function.
@@ -102,6 +109,7 @@ add_action( 'init', 'staynalive_add_language_switcher_to_header' );
  */
 
 
+
 * /
 /**
  *  function.
@@ -122,6 +130,7 @@ add_action( 'wp_enqueue_scripts', 'staynalive_language_switcher_scripts' );
 /**
  * Initialize language switcher.
  */
+
 
 
 * /

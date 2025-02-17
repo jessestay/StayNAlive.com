@@ -14,10 +14,10 @@
 	opacity: 0.9;
 }
 
-/*  Outli-ne  Sty-le  */
+/*  Out-li-ne  Sty-le  */
 
 .is-style-outline  .wp-block-button__link {
-	background-color: transpare-nt;
+	background-color: transpa-re-nt;
 	border: 2px  sol-id  var(--color-primary);
 	color: var(--color-primary);
 }

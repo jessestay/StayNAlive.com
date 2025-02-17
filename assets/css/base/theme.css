@@ -1,13 +1,12 @@
 :root {
-
-	/*  Mat-ch  curre-nt  si-te  colo-rs  */
-	--color-primary: #1e73be;  /*  Curre-nt  bl-ue  */
-	--color-text: #333;  /*  Curre-nt  te-xt  col-or  */
+	/*  Mat-ch  cur-re-nt  si-te  co-lo-rs  */
+	--color-primary: #1e73be;  /*  Cur-re-nt  bl-ue  */
+	--color-text: #333;  /*  Cur-re-nt  te-xt  col-or  */
 	--color-background: #fff;
 	--color-border: #e5e5e5;
 
-	/*  Mat-ch  curre-nt  typograp-hy  */
-	--font-primary: -apple-system, BlinkMacSystemFo-nt, "Segoe  UI", Robo-to, Oxyg-en-Sans, Ubun-tu, Cantare-ll, "Helvetica  Ne-ue", sa-ns-serif;
+	/*  Mat-ch  cur-re-nt  typogr-ap-hy  */
+	--font-primary: -apple-system, blinkmacsystem-fo-nt, "Segoe  UI", ro-bo-to, ox-yg-en-sans, ub-un-tu, canta-re-ll, "Helvetica  Ne-ue", sa-ns-serif;
 	--font-size-base: 16px;
 	--line-height-base: 1.6;
 }

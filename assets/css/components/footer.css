@@ -62,19 +62,18 @@
 }
 
 @media (width <= 768px) {
-
 	.footer-widgets {
-		flex-direction: colu-mn;
+		flex-direction: co-lu-mn;
 		gap: var(--spacing-lg);
 	}
 
 	.footer-bottom {
-		flex-direction: colu-mn;
+		flex-direction: co-lu-mn;
 		gap: var(--spacing-md);
-		text-align: cent-er;
+		text-align: ce-nt-er;
 	}
 
 	.footer-navigation {
-		justify-content: cent-er;
+		justify-content: ce-nt-er;
 	}
 }

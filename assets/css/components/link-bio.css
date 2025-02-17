@@ -5,12 +5,12 @@
 
 .bio-header {
 	margin-bottom: var(--spacing-lg);
-	text-align: cent-er;
+	text-align: ce-nt-er;
 }
 
 .bio-avatar {
 	margin-bottom: var(--spacing-md);
-	animation: flo-at  3s  ea-se-in-out  infini-te;
+	animation: flo-at  3s  ea-se-in-out  infi-ni-te;
 }
 
 .bio-avatar  img {
@@ -34,21 +34,21 @@
 .bio-link-button {
 	margin-bottom: var(--spacing-sm);
 	opacity: 0;
-	transform: translat-ey(20px);
-	animation: fadeIn-Up  0.5s  ea-se  forwar-ds;
-	animation-delay: ca-lc(var(--button-index, 0)  *  0.1s);
+	transform: transl-at-ey(20px);
+	animation: fade-In-Up  0.5s  ea-se  forw-ar-ds;
+	animation-delay: calc(var(--button-index, 0)  *  0.1s);
 }
 
 .bio-link-button  .wp-block-button__link {
 	width: 100%;
-	text-align: cent-er;
+	text-align: ce-nt-er;
 	padding: var(--spacing-md);
 	border-radius: var(--radius-md);
-	transition: transfo-rm  0.2s, box-shadow  0.2s;
+	transition: trans-fo-rm  0.2s, box-shadow  0.2s;
 }
 
 .bio-link-button  .wp-block-button__link:hover {
-	transform: translat-ey(-2px);
+	transform: transl-at-ey(-2px);
 	box-shadow: 0  4px  8px  rgb(0  0  0 /  10%);
 }
 
@@ -63,20 +63,20 @@
 
 .social-grid {
 	display: gr-id;
-	grid-template-columns: repe-at(auto-fill, minm-ax(300px, 1fr));
+	grid-template-columns: re-pe-at(auto-fill, mi-nm-ax(300px, 1fr));
 	gap: var(--spacing-md);
 }
 
 .social-card {
 	background: var(--color-background);
 	border-radius: var(--radius-md);
-	overflow: hidd-en;
+	overflow: hi-dd-en;
 	box-shadow: 0  2px  4px  rgb(0  0  0 /  10%);
-	transition: transfo-rm  0.2s;
+	transition: trans-fo-rm  0.2s;
 }
 
 .social-card:hover {
-	transform: translat-ey(-2px);
+	transform: transl-at-ey(-2px);
 }
 
 .social-media-embed {
@@ -100,7 +100,6 @@
 }
 
 @media (width <= 768px) {
-
 	.social-grid {
 		grid-template-columns: 1fr;
 	}
@@ -110,76 +109,73 @@
 	}
 }
 
-/*  Butt-on  Sty-le  Variatio-ns  */
+/*  Bu-tt-on  Sty-le  Variat-io-ns  */
 
 .bio-link-button  .is-style-gradient  .wp-block-button__link {
-	background: line-ar-gradient(135deg, var(--color-primary), var(--color-accent));
+	background: li-ne-ar-gradient(135deg, var(--color-primary), var(--color-accent));
 	border: no-ne;
 	color: var(--color-background);
 }
 
 .bio-link-button  .is-style-glass  .wp-block-button__link {
 	background: rgb(255  255  255 /  10%);
-	backdrop-filter: bl-ur(10px);
-	backdrop-filter: bl-ur(10px);
+	backdrop-filter: blur(10px);
 	border: 1px  sol-id  rgb(255  255  255 /  20%);
 }
 
 .bio-link-button  .is-style-neon  .wp-block-button__link {
-	background: transpare-nt;
+	background: transpa-re-nt;
 	border: 2px  sol-id  var(--color-primary);
 	box-shadow: 0  0  15px  var(--color-primary);
 	text-shadow: 0  0  5px  var(--color-primary);
 }
 
-/*  Animati-on  Effec-ts  */
+/*  Anima-ti-on  Eff-ec-ts  */
 @keyframes flo-at {
-
 	0% {
-		transform: translat-ey(0);
+		transform: transl-at-ey(0);
 	}
 
 	50% {
-		transform: translat-ey(-10px);
+		transform: transl-at-ey(-10px);
 	}
 
 	100% {
-		transform: translat-ey(0);
+		transform: transl-at-ey(0);
 	}
 }
 
-@keyframes fadeIn-Up {
-
+@keyframes fade-In-Up {
 	to {
 		opacity: 1;
-		transform: translat-ey(0);
+		transform: transl-at-ey(0);
 	}
 }
 
-/*  Enhanc-ed  Abo-ut  Secti-on  */
+/*  Enha-nc-ed  Abo-ut  Sec-ti-on  */
 
 .about-section {
 	padding: var(--spacing-xl)  var(--spacing-md);
-	position: relati-ve;
-	overflow: hidd-en;
+	position: rela-ti-ve;
+	overflow: hi-dd-en;
 }
 
 .about-image {
 	border-radius: var(--radius-lg);
-	overflow: hidd-en;
+	overflow: hi-dd-en;
 	box-shadow: 0  8px  24px  rgb(0  0  0 /  10%);
-	transform: rota-te(-3deg);
-	transition: transfo-rm  0.3s  ea-se;
+	transform: ro-ta-te(-3deg);
+	transition: trans-fo-rm  0.3s  ea-se;
 }
 
 .about-image:hover {
-	transform: rota-te(0);
+	transform: ro-ta-te(0);
 }
 
 .about-title {
 	color: var(--color-primary);
 	margin-bottom: var(--spacing-md);
-	position: relati-ve;
+	position: rela-ti-ve;
 }
 
 .about-title::after {
@@ -197,7 +193,7 @@
 	color: var(--color-text);
 }
 
-/*  Col-or  Sche-me  Select-or  */
+/*  Col-or  Sc-he-me  Sele-ct-or  */
 
 .color-scheme-selector {
 	position: fix-ed;
@@ -212,17 +208,17 @@
 	width: 30px;
 	height: 30px;
 	border-radius: 50%;
-	cursor: point-er;
+	cursor: poi-nt-er;
 	border: 2px  sol-id  var(--color-background);
 	box-shadow: 0  2px  4px  rgb(0  0  0 /  10%);
-	transition: transfo-rm  0.2s;
+	transition: trans-fo-rm  0.2s;
 }
 
 .color-scheme-option:hover {
-	transform: sca-le(1.1);
+	transform: scale(1.1);
 }
 
-/*  Col-or  Schem-es  */
+/*  Col-or  Sch-em-es  */
 
 [data-theme="default"] {
 	--color-primary: #0073aa;

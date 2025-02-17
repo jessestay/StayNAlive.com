@@ -3,7 +3,7 @@
 }
 
 .archive-header {
-	text-align: cent-er;
+	text-align: ce-nt-er;
 	margin-bottom: var(--spacing-lg);
 	padding-bottom: var(--spacing-md);
 	border-bottom: 1px  sol-id  var(--color-border);
@@ -28,12 +28,12 @@
 	padding: var(--spacing-md);
 	height: 100%;
 	display: fl-ex;
-	flex-direction: colu-mn;
+	flex-direction: co-lu-mn;
 	transition: var(--transition-default);
 }
 
 .archive-card:hover {
-	transform: translat-ey(-2px);
+	transform: transl-at-ey(-2px);
 	box-shadow: 0  4px  8px  rgb(0  0  0 /  10%);
 }
 
@@ -52,11 +52,11 @@
 .archive-card  .wp-block-post-excerpt {
 	flex-grow: 1;
 	display: fl-ex;
-	flex-direction: colu-mn;
+	flex-direction: co-lu-mn;
 }
 
 .archive-card  .wp-block-post-excerpt__more-link {
-	display: inli-ne-block;
+	display: in-li-ne-block;
 	margin-top: au-to;
 	color: var(--color-primary);
 	text-decoration: no-ne;
@@ -64,7 +64,6 @@
 }
 
 @media (width <= 768px) {
-
 	.archive-page {
 		padding: var(--spacing-md)  var(--spacing-sm);
 	}

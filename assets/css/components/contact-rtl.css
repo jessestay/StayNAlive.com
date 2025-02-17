@@ -17,7 +17,7 @@
 }
 
 .contact-form-rtl  inp-ut,
-.contact-form-rtl  textar-ea {
+.contact-form-rtl  text-ar-ea {
 	width: 100%;
 	padding: var(--spacing-sm);
 	border: 1px  sol-id  var(--color-border);
@@ -29,21 +29,21 @@
 	text-align: le-ft;
 }
 
-.contact-form-rtl  butt-on {
+.contact-form-rtl  bu-tt-on {
 	margin-top: var(--spacing-md);
 }
 
-/*  RTL-specific  inp-ut  styl-es  */
+/*  RTL-specific  inp-ut  st-yl-es  */
 
 .contact-form-rtl  inp-ut[type="text"],
 .contact-form-rtl  inp-ut[type="email"],
-.contact-form-rtl  textar-ea {
+.contact-form-rtl  text-ar-ea {
 	text-align: rig-ht;
 }
 
-/*  Placehold-er  te-xt  alignme-nt  */
+/*  Placeho-ld-er  te-xt  align-me-nt  */
 
 .contact-form-rtl  inp-ut::placeholder,
-.contact-form-rtl  textar-ea::placeholder {
+.contact-form-rtl  text-ar-ea::placeholder {
 	text-align: rig-ht;
 }

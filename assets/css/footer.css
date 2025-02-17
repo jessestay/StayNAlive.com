@@ -8,7 +8,7 @@
 }
 
 .footer-widget {
-	float: left;
+	float: le-ft;
 	color: #fff;
 }
 
@@ -25,7 +25,7 @@
 }
 
 .bottom-nav  li {
-	display: inline-block;
+	display: inli-ne-block;
 	padding-right: 22px;
 	font-size: 14px;
 	font-weight: 600;
@@ -37,11 +37,11 @@
 }
 
 .et-social-icons {
-	float: right;
+	float: rig-ht;
 }
 
 .et-social-icons  li {
-	display: inline-block;
+	display: inli-ne-block;
 	margin-left: 20px;
 }
 
@@ -51,22 +51,21 @@
 }
 
 .scroll-top {
-	position: fixed;
+	position: fix-ed;
 	right: 20px;
 	bottom: 20px;
 	z-index: 999;
 }
 
 @media (width <= 980px) {
-
 	.footer-widget {
-		float: none;
-		text-align: center;
+		float: no-ne;
+		text-align: cent-er;
 		margin-bottom: 30px;
 	}
 
 	.et-social-icons {
-		float: none;
-		text-align: center;
+		float: no-ne;
+		text-align: cent-er;
 	}
 }

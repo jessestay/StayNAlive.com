@@ -1,6 +1,11 @@
 <?php
 /**
- * Social feed functionality
+ * social-feeds functionality.
+ *
+ * @package StayNAlive
+ */
+ 
+* Social feed functionality
  *
  * @package StayNAlive
  */
@@ -104,7 +109,15 @@ namespace StayNAlive\SocialFeeds;
 );
 
 // Helper functions for feed retrieval.
-.function get_instagram_feed() {
+.
+/**
+ * Get instagram feed.
+ *
+ *
+ * @return void
+ */
+
+function get_instagram_feed() {
 	$options = get_option( 'staynalive_social_media', array() );
 	$token   = $options['instagram_token'] ?? '';
 
@@ -116,12 +129,12 @@ namespace StayNAlive\SocialFeeds;
 .	$cache_key = 'instagram_feed_' . md5( $token );
 	$cached    = get_transient( $cache_key );
 
-	if ( $cached !== false ) {
+	if ( false !== $cached ) {
 		return $cached;
 	}
 
 	// Fetch and process feed.
-.	$response = wp_remote_get( "https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink&access_token={$token}" );
+.	$response = wp_remote_get( "https:// graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink&access_token={$token}" );.
 
 	if ( is_wp_error( $response ) ) {
 		return $response;
@@ -140,12 +153,14 @@ namespace StayNAlive\SocialFeeds;
  */
 
 
- */
+ 
+*/
 /**
  *  function.
  *
  * @return void
  */
+
 function () {
 	$options    = get_option( 'staynalive_social_media', array() );
 	$api_key    = $options['youtube_api_key'] ?? '';
@@ -158,12 +173,12 @@ function () {
 	$cache_key = 'youtube_feed_' . md5( $api_key . $channel_id );
 	$cached    = get_transient( $cache_key );
 
-	if ( $cached !== false ) {
+	if ( false !== $cached ) {
 		return $cached;
 	}
 
 	$response = wp_remote_get(
-		"https://www.googleapis.com/youtube/v3/search?part=snippet&channelId={$channel_id}&maxResults=10&order=date&type=video&key={$api_key}"
+		"https:// www.googleapis.com/youtube/v3/search?part=snippet&channelId={$channel_id}&maxResults=10&order=date&type=video&key={$api_key}".
 	);
 
 	if ( is_wp_error( $response ) ) {
@@ -178,7 +193,7 @@ function () {
 				'title'       => $item['snippet']['title'],
 				'description' => $item['snippet']['description'],
 				'thumbnail'   => $item['snippet']['thumbnails']['high']['url'],
-				'link'        => "https://www.youtube.com/watch?v={$item['id']['videoId']}",
+				'link'        => "https:// www.youtube.com/watch?v={$item['id']['videoId']}",.
 			);
 		},
 		$data['items'] ?? array()
@@ -195,12 +210,14 @@ function () {
  */
 
 
- */
+ 
+*/
 /**
  *  function.
  *
  * @return void
  */
+
 function () {
 	$options      = get_option( 'staynalive_social_media', array() );
 	$bearer_token = $options['twitter_bearer_token'] ?? '';
@@ -213,12 +230,12 @@ function () {
 	$cache_key = 'twitter_feed_' . md5( $bearer_token . $username );
 	$cached    = get_transient( $cache_key );
 
-	if ( $cached !== false ) {
+	if ( false !== $cached ) {
 		return $cached;
 	}
 
 	$response = wp_remote_get(
-		"https://api.twitter.com/2/users/by/username/{$username}/tweets?expansions=attachments.media_keys&media.fields=url,preview_image_url",
+		"https:// api.twitter.com/2/users/by/username/{$username}/tweets?expansions=attachments.media_keys&media.fields=url,preview_image_url",.
 		array(
 			'headers' => array(
 				'Authorization' => "Bearer {$bearer_token}",
@@ -249,12 +266,14 @@ if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
  */
 
 
- */
+ 
+*/
 /**
  *  function.
  *
  * @return void
  */
+
 function ( $feed_type ) {
 	$options = get_option( 'staynalive_social_media', array() );
 
@@ -277,12 +296,14 @@ function ( $feed_type ) {
  */
 
 
- */
+ 
+*/
 /**
  *  function.
  *
  * @return void
  */
+
 function ( $data ) {
 	if ( ! is_array( $data ) ) {
 		return array();

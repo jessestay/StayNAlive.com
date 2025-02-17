@@ -1,9 +1,14 @@
 <?php
 /**
- * Template tags for Stay N Alive Theme
+ * template-tags functionality.
  *
  * @package StayNAlive
  */
+
+* Template tags for Stay N Alive Theme
+*
+* @package StayNAlive
+* /
 
 
 * /
@@ -13,6 +18,7 @@
  *
  * @param int|WP_Post $post Post ID or post object.
  */
+
 
 
 * /
@@ -72,6 +78,7 @@ function ( $post = null ) {
  */
 
 
+
 * /
 /**
  *  function.
@@ -109,6 +116,7 @@ function ( $post = null ) {
  */
 
 
+
 * /
 /**
  *  function.
@@ -143,6 +151,7 @@ function ( $post = null ) {
  * @param int|WP_Post $post Post ID or post object.
  * @param string      $size Image size.
  */
+
 
 
 * /
@@ -194,6 +203,7 @@ function ( $post = null, $size = 'large' ) {
 /**
  * Display post navigation
  */
+
 
 
 * /

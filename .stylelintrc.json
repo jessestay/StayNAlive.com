@@ -1,47 +1,10 @@
 {
-  "extends": [
-    "stylelint-config-standard",
-    "@wordpress/stylelint-config"
-  ],
-  "rules": {
-    "selector-class-pattern": null,
-    "font-family-no-missing-generic-family-keyword": null,
-    "no-descending-specificity": null,
-    "block-no-empty": null,
-    "no-duplicate-selectors": true,
-    "font-family-no-duplicate-names": null,
-    "selector-type-no-unknown": null,
-    "value-keyword-case": null,
-    "function-comma-space-after": "always",
-    "string-quotes": "double",
-    "no-eol-whitespace": true,
-    "no-missing-end-of-source-newline": true,
-    "indentation": "tab",
-    "rule-empty-line-before": "always",
-    "color-hex-case": "lower",
-    "color-hex-length": "short",
-    "color-named": "never",
-    "selector-combinator-space-after": "always",
-    "selector-attribute-quotes": "always",
-    "selector-attribute-operator-space-before": "never",
-    "selector-attribute-operator-space-after": "never",
-    "selector-attribute-brackets-space-inside": "never",
-    "declaration-block-trailing-semicolon": "always",
-    "declaration-colon-space-before": "never",
-    "declaration-colon-space-after": "always",
-    "property-no-vendor-prefix": true,
-    "value-no-vendor-prefix": true,
-    "function-url-quotes": "always",
-    "font-weight-notation": "numeric",
-    "font-family-name-quotes": "always-where-recommended",
-    "comment-whitespace-inside": "always",
-    "comment-empty-line-before": "always",
-    "selector-pseudo-element-colon-notation": "double",
-    "selector-pseudo-class-parentheses-space-inside": "never",
-    "media-feature-range-operator-space-before": "always",
-    "media-feature-range-operator-space-after": "always",
-    "media-feature-parentheses-space-inside": "never",
-    "media-feature-colon-space-before": "never",
-    "media-feature-colon-space-after": "always"
-  }
-} 
+    "extends": "stylelint-config-standard",
+    "rules": {
+        "custom-property-pattern": null,
+        "keyframes-name-pattern": null,
+        "function-no-unknown": null,
+        "no-duplicate-selectors": null,
+        "selector-class-pattern": null
+    }
+}

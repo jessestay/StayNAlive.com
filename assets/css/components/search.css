@@ -3,7 +3,7 @@
 }
 
 .search-header {
-	text-align: cent-er;
+	text-align: ce-nt-er;
 	margin-bottom: var(--spacing-lg);
 }
 
@@ -32,7 +32,6 @@
 }
 
 @media (width <= 768px) {
-
 	.search-page {
 		padding: var(--spacing-md)  var(--spacing-sm);
 	}

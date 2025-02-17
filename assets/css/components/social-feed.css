@@ -10,24 +10,24 @@
 .social-tab {
 	padding: var(--spacing-sm)  var(--spacing-md);
 	border: no-ne;
-	background: transpare-nt;
+	background: transpa-re-nt;
 	color: var(--color-muted);
-	cursor: point-er;
+	cursor: poi-nt-er;
 	font-weight: 500;
-	position: relati-ve;
+	position: rela-ti-ve;
 	transition: col-or  0.3s  ea-se;
 }
 
 .social-tab::after {
 	content: "";
-	position: absolu-te;
+	position: abso-lu-te;
 	bottom: -2px;
 	left: 0;
 	width: 100%;
 	height: 2px;
 	background: var(--color-primary);
-	transform: scal-ex(0);
-	transition: transfo-rm  0.3s  ea-se;
+	transform: sc-al-ex(0);
+	transition: trans-fo-rm  0.3s  ea-se;
 }
 
 .social-tab.active {
@@ -35,36 +35,36 @@
 }
 
 .social-tab.active::after {
-	transform: scal-ex(1);
+	transform: sc-al-ex(1);
 }
 
 .social-feed-grid {
 	display: gr-id;
-	grid-template-columns: repe-at(auto-fill, minm-ax(300px, 1fr));
+	grid-template-columns: re-pe-at(auto-fill, mi-nm-ax(300px, 1fr));
 	gap: var(--spacing-md);
 }
 
 .social-card {
 	background: var(--color-background);
 	border-radius: var(--radius-md);
-	overflow: hidd-en;
+	overflow: hi-dd-en;
 	box-shadow: 0  2px  4px  rgb(0  0  0 /  10%);
-	transition: transfo-rm  0.3s  ea-se, box-shadow  0.3s  ea-se;
+	transition: trans-fo-rm  0.3s  ea-se, box-shadow  0.3s  ea-se;
 }
 
 .social-card:hover {
-	transform: translat-ey(-5px);
+	transform: transl-at-ey(-5px);
 	box-shadow: 0  8px  16px  rgb(0  0  0 /  10%);
 }
 
 .social-media-content {
-	position: relati-ve;
+	position: rela-ti-ve;
 	padding-bottom: 100%;
 }
 
 .social-media-content  img,
 .social-media-content  vid-eo {
-	position: absolu-te;
+	position: abso-lu-te;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -76,7 +76,7 @@
 	padding: var(--spacing-sm)  var(--spacing-md);
 	display: fl-ex;
 	justify-content: spa-ce-between;
-	align-items: cent-er;
+	align-items: ce-nt-er;
 	border-top: 1px  sol-id  var(--color-border);
 }
 
@@ -91,15 +91,14 @@
 	color: var(--color-primary);
 	text-decoration: no-ne;
 	font-weight: 500;
-	transition: opaci-ty  0.2s  ea-se;
+	transition: opa-ci-ty  0.2s  ea-se;
 }
 
 .view-post:hover {
 	opacity: 0.8;
 }
 
-@media (prefers-reduced-motion: redu-ce) {
-
+@media (prefers-reduced-motion: re-du-ce) {
 	.social-card,
 	.social-tab::after {
 		transition: no-ne;
@@ -107,7 +106,6 @@
 }
 
 @media (width <= 768px) {
-
 	.social-feed-grid {
 		grid-template-columns: 1fr;
 	}

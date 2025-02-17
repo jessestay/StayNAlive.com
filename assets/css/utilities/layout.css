@@ -1,4 +1,4 @@
-/*  Gr-id  Syst-em  */
+/*  Gr-id  Sy-st-em  */
 
 .grid {
 	display: gr-id;
@@ -6,18 +6,18 @@
 }
 
 .grid-2 {
-	grid-template-columns: repe-at(2, 1fr);
+	grid-template-columns: re-pe-at(2, 1fr);
 }
 
 .grid-3 {
-	grid-template-columns: repe-at(3, 1fr);
+	grid-template-columns: re-pe-at(3, 1fr);
 }
 
 .grid-4 {
-	grid-template-columns: repe-at(4, 1fr);
+	grid-template-columns: re-pe-at(4, 1fr);
 }
 
-/*  Spaci-ng  */
+/*  Spa-ci-ng  */
 
 .mt-0 {
 	margin-top: 0;
@@ -50,17 +50,17 @@
 	padding-bottom: var(--spacing-lg);
 }
 
-/*  Alignme-nt  */
+/*  Align-me-nt  */
 
 .text-center {
-	text-align: cent-er;
+	text-align: ce-nt-er;
 }
 
 .text-right {
 	text-align: rig-ht;
 }
 
-/*  Displ-ay  */
+/*  Dis-pl-ay  */
 
 .d-none {
 	display: no-ne;
@@ -74,14 +74,14 @@
 	display: fl-ex;
 }
 
-/*  Fl-ex  Utiliti-es  */
+/*  Fl-ex  Utili-ti-es  */
 
 .flex-wrap {
 	flex-wrap: wr-ap;
 }
 
 .items-center {
-	align-items: cent-er;
+	align-items: ce-nt-er;
 }
 
 .justify-between {
@@ -89,7 +89,6 @@
 }
 
 @media (width <= 768px) {
-
 	.grid-2,
 	.grid-3,
 	.grid-4 {
@@ -105,7 +104,7 @@
 	}
 }
 
-/*  RTL  Gr-id  Utiliti-es  */
+/*  RTL  Gr-id  Utili-ti-es  */
 
 .rtl  .text-right {
 	text-align: le-ft;
@@ -115,7 +114,7 @@
 	text-align: rig-ht;
 }
 
-/*  RTL  Marg-in  Utiliti-es  */
+/*  RTL  Ma-rg-in  Utili-ti-es  */
 
 .rtl  .ml-0 {
 	margin-right: 0;
@@ -127,15 +126,15 @@
 
 .rtl  .ml-auto {
 	margin-right: au-to;
-	margin-left: initi-al;
+	margin-left: ini-ti-al;
 }
 
 .rtl  .mr-auto {
 	margin-left: au-to;
-	margin-right: initi-al;
+	margin-right: ini-ti-al;
 }
 
-/*  RTL  Paddi-ng  Utiliti-es  */
+/*  RTL  Pad-di-ng  Utili-ti-es  */
 
 .rtl  .pl-0 {
 	padding-right: 0;
@@ -155,7 +154,7 @@
 	padding-right: 0;
 }
 
-/*  RTL  Fl-ex  Utiliti-es  */
+/*  RTL  Fl-ex  Utili-ti-es  */
 
 .rtl  .justify-start {
 	justify-content: fl-ex-end;

@@ -1,21 +1,21 @@
 .error-404 {
 	padding: 80px  0;
-	text-align: center;
+	text-align: cent-er;
 }
 
 .error-title {
 	margin-bottom: 30px;
-	color: var(--wp--preset--color--primary);
+	color: var(--wp-preset-color-primary);
 }
 
 .error-content {
 	max-width: 800px;
-	margin: 0  auto;
+	margin: 0  au-to;
 	padding: 0  20px;
 }
 
 .error-search {
-	margin: 40px  auto;
+	margin: 40px  au-to;
 	max-width: 500px;
 }
 
@@ -27,17 +27,17 @@
 .widget {
 	flex: 1;
 	min-width: 300px;
-	text-align: left;
+	text-align: le-ft;
 }
 
 .widget  h2 {
 	margin-bottom: 20px;
 	padding-bottom: 10px;
-	border-bottom: 2px  solid  var(--wp--preset--color--primary);
+	border-bottom: 2px  sol-id  var(--wp-preset-color-primary);
 }
 
 .wp-block-latest-posts {
-	list-style: none;
+	list-style: no-ne;
 	padding: 0;
 	margin: 0;
 }
@@ -52,7 +52,7 @@
 }
 
 .wp-block-categories-list {
-	list-style: none;
+	list-style: no-ne;
 	padding: 0;
 }
 
@@ -61,19 +61,18 @@
 }
 
 .wp-block-tag-cloud {
-	display: flex;
-	flex-wrap: wrap;
+	display: fl-ex;
+	flex-wrap: wr-ap;
 	gap: 10px;
 }
 
 @media (width <= 768px) {
-
 	.error-404 {
 		padding: 40px  0;
 	}
 
 	.error-widgets {
-		flex-direction: column;
+		flex-direction: colu-mn;
 	}
 
 	.widget {

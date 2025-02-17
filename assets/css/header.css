@@ -1,5 +1,5 @@
 .site-header {
-	position: fixed;
+	position: fix-ed;
 	width: 100%;
 	top: 0;
 	z-index: 99999;
@@ -8,20 +8,20 @@
 }
 
 .et_menu_container {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	display: fl-ex;
+	align-items: cent-er;
+	justify-content: spa-ce-between;
 	padding: 0  30px;
 	height: 60px;
 }
 
 .logo_container {
-	width: auto;
+	width: au-to;
 }
 
 .et-top-navigation {
-	display: flex;
-	align-items: center;
+	display: fl-ex;
+	align-items: cent-er;
 	gap: 20px;
 }
 
@@ -31,60 +31,58 @@
 }
 
 @media (width <= 980px) {
-
 	.et-top-navigation {
-		display: none;
+		display: no-ne;
 	}
 
 	.site-header  .wp-block-navigation__responsive-container-open {
-		display: block;
+		display: blo-ck;
 	}
 }
 
 .user-is-tabbing  :focus {
-	outline: 2px  solid  var(--wp--preset--color--primary) !important;
+	outline: 2px  sol-id  var(--wp-preset-color-primary) !important;
 	outline-offset: 2px !important;
 }
 
 .wp-block-navigation__responsive-container {
-	display: none;
-	position: fixed;
+	display: no-ne;
+	position: fix-ed;
 	inset: 0;
 	background: #fff;
 	z-index: 99999;
 }
 
 .wp-block-navigation__responsive-container.is-menu-open {
-	display: flex;
-	flex-direction: column;
+	display: fl-ex;
+	flex-direction: colu-mn;
 	padding: 60px  20px  20px;
 }
 
 .wp-block-navigation__responsive-container-close {
-	position: absolute;
+	position: absolu-te;
 	top: 20px;
 	right: 20px;
-	cursor: pointer;
+	cursor: point-er;
 }
 
 @media (width >= 981px) {
-
 	.wp-block-navigation__responsive-container-open:not(.always-shown) {
-		display: none;
+		display: no-ne;
 	}
 }
 
-/*  Add  to  existing  header  styles  */
+/*  Add  to  existi-ng  head-er  styl-es  */
 
 .custom-header {
-	position: relative;
+	position: relati-ve;
 }
 
 .header-content {
 	padding: 20px;
-	position: relative;
+	position: relati-ve;
 	z-index: 2;
-	background: var(--wp--preset--color--background);
+	background: var(--wp-preset-color-background);
 }
 
 .site-branding {
@@ -112,15 +110,14 @@
 }
 
 @media (width <= 768px) {
-
 	.header-content {
-		flex-direction: column;
+		flex-direction: colu-mn;
 		gap: 20px;
-		text-align: center;
+		text-align: cent-er;
 	}
 
 	.site-branding {
-		align-items: center;
+		align-items: cent-er;
 	}
 
 	.header-image  .wp-block-post-title {

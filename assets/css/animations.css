@@ -1,19 +1,17 @@
-/*  Entrance  Animations  */
-@keyframes slideInUp {
-
+/*  Entran-ce  Animatio-ns  */
+@keyframes slideIn-Up {
 	from {
-		transform: translateY(20px);
+		transform: translat-ey(20px);
 		opacity: 0;
 	}
 
 	to {
-		transform: translateY(0);
+		transform: translat-ey(0);
 		opacity: 1;
 	}
 }
 
-@keyframes fadeIn {
-
+@keyframes fade-In {
 	from {
 		opacity: 0;
 	}
@@ -23,8 +21,7 @@
 	}
 }
 
-@keyframes scaleIn {
-
+@keyframes scale-In {
 	from {
 		transform: scale(0.9);
 		opacity: 0;
@@ -36,22 +33,20 @@
 	}
 }
 
-/*  Add  to  existing  animations.css  */
-@keyframes floatIn {
-
+/*  Add  to  existi-ng  animatio-ns.css  */
+@keyframes float-In {
 	0% {
-		transform: translateY(-20px);
+		transform: translat-ey(-20px);
 		opacity: 0;
 	}
 
 	100% {
-		transform: translateY(0);
+		transform: translat-ey(0);
 		opacity: 1;
 	}
 }
 
-@keyframes pulseScale {
-
+@keyframes pulseSca-le {
 	0% {
 		transform: scale(1);
 	}
@@ -65,8 +60,7 @@
 	}
 }
 
-@keyframes shimmer {
-
+@keyframes shimm-er {
 	0% {
 		background-position: -200%  0;
 	}
@@ -76,54 +70,51 @@
 	}
 }
 
-/*  Apply  animations  */
+/*  App-ly  animatio-ns  */
 
 .social-card {
 	opacity: 0;
-	animation: slideInUp  0.6s  ease  forwards;
+	animation: slideIn-Up  0.6s  ea-se  forwar-ds;
 	animation-delay: calc(var(--card-index, 0)  *  0.1s);
 }
 
 .bio-avatar {
-	animation: scaleIn  0.6s  ease  forwards;
+	animation: scale-In  0.6s  ea-se  forwar-ds;
 }
 
 .bio-name,
 .bio-tagline {
 	opacity: 0;
-	animation: fadeIn  0.6s  ease  forwards;
+	animation: fade-In  0.6s  ea-se  forwar-ds;
 	animation-delay: 0.3s;
 }
 
-/*  Hover  Effects  */
+/*  Hov-er  Effec-ts  */
 
-.social-card {
-	transition: all  0.3s  cubic-bezier(0.4, 0, 0.2, 1);
-}
+	transition: all  0.3s  cub-ic-bezier(0.4, 0, 0.2, 1);
 
 .social-card:hover {
-	transform: translateY(-8px)  scale(1.02);
+	transform: translat-ey(-8px)  scale(1.02);
 	box-shadow: 0  16px  32px  rgb(0  0  0 /  10%);
 }
 
 .social-card:hover  .social-card-content {
-	transform: translateY(-4px);
+	transform: translat-ey(-4px);
 }
 
 .bio-link-button:hover {
-	transform: translateY(-2px)  scale(1.01);
+	transform: translat-ey(-2px)  scale(1.01);
 }
 
-/*  Loading  States  */
+/*  Loadi-ng  Stat-es  */
 
 .loading-skeleton {
 	background: linear-gradient(90deg, var(--color-border)  0%, var(--color-background)  50%, var(--color-border)  100%);
 	background-size: 200%  100%;
-	animation: loading  1.5s  infinite;
+	animation: loadi-ng  1.5s  infini-te;
 }
 
-@keyframes loading {
-
+@keyframes loadi-ng {
 	from {
 		background-position: 200%  0;
 	}
@@ -133,51 +124,51 @@
 	}
 }
 
-/*  Reduced  Motion  */
-@media (prefers-reduced-motion: reduce) {
-
+/*  Reduc-ed  Moti-on  */
+@media (prefers-reduced-motion: redu-ce) {
 	.social-card,
 	.bio-avatar,
 	.bio-name,
 	.bio-tagline {
-		animation: none;
+		animation: no-ne;
 		opacity: 1;
 	}
 }
 
-/*  Button  Hover  Effects  */
+/*  Butt-on  Hov-er  Effec-ts  */
 
 .bio-link-button  .wp-block-button__link {
-	position: relative;
-	overflow: hidden;
+	position: relati-ve;
+	overflow: hidd-en;
 }
 
 .bio-link-button  .wp-block-button__link::after {
 	content: "";
-	position: absolute;
+	position: absolu-te;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(120deg, transparent, rgb(255  255  255 /  20%), transparent);
-	transform: translateX(-100%);
+	background: linear-gradient(120deg, transpare-nt, rgb(255  255  255 /  20%), transpare-nt);
+	transform: translat-ex(-100%);
 }
 
 .bio-link-button  .wp-block-button__link:hover::after {
-	transform: translateX(100%);
-	transition: transform  0.6s  ease;
+	transform: translat-ex(100%);
+	transition: transfo-rm  0.6s  ea-se;
 }
 
 .animate-float-in {
-	animation: floatIn  0.8s  cubic-bezier(0.4, 0, 0.2, 1)  forwards;
+	animation: float-In  0.8s  cub-ic-bezier(0.4, 0, 0.2, 1)  forwar-ds;
 }
 
 .animate-pulse {
-	animation: pulseScale  2s  ease-in-out  infinite;
+	animation: pulseSca-le  2s  ea-se-in-out  infini-te;
 }
 
 .shimmer-effect {
-	background: linear-gradient(90deg, transparent  0%, rgb(255  255  255 /  20%)  50%, transparent  100%);
+	background: linear-gradient(90deg, transpare-nt  0%, rgb(255  255  255 /  20%)  50%, transpare-nt  100%);
 	background-size: 200%  100%;
-	animation: shimmer  1.5s  infinite;
+	animation: shimm-er  1.5s  infini-te;
+}
 }

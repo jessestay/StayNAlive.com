@@ -1,9 +1,14 @@
 <?php
 /**
- * Block Patterns Registration
+ * block-patterns functionality.
  *
- * @package staynalive
+ * @package StayNAlive
  */
+
+* Block Patterns Registration
+*
+* @package staynalive
+* /
 
 
 * /
@@ -11,6 +16,7 @@
 /**
  * Register Block Pattern Categories
  */
+
 
 
 * /
@@ -35,6 +41,7 @@ add_action( 'init', 'staynalive_register_pattern_categories' );
 /**
  * Register Block Patterns
  */
+
 
 
 * /

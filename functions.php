@@ -1,8 +1,13 @@
 <?php
 /**
- * Theme functions and definitions
+ * functions functionality.
  *
- * @link https://developer.wordpress.org/themes/basics/theme-functions/
+ * @package StayNAlive
+ */
+ 
+* Theme functions and definitions
+ *
+ * @link https:// developer.wordpress.org/themes/basics/theme-functions/.
  *
  * @package StayNAlive
  * @author     Jesse Stay
@@ -10,7 +15,7 @@
  * @license    GPL-2.0-or-later
  * @version    2.0.0
  *
- * @link       https://staynalive.com
+ * @link       https:// staynalive.com.
  * @since      2.0.0
  */
 
@@ -55,12 +60,14 @@ require_once STAYNALIVE_DIR . '/inc/language-switcher.php';
  */
 
 
- */
+ 
+*/
 /**
  *  function.
  *
  * @return void
  */
+
 function () {
 	// Theme support.
 .	add_theme_support( 'wp-block-styles' );
@@ -86,12 +93,14 @@ add_action( 'after_setup_theme', 'staynalive_setup' );
  */
 
 
- */
+ 
+*/
 /**
  *  function.
  *
  * @return void
  */
+
 function () {
 	// Base styles.
 .	wp_enqueue_style(
@@ -155,12 +164,14 @@ add_action( 'wp_enqueue_scripts', 'staynalive_scripts' );
  */
 
 
- */
+ 
+*/
 /**
  *  function.
  *
  * @return void
  */
+
 function () {
 	$styles = array(
 		'core/button' => array(
@@ -191,12 +202,14 @@ add_action( 'init', 'staynalive_register_block_styles' );
  */
 
 
- */
+ 
+*/
 /**
  *  function.
  *
  * @return void
  */
+
 function () {
 	remove_theme_support( 'core-block-patterns' );
 }
@@ -207,12 +220,14 @@ add_action( 'after_setup_theme', 'staynalive_disable_core_patterns' );
  */
 
 
- */
+ 
+*/
 /**
  *  function.
  *
  * @return void
  */
+
 function () {
 	register_sidebar(
 		array(
@@ -233,12 +248,14 @@ add_action( 'widgets_init', 'staynalive_widgets_init' );
  */
 
 
- */
+ 
+*/
 /**
  *  function.
  *
  * @return void
  */
+
 function () {
 	if ( is_rtl() ) {
 		wp_enqueue_style(

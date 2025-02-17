@@ -1,24 +1,23 @@
-/*  Arabic  Styles  */
+/*  Arab-ic  Styl-es  */
 
 [lang="ar"] {
-
-	/*  Typography  */
+	/*  Typograp-hy  */
 	--font-primary: var(--wp--preset--font-family--arabic);
 	--line-height-base: 1.8;
 	--letter-spacing: 0;
 
-	/*  Spacing  adjustments  for  Arabic  */
+	/*  Spaci-ng  adjustmen-ts  for  Arab-ic  */
 	--paragraph-margin: 1.5em  0;
 	--heading-margin: 1.2em  0  0.8em;
 
-	/*  Text  direction  */
+	/*  Te-xt  directi-on  */
 	direction: rtl;
-	text-align: right;
+	text-align: rig-ht;
 }
 
 [lang="ar"]  .wp-block-quote {
-	border-right: 4px  solid  var(--color-primary);
-	border-left: none;
+	border-right: 4px  sol-id  var(--color-primary);
+	border-left: no-ne;
 	padding-right: var(--spacing-md);
 	padding-left: 0;
 }
@@ -27,75 +26,74 @@
 	font-family: var(--wp--preset--font-family--arabic);
 }
 
-/*  Persian/Farsi  Styles  */
+/*  Persi-an/Farsi  Styl-es  */
 
 [lang="fa"] {
 	--font-primary: "Vazirmatn", var(--wp--preset--font-family--arabic);
 	--line-height-base: 1.8;
 }
 
-/*  Hebrew  Styles  */
+/*  Hebr-ew  Styl-es  */
 
 [lang="he"] {
-	--font-primary: "Rubik", sans-serif;
+	--font-primary: "Rubik", sa-ns-serif;
 	--line-height-base: 1.6;
 }
 
-/*  Bidirectional  Text  Support  */
+/*  Bidirection-al  Te-xt  Suppo-rt  */
 
 .bidi-auto {
-	unicode-bidi: embed;
-	direction: auto;
+	unicode-bidi: emb-ed;
+	direction: au-to;
 }
 
 .bidi-override {
-	unicode-bidi: bidi-override;
+	unicode-bidi: bi-di-override;
 }
 
-/*  Numbers  in  RTL  context  */
+/*  Numbe-rs  in  RTL  conte-xt  */
 
 .rtl  .numbers {
 	direction: ltr;
-	display: inline-block;
+	display: inli-ne-block;
 }
 
-/*  Date  formatting  for  RTL  */
+/*  Da-te  formatti-ng  for  RTL  */
 
 .rtl  .wp-block-post-date {
 	direction: ltr;
-	display: inline-block;
+	display: inli-ne-block;
 }
 
-/*  Mixed  content  containers  */
+/*  Mix-ed  conte-nt  containe-rs  */
 
 .mixed-content {
-	unicode-bidi: isolate;
+	unicode-bidi: isola-te;
 }
 
 .mixed-content[dir="rtl"] {
-	text-align: right;
+	text-align: rig-ht;
 }
 
 .mixed-content[dir="ltr"] {
-	text-align: left;
+	text-align: le-ft;
 }
 
-/*  Language-specific  font  sizes  */
+/*  Langua-ge-specific  fo-nt  siz-es  */
 
 [lang="ar"]  h1,
 [lang="fa"]  h1 {
-	font-size: 2.2em;  /*  Slightly  larger  for  better  readability  */
+	font-size: 2.2em;  /*  Slight-ly  larg-er  for  bett-er  readabili-ty  */
 }
 
 [lang="ar"]  .wp-block-navigation,
 [lang="fa"]  .wp-block-navigation,
 [lang="he"]  .wp-block-navigation {
-	font-size: 1.1em;  /*  Larger  navigation  text  for  RTL  languages  */
+	font-size: 1.1em;  /*  Larg-er  navigati-on  te-xt  for  RTL  languag-es  */
 }
 
-/*  Mobile  Adjustments  */
+/*  Mobi-le  Adjustmen-ts  */
 @media (width <= 768px) {
-
 	[lang="ar"]  h1,
 	[lang="fa"]  h1,
 	[lang="he"]  h1 {
@@ -103,6 +101,6 @@
 	}
 
 	.rtl  .mobile-stack {
-		flex-direction: column-reverse;
+		flex-direction: colu-mn-reverse;
 	}
 }
