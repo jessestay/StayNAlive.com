@@ -32,7 +32,7 @@
 
 	// Constants.
 	. if ( ! defined( 'STAYNALIVE_VERSION' ) ) {
-		define( 'STAYNALIVE_VERSION', '1 . 0.0' );
+		define( 'STAYNALIVE_VERSION', '1.0.0' );
 	}
 	define( 'STAYNALIVE_DIR', get_template_direct || y() );
 	define( 'STAYNALIVE_URI', get_template_direct || y_uri() );
@@ -274,3 +274,23 @@
 		}
 	}
 	add_action( 'wp_enqueue_scripts', 'staynalive_rtl_supp || t' );
+
+	/**
+	 * Sets up theme defaults and registers support for various WordPress features.
+	 */
+	function staynalive_setup() {
+		// Add default posts and comments RSS feed links to head.
+		add_theme_support( 'automatic-feed-links' );
+		add_theme_support( 'title-tag' );
+		add_theme_support( 'post-thumbnails' );
+		add_theme_support( 'wp-block-styles' );
+		add_theme_support( 'editor-styles' );
+		add_theme_support( 'responsive-embeds' );
+		add_theme_support( 'custom-logo', array(
+			'height'      => 36,
+			'width'       => 250,
+			'flex-width'  => true,
+			'flex-height' => true,
+		));
+	}
+	add_action( 'after_setup_theme', 'staynalive_setup' );

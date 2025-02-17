@@ -1,17 +1,42 @@
 #!/usr/bin/env bash
 
+# Exit on error, undefined variables, and pipe failures
+set -euo pipefail
+
 # Colors for output
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-NC='\033[0m'
+readonly GREEN='\033[0;32m'
+readonly BLUE='\033[0;34m'
+readonly NC='\033[0m'
 
-echo -e "${BLUE}Creating Stay N Alive Theme...${NC}"
+# Theme directory name
+readonly THEME_DIR="staynalive"
 
-# Create necessary directories
-mkdir -p {assets/{css,js},inc,languages,parts,patterns,styles,templates}
+# Function to log messages
+log() {
+    echo -e "${BLUE}$1${NC}"
+}
 
-# Create style.css (required for WordPress themes)
-cat > style.css << 'EOL'
+# Function to create directories
+create_directories() {
+    local -r dirs=(
+        "assets/css"
+        "assets/js"
+        "inc"
+        "languages"
+        "parts"
+        "patterns"
+        "styles"
+        "templates"
+    )
+    
+    for dir in "${dirs[@]}"; do
+        mkdir -p "${THEME_DIR}/${dir}"
+    done
+}
+
+# Function to create style.css
+create_style_css() {
+    cat > "${THEME_DIR}/style.css" << 'EOL'
 /*
 Theme Name: Stay N Alive
 Theme URI: https://staynalive.com
@@ -27,9 +52,11 @@ License URI: LICENSE
 Text Domain: staynalive
 */
 EOL
+}
 
-# Create theme.json for block theme settings
-cat > theme.json << 'EOL'
+# Function to create theme.json
+create_theme_json() {
+    cat > "${THEME_DIR}/theme.json" << 'EOL'
 {
     "$schema": "https://schemas.wp.org/trunk/theme.json",
     "version": 2,
@@ -55,9 +82,11 @@ cat > theme.json << 'EOL'
     }
 }
 EOL
+}
 
-# Create basic template files
-cat > templates/index.html << 'EOL'
+# Function to create template files
+create_templates() {
+    cat > "${THEME_DIR}/templates/index.html" << 'EOL'
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 <!-- wp:group {"tagName":"main"} -->
 <main class="wp-block-group">
@@ -66,9 +95,12 @@ cat > templates/index.html << 'EOL'
 <!-- /wp:group -->
 <!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
 EOL
+}
 
-# Create template parts
-cat > parts/header.html << 'EOL'
+# Function to create template parts
+create_template_parts() {
+    # Header
+    cat > "${THEME_DIR}/parts/header.html" << 'EOL'
 <!-- wp:group {"tagName":"header","className":"site-header"} -->
 <header class="wp-block-group site-header">
     <!-- wp:site-title /-->
@@ -77,7 +109,8 @@ cat > parts/header.html << 'EOL'
 <!-- /wp:group -->
 EOL
 
-cat > parts/footer.html << 'EOL'
+    # Footer
+    cat > "${THEME_DIR}/parts/footer.html" << 'EOL'
 <!-- wp:group {"tagName":"footer","className":"site-footer"} -->
 <footer class="wp-block-group site-footer">
     <!-- wp:paragraph {"align":"center"} -->
@@ -86,9 +119,11 @@ cat > parts/footer.html << 'EOL'
 </footer>
 <!-- /wp:group -->
 EOL
+}
 
-# Create basic CSS
-cat > assets/css/style.css << 'EOL'
+# Function to create CSS files
+create_css_files() {
+    cat > "${THEME_DIR}/assets/css/style.css" << 'EOL'
 :root {
     --color-primary: #1e73be;
     --color-text: #333333;
@@ -102,10 +137,35 @@ body {
     background: var(--color-background);
 }
 EOL
+}
 
-# Create zip file
-echo -e "${BLUE}Creating theme zip file...${NC}"
-zip -r staynalive-theme.zip . -x ".*" -x "__MACOSX" -x "node_modules/*" -x "vendor/*" -x "*.git*" -x "*.log"
+# Function to create zip file
+create_zip() {
+    log "Creating theme zip file..."
+    (cd "${THEME_DIR}" && zip -r ../staynalive-theme.zip .)
+}
 
-echo -e "${GREEN}Theme files created successfully!${NC}"
-echo -e "Theme zip created at: ${BLUE}staynalive-theme.zip${NC}" 
+# Main execution
+main() {
+    log "Creating Stay N Alive Theme..."
+    
+    # Clean up any existing theme directory
+    rm -rf "${THEME_DIR}"
+    
+    # Create fresh theme structure
+    create_directories
+    create_style_css
+    create_theme_json
+    create_templates
+    create_template_parts
+    create_css_files
+    
+    # Create zip file
+    create_zip
+    
+    log "Theme files created successfully!"
+    echo -e "Theme zip created at: ${BLUE}staynalive-theme.zip${NC}"
+}
+
+# Execute main function
+main 
