@@ -6,6 +6,48 @@
         "layout": {
             "contentSize": "1200px",
             "wideSize": "1400px"
+        },
+        "typography": {
+            "fontSizes": [
+                {
+                    "name": "Small",
+                    "slug": "small",
+                    "size": "12px"
+                },
+                {
+                    "name": "Normal",
+                    "slug": "normal",
+                    "size": "16px"
+                },
+                {
+                    "name": "Large",
+                    "slug": "large",
+                    "size": "20px"
+                }
+            ]
+        },
+        "color": {
+            "palette": [
+                {
+                    "name": "Primary",
+                    "slug": "primary",
+                    "color": "#1e73be"
+                },
+                {
+                    "name": "Secondary",
+                    "slug": "secondary", 
+                    "color": "#666666"
+                }
+            ]
+        }
+    },
+    "styles": {
+        "blocks": {
+            "core/paragraph": {
+                "typography": {
+                    "fontSize": "var(--wp--preset--font-size--normal)"
+                }
+            }
         }
     },
     "customTemplates": [

@@ -297,6 +297,9 @@
 			'staynalive',
 			array('label' => __('Stay N Alive', 'staynalive'))
 		);
+
+		// Add wide/full alignment
+		add_theme_support('align-wide');
 	}
 	add_action('after_setup_theme', 'staynalive_setup');
 
@@ -322,3 +325,32 @@ function staynalive_add_editor_caps() {
     $role->add_cap('edit_theme_options');
 }
 add_action('admin_init', 'staynalive_add_editor_caps');
+
+// Add block styles
+function staynalive_register_block_styles() {
+    // Quote styles
+    register_block_style('core/quote', [
+        'name' => 'blue-quote',
+        'label' => __('Blue Quote', 'staynalive')
+    ]);
+
+    // Button styles  
+    register_block_style('core/button', [
+        'name' => 'outline',
+        'label' => __('Outline', 'staynalive')
+    ]);
+
+    // Unregister styles we don't want
+    unregister_block_style('core/quote', 'large');
+}
+add_action('init', 'staynalive_register_block_styles');
+
+// Disable custom font sizes
+add_theme_support('disable-custom-font-sizes');
+
+// Disable custom colors 
+add_theme_support('disable-custom-colors');
+
+// Add editor styles
+add_theme_support('editor-styles');
+add_editor_style('assets/css/editor-style.css');
