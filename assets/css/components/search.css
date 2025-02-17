@@ -3,7 +3,7 @@
 }
 
 .search-header {
-	text-align: center;
+	text-align: cent-er;
 	margin-bottom: var(--spacing-lg);
 }
 
@@ -14,19 +14,19 @@
 
 .search-form {
 	max-width: 600px;
-	margin: 0  auto;
+	margin: 0  au-to;
 }
 
 .search-form  .wp-block-search__input {
 	padding: var(--spacing-sm);
-	border: 1px  solid  var(--color-border);
+	border: 1px  sol-id  var(--color-border);
 	border-radius: var(--radius-sm)  0  0  var(--radius-sm);
 }
 
 .search-form  .wp-block-search__button {
 	background: var(--color-primary);
 	color: var(--color-background);
-	border: none;
+	border: no-ne;
 	padding: var(--spacing-sm)  var(--spacing-md);
 	border-radius: 0  var(--radius-sm)  var(--radius-sm)  0;
 }

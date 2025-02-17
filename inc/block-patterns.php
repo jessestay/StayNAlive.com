@@ -5,10 +5,21 @@
  * @package staynalive
  */
 
+
+* /
+
 /**
  * Register Block Pattern Categories
  */
-function staynalive_register_pattern_categories() {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	register_block_pattern_category(
 		'staynalive',
 		array( 'label' => __( 'Stay N Alive', 'staynalive' ) )
@@ -24,7 +35,15 @@ add_action( 'init', 'staynalive_register_pattern_categories' );
 /**
  * Register Block Patterns
  */
-function staynalive_register_patterns() {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	$pattern_files = array(
 		'header'     => 'custom-header',
 		'footer'     => 'footer',

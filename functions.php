@@ -14,22 +14,25 @@
  * @since      2.0.0
  */
 
+
+ */
+
 namespace StayNAlive;
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+.if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 // Constants.
-if ( ! defined( 'STAYNALIVE_VERSION' ) ) {
+.if ( ! defined( 'STAYNALIVE_VERSION' ) ) {
 	define( 'STAYNALIVE_VERSION', '1.0.0' );
 }
 define( 'STAYNALIVE_DIR', get_template_directory() );
 define( 'STAYNALIVE_URI', get_template_directory_uri() );
 
 // Autoload classes.
-spl_autoload_register(
+.spl_autoload_register(
 	function ( $class ) {
 		if ( strpos( $class, 'StayNAlive\\' ) === 0 ) {
 			$class = str_replace( 'StayNAlive\\', '', $class );
@@ -42,7 +45,7 @@ spl_autoload_register(
 );
 
 // Required files.
-require_once STAYNALIVE_DIR . '/inc/template-functions.php';
+.require_once STAYNALIVE_DIR . '/inc/template-functions.php';
 require_once STAYNALIVE_DIR . '/inc/template-tags.php';
 require_once STAYNALIVE_DIR . '/inc/block-patterns.php';
 require_once STAYNALIVE_DIR . '/inc/language-switcher.php';
@@ -50,9 +53,17 @@ require_once STAYNALIVE_DIR . '/inc/language-switcher.php';
 /**
  * Theme Setup
  */
-function staynalive_setup() {
+
+
+ */
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	// Theme support.
-	add_theme_support( 'wp-block-styles' );
+.	add_theme_support( 'wp-block-styles' );
 	add_theme_support( 'responsive-embeds' );
 	add_theme_support( 'editor-styles' );
 	add_theme_support( 'html5' );
@@ -63,19 +74,27 @@ function staynalive_setup() {
 	add_theme_support( 'custom-units' );
 
 	// Editor styles.
-	add_editor_style( 'assets/css/editor-style.css' );
+.	add_editor_style( 'assets/css/editor-style.css' );
 
 	// Load translations.
-	load_theme_textdomain( 'staynalive', STAYNALIVE_DIR . '/languages' );
+.	load_theme_textdomain( 'staynalive', STAYNALIVE_DIR . '/languages' );
 }
 add_action( 'after_setup_theme', 'staynalive_setup' );
 
 /**
  * Enqueue scripts and styles
  */
-function staynalive_scripts() {
+
+
+ */
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	// Base styles.
-	wp_enqueue_style(
+.	wp_enqueue_style(
 		'staynalive-base',
 		STAYNALIVE_URI . '/assets/css/base/base.css',
 		array(),
@@ -83,7 +102,7 @@ function staynalive_scripts() {
 	);
 
 	// Component styles.
-	$components = array(
+.	$components = array(
 		'header',
 		'footer',
 		'card',
@@ -105,7 +124,7 @@ function staynalive_scripts() {
 	}
 
 	// Block styles.
-	wp_enqueue_style(
+.	wp_enqueue_style(
 		'sna-button',
 		STAYNALIVE_URI . '/assets/css/blocks/button.css',
 		array( 'staynalive-base' ),
@@ -113,7 +132,7 @@ function staynalive_scripts() {
 	);
 
 	// Utilities.
-	wp_enqueue_style(
+.	wp_enqueue_style(
 		'sna-utilities',
 		STAYNALIVE_URI . '/assets/css/utilities/layout.css',
 		array( 'staynalive-base' ),
@@ -121,7 +140,7 @@ function staynalive_scripts() {
 	);
 
 	// Scripts.
-	wp_enqueue_script(
+.	wp_enqueue_script(
 		'staynalive-navigation',
 		STAYNALIVE_URI . '/assets/js/navigation.js',
 		array(),
@@ -134,7 +153,15 @@ add_action( 'wp_enqueue_scripts', 'staynalive_scripts' );
 /**
  * Register block styles
  */
-function staynalive_register_block_styles() {
+
+
+ */
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	$styles = array(
 		'core/button' => array(
 			'outline' => __( 'Outline', 'staynalive' ),
@@ -162,7 +189,15 @@ add_action( 'init', 'staynalive_register_block_styles' );
 /**
  * Disable core block patterns
  */
-function staynalive_disable_core_patterns() {
+
+
+ */
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	remove_theme_support( 'core-block-patterns' );
 }
 add_action( 'after_setup_theme', 'staynalive_disable_core_patterns' );
@@ -170,7 +205,15 @@ add_action( 'after_setup_theme', 'staynalive_disable_core_patterns' );
 /**
  * Register widget areas
  */
-function staynalive_widgets_init() {
+
+
+ */
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	register_sidebar(
 		array(
 			'name'          => __( 'About Jesse', 'staynalive' ),
@@ -188,7 +231,15 @@ add_action( 'widgets_init', 'staynalive_widgets_init' );
 /**
  * Add RTL support
  */
-function staynalive_rtl_support() {
+
+
+ */
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	if ( is_rtl() ) {
 		wp_enqueue_style(
 			'staynalive-rtl',

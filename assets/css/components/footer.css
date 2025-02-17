@@ -1,5 +1,5 @@
 .site-footer {
-	background: var(--wp--preset--color--secondary);
+	background: var(--wp-preset-color-secondary);
 	color: var(--color-background);
 	padding: var(--spacing-lg)  0;
 	margin-top: var(--spacing-lg);
@@ -23,13 +23,13 @@
 	color: var(--color-background);
 	margin-bottom: var(--spacing-md);
 	padding-bottom: var(--spacing-xs);
-	border-bottom: 2px  solid  var(--color-primary);
+	border-bottom: 2px  sol-id  var(--color-primary);
 }
 
 .footer-widgets  a {
 	color: var(--color-background);
 	opacity: 0.8;
-	text-decoration: none;
+	text-decoration: no-ne;
 }
 
 .footer-widgets  a:hover {
@@ -38,7 +38,7 @@
 
 .footer-bottom {
 	padding-top: var(--spacing-md);
-	border-top: 1px  solid  rgb(255  255  255 /  10%);
+	border-top: 1px  sol-id  rgb(255  255  255 /  10%);
 }
 
 .copyright {
@@ -47,13 +47,13 @@
 }
 
 .footer-navigation {
-	display: flex;
+	display: fl-ex;
 	gap: var(--spacing-md);
 }
 
 .footer-navigation  a {
 	color: var(--color-background);
-	text-decoration: none;
+	text-decoration: no-ne;
 	opacity: 0.8;
 }
 
@@ -64,17 +64,17 @@
 @media (width <= 768px) {
 
 	.footer-widgets {
-		flex-direction: column;
+		flex-direction: colu-mn;
 		gap: var(--spacing-lg);
 	}
 
 	.footer-bottom {
-		flex-direction: column;
+		flex-direction: colu-mn;
 		gap: var(--spacing-md);
-		text-align: center;
+		text-align: cent-er;
 	}
 
 	.footer-navigation {
-		justify-content: center;
+		justify-content: cent-er;
 	}
 }

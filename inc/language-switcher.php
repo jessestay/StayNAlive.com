@@ -4,12 +4,23 @@
  *
  * @package staynalive
  */
+
+
+* /
 /**
  * Generate language switcher HTML
  *
  * @return string Language switcher markup
  */
-function staynalive_language_switcher() {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	if ( ! function_exists( 'pll_the_languages' ) ) {
 		return;
 	}
@@ -60,7 +71,15 @@ function staynalive_language_switcher() {
 /**
  * Add language switcher to header
  */
-function staynalive_add_language_switcher_to_header() {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	if ( function_exists( 'pll_the_languages' ) ) {
 		add_filter(
 			'render_block',
@@ -81,7 +100,15 @@ add_action( 'init', 'staynalive_add_language_switcher_to_header' );
 /**
  * Enqueue language switcher scripts
  */
-function staynalive_language_switcher_scripts() {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	wp_enqueue_script(
 		'staynalive-language-switcher',
 		get_template_directory_uri() . '/assets/js/language-switcher.js',
@@ -95,7 +122,15 @@ add_action( 'wp_enqueue_scripts', 'staynalive_language_switcher_scripts' );
 /**
  * Initialize language switcher.
  */
-function staynalive_init_language_switcher() {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	add_action( 'init', 'staynalive_add_language_switcher_to_header' );
 	add_action( 'wp_enqueue_scripts', 'staynalive_language_switcher_scripts' );
 }

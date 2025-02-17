@@ -5,12 +5,23 @@
  * @package StayNAlive
  */
 
+
+* /
+
 /**
  * Display post meta information
  *
  * @param int|WP_Post $post Post ID or post object.
  */
-function staynalive_post_meta( $post = null ) {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function ( $post = null ) {
 	$post        = get_post( $post );
 	$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time>';
 
@@ -59,7 +70,15 @@ function staynalive_post_meta( $post = null ) {
  * @param int|WP_Post $post Post ID or post object.
  * @return string Categories HTML or empty string.
  */
-function staynalive_get_post_categories( $post = null ) {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function ( $post = null ) {
 	$post = get_post( $post );
 	if ( 'post' !== get_post_type( $post ) ) {
 		return '';
@@ -88,7 +107,15 @@ function staynalive_get_post_categories( $post = null ) {
  *
  * @param int|WP_Post $post Post ID or post object.
  */
-function staynalive_post_tags( $post = null ) {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function ( $post = null ) {
 	$post = get_post( $post );
 	if ( 'post' !== get_post_type( $post ) ) {
 		return;
@@ -116,7 +143,15 @@ function staynalive_post_tags( $post = null ) {
  * @param int|WP_Post $post Post ID or post object.
  * @param string      $size Image size.
  */
-function staynalive_featured_image( $post = null, $size = 'large' ) {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function ( $post = null, $size = 'large' ) {
 	$post = get_post( $post );
 	if ( ! has_post_thumbnail( $post ) ) {
 		return;
@@ -159,7 +194,15 @@ function staynalive_featured_image( $post = null, $size = 'large' ) {
 /**
  * Display post navigation
  */
-function staynalive_post_navigation() {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	if ( ! is_singular( 'post' ) ) {
 		return;
 	}

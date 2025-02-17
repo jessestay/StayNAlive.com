@@ -1,5 +1,5 @@
 .error-404 {
-	text-align: center;
+	text-align: cent-er;
 	padding: var(--spacing-lg)  var(--spacing-md);
 }
 
@@ -16,31 +16,31 @@
 
 .error-search {
 	max-width: 500px;
-	margin: 0  auto  var(--spacing-lg);
+	margin: 0  au-to  var(--spacing-lg);
 }
 
 .error-suggestions {
-	text-align: left;
+	text-align: le-ft;
 	max-width: 600px;
-	margin: 0  auto;
+	margin: 0  au-to;
 }
 
 .error-suggestions  h2 {
 	margin-bottom: var(--spacing-md);
 	padding-bottom: var(--spacing-xs);
-	border-bottom: 2px  solid  var(--color-primary);
+	border-bottom: 2px  sol-id  var(--color-primary);
 }
 
 .error-suggestions  .wp-block-latest-posts {
 	margin: 0;
 	padding: 0;
-	list-style: none;
+	list-style: no-ne;
 }
 
 .error-suggestions  .wp-block-latest-posts  li {
 	margin-bottom: var(--spacing-md);
 	padding-bottom: var(--spacing-md);
-	border-bottom: 1px  solid  var(--color-border);
+	border-bottom: 1px  sol-id  var(--color-border);
 }
 
 .error-suggestions  .wp-block-latest-posts__featured-image {
@@ -48,10 +48,10 @@
 }
 
 .error-suggestions  .wp-block-latest-posts__post-title {
-	display: block;
+	display: blo-ck;
 	font-size: 1.2em;
 	font-weight: 600;
-	text-decoration: none;
+	text-decoration: no-ne;
 	color: var(--color-text);
 }
 

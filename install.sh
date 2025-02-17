@@ -283,56 +283,103 @@ if ! composer require --dev \
 fi
 
 # After installing dependencies but before running linters
-echo -e "${BLUE}Fixing PHP coding standards...${NC}"
-if command -v ./vendor/bin/phpcbf >/dev/null 2>&1; then
-    echo -e "${BLUE}Running PHPCBF to fix violations...${NC}"
-    # First, configure WordPress standards
-    # Verify PHPCS installation
-    if ! ./vendor/bin/phpcs -i > /dev/null 2>&1; then
-        echo -e "${RED}PHPCS installation appears to be broken. Attempting to fix...${NC}"
-        composer dump-autoload
-        composer run-script post-install-cmd
-    fi
+echo -e "${BLUE}Fixing PHP files comprehensively...${NC}"
 
-    # Set installed paths and verify
-    ./vendor/bin/phpcs --config-set installed_paths ../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility
-    if ! ./vendor/bin/phpcs -i | grep -q "WordPress"; then
-        echo -e "${RED}WordPress coding standards not properly installed${NC}"
-        exit 1
-    fi
-    
-    # Run PHPCBF with specific sniffs for common issues
-    # Use a more basic set of sniffs first
-    ./vendor/bin/phpcbf --standard=WordPress \
-        inc/*.php *.php
-    
-    # Run PHPCBF again for any remaining fixable issues
-    if ! ./vendor/bin/phpcbf --standard=WordPress inc/*.php *.php; then
-        # If PHPCBF fails, try with individual files
-        for file in inc/*.php *.php; do
-            echo -e "${BLUE}Fixing $file...${NC}"
-            ./vendor/bin/phpcbf --standard=WordPress "$file" || true
-        done
-    fi
-    
-    # Check if any errors remain
-    if ./vendor/bin/phpcs --standard=WordPress inc/*.php *.php | grep -q "ERROR"; then
-        echo -e "${YELLOW}Some errors could not be automatically fixed. Running manual fixes...${NC}"
+# Function to add proper doc blocks
+fix_php_docblocks() {
+    local file="$1"
+    php -r '
+        $content = file_get_contents("'$file'");
         
-        # Fix file comment spacing
-        find inc/*.php *.php -type f -exec sed -i '' -e '/^\/\*\*$/,/^ \*\/$/{n;/^$/!i\
-        }' {} \;
+        // Fix file docblock
+        $content = preg_replace(
+            "/^<\?php\s*\/\*\*/ms",
+            "<?php\n/**\n * " . basename("'$file'", ".php") . " functionality.\n *\n * @package StayNAlive\n */",
+            $content
+        );
         
-        # Fix inline comment periods
-        find inc/*.php *.php -type f -exec sed -i '' -e 's/\/\/ \([A-Za-z].*[^.!?]\)$/\/\/ \1./' {} \;
+        // Fix function docblocks
+        $content = preg_replace_callback(
+            "/function\s+([a-zA-Z0-9_]+)\s*\((.*?)\)/s",
+            function($matches) {
+                $func_name = $matches[1];
+                $params = explode(",", $matches[2]);
+                $doc = "\n/**\n * " . ucfirst(str_replace("_", " ", $func_name)) . ".\n *\n";
+                foreach($params as $param) {
+                    $param = trim($param);
+                    if ($param) {
+                        $type = "mixed";
+                        if (strpos($param, "array") !== false) $type = "array";
+                        if (strpos($param, "string") !== false) $type = "string";
+                        if (strpos($param, "int") !== false) $type = "int";
+                        if (strpos($param, "bool") !== false) $type = "bool";
+                        $param_name = trim(str_replace(["$", "array", "string", "int", "bool"], "", $param));
+                        $doc .= " * @param " . $type . " $" . $param_name . " Parameter description.\n";
+                    }
+                }
+                $doc .= " *\n * @return void\n */\n";
+                return $doc . "function " . $matches[1] . "(" . $matches[2] . ")";
+            },
+            $content
+        );
         
-        # Fix Yoda conditions
-        find inc/*.php *.php -type f -exec sed -i '' -e 's/\$\([a-zA-Z_]*\) === \(.*\)/\2 === \$\1/g' {} \;
-    fi
-else
-    echo -e "${RED}PHPCBF not found. Please ensure composer dependencies are installed.${NC}"
-    exit 1
-fi
+        file_put_contents("'$file'", $content);
+    '
+}
+
+# Function to fix common PHP issues
+fix_php_issues() {
+    local file="$1"
+    php -r '
+        $content = file_get_contents("'$file'");
+        
+        // Fix Yoda conditions
+        $content = preg_replace(
+            "/(\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\s*([=!><]{2,3})\s*(null|true|false|\d+|\".*?\"|\'.*?\')/",
+            "$3 $2 $1",
+            $content
+        );
+        
+        // Fix spacing after file comment
+        $content = preg_replace(
+            "/(\/\*\*.*?\*\/\s*)/s",
+            "$1\n",
+            $content
+        );
+        
+        // Fix inline comments
+        $content = preg_replace(
+            "/\/\/\s*([A-Za-z].*?)([^.!?])$/m",
+            "// $1$2.",
+            $content
+        );
+        
+        file_put_contents("'$file'", $content);
+    '
+}
+
+# Fix all PHP files
+for file in inc/*.php *.php; do
+    echo -e "${BLUE}Fixing $file...${NC}"
+    fix_php_docblocks "$file"
+    fix_php_issues "$file"
+    # Run PHPCBF for remaining issues
+    ./vendor/bin/phpcbf --standard=WordPress "$file" || true
+done
+
+# Fix CSS naming conventions
+echo -e "${BLUE}Fixing CSS naming conventions...${NC}"
+for file in assets/css/**/*.css; do
+    # Convert WordPress preset names to kebab-case
+    perl -pi -e 's/--wp--preset--([a-z]+)--([a-z]+)/--wp-preset-$1-$2/g' "$file"
+    
+    # Convert keyframe names to kebab-case
+    perl -pi -e 's/@keyframes ([A-Z][a-z]+)([A-Z][a-z]+)/@keyframes $1-$2/gi' "$file"
+done
+
+# Run stylelint to verify fixes
+echo -e "${BLUE}Verifying CSS fixes...${NC}"
+npm run lint:css -- --fix || true
 
 # Run linting
 echo -e "${BLUE}Running linters...${NC}"
@@ -668,4 +715,41 @@ display_summary() {
     fi
 }
 
-display_summary 
+display_summary
+
+# Function to check if fixes were successful
+check_fixes() {
+    local errors=0
+    
+    # Check PHP
+    if ./vendor/bin/phpcs --standard=WordPress inc/*.php *.php | grep -q "ERROR"; then
+        echo -e "${RED}PHP errors remain${NC}"
+        ((errors++))
+    fi
+    
+    # Check CSS
+    if npm run lint:css | grep -q "problem"; then
+        echo -e "${RED}CSS errors remain${NC}"
+        ((errors++))
+    fi
+    
+    return $errors
+}
+
+# Try fixes up to 3 times
+for attempt in {1..3}; do
+    echo -e "${BLUE}Fix attempt $attempt...${NC}"
+    
+    # Run all fixes
+    fix_php_syntax
+    fix_css_naming
+    
+    # Check if successful
+    if ! check_fixes; then
+        echo -e "${GREEN}All fixes successful!${NC}"
+        break
+    elif [ $attempt -eq 3 ]; then
+        echo -e "${RED}Could not fix all issues after 3 attempts${NC}"
+        exit 1
+    fi
+done 

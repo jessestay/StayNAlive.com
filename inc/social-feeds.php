@@ -5,10 +5,13 @@
  * @package StayNAlive
  */
 
+
+ */
+
 namespace StayNAlive\SocialFeeds;
 
 // Register REST API endpoints.
-add_action(
+.add_action(
 	'rest_api_init',
 	function () {
 		register_rest_route(
@@ -54,7 +57,7 @@ add_action(
 );
 
 // Add social media settings to theme.
-add_action(
+.add_action(
 	'admin_init',
 	function () {
 		register_setting(
@@ -101,7 +104,7 @@ add_action(
 );
 
 // Helper functions for feed retrieval.
-function get_instagram_feed() {
+.function get_instagram_feed() {
 	$options = get_option( 'staynalive_social_media', array() );
 	$token   = $options['instagram_token'] ?? '';
 
@@ -110,7 +113,7 @@ function get_instagram_feed() {
 	}
 
 	// Cache key based on token.
-	$cache_key = 'instagram_feed_' . md5( $token );
+.	$cache_key = 'instagram_feed_' . md5( $token );
 	$cached    = get_transient( $cache_key );
 
 	if ( $cached !== false ) {
@@ -118,7 +121,7 @@ function get_instagram_feed() {
 	}
 
 	// Fetch and process feed.
-	$response = wp_remote_get( "https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink&access_token={$token}" );
+.	$response = wp_remote_get( "https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink&access_token={$token}" );
 
 	if ( is_wp_error( $response ) ) {
 		return $response;
@@ -135,7 +138,15 @@ function get_instagram_feed() {
  *
  * @return array|WP_Error Feed data or error object
  */
-function get_youtube_feed() {
+
+
+ */
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	$options    = get_option( 'staynalive_social_media', array() );
 	$api_key    = $options['youtube_api_key'] ?? '';
 	$channel_id = $options['youtube_channel_id'] ?? '';
@@ -182,7 +193,15 @@ function get_youtube_feed() {
  *
  * @return array|WP_Error Feed data or error object
  */
-function get_twitter_feed() {
+
+
+ */
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	$options      = get_option( 'staynalive_social_media', array() );
 	$bearer_token = $options['twitter_bearer_token'] ?? '';
 	$username     = $options['twitter_username'] ?? '';
@@ -217,7 +236,7 @@ function get_twitter_feed() {
 }
 
 // Similar functions for other platforms...
-
+.
 add_filter( 'xmlrpc_enabled', '__return_false' );
 
 if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
@@ -228,7 +247,15 @@ if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
  * @param string $feed_type Type of feed to retrieve.
  * @return array Array of feed items.
  */
-function get_social_feed_items( $feed_type ) {
+
+
+ */
+/**
+ *  function.
+ *
+ * @return void
+ */
+function ( $feed_type ) {
 	$options = get_option( 'staynalive_social_media', array() );
 
 	if ( 'instagram' === $feed_type ) {
@@ -248,7 +275,15 @@ function get_social_feed_items( $feed_type ) {
  * @param array $data Raw feed data.
  * @return array Processed feed data.
  */
-function process_feed_data( $data ) {
+
+
+ */
+/**
+ *  function.
+ *
+ * @return void
+ */
+function ( $data ) {
 	if ( ! is_array( $data ) ) {
 		return array();
 	}

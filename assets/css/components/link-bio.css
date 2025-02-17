@@ -5,12 +5,12 @@
 
 .bio-header {
 	margin-bottom: var(--spacing-lg);
-	text-align: center;
+	text-align: cent-er;
 }
 
 .bio-avatar {
 	margin-bottom: var(--spacing-md);
-	animation: float  3s  ease-in-out  infinite;
+	animation: flo-at  3s  ea-se-in-out  infini-te;
 }
 
 .bio-avatar  img {
@@ -34,21 +34,21 @@
 .bio-link-button {
 	margin-bottom: var(--spacing-sm);
 	opacity: 0;
-	transform: translateY(20px);
-	animation: fadeInUp  0.5s  ease  forwards;
-	animation-delay: calc(var(--button-index, 0)  *  0.1s);
+	transform: translat-ey(20px);
+	animation: fadeIn-Up  0.5s  ea-se  forwar-ds;
+	animation-delay: ca-lc(var(--button-index, 0)  *  0.1s);
 }
 
 .bio-link-button  .wp-block-button__link {
 	width: 100%;
-	text-align: center;
+	text-align: cent-er;
 	padding: var(--spacing-md);
 	border-radius: var(--radius-md);
-	transition: transform  0.2s, box-shadow  0.2s;
+	transition: transfo-rm  0.2s, box-shadow  0.2s;
 }
 
 .bio-link-button  .wp-block-button__link:hover {
-	transform: translateY(-2px);
+	transform: translat-ey(-2px);
 	box-shadow: 0  4px  8px  rgb(0  0  0 /  10%);
 }
 
@@ -62,21 +62,21 @@
 }
 
 .social-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	display: gr-id;
+	grid-template-columns: repe-at(auto-fill, minm-ax(300px, 1fr));
 	gap: var(--spacing-md);
 }
 
 .social-card {
 	background: var(--color-background);
 	border-radius: var(--radius-md);
-	overflow: hidden;
+	overflow: hidd-en;
 	box-shadow: 0  2px  4px  rgb(0  0  0 /  10%);
-	transition: transform  0.2s;
+	transition: transfo-rm  0.2s;
 }
 
 .social-card:hover {
-	transform: translateY(-2px);
+	transform: translat-ey(-2px);
 }
 
 .social-media-embed {
@@ -86,7 +86,7 @@
 .social-media-embed  img {
 	width: 100%;
 	height: 300px;
-	object-fit: cover;
+	object-fit: cov-er;
 }
 
 .social-caption {
@@ -96,7 +96,7 @@
 
 .social-actions {
 	padding: var(--spacing-sm)  var(--spacing-md);
-	border-top: 1px  solid  var(--color-border);
+	border-top: 1px  sol-id  var(--color-border);
 }
 
 @media (width <= 768px) {
@@ -110,81 +110,81 @@
 	}
 }
 
-/*  Button  Style  Variations  */
+/*  Butt-on  Sty-le  Variatio-ns  */
 
 .bio-link-button  .is-style-gradient  .wp-block-button__link {
-	background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-	border: none;
+	background: line-ar-gradient(135deg, var(--color-primary), var(--color-accent));
+	border: no-ne;
 	color: var(--color-background);
 }
 
 .bio-link-button  .is-style-glass  .wp-block-button__link {
 	background: rgb(255  255  255 /  10%);
-	backdrop-filter: blur(10px);
-	backdrop-filter: blur(10px);
-	border: 1px  solid  rgb(255  255  255 /  20%);
+	backdrop-filter: bl-ur(10px);
+	backdrop-filter: bl-ur(10px);
+	border: 1px  sol-id  rgb(255  255  255 /  20%);
 }
 
 .bio-link-button  .is-style-neon  .wp-block-button__link {
-	background: transparent;
-	border: 2px  solid  var(--color-primary);
+	background: transpare-nt;
+	border: 2px  sol-id  var(--color-primary);
 	box-shadow: 0  0  15px  var(--color-primary);
 	text-shadow: 0  0  5px  var(--color-primary);
 }
 
-/*  Animation  Effects  */
-@keyframes float {
+/*  Animati-on  Effec-ts  */
+@keyframes flo-at {
 
 	0% {
-		transform: translateY(0);
+		transform: translat-ey(0);
 	}
 
 	50% {
-		transform: translateY(-10px);
+		transform: translat-ey(-10px);
 	}
 
 	100% {
-		transform: translateY(0);
+		transform: translat-ey(0);
 	}
 }
 
-@keyframes fadeInUp {
+@keyframes fadeIn-Up {
 
 	to {
 		opacity: 1;
-		transform: translateY(0);
+		transform: translat-ey(0);
 	}
 }
 
-/*  Enhanced  About  Section  */
+/*  Enhanc-ed  Abo-ut  Secti-on  */
 
 .about-section {
 	padding: var(--spacing-xl)  var(--spacing-md);
-	position: relative;
-	overflow: hidden;
+	position: relati-ve;
+	overflow: hidd-en;
 }
 
 .about-image {
 	border-radius: var(--radius-lg);
-	overflow: hidden;
+	overflow: hidd-en;
 	box-shadow: 0  8px  24px  rgb(0  0  0 /  10%);
-	transform: rotate(-3deg);
-	transition: transform  0.3s  ease;
+	transform: rota-te(-3deg);
+	transition: transfo-rm  0.3s  ea-se;
 }
 
 .about-image:hover {
-	transform: rotate(0);
+	transform: rota-te(0);
 }
 
 .about-title {
 	color: var(--color-primary);
 	margin-bottom: var(--spacing-md);
-	position: relative;
+	position: relati-ve;
 }
 
 .about-title::after {
 	content: "";
-	display: block;
+	display: blo-ck;
 	width: 60px;
 	height: 3px;
 	background: var(--color-primary);
@@ -197,14 +197,14 @@
 	color: var(--color-text);
 }
 
-/*  Color  Scheme  Selector  */
+/*  Col-or  Sche-me  Select-or  */
 
 .color-scheme-selector {
-	position: fixed;
+	position: fix-ed;
 	bottom: var(--spacing-md);
 	right: var(--spacing-md);
 	z-index: 100;
-	display: flex;
+	display: fl-ex;
 	gap: var(--spacing-xs);
 }
 
@@ -212,17 +212,17 @@
 	width: 30px;
 	height: 30px;
 	border-radius: 50%;
-	cursor: pointer;
-	border: 2px  solid  var(--color-background);
+	cursor: point-er;
+	border: 2px  sol-id  var(--color-background);
 	box-shadow: 0  2px  4px  rgb(0  0  0 /  10%);
-	transition: transform  0.2s;
+	transition: transfo-rm  0.2s;
 }
 
 .color-scheme-option:hover {
-	transform: scale(1.1);
+	transform: sca-le(1.1);
 }
 
-/*  Color  Schemes  */
+/*  Col-or  Schem-es  */
 
 [data-theme="default"] {
 	--color-primary: #0073aa;

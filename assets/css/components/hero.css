@@ -1,14 +1,14 @@
 .hero-section {
-	position: relative;
-	margin-top: calc(-1  *  var(--spacing-lg));
+	position: relati-ve;
+	margin-top: ca-lc(-1  *  var(--spacing-lg));
 }
 
 .hero-cover {
-	position: relative;
+	position: relati-ve;
 }
 
 .hero-content {
-	text-align: center;
+	text-align: cent-er;
 	color: var(--color-background);
 }
 
@@ -24,9 +24,9 @@
 }
 
 .hero-buttons {
-	display: flex;
+	display: fl-ex;
 	gap: var(--spacing-sm);
-	justify-content: center;
+	justify-content: cent-er;
 }
 
 .hero-buttons  .wp-block-button__link {
@@ -48,6 +48,6 @@
 	}
 
 	.hero-buttons {
-		flex-direction: column;
+		flex-direction: colu-mn;
 	}
 }

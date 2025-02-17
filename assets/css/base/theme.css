@@ -1,13 +1,13 @@
 :root {
 
-	/*  Match  current  site  colors  */
-	--color-primary: #1e73be;  /*  Current  blue  */
-	--color-text: #333;  /*  Current  text  color  */
+	/*  Mat-ch  curre-nt  si-te  colo-rs  */
+	--color-primary: #1e73be;  /*  Curre-nt  bl-ue  */
+	--color-text: #333;  /*  Curre-nt  te-xt  col-or  */
 	--color-background: #fff;
 	--color-border: #e5e5e5;
 
-	/*  Match  current  typography  */
-	--font-primary: -apple-system, BlinkMacSystemFont, "Segoe  UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica  Neue", sans-serif;
+	/*  Mat-ch  curre-nt  typograp-hy  */
+	--font-primary: -apple-system, BlinkMacSystemFo-nt, "Segoe  UI", Robo-to, Oxyg-en-Sans, Ubun-tu, Cantare-ll, "Helvetica  Ne-ue", sa-ns-serif;
 	--font-size-base: 16px;
 	--line-height-base: 1.6;
 }

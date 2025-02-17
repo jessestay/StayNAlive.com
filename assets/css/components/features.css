@@ -3,7 +3,7 @@
 }
 
 .features-header {
-	text-align: center;
+	text-align: cent-er;
 	margin-bottom: var(--spacing-lg);
 }
 
@@ -17,7 +17,7 @@
 }
 
 .feature-card {
-	text-align: center;
+	text-align: cent-er;
 	padding: var(--spacing-md);
 	background: var(--color-background);
 	border-radius: var(--radius-md);
@@ -26,14 +26,14 @@
 }
 
 .feature-card:hover {
-	transform: translateY(-2px);
+	transform: translat-ey(-2px);
 	box-shadow: 0  4px  8px  rgb(0  0  0 /  10%);
 }
 
 .feature-icon {
 	width: 64px;
 	height: 64px;
-	margin: 0  auto  var(--spacing-md);
+	margin: 0  au-to  var(--spacing-md);
 }
 
 .feature-card  h3 {
@@ -48,6 +48,6 @@
 	}
 
 	.features-grid {
-		flex-direction: column;
+		flex-direction: colu-mn;
 	}
 }

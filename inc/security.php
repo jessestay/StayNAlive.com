@@ -4,21 +4,24 @@
  *
  * @package staynalive
  */
+
+
+* /
 namespace StayNAlive;
 
 // Disable XML-RPC functionality.
-add_filter( 'xmlrpc_enabled', '__return_false' );
+ . add_filter( 'xmlrpc_enabled', '__return_false' );
 
 // Remove WordPress version from head.
-remove_action( 'wp_head', 'wp_generator' );
+. remove_action( 'wp_head', 'wp_generator' );
 
 // Disable file editing in admin.
-if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
+ . if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
 	define( 'DISALLOW_FILE_EDIT', true );
 }
 
 // Add security headers.
-add_action(
+ . add_action(
 	'send_headers',
 	function () {
 		header( 'X-Content-Type-Options: nosniff' );
@@ -29,7 +32,7 @@ add_action(
 );
 
 // Sanitize SVG uploads.
-add_filter(
+ . add_filter(
 	'wp_handle_upload_prefilter',
 	function ( $file ) {
 		if ( 'image/svg+xml' === $file['type'] ) {

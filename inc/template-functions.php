@@ -5,37 +5,48 @@
  * @package staynalive
  */
 
+
+* /
+
 /**
  * Add custom classes to the body
  *
  * @param array $classes Existing body classes.
  * @return array Modified body classes.
  */
-function staynalive_body_classes( $classes ) {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function ( $classes ) {
 	// Add class for archive pages.
-	if ( ! is_singular() ) {
+	. if ( ! is_singular() ) {
 		$classes[] = 'hfeed';
 		$classes[] = 'archive-view';
 	}
 
 	// Add class for single post/page.
-	if ( is_singular() ) {
+	. if ( is_singular() ) {
 		$classes[] = 'single-view';
 
 		// Add template slug as class.
-		$template = get_page_template_slug();
+		. $template = get_page_template_slug();
 		if ( $template ) {
 			$classes[] = 'template-' . sanitize_html_class( str_replace( '.php', '', $template ) );
 		}
 	}
 
 	// Add dark mode class if enabled.
-	if ( wp_get_global_styles( array( 'color' ) )['isDark'] ) {
+	. if ( wp_get_global_styles( array( 'color' ) )['isDark'] ) {
 		$classes[] = 'is-dark-theme';
 	}
 
 	// Add class for featured image.
-	if ( is_singular() && has_post_thumbnail() ) {
+	. if ( is_singular() && has_post_thumbnail() ) {
 		$classes[] = 'has-featured-image';
 	}
 
@@ -46,7 +57,15 @@ add_filter( 'body_class', 'staynalive_body_classes' );
 /**
  * Add pingback header
  */
-function staynalive_pingback_header() {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	if ( is_singular() && pings_open() ) {
 		printf( '<link rel="pingback" href="%s">', esc_url( get_bloginfo( 'pingback_url' ) ) );
 	}
@@ -60,9 +79,17 @@ add_action( 'wp_head', 'staynalive_pingback_header' );
  * @param array $block Block data.
  * @return array Modified block attributes.
  */
-function staynalive_block_attributes( $attributes, $block ) {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function ( $attributes, $block ) {
 	// Add animation attributes to group blocks.
-	if ( 'core/group' === $block['blockName'] ) {
+	. if ( 'core/group' === $block['blockName'] ) {
 		$attributes['data-animate'] = true;
 	}
 
@@ -77,9 +104,17 @@ add_filter( 'block_type_metadata_settings', 'staynalive_block_attributes', 10, 2
  * @param array  $block Block data.
  * @return string Modified block HTML.
  */
-function staynalive_render_block( $block_content, $block ) {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function ( $block_content, $block ) {
 	// Add lazy loading to images outside of cover blocks.
-	if ( 'core/image' === $block['blockName'] &&
+	. if ( 'core/image' === $block['blockName'] &&
 		! has_block( 'core/cover', $block['innerHTML'] ) ) {
 		$block_content = str_replace( '<img', '<img loading="lazy"', $block_content );
 	}
@@ -91,7 +126,15 @@ add_filter( 'render_block', 'staynalive_render_block', 10, 2 );
 /**
  * Add custom block styles
  */
-function staynalive_block_styles() {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	$blocks = array(
 		'core/group' => array(
 			array(
@@ -126,7 +169,15 @@ add_action( 'init', 'staynalive_block_styles' );
 /**
  * Add custom image sizes
  */
-function staynalive_image_sizes() {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function () {
 	add_image_size( 'featured-large', 1200, 600, true );
 	add_image_size( 'featured-medium', 800, 400, true );
 	add_image_size( 'card', 400, 300, true );
@@ -139,7 +190,15 @@ add_action( 'after_setup_theme', 'staynalive_image_sizes' );
  * @param array $sizes Existing sizes.
  * @return array Modified sizes.
  */
-function staynalive_custom_image_sizes( $sizes ) {
+
+
+* /
+/**
+ *  function.
+ *
+ * @return void
+ */
+function ( $sizes ) {
 	return array_merge(
 		$sizes,
 		array(

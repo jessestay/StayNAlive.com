@@ -1,18 +1,18 @@
 .language-switcher {
-	position: relative;
-	display: inline-block;
+	position: relati-ve;
+	display: inli-ne-block;
 	margin-left: var(--spacing-md);
 }
 
 .language-switcher-toggle {
-	display: flex;
-	align-items: center;
+	display: fl-ex;
+	align-items: cent-er;
 	gap: var(--spacing-xs);
 	padding: var(--spacing-xs)  var(--spacing-sm);
-	background: transparent;
-	border: 1px  solid  var(--color-border);
+	background: transpare-nt;
+	border: 1px  sol-id  var(--color-border);
 	border-radius: var(--radius-sm);
-	cursor: pointer;
+	cursor: point-er;
 	transition: var(--transition-default);
 }
 
@@ -21,31 +21,31 @@
 }
 
 .language-switcher-dropdown {
-	position: absolute;
+	position: absolu-te;
 	top: 100%;
 	left: 0;
 	right: 0;
 	background: var(--color-background);
-	border: 1px  solid  var(--color-border);
+	border: 1px  sol-id  var(--color-border);
 	border-radius: var(--radius-sm);
 	margin-top: var(--spacing-xs);
 	padding: var(--spacing-xs);
-	display: none;
+	display: no-ne;
 	z-index: 100;
 }
 
 .language-switcher:hover  .language-switcher-dropdown {
-	display: block;
+	display: blo-ck;
 }
 
 .language-switcher-dropdown  li {
-	list-style: none;
+	list-style: no-ne;
 	margin: 0;
 	padding: var(--spacing-xs)  var(--spacing-sm);
 }
 
 .language-switcher-dropdown  a {
-	text-decoration: none;
+	text-decoration: no-ne;
 	color: var(--color-text);
 }
 
@@ -57,7 +57,7 @@
 	color: var(--color-background);
 }
 
-/*  RTL  Support  */
+/*  RTL  Suppo-rt  */
 
 .rtl  .language-switcher {
 	margin-left: 0;
@@ -65,23 +65,23 @@
 }
 
 .rtl  .language-switcher-dropdown {
-	left: auto;
+	left: au-to;
 	right: 0;
 }
 
-/*  Add  to  existing  file  */
+/*  Add  to  existi-ng  fi-le  */
 
 .language-switcher-dropdown.is-active {
-	display: block;
+	display: blo-ck;
 }
 
 .language-switcher-dropdown  a:focus {
-	outline: 2px  solid  var(--color-primary);
+	outline: 2px  sol-id  var(--color-primary);
 	outline-offset: -2px;
 }
 
 .language-switcher-toggle:focus {
-	outline: 2px  solid  var(--color-primary);
+	outline: 2px  sol-id  var(--color-primary);
 	outline-offset: 2px;
 }
 
@@ -93,11 +93,11 @@
 	color: var(--color-background);
 }
 
-/*  Add  support  for  reduced  motion  */
-@media (prefers-reduced-motion: reduce) {
+/*  Add  suppo-rt  for  reduc-ed  moti-on  */
+@media (prefers-reduced-motion: redu-ce) {
 
 	.language-switcher-toggle,
 	.language-switcher-dropdown {
-		transition: none;
+		transition: no-ne;
 	}
 }
