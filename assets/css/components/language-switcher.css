@@ -1,103 +1,103 @@
-.language-switcher  {
-	position:  relative;
-	display:  inline-block;
-	margin-left:  var(--spacing-md);
+.language-switcher {
+	position: relative;
+	display: inline-block;
+	margin-left: var(--spacing-md);
 }
 
-.language-switcher-toggle  {
-	display:  flex;
-	align-items:  center;
-	gap:  var(--spacing-xs);
-	padding:  var(--spacing-xs)  var(--spacing-sm);
-	background:  transparent;
-	border:  1px  solid  var(--color-border);
-	border-radius:  var(--radius-sm);
-	cursor:  pointer;
-	transition:  var(--transition-default);
+.language-switcher-toggle {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+	padding: var(--spacing-xs)  var(--spacing-sm);
+	background: transparent;
+	border: 1px  solid  var(--color-border);
+	border-radius: var(--radius-sm);
+	cursor: pointer;
+	transition: var(--transition-default);
 }
 
-.language-switcher-toggle:hover  {
-	background:  var(--color-background);
+.language-switcher-toggle:hover {
+	background: var(--color-background);
 }
 
-.language-switcher-dropdown  {
-	position:  absolute;
-	top:  100%;
-	left:  0;
-	right:  0;
-	background:  var(--color-background);
-	border:  1px  solid  var(--color-border);
-	border-radius:  var(--radius-sm);
-	margin-top:  var(--spacing-xs);
-	padding:  var(--spacing-xs);
-	display:  none;
-	z-index:  100;
+.language-switcher-dropdown {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	background: var(--color-background);
+	border: 1px  solid  var(--color-border);
+	border-radius: var(--radius-sm);
+	margin-top: var(--spacing-xs);
+	padding: var(--spacing-xs);
+	display: none;
+	z-index: 100;
 }
 
-.language-switcher:hover  .language-switcher-dropdown  {
-	display:  block;
+.language-switcher:hover  .language-switcher-dropdown {
+	display: block;
 }
 
-.language-switcher-dropdown  li  {
-	list-style:  none;
-	margin:  0;
-	padding:  var(--spacing-xs)  var(--spacing-sm);
+.language-switcher-dropdown  li {
+	list-style: none;
+	margin: 0;
+	padding: var(--spacing-xs)  var(--spacing-sm);
 }
 
-.language-switcher-dropdown  a  {
-	text-decoration:  none;
-	color:  var(--color-text);
+.language-switcher-dropdown  a {
+	text-decoration: none;
+	color: var(--color-text);
 }
 
-.language-switcher-dropdown  li.current  {
-	background:  var(--color-primary);
+.language-switcher-dropdown  li.current {
+	background: var(--color-primary);
 }
 
-.language-switcher-dropdown  li.current  a  {
-	color:  var(--color-background);
+.language-switcher-dropdown  li.current  a {
+	color: var(--color-background);
 }
 
 /*  RTL  Support  */
 
-.rtl  .language-switcher  {
-	margin-left:  0;
-	margin-right:  var(--spacing-md);
+.rtl  .language-switcher {
+	margin-left: 0;
+	margin-right: var(--spacing-md);
 }
 
-.rtl  .language-switcher-dropdown  {
-	left:  auto;
-	right:  0;
+.rtl  .language-switcher-dropdown {
+	left: auto;
+	right: 0;
 }
 
 /*  Add  to  existing  file  */
 
-.language-switcher-dropdown.is-active  {
-	display:  block;
+.language-switcher-dropdown.is-active {
+	display: block;
 }
 
-.language-switcher-dropdown  a:focus  {
-	outline:  2px  solid  var(--color-primary);
-	outline-offset:  -2px;
+.language-switcher-dropdown  a:focus {
+	outline: 2px  solid  var(--color-primary);
+	outline-offset: -2px;
 }
 
-.language-switcher-toggle:focus  {
-	outline:  2px  solid  var(--color-primary);
-	outline-offset:  2px;
+.language-switcher-toggle:focus {
+	outline: 2px  solid  var(--color-primary);
+	outline-offset: 2px;
 }
 
-.language-switcher-dropdown  li:focus-within  {
-	background-color:  var(--color-primary);
+.language-switcher-dropdown  li:focus-within {
+	background-color: var(--color-primary);
 }
 
-.language-switcher-dropdown  li:focus-within  a  {
-	color:  var(--color-background);
+.language-switcher-dropdown  li:focus-within  a {
+	color: var(--color-background);
 }
 
 /*  Add  support  for  reduced  motion  */
-@media  (prefers-reduced-motion:  reduce)  {
+@media (prefers-reduced-motion: reduce) {
 
 	.language-switcher-toggle,
-	.language-switcher-dropdown  {
-		transition:  none;
+	.language-switcher-dropdown {
+		transition: none;
 	}
 }

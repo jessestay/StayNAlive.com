@@ -1,12 +1,12 @@
-:root  {
-	--color-primary:  #1e73be;
-	--color-text:  #333;
-	--color-background:  #fff;
+:root {
+	--color-primary: #1e73be;
+	--color-text: #333;
+	--color-background: #fff;
 }
 
-body  {
-	margin:  0;
-	font-family:  var(--wp--preset--font-family--primary);
-	color:  var(--color-text);
-	background:  var(--color-background);
+body {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--primary);
+	color: var(--color-text);
+	background: var(--color-background);
 }
