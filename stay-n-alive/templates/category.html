@@ -1,0 +1,49 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"site-main category-archive","layout":{"type":"constrained"}} -->
+<main class="wp-block-group site-main category-archive">
+    <!-- wp:group {"className":"category-header","layout":{"type":"constrained"}} -->
+    <div class="wp-block-group category-header">
+        <!-- wp:query-title {"type":"archive","textAlign":"center"} /-->
+        <!-- wp:term-description {"textAlign":"center"} /-->
+    </div>
+    <!-- /wp:group -->
+
+    <!-- wp:columns -->
+    <div class="wp-block-columns">
+        <!-- wp:column {"width":"70%"} -->
+        <div class="wp-block-column" style="flex-basis:70%">
+            <!-- wp:query -->
+            <div class="wp-block-query">
+                <!-- wp:post-template -->
+                    <!-- wp:group {"className":"category-item"} -->
+                    <div class="wp-block-group category-item">
+                        <!-- wp:post-featured-image {"isLink":true} /-->
+                        <!-- wp:post-title {"isLink":true} /-->
+                        <!-- wp:post-excerpt /-->
+                    </div>
+                    <!-- /wp:group -->
+                <!-- /wp:post-template -->
+
+                <!-- wp:query-pagination -->
+                    <!-- wp:query-pagination-previous /-->
+                    <!-- wp:query-pagination-numbers /-->
+                    <!-- wp:query-pagination-next /-->
+                <!-- /wp:query-pagination -->
+            </div>
+            <!-- /wp:query -->
+        </div>
+        <!-- /wp:column -->
+
+        <!-- wp:column {"width":"30%"} -->
+        <div class="wp-block-column" style="flex-basis:30%">
+            <!-- wp:pattern {"slug":"staynalive/sidebar-categories"} /-->
+            <!-- wp:pattern {"slug":"staynalive/sidebar-recent-posts"} /-->
+        </div>
+        <!-- /wp:column -->
+    </div>
+    <!-- /wp:columns -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

@@ -1,0 +1,55 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"site-main error-404","layout":{"type":"constrained"}} -->
+<main class="wp-block-group site-main error-404">
+    <!-- wp:group {"className":"error-content","layout":{"type":"constrained","contentSize":"800px"}} -->
+    <div class="wp-block-group error-content">
+        <!-- wp:heading {"level":1,"className":"error-title","fontSize":"x-large"} -->
+        <h1 class="error-title has-x-large-font-size">Oops! That page can't be found.</h1>
+        <!-- /wp:heading -->
+
+        <!-- wp:paragraph -->
+        <p>It looks like nothing was found at this location. Maybe try a search or check out some recent posts?</p>
+        <!-- /wp:paragraph -->
+
+        <!-- wp:search {"label":"Search","buttonText":"Search","className":"error-search"} /-->
+
+        <!-- wp:group {"className":"error-widgets","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
+        <div class="wp-block-group error-widgets">
+            <!-- wp:group {"className":"widget recent-posts"} -->
+            <div class="wp-block-group widget recent-posts">
+                <!-- wp:heading {"level":2,"fontSize":"large"} -->
+                <h2 class="has-large-font-size">Recent Posts</h2>
+                <!-- /wp:heading -->
+
+                <!-- wp:latest-posts {"postsToShow":5,"displayPostDate":true} /-->
+            </div>
+            <!-- /wp:group -->
+
+            <!-- wp:group {"className":"widget categories"} -->
+            <div class="wp-block-group widget categories">
+                <!-- wp:heading {"level":2,"fontSize":"large"} -->
+                <h2 class="has-large-font-size">Categories</h2>
+                <!-- /wp:heading -->
+
+                <!-- wp:categories {"displayAsDropdown":false,"showHierarchy":true,"showPostCounts":true} /-->
+            </div>
+            <!-- /wp:group -->
+
+            <!-- wp:group {"className":"widget tags"} -->
+            <div class="wp-block-group widget tags">
+                <!-- wp:heading {"level":2,"fontSize":"large"} -->
+                <h2 class="has-large-font-size">Tags</h2>
+                <!-- /wp:heading -->
+
+                <!-- wp:tag-cloud {"numberOfTags":20} /-->
+            </div>
+            <!-- /wp:group -->
+        </div>
+        <!-- /wp:group -->
+    </div>
+    <!-- /wp:group -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

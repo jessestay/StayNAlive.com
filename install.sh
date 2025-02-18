@@ -10,7 +10,7 @@ readonly RED='\033[0;31m'
 readonly NC='\033[0m'
 
 # Theme directory name
-readonly THEME_DIR="staynalive-theme"
+readonly THEME_DIR="stay-n-alive"
 
 # Function to log messages
 log() {
@@ -54,7 +54,10 @@ Tested up to: 6.4
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
 License URI: LICENSE
-Text Domain: staynalive
+Text Domain: stay-n-alive
+Tags: blog, custom-background, custom-colors, custom-logo, custom-menu, editor-style, featured-images, footer-widgets, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready, block-styles, wide-blocks
+
+Copyright 2024 Jesse Stay
 */
 EOL
 }
@@ -97,70 +100,50 @@ create_all_templates() {
 
 <!-- wp:group {"tagName":"main","className":"site-main single-post"} -->
 <main class="wp-block-group site-main single-post">
-    <!-- wp:post-featured-image {"align":"wide"} /-->
+    <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+        <!-- wp:post-featured-image {"align":"wide"} /-->
 
-    <!-- wp:group {"className":"post-header"} -->
-    <div class="wp-block-group post-header">
-        <!-- wp:post-title {"level":1} /-->
-
-        <!-- wp:group {"className":"post-meta"} -->
-        <div class="wp-block-group post-meta">
-            <!-- wp:post-date /-->
-            <!-- wp:post-author {"showAvatar":true} /-->
-            <!-- wp:post-terms {"term":"category"} /-->
-            <!-- wp:post-terms {"term":"post_tag"} /-->
+        <!-- wp:group {"className":"post-header"} -->
+        <div class="wp-block-group post-header">
+            <!-- wp:post-title {"level":1} /-->
+            <!-- wp:post-meta /-->
         </div>
         <!-- /wp:group -->
+
+        <!-- wp:post-content /-->
+        <!-- wp:post-terms {"term":"post_tag"} /-->
+        
+        <?php wp_link_pages(); ?>
+        
+        <!-- wp:group {"className":"post-navigation"} -->
+        <div class="wp-block-group post-navigation">
+            <?php
+            the_post_navigation(array(
+                'prev_text' => __('Previous: %title', 'stay-n-alive'),
+                'next_text' => __('Next: %title', 'stay-n-alive'),
+            ));
+            ?>
+        </div>
+        <!-- /wp:group -->
+
+        <?php comments_template(); ?>
+        
+        <!-- wp:comments -->
+        <div class="wp-block-comments">
+            <?php
+            wp_list_comments(array(
+                'style' => 'ol',
+                'avatar_size' => 60,
+                'short_ping' => true,
+            ));
+            the_comments_pagination(array(
+                'prev_text' => __('Previous', 'stay-n-alive'),
+                'next_text' => __('Next', 'stay-n-alive'),
+            ));
+            ?>
+        </div>
+        <!-- /wp:comments -->
     </div>
-    <!-- /wp:group -->
-
-    <!-- wp:post-content /-->
-
-    <!-- wp:group {"className":"post-navigation"} -->
-    <div class="wp-block-group post-navigation">
-        <!-- wp:post-navigation-link {"type":"previous","showTitle":true,"linkLabel":"Previous:"} /-->
-        <!-- wp:post-navigation-link {"type":"next","showTitle":true,"linkLabel":"Next:"} /-->
-    </div>
-    <!-- /wp:group -->
-
-    <!-- wp:comments -->
-    <div class="wp-block-comments">
-        <!-- wp:comments-title /-->
-        <!-- wp:comment-template -->
-            <!-- wp:columns -->
-            <div class="wp-block-columns">
-                <!-- wp:column {"width":"40px"} -->
-                <div class="wp-block-column" style="flex-basis:40px">
-                    <!-- wp:avatar {"size":40} /-->
-                </div>
-                <!-- /wp:column -->
-
-                <!-- wp:column -->
-                <div class="wp-block-column">
-                    <!-- wp:comment-author-name /-->
-                    <!-- wp:group {"style":{"spacing":{"margin":{"top":"0px","bottom":"0px"}}}} -->
-                    <div class="wp-block-group">
-                        <!-- wp:comment-date /-->
-                        <!-- wp:comment-edit-link /-->
-                    </div>
-                    <!-- /wp:group -->
-                    <!-- wp:comment-content /-->
-                    <!-- wp:comment-reply-link /-->
-                </div>
-                <!-- /wp:column -->
-            </div>
-            <!-- /wp:columns -->
-        <!-- /wp:comment-template -->
-
-        <!-- wp:comments-pagination -->
-            <!-- wp:comments-pagination-previous /-->
-            <!-- wp:comments-pagination-numbers /-->
-            <!-- wp:comments-pagination-next /-->
-        <!-- /wp:comments-pagination -->
-
-        <!-- wp:post-comments-form /-->
-    </div>
-    <!-- /wp:comments -->
 </main>
 <!-- /wp:group -->
 
@@ -209,6 +192,26 @@ EOL
                         <!-- wp:query-pagination-previous /-->
                         <!-- wp:query-pagination-numbers /-->
                         <!-- wp:query-pagination-next /-->
+                    <!-- /wp:query-pagination -->
+
+                    <!-- wp:query-pagination {"paginationArrow":"arrow"} -->
+                    <div class="wp-block-query-pagination">
+                        <?php
+                        the_posts_pagination(array(
+                            'mid_size' => 2,
+                            'prev_text' => sprintf(
+                                '%s <span class="nav-prev-text">%s</span>',
+                                '←',
+                                __('Newer posts', 'stay-n-alive')
+                            ),
+                            'next_text' => sprintf(
+                                '<span class="nav-next-text">%s</span> %s',
+                                __('Older posts', 'stay-n-alive'),
+                                '→'
+                            ),
+                        ));
+                        ?>
+                    </div>
                     <!-- /wp:query-pagination -->
                 </div>
                 <!-- /wp:query -->
@@ -518,55 +521,27 @@ EOL
 create_template_parts() {
     # Header with all original functionality
     cat > "${THEME_DIR}/parts/header.html" << 'EOL'
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
+<?php wp_body_open(); ?>
+
 <!-- wp:group {"tagName":"header","className":"site-header"} -->
 <header class="wp-block-group site-header">
-    <!-- wp:html -->
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="dns-prefetch" href="https://platform-api.sharethis.com/"/>
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com/"/>
-    <link rel="dns-prefetch" href="https://s.w.org/"/>
-    <link rel="alternate" type="application/rss+xml" title="Stay N Alive » Feed" href="/feed"/>
-    <link rel="alternate" type="application/rss+xml" title="Stay N Alive » Comments Feed" href="/comments/feed"/>
-    
-    <script type="text/javascript">
-        document.documentElement.className = 'js';
-        var et_site_url='';
-        var et_post_id='36';
-        function et_core_page_resource_fallback(a,b){"undefined"===typeof b&&(b=a.sheet.cssRules&&0===a.sheet.cssRules.length);b&&(a.onerror=null,a.onload=null,a.href?a.href=et_site_url+"/?et_core_page_resource="+a.id+et_post_id:a.src&&(a.src=et_site_url+"/?et_core_page_resource="+a.id+et_post_id))}
-    </script>
-    
-    <!-- ShareThis Integration -->
-    <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=your_property_id"></script>
-    <!-- /wp:html -->
-
-    <!-- wp:group {"className":"header-content container"} -->
-    <div class="wp-block-group header-content container">
-        <!-- wp:group {"className":"logo_container"} -->
-        <div class="wp-block-group logo_container">
-            <!-- wp:site-logo {"width":300} /-->
-        </div>
-        <!-- /wp:group -->
-
-        <!-- wp:group {"className":"et-top-navigation"} -->
-        <div class="wp-block-group et-top-navigation">
-            <!-- wp:navigation {"className":"primary-navigation"} -->
-            <!-- wp:navigation-link {"label":"Services","url":"/services"} /-->
-            <!-- wp:navigation-link {"label":"Clients","url":"/clients"} /-->
-            <!-- wp:navigation-link {"label":"The Blog","url":"/blog"} /-->
-            <!-- wp:navigation-submenu {"label":"About SNA","url":"/about"} -->
-                <!-- wp:navigation-link {"label":"About Jesse","url":"/jessestay"} /-->
-                <!-- wp:navigation-link {"label":"Jesse's Books","url":"/jessestay/books"} /-->
-            <!-- /wp:navigation-submenu -->
-            <!-- wp:navigation-link {"label":"Contact","url":"/contact"} /-->
-            <!-- /wp:navigation -->
-
-            <!-- wp:search {"className":"et_search_outer"} /-->
-        </div>
-        <!-- /wp:group -->
-    </div>
-    <!-- /wp:group -->
+    <!-- wp:site-title /-->
+    <?php
+    wp_nav_menu(array(
+        'theme_location' => 'primary',
+        'menu_class' => 'primary-navigation',
+        'container' => 'nav',
+        'container_class' => 'main-navigation',
+    ));
+    ?>
 </header>
 <!-- /wp:group -->
 EOL
@@ -575,51 +550,14 @@ EOL
     cat > "${THEME_DIR}/parts/footer.html" << 'EOL'
 <!-- wp:group {"tagName":"footer","className":"site-footer"} -->
 <footer class="wp-block-group site-footer">
-    <!-- wp:group {"className":"footer-widgets"} -->
-    <div class="wp-block-group footer-widgets">
-        <div class="container">
-            <!-- wp:columns {"className":"clearfix"} -->
-            <div class="wp-block-columns clearfix">
-                <!-- wp:column {"className":"footer-widget"} -->
-                <div class="wp-block-column footer-widget">
-                    <!-- wp:image {"src":"/wp-content/uploads/SNA-logo-final-white.png"} /-->
-                    <!-- wp:paragraph -->
-                    <p>E. – info@staynalive.com</p>
-                    <p>P. – 801-853-8339</p>
-                    <p>L. – Salt Lake City, UT, USA</p>
-                    <!-- /wp:paragraph -->
-                </div>
-                <!-- /wp:column -->
-                
-                <!-- wp:column {"className":"footer-widget"} -->
-                <div class="wp-block-column footer-widget">
-                    <!-- wp:heading {"level":4,"className":"title"} -->
-                    <h4 class="title">The Blog</h4>
-                    <!-- /wp:heading -->
-                    <!-- wp:latest-posts {"postsToShow":5} /-->
-                </div>
-                <!-- /wp:column -->
-            </div>
-            <!-- /wp:columns -->
-        </div>
-    </div>
-    <!-- /wp:group -->
-
-    <!-- wp:group {"className":"footer-bottom"} -->
-    <div class="wp-block-group footer-bottom">
-        <div class="container">
-            <!-- wp:social-links {"className":"et-social-icons"} -->
-            <ul class="wp-block-social-links et-social-icons">
-                <!-- wp:social-link {"url":"http://facebook.com/staynalivellc","service":"facebook"} /-->
-                <!-- wp:social-link {"url":"http://twitter.com/jesse","service":"twitter"} /-->
-                <!-- wp:social-link {"url":"/feed/","service":"feed"} /-->
-            </ul>
-            <!-- /wp:social-links -->
-        </div>
-    </div>
-    <!-- /wp:group -->
+    <!-- wp:paragraph {"align":"center"} -->
+    <p class="has-text-align-center">© 2024 Stay N Alive</p>
+    <!-- /wp:paragraph -->
 </footer>
 <!-- /wp:group -->
+<?php wp_footer(); ?>
+</body>
+</html>
 EOL
 }
 
@@ -637,6 +575,128 @@ body {
     font-family: var(--wp--preset--font-family--primary);
     color: var(--color-text);
     background: var(--color-background);
+}
+EOL
+
+    # Add to create_css_files function
+    cat > "${THEME_DIR}/assets/css/base/wordpress.css" << 'EOL'
+.wp-caption {
+    max-width: 100%;
+    margin-bottom: 1.5em;
+}
+
+.wp-caption-text {
+    font-style: italic;
+    text-align: center;
+}
+
+.sticky {
+    display: block;
+    background: #f7f7f7;
+    padding: 1em;
+}
+
+.gallery-caption {
+    display: block;
+}
+
+.bypostauthor {
+    background: #f7f7f7;
+    padding: 1em;
+}
+
+.alignright {
+    float: right;
+    margin: 0 0 1em 1em;
+}
+
+.alignleft {
+    float: left;
+    margin: 0 1em 1em 0;
+}
+
+.aligncenter {
+    display: block;
+    margin: 1em auto;
+}
+
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+.gallery {
+    margin-bottom: 1.5em;
+    display: grid;
+    grid-gap: 1.5em;
+}
+
+.gallery-item {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+}
+
+.gallery-columns-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.gallery-columns-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.gallery-columns-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.gallery-columns-5 {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.gallery-columns-6 {
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.gallery-columns-7 {
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.gallery-columns-8 {
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.gallery-columns-9 {
+    grid-template-columns: repeat(9, 1fr);
+}
+EOL
+
+    # Add to create_css_files function
+    cat > "${THEME_DIR}/assets/css/editor-style.css" << 'EOL'
+/* Editor Styles */
+.editor-styles-wrapper {
+    font-family: var(--wp--preset--font-family--primary);
+    color: var(--color-text);
+}
+
+.editor-post-title__input {
+    font-family: var(--wp--preset--font-family--primary);
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.wp-block {
+    max-width: 840px;
+}
+
+.wp-block[data-align="wide"] {
+    max-width: 1100px;
+}
+
+.wp-block[data-align="full"] {
+    max-width: none;
 }
 EOL
 }
@@ -1547,14 +1607,20 @@ function theme_setup() {
     add_theme_support('responsive-embeds');
     add_theme_support('align-wide');
     add_theme_support('custom-units');
+    add_theme_support('post-thumbnails');
     
     // Register block patterns
     if (function_exists('register_block_pattern_category')) {
         register_block_pattern_category(
             'staynalive',
-            ['label' => __('Stay N Alive', 'staynalive')]
+            ['label' => __('Stay N Alive', 'stay-n-alive')]
         );
     }
+
+    register_nav_menus(array(
+        'primary' => __('Primary Menu', 'stay-n-alive'),
+        'footer' => __('Footer Menu', 'stay-n-alive')
+    ));
 }
 add_action('after_setup_theme', __NAMESPACE__ . '\theme_setup');
 
@@ -1631,6 +1697,15 @@ add_filter('wp_handle_upload_prefilter', function($file) {
     }
     return $file;
 });
+
+// Add plugin recommendation
+add_action('admin_notices', function() {
+    if (!is_plugin_active('stay-n-alive-companion/stay-n-alive-companion.php')) {
+        echo '<div class="notice notice-info"><p>';
+        echo __('For full functionality, please install the Stay N Alive Companion plugin.', 'stay-n-alive');
+        echo '</p></div>';
+    }
+});
 EOL
 
     # Performance Functions
@@ -1643,11 +1718,6 @@ EOL
  */
 
 namespace StayNAlive\Performance;
-
-// Remove unnecessary meta tags
-remove_action('wp_head', 'wlwmanifest_link');
-remove_action('wp_head', 'rsd_link');
-remove_action('wp_head', 'wp_shortlink_wp_head');
 
 // Disable emoji scripts
 add_action('init', function() {
@@ -1696,6 +1766,21 @@ add_action('after_setup_theme', function() {
     add_theme_support('align-wide');
     add_theme_support('custom-units');
     add_theme_support('post-thumbnails');
+    add_theme_support('title-tag');
+    add_theme_support('automatic-feed-links');
+    add_theme_support('html5', array(
+        'comment-list',
+        'comment-form', 
+        'search-form',
+        'gallery',
+        'caption',
+        'style',
+        'script'
+    ));
+    add_theme_support('custom-logo');
+    add_theme_support('custom-header');
+    add_theme_support('custom-background');
+    add_theme_support('register-block-style');
 });
 
 // Enqueue scripts and styles
@@ -1726,7 +1811,48 @@ add_action('wp_enqueue_scripts', function() {
     
     wp_enqueue_script('staynalive-sharethis', get_template_directory_uri() . '/assets/js/sharethis.js', [], STAYNALIVE_VERSION, true);
     wp_enqueue_script('staynalive-emoji', get_template_directory_uri() . '/assets/js/emoji.js', [], STAYNALIVE_VERSION, true);
+
+    if (is_singular() && comments_open() && get_option('thread_comments')) {
+        wp_enqueue_script('comment-reply');
+    }
 });
+
+/**
+ * Register widget areas
+ */
+function staynalive_widgets_init() {
+    register_sidebar(array(
+        'name'          => __('Blog Sidebar', 'stay-n-alive'),
+        'id'            => 'sidebar-1',
+        'description'   => __('Add widgets here to appear in your sidebar.', 'stay-n-alive'),
+        'before_widget' => '<section id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</section>',
+        'before_title'  => '<h2 class="widget-title">',
+        'after_title'   => '</h2>',
+    ));
+}
+add_action('widgets_init', 'staynalive_widgets_init');
+
+function staynalive_register_block_styles() {
+    // Quote styles
+    register_block_style('core/quote', array(
+        'name' => 'fancy-quote',
+        'label' => __('Fancy Quote', 'stay-n-alive')
+    ));
+    
+    // Button styles
+    register_block_style('core/button', array(
+        'name' => 'outline',
+        'label' => __('Outline', 'stay-n-alive')
+    ));
+
+    // Group styles
+    register_block_style('core/group', array(
+        'name' => 'card',
+        'label' => __('Card', 'stay-n-alive')
+    ));
+}
+add_action('init', 'staynalive_register_block_styles');
 EOL
 }
 
@@ -1738,35 +1864,79 @@ create_index_php() {
 EOL
 }
 
+# Function to create screenshot
+create_screenshot() {
+    # Create an empty screenshot file
+    touch "${THEME_DIR}/screenshot.png"
+    echo -e "${BLUE}Please add a screenshot.png (1200x900px) to the theme directory${NC}"
+}
+
 # Function to create zip file
 create_zip() {
     log "Creating theme zip file..."
-    (cd "${THEME_DIR}" && zip -r ../staynalive-theme.zip .)
-}
-
-# Function to clean up on error
-cleanup() {
-    if [[ $? -ne 0 ]]; then
-        echo -e "${RED}An error occurred. Cleaning up...${NC}"
-        rm -rf "${THEME_DIR}" staynalive-theme.zip
+    if command -v zip >/dev/null 2>&1; then
+        (cd "${THEME_DIR}" && zip -r ../stay-n-alive.zip .)
+    else
+        # Use PowerShell's Compress-Archive as fallback on Windows
+        powershell.exe -Command "Compress-Archive -Path '${THEME_DIR}/*' -DestinationPath 'stay-n-alive.zip' -Force"
     fi
 }
 
-# Register cleanup function
-# trap cleanup EXIT
+# Function to create readme
+create_readme() {
+    cat > "${THEME_DIR}/readme.txt" << 'EOL'
+=== Stay N Alive ===
+Contributors: jessestay
+Tags: blog, custom-background, custom-colors, custom-logo, custom-menu, editor-style, featured-images, footer-widgets, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready, block-styles, wide-blocks
+Requires at least: 6.0
+Tested up to: 6.4
+Requires PHP: 7.4
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+A modern block-based WordPress theme designed for bloggers and content creators.
+
+== Description ==
+
+Stay N Alive is a modern block-based WordPress theme designed for bloggers and content creators.
+
+== Installation ==
+
+1. In your admin panel, go to Appearance > Themes and click the Add New button.
+2. Click Upload Theme and Choose File, then select the theme's .zip file. Click Install Now.
+3. Click Activate to use your new theme right away.
+
+== Frequently Asked Questions ==
+
+= Does this theme support any plugins? =
+
+Stay N Alive includes support for WooCommerce and for Infinite Scroll in Jetpack.
+
+== Changelog ==
+
+= 1.0.0 =
+* Initial release
+
+== Copyright ==
+
+Stay N Alive WordPress Theme, Copyright 2024 Jesse Stay
+Stay N Alive is distributed under the terms of the GNU GPL
+EOL
+}
 
 # Main execution
 main() {
     log "Creating Stay N Alive Theme..."
     
-    # Verify required commands
-    if ! command -v zip >/dev/null 2>&1; then
-        echo -e "${RED}Error: zip command not found. Please install zip first.${NC}"
-        exit 1
-    fi
-    
     # Clean up any existing theme directory
-    rm -rf "${THEME_DIR}"
+    if [ -d "${THEME_DIR}" ]; then
+        # Force remove on Windows using cmd
+        if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+            cmd //c "rmdir /s /q \"${THEME_DIR}\"" 2>/dev/null || true
+        else
+            rm -rf "${THEME_DIR}"
+        fi
+    fi
     
     # Create fresh theme structure
     create_directories
@@ -1785,12 +1955,16 @@ main() {
     create_utility_files
     create_functions_php
     create_index_php
+    create_readme
+    
+    # Create screenshot
+    create_screenshot
     
     # Create zip file
     create_zip
     
     log "Theme files created successfully!"
-    echo -e "Theme zip created at: ${BLUE}staynalive-theme.zip${NC}"
+    echo -e "Theme zip created at: ${BLUE}stay-n-alive.zip${NC}"
 }
 
 # Execute main function

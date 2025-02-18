@@ -1,0 +1,41 @@
+.et_pb_section {
+    position: relative;
+    background-color: #fff;
+}
+
+.et_pb_row {
+    position: relative;
+    width: 80%;
+    max-width: 1080px;
+    margin: auto;
+}
+
+.et_pb_column {
+    float: left;
+    position: relative;
+    z-index: 9;
+    background-position: center;
+    background-size: cover;
+}
+
+.et_pb_module {
+    position: relative;
+}
+
+.et_pb_text {
+    word-wrap: break-word;
+}
+
+.et_pb_button {
+    font-size: 20px;
+    font-weight: 500;
+    padding: .3em 1em;
+    line-height: 1.7em!important;
+    background-color: transparent;
+    background-size: cover;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    border: 2px solid;
+    border-radius: 3px;
+    transition: all .2s;
+}
