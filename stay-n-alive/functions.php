@@ -36,7 +36,11 @@ add_action('after_setup_theme', function() {
     add_theme_support('custom-logo');
     add_theme_support('custom-header');
     add_theme_support('custom-background');
-    add_theme_support('register-block-style');
+    
+    register_nav_menus(array(
+        'primary' => __('Primary Menu', 'stay-n-alive'),
+        'footer' => __('Footer Menu', 'stay-n-alive')
+    ));
 });
 
 // Enqueue scripts and styles

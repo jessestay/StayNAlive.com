@@ -159,6 +159,8 @@ create_all_templates() {
 <!-- /wp:group -->
 
 <!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+
+<!-- wp:template-part {"slug":"index","tagName":"index"} /-->
 EOL
 
     # Archive template
@@ -510,6 +512,44 @@ EOL
                 <!-- wp:post-featured-image {"isLink":true} /-->
                 <!-- wp:post-title {"isLink":true} /-->
                 <!-- wp:post-excerpt /-->
+            </div>
+            <!-- /wp:group -->
+        <!-- /wp:post-template -->
+
+        <!-- wp:query-pagination -->
+            <!-- wp:query-pagination-previous /-->
+            <!-- wp:query-pagination-numbers /-->
+            <!-- wp:query-pagination-next /-->
+        <!-- /wp:query-pagination -->
+    </div>
+    <!-- /wp:query -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+EOL
+
+    # Index template
+    cat > "${THEME_DIR}/templates/index.html" << 'EOL'
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"site-main index-page","layout":{"type":"constrained"}} -->
+<main class="wp-block-group site-main index-page">
+    <!-- wp:query -->
+    <div class="wp-block-query">
+        <!-- wp:post-template -->
+            <!-- wp:group {"className":"post-item"} -->
+            <div class="wp-block-group post-item">
+                <!-- wp:post-featured-image {"isLink":true,"align":"wide"} /-->
+                <!-- wp:post-title {"isLink":true,"fontSize":"large"} /-->
+                <!-- wp:group {"className":"post-meta","layout":{"type":"flex","flexWrap":"wrap"}} -->
+                <div class="wp-block-group post-meta">
+                    <!-- wp:post-date /-->
+                    <!-- wp:post-author {"showAvatar":false} /-->
+                    <!-- wp:post-terms {"term":"category"} /-->
+                </div>
+                <!-- /wp:group -->
+                <!-- wp:post-excerpt {"moreText":"Read More"} /-->
             </div>
             <!-- /wp:group -->
         <!-- /wp:post-template -->
@@ -1369,7 +1409,7 @@ button,input{overflow:visible}
 button,select{text-transform:none}
 [type=button],[type=reset],[type=submit],button{-webkit-appearance:button}
 [type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button:-moz-focus-inner{border-style:none;padding:0}
-[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focus-ring{outline:1px dotted ButtonText}
+[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focus-ring{outline:1px dotted ButtonText}
 fieldset{padding:.35em .75em .625em}
 legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}
 progress{vertical-align:baseline}
@@ -1512,8 +1552,11 @@ create_php_files() {
         exit 1
     fi
 
-    # Create theme-setup.php
-    cat > "${THEME_DIR}/inc/theme-setup.php" << 'EOL'
+    echo "Creating theme-setup.php..."
+    local setup_file="${THEME_DIR}/inc/theme-setup.php"
+    
+    # Create the file with explicit error checking
+    if ! cat > "$setup_file" << 'EOL'
 <?php
 /**
  * Theme setup and configuration
@@ -1570,14 +1613,26 @@ function enqueue_assets() {
 }
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_assets');
 EOL
+    then
+        echo -e "${RED}Error: Failed to create theme-setup.php${NC}"
+        exit 1
+    fi
 
-    # Verify PHP files are created
-    for file in "theme-setup.php" "social-feeds.php" "security.php" "performance.php"; do
-        if [ ! -f "${THEME_DIR}/inc/${file}" ]; then
-            echo -e "${RED}Error: Failed to create ${file}${NC}"
-            exit 1
-        fi
-    done
+    # Verify file was created and has content
+    if [ ! -f "$setup_file" ]; then
+        echo -e "${RED}Error: theme-setup.php was not created${NC}"
+        exit 1
+    fi
+    
+    if [ ! -s "$setup_file" ]; then
+        echo -e "${RED}Error: theme-setup.php is empty${NC}"
+        exit 1
+    fi
+    
+    echo -e "${GREEN}Successfully created theme-setup.php${NC}"
+    ls -l "$setup_file"
+    echo "First 10 lines of theme-setup.php:"
+    head -n 10 "$setup_file"
 }
 
 # Function to create index.php
@@ -1614,50 +1669,106 @@ create_screenshot() {
 create_zip() {
     log "Creating theme zip file..."
     
-    # Verify style.css exists and has content
-    if [ ! -s "${THEME_DIR}/style.css" ]; then
-        echo -e "${RED}Error: style.css is empty or missing${NC}"
+    echo "Current directory: $(pwd)"
+    echo "Theme directory: ${THEME_DIR}"
+    
+    # Verify required files exist
+    if [ ! -f "${THEME_DIR}/inc/theme-setup.php" ]; then
+        echo -e "${RED}Error: theme-setup.php is missing${NC}"
         exit 1
     fi
     
-    # Display first few lines of style.css
-    echo "Verifying style.css header:"
-    head -n 20 "${THEME_DIR}/style.css"
+    # Create zip with proper directory structure
+    echo "Creating zip from: ${THEME_DIR}"
     
-    # List all files before zipping
-    echo "Files to be included in zip:"
-    find "${THEME_DIR}" -type f
-
+    # Make sure we're in the parent directory of the theme
+    local parent_dir="$(dirname "${THEME_DIR}")"
+    local theme_name="$(basename "${THEME_DIR}")"
+    
+    echo "Parent directory: ${parent_dir}"
+    echo "Theme name: ${theme_name}"
+    
+    cd "${parent_dir}" || {
+        echo -e "${RED}Error: Could not change to parent directory${NC}"
+        exit 1
+    }
+    
+    echo "Creating zip in: $(pwd)"
+    echo "Contents to be zipped:"
+    ls -la "${theme_name}"
+    
+    # Create the zip file
     if command -v zip >/dev/null 2>&1; then
-        (cd "${THEME_DIR}" && zip -r ../stay-n-alive.zip . -x ".*" -x "__MACOSX" && echo "Created zip using zip command")
+        echo "Using zip command..."
+        zip -r "stay-n-alive.zip" "${theme_name}" -x ".*" -x "__MACOSX" || {
+            echo -e "${RED}Error: zip command failed${NC}"
+            exit 1
+        }
     else
-        # Use PowerShell's Compress-Archive as fallback on Windows
+        echo "Using PowerShell..."
         powershell.exe -Command "& {
             \$ErrorActionPreference = 'Stop';
-            Remove-Item -Path 'stay-n-alive.zip' -ErrorAction SilentlyContinue;
-            \$source = '${THEME_DIR}';
-            \$destination = (Get-Location).Path + '\stay-n-alive.zip';
-            Write-Host 'Creating zip file at:' \$destination;
-            Compress-Archive -Path \"\$source\*\" -DestinationPath \$destination -Force;
+            \$source = '${theme_name}/*';
+            \$destination = '${parent_dir}/stay-n-alive.zip';
+            
+            Write-Host 'Source:' \$source;
+            Write-Host 'Destination:' \$destination;
+            
+            # Create a temporary directory for the correct structure
+            \$tempDir = 'temp_theme';
+            New-Item -ItemType Directory -Path \$tempDir -Force | Out-Null;
+            
+            # Copy all files to temp directory (not in a subdirectory)
+            Copy-Item -Path \$source -Destination \$tempDir -Recurse;
+            
+            # Verify style.css exists at root level
+            if (-not (Test-Path \"\$tempDir/style.css\")) {
+                Write-Error 'style.css not found at root level';
+                exit 1;
+            }
+            
+            # Create the zip from the temp directory contents
+            Compress-Archive -Path \"\$tempDir/*\" -DestinationPath \$destination -Force;
+            
+            # Clean up temp directory
+            Remove-Item -Path \$tempDir -Recurse -Force;
+            
             if (Test-Path \$destination) {
-                Write-Host 'Created zip using PowerShell';
+                Write-Host 'Zip file created successfully';
+                
+                # Verify zip structure
+                Expand-Archive -Path \$destination -DestinationPath 'temp_verify' -Force;
+                if (Test-Path 'temp_verify/style.css') {
+                    Write-Host 'style.css found at root level';
+                    Get-ChildItem 'temp_verify' | ForEach-Object { Write-Host \$_.Name }
+                } else {
+                    Write-Error 'style.css not found at root level in zip';
+                    Write-Host 'Zip contents:';
+                    Get-ChildItem 'temp_verify' -Recurse;
+                    exit 1;
+                }
+                Remove-Item -Path 'temp_verify' -Recurse -Force;
             } else {
                 Write-Error 'Failed to create zip file';
+                exit 1;
             }
-        }"
+        }" || {
+            echo -e "${RED}Error: PowerShell zip creation failed${NC}"
+            exit 1
+        }
     fi
-
+    
     # Verify zip was created
     if [ ! -f "stay-n-alive.zip" ]; then
-        echo -e "${RED}Error: Failed to create zip file${NC}"
+        echo -e "${RED}Error: Zip file was not created${NC}"
         exit 1
     fi
-
-    # Verify zip contents
-    if command -v unzip >/dev/null 2>&1; then
-        echo "Zip contents:"
-        unzip -l stay-n-alive.zip
-    fi
+    
+    echo "Zip file created at: $(pwd)/stay-n-alive.zip"
+    echo "Zip file size: $(ls -lh stay-n-alive.zip)"
+    
+    # Move back to original directory
+    cd - || exit 1
 }
 
 # Function to create readme
@@ -1743,7 +1854,11 @@ add_action('after_setup_theme', function() {
     add_theme_support('custom-logo');
     add_theme_support('custom-header');
     add_theme_support('custom-background');
-    add_theme_support('register-block-style');
+    
+    register_nav_menus(array(
+        'primary' => __('Primary Menu', 'stay-n-alive'),
+        'footer' => __('Footer Menu', 'stay-n-alive')
+    ));
 });
 
 // Enqueue scripts and styles
@@ -1803,28 +1918,303 @@ EOL
 validate_theme() {
     log "Validating theme..."
     
-    # Check if we're in a WordPress installation
-    if ! wp core is-installed 2>/dev/null; then
-        echo -e "${YELLOW}Warning: WordPress installation not found. Skipping WP-CLI validation.${NC}"
-        echo -e "${YELLOW}To fully validate the theme:${NC}"
-        echo "1. Install WordPress locally"
-        echo "2. Navigate to the WordPress installation directory"
-        echo "3. Run: wp theme validate-theme /path/to/stay-n-alive.zip"
-        return 0
-    fi
-
-    # Run WP-CLI validation
-    if command -v wp >/dev/null 2>&1; then
-        echo "Running theme validation..."
-        if ! wp theme validate-theme "${THEME_DIR}" --debug; then
-            echo -e "${RED}Theme validation failed${NC}"
+    # Path to Local WordPress installation
+    local wp_path="C:/Users/stay/Local Sites/staynalive/app/public"
+    
+    echo "Running comprehensive theme validation..."
+    
+    # 1. Check required files
+    local required_files=(
+        "style.css"
+        "index.php"
+        "functions.php"
+        "screenshot.png"
+        "inc/theme-setup.php"
+    )
+    
+    for file in "${required_files[@]}"; do
+        if [ ! -f "${THEME_DIR}/${file}" ]; then
+            echo -e "${RED}Error: Required file missing: ${file}${NC}"
             exit 1
         fi
-        echo -e "${GREEN}Theme validation passed${NC}"
-    else
-        echo -e "${YELLOW}WP-CLI not found...${NC}"
+    done
+    
+    # 2. Validate style.css headers
+    local required_headers=(
+        "Theme Name:"
+        "Theme URI:"
+        "Author:"
+        "Author URI:"
+        "Description:"
+        "Version:"
+        "License:"
+        "License URI:"
+        "Text Domain:"
+        "Tags:"
+    )
+    
+    for header in "${required_headers[@]}"; do
+        if ! grep -q "^${header}" "${THEME_DIR}/style.css"; then
+            echo -e "${RED}Error: Missing required header in style.css: ${header}${NC}"
+            exit 1
+        fi
+    done
+    
+    # 3. Check PHP syntax in all PHP files
+    echo "Checking PHP syntax..."
+    find "${THEME_DIR}" -name "*.php" -type f -exec php -l {} \;
+    
+    # 4. Check text domain usage
+    echo "Checking text domain usage..."
+    if ! grep -r "__(" "${THEME_DIR}" | grep -q "stay-n-alive"; then
+        echo -e "${YELLOW}Warning: Text domain 'stay-n-alive' might not be used consistently${NC}"
     fi
+    
+    # 5. Check template hierarchy files
+    local recommended_templates=(
+        "404.html"
+        "archive.html"
+        "single.html"
+        "index.php"
+        "search.html"
+    )
+    
+    for template in "${recommended_templates[@]}"; do
+        if [ ! -f "${THEME_DIR}/templates/${template}" ]; then
+            echo -e "${YELLOW}Warning: Recommended template file missing: templates/${template}${NC}"
+        fi
+    done
+    
+    # 6. Check for common security issues
+    echo "Checking for security issues..."
+    if grep -r "eval(" "${THEME_DIR}"; then
+        echo -e "${RED}Error: Found eval() usage - potential security risk${NC}"
+        exit 1
+    fi
+    
+    # 7. Check file permissions
+    echo "Checking file permissions..."
+    find "${THEME_DIR}" -type f -exec stat -c "%a %n" {} \; | while read -r perm file; do
+        if [ "$perm" -gt "755" ]; then
+            echo -e "${YELLOW}Warning: File has too open permissions: ${file} (${perm})${NC}"
+        fi
+    done
+    
+    # 8. Validate functions.php
+    echo "Validating functions.php..."
+    if ! grep -q "add_action.*after_setup_theme" "${THEME_DIR}/functions.php"; then
+        echo -e "${YELLOW}Warning: after_setup_theme hook might be missing${NC}"
+    fi
+    
+    # 9. Check for debug code
+    echo "Checking for debug code..."
+    if grep -r "var_dump\|print_r\|error_reporting\|display_errors" "${THEME_DIR}"; then
+        echo -e "${YELLOW}Warning: Found debug code that should be removed for production${NC}"
+    fi
+    
+    # 10. Check for proper escaping
+    echo "Checking for proper escaping..."
+    if grep -r "echo \$" "${THEME_DIR}" | grep -v "esc_"; then
+        echo -e "${YELLOW}Warning: Found potentially unescaped output${NC}"
+    fi
+    
+    # 11. Run WP-CLI theme validation if available
+    if command -v wp >/dev/null 2>&1; then
+        echo "Running WP-CLI theme validation..."
+        if ! wp theme validate-theme "${THEME_DIR}" --path="${wp_path}" --debug; then
+            echo -e "${RED}WP-CLI theme validation failed${NC}"
+            exit 1
+        fi
+    fi
+    
+    # 12. Validate theme-setup.php specifically
+    echo "Validating theme-setup.php..."
+    if [ -f "${THEME_DIR}/inc/theme-setup.php" ]; then
+        # Check for namespace issues
+        if grep -q "namespace" "${THEME_DIR}/inc/theme-setup.php"; then
+            # Verify namespace is properly used
+            if ! grep -q "add_action.*after_setup_theme.*__NAMESPACE__" "${THEME_DIR}/inc/theme-setup.php"; then
+                echo -e "${RED}Error: theme-setup.php has namespace but isn't using __NAMESPACE__ in add_action${NC}"
+                exit 1
+            fi
+            # Verify namespace matches expected (handle both single and double backslashes)
+            if ! grep -q "namespace StayNAlive\\\\Setup\|namespace StayNAlive\\Setup\|namespace StayNAlive/Setup" "${THEME_DIR}/inc/theme-setup.php"; then
+                echo -e "${RED}Error: theme-setup.php has incorrect namespace (should be StayNAlive\\Setup)${NC}"
+                # Show actual namespace for debugging
+                echo "Found namespace:"
+                grep "namespace" "${THEME_DIR}/inc/theme-setup.php"
+                exit 1
+            fi
+        fi
+
+        # Check for required functions
+        local required_functions=(
+            "theme_setup"
+            "enqueue_assets"
+        )
+        
+        for func in "${required_functions[@]}"; do
+            if ! grep -q "function.*${func}" "${THEME_DIR}/inc/theme-setup.php"; then
+                echo -e "${RED}Error: Required function missing in theme-setup.php: ${func}${NC}"
+                exit 1
+            fi
+        done
+
+        # Check for required theme supports
+        local required_supports=(
+            "add_theme_support.*wp-block-styles"
+            "add_theme_support.*editor-styles"
+            "add_theme_support.*title-tag"
+            "add_theme_support.*post-thumbnails"
+            "add_theme_support.*html5"
+        )
+        
+        for support in "${required_supports[@]}"; do
+            if ! grep -q "${support}" "${THEME_DIR}/inc/theme-setup.php"; then
+                echo -e "${YELLOW}Warning: Missing recommended theme support: ${support}${NC}"
+            fi
+        done
+
+        # Check for proper menu registration
+        if ! grep -q "register_nav_menus" "${THEME_DIR}/inc/theme-setup.php"; then
+            echo -e "${YELLOW}Warning: No navigation menus registered in theme-setup.php${NC}"
+        fi
+
+        # Check for proper action hooks
+        local required_hooks=(
+            "after_setup_theme"
+            "wp_enqueue_scripts"
+        )
+        
+        for hook in "${required_hooks[@]}"; do
+            if ! grep -q "add_action.*${hook}" "${THEME_DIR}/inc/theme-setup.php"; then
+                echo -e "${RED}Error: Missing required action hook in theme-setup.php: ${hook}${NC}"
+                exit 1
+            fi
+        done
+
+        # Check for proper text domain usage
+        if ! grep -q "__('.*', 'stay-n-alive')" "${THEME_DIR}/inc/theme-setup.php"; then
+            echo -e "${YELLOW}Warning: Text domain 'stay-n-alive' not used in translations${NC}"
+        fi
+    else
+        echo -e "${RED}Error: theme-setup.php not found${NC}"
+        exit 1
+    fi
+
+    # 13. Check for proper file/directory structure
+    echo "Checking theme directory structure..."
+    local required_dirs=(
+        "assets/css"
+        "assets/js"
+        "inc"
+        "templates"
+        "parts"
+    )
+
+    for dir in "${required_dirs[@]}"; do
+        if [ ! -d "${THEME_DIR}/${dir}" ]; then
+            echo -e "${RED}Error: Required directory missing: ${dir}${NC}"
+            exit 1
+        fi
+    done
+
+    # 14. Check for proper template parts
+    echo "Checking template parts..."
+    local required_parts=(
+        "header"
+        "footer"
+    )
+
+    for part in "${required_parts[@]}"; do
+        if [ ! -f "${THEME_DIR}/parts/${part}.html" ]; then
+            echo -e "${YELLOW}Warning: Recommended template part missing: parts/${part}.html${NC}"
+        fi
+    done
+
+    # 15. Check for proper file permissions
+    echo "Checking file permissions..."
+    find "${THEME_DIR}" -type f -name "*.php" -exec stat -c "%a %n" {} \; | while read -r perm file; do
+        if [ "$perm" -ne "644" ]; then
+            echo -e "${YELLOW}Warning: PHP file has non-standard permissions: ${file} (${perm})${NC}"
+        fi
+    done
+    
+    echo -e "${GREEN}Theme validation completed successfully!${NC}"
 }
+
+# Add this function to debug file paths
+debug_file_paths() {
+    local theme_dir="$1"
+    echo "Debugging file paths..."
+    echo "Theme directory: ${theme_dir}"
+    
+    # Check theme-setup.php existence and permissions
+    local setup_file="${theme_dir}/inc/theme-setup.php"
+    echo "Checking theme-setup.php..."
+    if [ -f "$setup_file" ]; then
+        echo "File exists: $setup_file"
+        ls -l "$setup_file"
+        echo "File contents first 10 lines:"
+        head -n 10 "$setup_file"
+    else
+        echo "ERROR: File not found: $setup_file"
+        echo "Checking inc directory:"
+        ls -la "${theme_dir}/inc/"
+    fi
+    
+    # Verify directory structure
+    echo "Directory structure:"
+    find "${theme_dir}" -type d
+    
+    # List all PHP files
+    echo "All PHP files:"
+    find "${theme_dir}" -name "*.php" -type f -exec ls -l {} \;
+    
+    # Check functions.php require statement
+    echo "Checking functions.php require statement:"
+    grep -n "require.*theme-setup" "${theme_dir}/functions.php"
+}
+
+# Add this to the create_zip function before creating the zip
+debug_file_paths "${THEME_DIR}"
+
+# Add this function to verify zip contents
+verify_zip_contents() {
+    local zip_file="$1"
+    echo "Verifying zip contents..."
+    
+    # Create temp directory for zip verification
+    local temp_dir="temp_verify_$(date +%s)"
+    mkdir -p "$temp_dir"
+    
+    # Extract zip
+    powershell.exe -Command "& {
+        Expand-Archive -Path '$zip_file' -DestinationPath '$temp_dir' -Force
+        
+        Write-Host 'Zip contents:'
+        Get-ChildItem -Path '$temp_dir' -Recurse | ForEach-Object { Write-Host \$_.FullName }
+        
+        if (Test-Path '$temp_dir/inc/theme-setup.php') {
+            Write-Host 'theme-setup.php found in zip'
+            Get-Content '$temp_dir/inc/theme-setup.php' | Select-Object -First 10
+        } else {
+            Write-Host 'ERROR: theme-setup.php not found in zip'
+            Write-Host 'Contents of inc directory:'
+            if (Test-Path '$temp_dir/inc') {
+                Get-ChildItem '$temp_dir/inc'
+            } else {
+                Write-Host 'inc directory not found'
+            }
+        }
+    }"
+    
+    # Cleanup
+    rm -rf "$temp_dir"
+}
+
+# Add this to create_zip after creating the zip
+verify_zip_contents "stay-n-alive.zip"
 
 # Main execution
 main() {

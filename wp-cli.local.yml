@@ -1,0 +1,12 @@
+path: C:/Users/stay/Local Sites/staynalive/app/public
+core config:
+  dbuser: root
+  dbpass: root
+  dbhost: localhost:10006
+  extra-php: |
+    define('WP_DEBUG', true);
+    define('WP_DEBUG_LOG', true);
+mysql_settings:
+  mysql: "C:/Program Files/MySQL/MySQL Server 8.0/bin/mysql.exe"
+  mysqldump: "C:/Program Files/MySQL/MySQL Server 8.0/bin/mysqldump.exe"
+  mysqlcheck: "C:/Program Files/MySQL/MySQL Server 8.0/bin/mysqlcheck.exe"

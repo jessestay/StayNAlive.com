@@ -84,6 +84,11 @@
                 "C:/Users/stay/Local Sites/staynalive/app/public": "${workspaceFolder}"
             },
             "log": true,
+            "env": {
+                "WP_DEBUG": "true",
+                "WP_DEBUG_LOG": "true",
+                "WP_DEBUG_DISPLAY": "true"
+            },
             "ignore": [
                 "**/wp-admin/**",
                 "**/wp-includes/**"

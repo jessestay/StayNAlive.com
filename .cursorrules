@@ -121,4 +121,22 @@ WP_DEBUG_POINTS:
   data_flow:
     - pre_get_posts
     - the_content filter
-    - wp_query setup 
+    - wp_query setup
+
+{
+  "rules": [
+    "Always read and address the entire message, not just the extracted context",
+    "Never ask the user for information that's available in the file listing (like ls -la output)",
+    "Get file listings from the current_file_contents or edited_file sections",
+    "When debugging, check all available context before asking for more information",
+    "Verify all file paths exist in the project structure before suggesting edits",
+    "Always validate shell scripts against the VALIDATE_SHELL_SCRIPTS rules",
+    "Follow all CODE_QUALITY rules when suggesting changes",
+    "Follow RESPONSE_QUALITY guidelines for all responses",
+    "Use CHECKPOINT_RULES when suggesting operations that modify files",
+    "Follow WP_DEBUG_RULES when handling WordPress-related issues",
+    "Use DEBUG_TEMPLATES for consistent debugging output",
+    "Follow ERROR_RESPONSE format when addressing errors",
+    "Use WP_DEBUG_POINTS to identify common WordPress debugging locations"
+  ]
+} 
