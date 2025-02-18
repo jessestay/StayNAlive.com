@@ -4,8 +4,31 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
-
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "Debug install.sh",
+            "program": "${workspaceFolder}/install.sh",
+            "cwd": "${workspaceFolder}",
+            "args": []
+        },
+        {
+            "type": "PowerShell",
+            "request": "launch",
+            "name": "Debug PowerShell Scripts",
+            "script": "${file}",
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug PHP",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                "/var/www/html": "${workspaceFolder}"
+            }
+        },
         {
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}"
@@ -110,5 +133,11 @@
 			}
 		}
         
+    ],
+    "compounds": [
+        {
+            "name": "Full Debug",
+            "configurations": ["Debug install.sh", "Debug PowerShell Scripts", "Debug PHP"]
+        }
     ]
 }

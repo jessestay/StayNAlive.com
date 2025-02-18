@@ -1547,8 +1547,15 @@ EOL
 # Function to create PHP files
 create_php_files() {
     # Create inc directory if it doesn't exist
-    if ! mkdir -p "${THEME_DIR}/inc"; then
+    echo "Creating inc directory..."
+    mkdir -p "${THEME_DIR}/inc" || {
         echo -e "${RED}Error: Failed to create inc directory${NC}"
+        exit 1
+    }
+
+    # Verify directory was created
+    if [ ! -d "${THEME_DIR}/inc" ]; then
+        echo -e "${RED}Error: inc directory was not created${NC}"
         exit 1
     fi
 
@@ -1666,95 +1673,82 @@ create_screenshot() {
 }
 
 # Function to create zip file
+#
+# Parameters:
+#   $1 - theme_dir: Directory containing theme files (Required)
+#
+# Returns:
+#   0 on success, 1 on failure
 create_zip() {
-    log "Creating theme zip file..."
+    # Validate required parameter
+    if [[ -z "$1" ]]; then
+        echo -e "${RED}Error: Missing required parameter theme_dir${NC}"
+        return 1
+    fi
+
+    local theme_dir="$1"
+    echo "Creating theme zip file..."
     
-    echo "Current directory: $(pwd)"
-    echo "Theme directory: ${THEME_DIR}"
+    # Debug output
+    echo "DEBUG: Current directory: $(pwd)"
+    echo "DEBUG: Theme directory: ${theme_dir}"
     
-    # Create zip with proper directory structure
-    echo "Creating zip from: ${THEME_DIR}"
-    
-    # Make sure we're in the parent directory of the theme
-    local parent_dir="$(dirname "${THEME_DIR}")"
-    local theme_name="$(basename "${THEME_DIR}")"
-    
-    cd "${parent_dir}" || {
-        echo -e "${RED}Error: Could not change to parent directory${NC}"
-        exit 1
+    # Ensure we're in the parent directory of the theme
+    cd "$(dirname "$theme_dir")" || {
+        echo -e "${RED}Error: Could not change to theme parent directory${NC}"
+        return 1
     }
     
-    # Remove existing zip if it exists
-    rm -f "stay-n-alive.zip"
+    echo "DEBUG: Changed to directory: $(pwd)"
+    echo "DEBUG: Theme directory is now: $(basename "$theme_dir")"
     
-    echo "Using PowerShell..."
-    powershell.exe -Command "& {
-        \$ErrorActionPreference = 'Stop';
-        \$source = '${theme_name}';
-        \$destination = (Get-Location).Path + '/stay-n-alive.zip';
-        
-        Write-Host 'Creating zip file...';
-        Write-Host 'Source:' \$source;
-        Write-Host 'Destination:' \$destination;
-        
-        # Create zip file
-        Compress-Archive -Path \$source -DestinationPath \$destination -Force;
-        
-        if (Test-Path \$destination) {
-            Write-Host 'Zip file created successfully';
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        # Windows/Git Bash environment
+        powershell.exe -Command "
+            \$ErrorActionPreference = 'Stop'
+            Write-Host 'DEBUG: Starting PowerShell zip creation'
+            
+            # Remove any existing zip
+            if (Test-Path 'stay-n-alive.zip') {
+                Remove-Item 'stay-n-alive.zip' -Force
+            }
+            
+            # Create zip from theme directory
+            Write-Host 'DEBUG: Creating zip file...'
+            Compress-Archive -Path '$(basename "$theme_dir")' -DestinationPath 'stay-n-alive.zip' -Force
             
             # Verify zip contents
-            \$verifyDir = 'verify_temp';
-            Remove-Item -Path \$verifyDir -Recurse -Force -ErrorAction SilentlyContinue;
-            New-Item -ItemType Directory -Path \$verifyDir -Force | Out-Null;
-            
-            Write-Host 'Verifying zip contents...';
-            Expand-Archive -Path \$destination -DestinationPath \$verifyDir -Force;
-            
-            # Check required files
-            \$requiredFiles = @(
-                'style.css',
-                'index.php',
-                'functions.php',
-                'inc/theme-setup.php'
-            );
-            
-            \$missingFiles = @();
-            foreach (\$file in \$requiredFiles) {
-                \$path = Join-Path \$verifyDir \$source \$file;
-                if (-not (Test-Path \$path)) {
-                    \$missingFiles += \$file;
-                }
+            Write-Host 'DEBUG: Verifying zip contents...'
+            Expand-Archive -Path 'stay-n-alive.zip' -DestinationPath 'temp_verify' -Force
+            Get-ChildItem -Path 'temp_verify' -Recurse | ForEach-Object {
+                Write-Host \$_.FullName.Replace('temp_verify\\', '')
             }
-            
-            if (\$missingFiles.Count -gt 0) {
-                Write-Error ('Missing required files: ' + (\$missingFiles -join ', '));
-                Get-ChildItem \$verifyDir -Recurse | Select-Object FullName;
-                exit 1;
-            }
-            
-            Write-Host 'All required files present in zip';
-            Remove-Item -Path \$verifyDir -Recurse -Force;
-        } else {
-            Write-Error 'Failed to create zip file';
-            exit 1;
+            Remove-Item -Path 'temp_verify' -Recurse -Force
+        " || {
+            echo -e "${RED}Error: Could not create zip file${NC}"
+            cd - >/dev/null
+            return 1
         }
-    }" || {
-        echo -e "${RED}Error: PowerShell zip creation failed${NC}"
-        exit 1
-    }
-    
-    # Verify zip was created
-    if [ ! -f "stay-n-alive.zip" ]; then
-        echo -e "${RED}Error: Zip file was not created${NC}"
-        exit 1
+    else
+        # Unix environment
+        zip -r "stay-n-alive.zip" "$(basename "$theme_dir")" -x "*/\.*" || {
+            echo -e "${RED}Error: Could not create zip file${NC}"
+            cd - >/dev/null
+            return 1
+        }
     fi
     
-    echo "Zip file created at: $(pwd)/stay-n-alive.zip"
-    echo "Zip file size: $(ls -lh stay-n-alive.zip)"
+    # Return to original directory
+    cd - >/dev/null
     
-    # Move back to original directory
-    cd - || exit 1
+    # Move zip to original location if needed
+    if [ ! -f "stay-n-alive.zip" ]; then
+        echo -e "${RED}Error: Zip file was not created${NC}"
+        return 1
+    fi
+    
+    echo "DEBUG: Zip file created successfully at: $(pwd)/stay-n-alive.zip"
+    return 0
 }
 
 # Function to create readme
@@ -2162,9 +2156,6 @@ debug_file_paths() {
     grep -n "require.*theme-setup" "${theme_dir}/functions.php"
 }
 
-# Add this to the create_zip function before creating the zip
-debug_file_paths "${THEME_DIR}"
-
 # Add this function to verify zip contents
 verify_zip_contents() {
     local zip_file="$1"
@@ -2199,9 +2190,6 @@ verify_zip_contents() {
     rm -rf "$temp_dir"
 }
 
-# Add this to create_zip after creating the zip
-verify_zip_contents "stay-n-alive.zip"
-
 # Add this function before create_zip
 verify_directory_structure() {
     local theme_dir="$1"
@@ -2235,94 +2223,290 @@ verify_directory_structure() {
     find "${theme_dir}" -type f -exec chmod 644 {} \;
 }
 
-# Call verify_directory_structure before create_zip
-verify_directory_structure "${THEME_DIR}"
-
 # Add this function after create_zip
 verify_theme_package() {
     local zip_file="$1"
     echo "Performing final theme package verification..."
     
+    # Debug output
+    echo "DEBUG: Verifying zip file: $zip_file"
+    echo "DEBUG: Current directory: $(pwd)"
+    
+    # Validate zip exists
+    if [[ ! -f "$zip_file" ]]; then
+        echo -e "${RED}ERROR: Zip file not found: $zip_file${NC}"
+        return 1
+    fi
+    
     # Create temp directory for verification
     local verify_dir="verify_theme_$(date +%s)"
     mkdir -p "$verify_dir"
+    echo "DEBUG: Created temp directory: $verify_dir"
     
     # Extract and verify
-    powershell.exe -Command "& {
-        Expand-Archive -Path '$zip_file' -DestinationPath '$verify_dir' -Force
+    powershell.exe -Command "
+        \$ErrorActionPreference = 'Stop'
+        \$verifyDir = '$verify_dir'
+        \$zipFile = '$zip_file'
         
-        # Check critical files
-        @('style.css', 'index.php', 'functions.php') | ForEach-Object {
-            if (!(Test-Path '$verify_dir/stay-n-alive/$_')) {
-                Write-Error \"Missing required file: $_\"
-                exit 1
-            }
+        Write-Host 'DEBUG: PowerShell verification starting'
+        Write-Host \"DEBUG: Verify dir: \$verifyDir\"
+        Write-Host \"DEBUG: Zip file: \$zipFile\"
+        Write-Host \"DEBUG: Current location: \$(Get-Location)\"
+        
+        # Remove existing directory if it exists
+        if (Test-Path \$verifyDir) {
+            Write-Host 'DEBUG: Removing existing verify directory'
+            Remove-Item -Path \$verifyDir -Recurse -Force
         }
         
-        # Verify directory structure
-        @('assets/css', 'inc', 'templates') | ForEach-Object {
-            if (!(Test-Path '$verify_dir/stay-n-alive/$_')) {
-                Write-Error \"Missing required directory: $_\"
-                exit 1
-            }
-        }
+        # Create fresh directory
+        Write-Host 'DEBUG: Creating fresh verify directory'
+        New-Item -ItemType Directory -Path \$verifyDir -Force | Out-Null
         
-        Write-Host 'Theme package verification completed successfully'
-    }"
+        try {
+            # Extract zip
+            Write-Host 'DEBUG: Extracting zip file...'
+            Expand-Archive -Path \$zipFile -DestinationPath \$verifyDir -Force
+            
+            # List contents for debugging
+            Write-Host 'DEBUG: Full directory listing after extraction:'
+            Get-ChildItem -Path \$verifyDir -Recurse | ForEach-Object {
+                Write-Host \"DEBUG: Found: \$_\"
+            }
+            
+            # Verify theme directory exists
+            \$themePath = Join-Path \$verifyDir 'stay-n-alive'
+            if (!(Test-Path \$themePath)) {
+                throw 'Theme directory not found in zip'
+            }
+            Write-Host \"DEBUG: Theme directory found at: \$themePath\"
+            
+            # Check required files
+            \$requiredFiles = @(
+                'style.css',
+                'index.php',
+                'functions.php',
+                'inc/theme-setup.php'
+            )
+            
+            Write-Host 'DEBUG: Checking required files...'
+            \$missingFiles = @()
+            
+            foreach (\$file in \$requiredFiles) {
+                \$filePath = Join-Path \$themePath \$file
+                Write-Host \"DEBUG: Checking for \$file at: \$filePath\"
+                if (Test-Path \$filePath) {
+                    Write-Host \"DEBUG: Found \$file\"
+                    Write-Host \"DEBUG: File contents:\"
+                    Get-Content \$filePath | Select-Object -First 5 | ForEach-Object {
+                        Write-Host \"DEBUG: > \$_\"
+                    }
+                } else {
+                    Write-Host \"DEBUG: Missing file: \$file\"
+                    \$missingFiles += \$file
+                }
+            }
+            
+            if (\$missingFiles.Count -gt 0) {
+                throw \"Missing required files: \$(\$missingFiles -join ', ')\"
+            }
+            
+            Write-Host 'DEBUG: Theme package verification completed successfully'
+        }
+        catch {
+            Write-Host \"DEBUG: Verification failed: \$_\"
+            Write-Host \"DEBUG: Error details: \$(\$_.Exception.Message)\"
+            throw \"Verification failed: \$_\"
+        }
+        finally {
+            Write-Host 'DEBUG: Verification process complete'
+        }
+    " || {
+        echo -e "${RED}Error: Theme package verification failed${NC}"
+        rm -rf "$verify_dir"
+        return 1
+    }
     
     # Cleanup
+    echo "DEBUG: Cleaning up temp directory"
     rm -rf "$verify_dir"
+    return 0
 }
 
-# Call verify_theme_package after create_zip
-verify_theme_package "stay-n-alive.zip"
+# Update the directory cleanup function
+cleanup_directory() {
+    local dir="$1"
+    echo "Cleaning up directory: $dir"
+    
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        # Windows/Git Bash environment
+        rm -rf "${dir}" 2>/dev/null || {
+            # If rm fails, try Windows commands
+            powershell.exe -Command "& {
+                if (Test-Path '${dir}') {
+                    Remove-Item -Path '${dir}' -Recurse -Force
+                }
+            }" || {
+                echo -e "${RED}Warning: Could not remove directory ${dir}${NC}"
+                return 1
+            }
+        }
+    else
+        # Unix environment
+        rm -rf "${dir}" 2>/dev/null || {
+            echo -e "${RED}Warning: Could not remove directory ${dir}${NC}"
+            return 1
+        }
+    fi
+    return 0
+}
 
-# Main execution
+# Add debug function
+debug_state() {
+    local msg="$1"
+    echo "=== DEBUG: $msg ==="
+    echo "Current directory: $(pwd)"
+    echo "THEME_DIR: ${THEME_DIR}"
+    echo "Directory structure:"
+    if [ -d "${THEME_DIR}" ]; then
+        find "${THEME_DIR}" -type d
+        echo "File listing:"
+        find "${THEME_DIR}" -type f
+    else
+        echo "Theme directory does not exist!"
+    fi
+    echo "==================="
+}
+
+# Update main() to include all necessary function calls in the correct order:
 main() {
     log "Creating Stay N Alive Theme..."
+    debug_state "Starting main()"
     
-    # Clean up any existing theme directory
+    # Clean up existing theme directory
     if [ -d "${THEME_DIR}" ]; then
-        # Force remove on Windows using cmd
-        if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
-            cmd //c "rmdir /s /q \"${THEME_DIR}\"" 2>/dev/null || true
-        else
-            rm -rf "${THEME_DIR}"
-        fi
+        debug_state "Before cleanup"
+        cleanup_directory "${THEME_DIR}" || {
+            echo -e "${RED}Error: Could not clean up existing theme directory${NC}"
+            exit 1
+        }
     fi
     
-    # Create fresh theme structure
-    create_directories
-    verify_directory_structure "${THEME_DIR}"
+    # Create and verify directory structure first
+    verify_directory_structure "${THEME_DIR}" || {
+        echo -e "${RED}Error: Could not verify directory structure${NC}"
+        exit 1
+    }
     
-    # Create all theme files
-    create_all_templates
-    create_template_parts
-    create_style_css
-    create_theme_json
-    create_css_files
-    create_all_css_files
-    create_all_js_files
-    create_block_patterns
-    create_additional_patterns
-    create_additional_css
-    create_additional_js
-    create_php_files
-    create_functions_php
-    create_index_php
-    create_readme
-    create_screenshot
+    # Create all files in order
+    create_directories || {
+        echo -e "${RED}Error: Could not create directories${NC}"
+        exit 1
+    }
     
-    # Validate before zipping
-    validate_theme
+    create_php_files || {
+        echo -e "${RED}Error: Could not create PHP files${NC}"
+        exit 1
+    }
+    
+    create_functions_php || {
+        echo -e "${RED}Error: Could not create functions.php${NC}"
+        exit 1
+    }
+    
+    create_all_templates || {
+        echo -e "${RED}Error: Could not create templates${NC}"
+        exit 1
+    }
+    
+    create_template_parts || {
+        echo -e "${RED}Error: Could not create template parts${NC}"
+        exit 1
+    }
+    
+    create_style_css || {
+        echo -e "${RED}Error: Could not create style.css${NC}"
+        exit 1
+    }
+    
+    create_theme_json || {
+        echo -e "${RED}Error: Could not create theme.json${NC}"
+        exit 1
+    }
+    
+    create_css_files || {
+        echo -e "${RED}Error: Could not create CSS files${NC}"
+        exit 1
+    }
+    
+    create_all_css_files || {
+        echo -e "${RED}Error: Could not create additional CSS files${NC}"
+        exit 1
+    }
+    
+    create_all_js_files || {
+        echo -e "${RED}Error: Could not create JS files${NC}"
+        exit 1
+    }
+    
+    create_block_patterns || {
+        echo -e "${RED}Error: Could not create block patterns${NC}"
+        exit 1
+    }
+    
+    create_additional_patterns || {
+        echo -e "${RED}Error: Could not create additional patterns${NC}"
+        exit 1
+    }
+    
+    create_additional_css || {
+        echo -e "${RED}Error: Could not create additional CSS${NC}"
+        exit 1
+    }
+    
+    create_additional_js || {
+        echo -e "${RED}Error: Could not create additional JS${NC}"
+        exit 1
+    }
+    
+    create_readme || {
+        echo -e "${RED}Error: Could not create readme${NC}"
+        exit 1
+    }
+    
+    create_screenshot || {
+        echo -e "${RED}Error: Could not create screenshot${NC}"
+        exit 1
+    }
+    
+    create_index_php || {
+        echo -e "${RED}Error: Could not create index.php${NC}"
+        exit 1
+    }
+    
+    # Add this line to create index.php
+    create_index_php || exit 1
+    
+    # Verify everything was created correctly
+    debug_file_paths "${THEME_DIR}" || exit 1
     
     # Create and verify zip
-    create_zip
-    verify_theme_package "stay-n-alive.zip"
+    create_zip "${THEME_DIR}" || exit 1
+    
+    verify_zip_contents "stay-n-alive.zip" || {
+        echo -e "${RED}Error: Zip verification failed${NC}"
+        exit 1
+    }
+    
+    verify_theme_package "stay-n-alive.zip" || {
+        echo -e "${RED}Error: Theme package verification failed${NC}"
+        exit 1
+    }
     
     log "Theme files created successfully!"
     echo -e "Theme zip created at: ${BLUE}stay-n-alive.zip${NC}"
 }
 
-# Execute main function
-main 
+# Only execute main at the end of the script
+main
