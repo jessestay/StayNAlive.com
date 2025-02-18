@@ -83,4 +83,42 @@ CHECKPOINT_RULES:
   - Handle missing or corrupt checkpoints gracefully
   - Document checkpoint stages
   - Test checkpoint restoration
-  - Include cleanup in checkpoint system 
+  - Include cleanup in checkpoint system
+
+# WordPress Debugging Rules
+WP_DEBUG_RULES:
+  - When encountering errors, always suggest setting up breakpoints
+  - Show exact Local + Cursor debugging steps
+  - Provide debug console commands to inspect relevant variables
+  - Include watch expressions for WordPress globals
+  - Map error messages to specific debugging points
+
+# Debug Configuration Templates
+DEBUG_TEMPLATES:
+  wordpress_breakpoint:
+    - Location of breakpoint
+    - Variables to watch
+    - Debug console commands
+    - Expected values
+
+# Error Response Format
+ERROR_RESPONSE:
+  - Show error message
+  - Suggest breakpoint location
+  - Provide debug console commands
+  - Show expected vs actual values
+  - Include Local + Cursor setup steps
+
+# Common Debug Points
+WP_DEBUG_POINTS:
+  theme_setup:
+    - after_setup_theme action
+    - init hook
+    - wp_enqueue_scripts
+  template_loading:
+    - template_include filter
+    - get_template_part calls
+  data_flow:
+    - pre_get_posts
+    - the_content filter
+    - wp_query setup 

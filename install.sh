@@ -7,6 +7,7 @@ set -euo pipefail
 readonly GREEN='\033[0;32m'
 readonly BLUE='\033[0;34m'
 readonly RED='\033[0;31m'
+readonly YELLOW='\033[1;33m'
 readonly NC='\033[0m'
 
 # Theme directory name
@@ -26,16 +27,15 @@ create_directories() {
         "assets/css/compatibility"
         "assets/css/utilities"
         "assets/js"
-        "inc"
+        "inc/classes"
         "languages"
         "parts"
         "patterns"
-        "styles"
         "templates"
     )
     
     for dir in "${dirs[@]}"; do
-        mkdir -p "${THEME_DIR}/${dir}"
+        mkdir -p "${THEME_DIR}/${dir}" && echo "Created directory: ${dir}"
     done
 }
 
@@ -47,19 +47,30 @@ Theme Name: Stay N Alive
 Theme URI: https://staynalive.com
 Author: Jesse Stay
 Author URI: https://staynalive.com
-Description: A modern block-based theme for Stay N Alive
+Description: A modern block-based WordPress theme.
 Version: 1.0.0
-Requires at least: 6.0
-Tested up to: 6.4
-Requires PHP: 7.4
 License: GNU General Public License v2 or later
-License URI: LICENSE
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: stay-n-alive
 Tags: blog, custom-background, custom-colors, custom-logo, custom-menu, editor-style, featured-images, footer-widgets, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready, block-styles, wide-blocks
-
-Copyright 2024 Jesse Stay
 */
+
+/* Basic theme styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #333;
+}
 EOL
+
+    # Verify the file was created correctly
+    if ! grep -q "^Theme Name:" "${THEME_DIR}/style.css"; then
+        echo -e "${RED}Error: Theme Name not found in style.css header${NC}"
+        exit 1
+    fi
+
+    # Display the actual content for verification
+    echo "Content of style.css:"
+    cat "${THEME_DIR}/style.css"
 }
 
 # Function to create theme.json
@@ -1495,99 +1506,13 @@ EOL
 
 # Function to create PHP files
 create_php_files() {
-    # Social Media Integration
-    cat > "${THEME_DIR}/inc/social-feeds.php" << 'EOL'
-<?php
-/**
- * Social Media Feed Integration
- *
- * @package StayNAlive
- */
+    # Create inc directory if it doesn't exist
+    if ! mkdir -p "${THEME_DIR}/inc"; then
+        echo -e "${RED}Error: Failed to create inc directory${NC}"
+        exit 1
+    fi
 
-namespace StayNAlive\SocialFeeds;
-
-// Register REST API endpoints
-add_action('rest_api_init', function() {
-    register_rest_route('staynalive/v1', '/instagram-feed', [
-        'methods' => 'GET',
-        'callback' => __NAMESPACE__ . '\get_instagram_feed',
-        'permission_callback' => '__return_true'
-    ]);
-    
-    register_rest_route('staynalive/v1', '/tiktok-feed', [
-        'methods' => 'GET',
-        'callback' => __NAMESPACE__ . '\get_tiktok_feed',
-        'permission_callback' => '__return_true'
-    ]);
-    
-    register_rest_route('staynalive/v1', '/youtube-feed', [
-        'methods' => 'GET',
-        'callback' => __NAMESPACE__ . '\get_youtube_feed',
-        'permission_callback' => '__return_true'
-    ]);
-});
-
-function get_instagram_feed() {
-    $options = get_option('staynalive_social_media', []);
-    $token = $options['instagram_token'] ?? '';
-    
-    if (empty($token)) {
-        return new \WP_Error('missing_token', 'Instagram token is required');
-    }
-    
-    $cache_key = 'instagram_feed_' . md5($token);
-    $cached = get_transient($cache_key);
-    
-    if (false !== $cached) {
-        return $cached;
-    }
-    
-    $response = wp_remote_get(
-        "https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink&access_token={$token}"
-    );
-    
-    if (is_wp_error($response)) {
-        return $response;
-    }
-    
-    $data = json_decode(wp_remote_retrieve_body($response), true);
-    set_transient($cache_key, $data, HOUR_IN_SECONDS);
-    
-    return $data;
-}
-
-function get_youtube_feed() {
-    $options = get_option('staynalive_social_media', []);
-    $api_key = $options['youtube_api_key'] ?? '';
-    $channel_id = $options['youtube_channel_id'] ?? '';
-    
-    if (empty($api_key) || empty($channel_id)) {
-        return new \WP_Error('missing_config', 'YouTube API key and channel ID are required');
-    }
-    
-    $cache_key = 'youtube_feed_' . md5($api_key . $channel_id);
-    $cached = get_transient($cache_key);
-    
-    if (false !== $cached) {
-        return $cached;
-    }
-    
-    $response = wp_remote_get(
-        "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId={$channel_id}&maxResults=10&order=date&type=video&key={$api_key}"
-    );
-    
-    if (is_wp_error($response)) {
-        return $response;
-    }
-    
-    $data = json_decode(wp_remote_retrieve_body($response), true);
-    set_transient($cache_key, $data, HOUR_IN_SECONDS);
-    
-    return $data;
-}
-EOL
-
-    # Theme Setup
+    # Create theme-setup.php
     cat > "${THEME_DIR}/inc/theme-setup.php" << 'EOL'
 <?php
 /**
@@ -1608,15 +1533,21 @@ function theme_setup() {
     add_theme_support('align-wide');
     add_theme_support('custom-units');
     add_theme_support('post-thumbnails');
+    add_theme_support('title-tag');
+    add_theme_support('automatic-feed-links');
+    add_theme_support('html5', array(
+        'comment-list',
+        'comment-form', 
+        'search-form',
+        'gallery',
+        'caption',
+        'style',
+        'script'
+    ));
+    add_theme_support('custom-logo');
+    add_theme_support('custom-header');
+    add_theme_support('custom-background');
     
-    // Register block patterns
-    if (function_exists('register_block_pattern_category')) {
-        register_block_pattern_category(
-            'staynalive',
-            ['label' => __('Stay N Alive', 'stay-n-alive')]
-        );
-    }
-
     register_nav_menus(array(
         'primary' => __('Primary Menu', 'stay-n-alive'),
         'footer' => __('Footer Menu', 'stay-n-alive')
@@ -1630,112 +1561,144 @@ add_action('after_setup_theme', __NAMESPACE__ . '\theme_setup');
 function enqueue_assets() {
     $version = wp_get_theme()->get('Version');
     
-    // Styles
     wp_enqueue_style(
         'staynalive-style',
         get_stylesheet_uri(),
-        [],
+        array(),
         $version
-    );
-    
-    // Scripts
-    wp_enqueue_script(
-        'staynalive-social-feed',
-        get_template_directory_uri() . '/assets/js/social-feed.js',
-        [],
-        $version,
-        true
-    );
-    
-    wp_enqueue_script(
-        'staynalive-animations',
-        get_template_directory_uri() . '/assets/js/animations.js',
-        [],
-        $version,
-        true
     );
 }
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_assets');
 EOL
+
+    # Verify PHP files are created
+    for file in "theme-setup.php" "social-feeds.php" "security.php" "performance.php"; do
+        if [ ! -f "${THEME_DIR}/inc/${file}" ]; then
+            echo -e "${RED}Error: Failed to create ${file}${NC}"
+            exit 1
+        fi
+    done
 }
 
-# Function to create utility files
-create_utility_files() {
-    # Security Functions
-    cat > "${THEME_DIR}/inc/security.php" << 'EOL'
+# Function to create index.php
+create_index_php() {
+    cat > "${THEME_DIR}/index.php" << 'EOL'
 <?php
-/**
- * Security enhancements
- *
- * @package StayNAlive
- */
-
-namespace StayNAlive\Security;
-
-// Disable file editing in WordPress admin
-if (!defined('DISALLOW_FILE_EDIT')) {
-    define('DISALLOW_FILE_EDIT', true);
-}
-
-// Remove WordPress version from sources
-remove_action('wp_head', 'wp_generator');
-
-// Add security headers
-add_action('send_headers', function() {
-    header('X-Content-Type-Options: nosniff');
-    header('X-Frame-Options: SAMEORIGIN');
-    header('X-XSS-Protection: 1; mode=block');
-    header('Referrer-Policy: strict-origin-when-cross-origin');
-});
-
-// Sanitize SVG uploads
-add_filter('wp_handle_upload_prefilter', function($file) {
-    if ($file['type'] === 'image/svg+xml') {
-        if (!sanitize_svg($file['tmp_name'])) {
-            $file['error'] = 'Invalid SVG file';
-        }
-    }
-    return $file;
-});
-
-// Add plugin recommendation
-add_action('admin_notices', function() {
-    if (!is_plugin_active('stay-n-alive-companion/stay-n-alive-companion.php')) {
-        echo '<div class="notice notice-info"><p>';
-        echo __('For full functionality, please install the Stay N Alive Companion plugin.', 'stay-n-alive');
-        echo '</p></div>';
-    }
-});
+// Silence is golden
 EOL
+}
 
-    # Performance Functions
-    cat > "${THEME_DIR}/inc/performance.php" << 'EOL'
-<?php
-/**
- * Performance optimizations
- *
- * @package StayNAlive
- */
+# Function to create screenshot
+create_screenshot() {
+    # Create a basic screenshot using PowerShell
+    powershell.exe -Command "
+        Add-Type -AssemblyName System.Drawing;
+        \$bmp = New-Object System.Drawing.Bitmap 1200,900;
+        \$g = [System.Drawing.Graphics]::FromImage(\$bmp);
+        \$g.Clear([System.Drawing.Color]::White);
+        \$font = New-Object System.Drawing.Font('Arial', 48);
+        \$brush = [System.Drawing.Brushes]::Black;
+        \$text = 'Stay N Alive';
+        \$size = \$g.MeasureString(\$text, \$font);
+        \$x = (\$bmp.Width - \$size.Width) / 2;
+        \$y = (\$bmp.Height - \$size.Height) / 2;
+        \$g.DrawString(\$text, \$font, \$brush, \$x, \$y);
+        \$bmp.Save('${THEME_DIR}/screenshot.png');
+        \$g.Dispose();
+        \$bmp.Dispose();
+    "
+    echo -e "${BLUE}Created screenshot.png (1200x900px)${NC}"
+}
 
-namespace StayNAlive\Performance;
+# Function to create zip file
+create_zip() {
+    log "Creating theme zip file..."
+    
+    # Verify style.css exists and has content
+    if [ ! -s "${THEME_DIR}/style.css" ]; then
+        echo -e "${RED}Error: style.css is empty or missing${NC}"
+        exit 1
+    fi
+    
+    # Display first few lines of style.css
+    echo "Verifying style.css header:"
+    head -n 20 "${THEME_DIR}/style.css"
+    
+    # List all files before zipping
+    echo "Files to be included in zip:"
+    find "${THEME_DIR}" -type f
 
-// Disable emoji scripts
-add_action('init', function() {
-    remove_action('wp_head', 'print_emoji_detection_script', 7);
-    remove_action('admin_print_scripts', 'print_emoji_detection_script');
-    remove_action('wp_print_styles', 'print_emoji_styles');
-    remove_action('admin_print_styles', 'print_emoji_styles');
-    remove_filter('the_content_feed', 'wp_staticize_emoji');
-    remove_filter('comment_text_rss', 'wp_staticize_emoji');
-    remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
-});
+    if command -v zip >/dev/null 2>&1; then
+        (cd "${THEME_DIR}" && zip -r ../stay-n-alive.zip . -x ".*" -x "__MACOSX" && echo "Created zip using zip command")
+    else
+        # Use PowerShell's Compress-Archive as fallback on Windows
+        powershell.exe -Command "& {
+            \$ErrorActionPreference = 'Stop';
+            Remove-Item -Path 'stay-n-alive.zip' -ErrorAction SilentlyContinue;
+            \$source = '${THEME_DIR}';
+            \$destination = (Get-Location).Path + '\stay-n-alive.zip';
+            Write-Host 'Creating zip file at:' \$destination;
+            Compress-Archive -Path \"\$source\*\" -DestinationPath \$destination -Force;
+            if (Test-Path \$destination) {
+                Write-Host 'Created zip using PowerShell';
+            } else {
+                Write-Error 'Failed to create zip file';
+            }
+        }"
+    fi
 
-// Add preload for critical assets
-add_action('wp_head', function() {
-    echo '<link rel="preload" href="' . get_theme_file_uri('assets/css/base/base.css') . '" as="style">';
-    echo '<link rel="preload" href="' . get_theme_file_uri('assets/js/animations.js') . '" as="script">';
-}, 1);
-?>
+    # Verify zip was created
+    if [ ! -f "stay-n-alive.zip" ]; then
+        echo -e "${RED}Error: Failed to create zip file${NC}"
+        exit 1
+    fi
+
+    # Verify zip contents
+    if command -v unzip >/dev/null 2>&1; then
+        echo "Zip contents:"
+        unzip -l stay-n-alive.zip
+    fi
+}
+
+# Function to create readme
+create_readme() {
+    cat > "${THEME_DIR}/readme.txt" << 'EOL'
+=== Stay N Alive ===
+Contributors: jessestay
+Tags: blog, custom-background, custom-colors, custom-logo, custom-menu, editor-style, featured-images, footer-widgets, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready, block-styles, wide-blocks
+Requires at least: 6.0
+Tested up to: 6.4
+Requires PHP: 7.4
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+A modern block-based WordPress theme designed for bloggers and content creators.
+
+== Description ==
+
+Stay N Alive is a modern block-based WordPress theme designed for bloggers and content creators.
+
+== Installation ==
+
+1. In your admin panel, go to Appearance > Themes and click the Add New button.
+2. Click Upload Theme and Choose File, then select the theme's .zip file. Click Install Now.
+3. Click Activate to use your new theme right away.
+
+== Frequently Asked Questions ==
+
+= Does this theme support any plugins? =
+
+Stay N Alive includes support for WooCommerce and for Infinite Scroll in Jetpack.
+
+== Changelog ==
+
+= 1.0.0 =
+* Initial release
+
+== Copyright ==
+
+Stay N Alive WordPress Theme, Copyright 2024 Jesse Stay
+Stay N Alive is distributed under the terms of the GNU GPL
 EOL
 }
 
@@ -1785,32 +1748,12 @@ add_action('after_setup_theme', function() {
 
 // Enqueue scripts and styles
 add_action('wp_enqueue_scripts', function() {
-    // Base styles
-    wp_enqueue_style('staynalive-base', get_template_directory_uri() . '/assets/css/base/base.css', [], STAYNALIVE_VERSION);
-    
-    // Component styles
-    wp_enqueue_style('staynalive-header', get_template_directory_uri() . '/assets/css/components/header.css', [], STAYNALIVE_VERSION);
-    wp_enqueue_style('staynalive-footer', get_template_directory_uri() . '/assets/css/components/footer.css', [], STAYNALIVE_VERSION);
-    wp_enqueue_style('staynalive-social-feed', get_template_directory_uri() . '/assets/css/components/social-feed.css', [], STAYNALIVE_VERSION);
-    
-    // Scripts
-    wp_enqueue_script('staynalive-social-feed', get_template_directory_uri() . '/assets/js/social-feed.js', [], STAYNALIVE_VERSION, true);
-    wp_enqueue_script('staynalive-animations', get_template_directory_uri() . '/assets/js/animations.js', [], STAYNALIVE_VERSION, true);
-
-    // Additional styles
-    wp_enqueue_style('staynalive-divi-compat', get_template_directory_uri() . '/assets/css/compatibility/divi.css', [], STAYNALIVE_VERSION);
-    wp_enqueue_style('staynalive-mobile-menu', get_template_directory_uri() . '/assets/css/components/mobile-menu.css', [], STAYNALIVE_VERSION);
-    
-    // Additional scripts
-    wp_enqueue_script('staynalive-google-maps', get_template_directory_uri() . '/assets/js/google-maps.js', [], STAYNALIVE_VERSION, true);
-    wp_enqueue_script('staynalive-analytics', get_template_directory_uri() . '/assets/js/analytics.js', ['jquery'], STAYNALIVE_VERSION, true);
-
-    // Add to wp_enqueue_scripts function
-    wp_enqueue_style('staynalive-normalize', get_template_directory_uri() . '/assets/css/base/normalize.css', [], STAYNALIVE_VERSION);
-    wp_enqueue_style('staynalive-divi-legacy', get_template_directory_uri() . '/assets/css/compatibility/divi-legacy.css', [], STAYNALIVE_VERSION);
-    
-    wp_enqueue_script('staynalive-sharethis', get_template_directory_uri() . '/assets/js/sharethis.js', [], STAYNALIVE_VERSION, true);
-    wp_enqueue_script('staynalive-emoji', get_template_directory_uri() . '/assets/js/emoji.js', [], STAYNALIVE_VERSION, true);
+    wp_enqueue_style(
+        'staynalive-style',
+        get_stylesheet_uri(),
+        array(),
+        STAYNALIVE_VERSION
+    );
 
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
@@ -1856,72 +1799,31 @@ add_action('init', 'staynalive_register_block_styles');
 EOL
 }
 
-# Function to create index.php
-create_index_php() {
-    cat > "${THEME_DIR}/index.php" << 'EOL'
-<?php
-// Silence is golden
-EOL
-}
-
-# Function to create screenshot
-create_screenshot() {
-    # Create an empty screenshot file
-    touch "${THEME_DIR}/screenshot.png"
-    echo -e "${BLUE}Please add a screenshot.png (1200x900px) to the theme directory${NC}"
-}
-
-# Function to create zip file
-create_zip() {
-    log "Creating theme zip file..."
-    if command -v zip >/dev/null 2>&1; then
-        (cd "${THEME_DIR}" && zip -r ../stay-n-alive.zip .)
-    else
-        # Use PowerShell's Compress-Archive as fallback on Windows
-        powershell.exe -Command "Compress-Archive -Path '${THEME_DIR}/*' -DestinationPath 'stay-n-alive.zip' -Force"
+# Function to validate theme
+validate_theme() {
+    log "Validating theme..."
+    
+    # Check if we're in a WordPress installation
+    if ! wp core is-installed 2>/dev/null; then
+        echo -e "${YELLOW}Warning: WordPress installation not found. Skipping WP-CLI validation.${NC}"
+        echo -e "${YELLOW}To fully validate the theme:${NC}"
+        echo "1. Install WordPress locally"
+        echo "2. Navigate to the WordPress installation directory"
+        echo "3. Run: wp theme validate-theme /path/to/stay-n-alive.zip"
+        return 0
     fi
-}
 
-# Function to create readme
-create_readme() {
-    cat > "${THEME_DIR}/readme.txt" << 'EOL'
-=== Stay N Alive ===
-Contributors: jessestay
-Tags: blog, custom-background, custom-colors, custom-logo, custom-menu, editor-style, featured-images, footer-widgets, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready, block-styles, wide-blocks
-Requires at least: 6.0
-Tested up to: 6.4
-Requires PHP: 7.4
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-
-A modern block-based WordPress theme designed for bloggers and content creators.
-
-== Description ==
-
-Stay N Alive is a modern block-based WordPress theme designed for bloggers and content creators.
-
-== Installation ==
-
-1. In your admin panel, go to Appearance > Themes and click the Add New button.
-2. Click Upload Theme and Choose File, then select the theme's .zip file. Click Install Now.
-3. Click Activate to use your new theme right away.
-
-== Frequently Asked Questions ==
-
-= Does this theme support any plugins? =
-
-Stay N Alive includes support for WooCommerce and for Infinite Scroll in Jetpack.
-
-== Changelog ==
-
-= 1.0.0 =
-* Initial release
-
-== Copyright ==
-
-Stay N Alive WordPress Theme, Copyright 2024 Jesse Stay
-Stay N Alive is distributed under the terms of the GNU GPL
-EOL
+    # Run WP-CLI validation
+    if command -v wp >/dev/null 2>&1; then
+        echo "Running theme validation..."
+        if ! wp theme validate-theme "${THEME_DIR}" --debug; then
+            echo -e "${RED}Theme validation failed${NC}"
+            exit 1
+        fi
+        echo -e "${GREEN}Theme validation passed${NC}"
+    else
+        echo -e "${YELLOW}WP-CLI not found...${NC}"
+    fi
 }
 
 # Main execution
@@ -1952,7 +1854,6 @@ main() {
     create_additional_css
     create_additional_js
     create_php_files
-    create_utility_files
     create_functions_php
     create_index_php
     create_readme
@@ -1962,6 +1863,9 @@ main() {
     
     # Create zip file
     create_zip
+    
+    # Validate theme
+    validate_theme
     
     log "Theme files created successfully!"
     echo -e "Theme zip created at: ${BLUE}stay-n-alive.zip${NC}"
