@@ -2207,6 +2207,527 @@ I reran install.sh and am still getting the same style.css error. Do you need mo
 
 _**Assistant**_
 
+Yes, I can help debug this further. Looking at the output, I notice a few things:
+
+1. The zip verification shows the style.css is in the wrong location:
+```
+if (Test-Path 'temp_verify/stay-n-alive/style.css')
+```
+The style.css needs to be at the root level of the zip, not inside a stay-n-alive subdirectory.
+
+Let's modify the zip creation to fix this:
+
+```shell:install.sh
+# Update the PowerShell zip creation in create_zip()
+powershell.exe -Command "& {
+    \$ErrorActionPreference = 'Stop';
+    \$source = '${theme_name}/*';
+    \$destination = '${parent_dir}/stay-n-alive.zip';
+    
+    Write-Host 'Source:' \$source;
+    Write-Host 'Destination:' \$destination;
+    
+    # Create a temporary directory for the correct structure
+    \$tempDir = 'temp_theme';
+    New-Item -ItemType Directory -Path \$tempDir -Force | Out-Null;
+    
+    # Copy all files to temp directory (not in a subdirectory)
+    Copy-Item -Path \$source -Destination \$tempDir -Recurse;
+    
+    # Verify style.css exists at root level
+    if (-not (Test-Path \"\$tempDir/style.css\")) {
+        Write-Error 'style.css not found at root level';
+        exit 1;
+    }
+    
+    # Create the zip from the temp directory contents
+    Compress-Archive -Path \"\$tempDir/*\" -DestinationPath \$destination -Force;
+    
+    # Clean up temp directory
+    Remove-Item -Path \$tempDir -Recurse -Force;
+    
+    if (Test-Path \$destination) {
+        Write-Host 'Zip file created successfully';
+        
+        # Verify zip structure
+        Expand-Archive -Path \$destination -DestinationPath 'temp_verify' -Force;
+        if (Test-Path 'temp_verify/style.css') {
+            Write-Host 'style.css found at root level';
+            Get-ChildItem 'temp_verify' | ForEach-Object { Write-Host \$_.Name }
+        } else {
+            Write-Error 'style.css not found at root level in zip';
+            Write-Host 'Zip contents:';
+            Get-ChildItem 'temp_verify' -Recurse;
+            exit 1;
+        }
+        Remove-Item -Path 'temp_verify' -Recurse -Force;
+    } else {
+        Write-Error 'Failed to create zip file';
+        exit 1;
+    }
+}"
+```
+
+This change:
+1. Creates a temp directory without a subdirectory
+2. Copies files directly to temp directory root
+3. Verifies style.css is at root level before zipping
+4. Creates zip from temp directory contents
+5. Verifies zip structure has style.css at root level
+
+Also, could you share:
+1. The WordPress debug log from Local (usually at `wp-content/debug.log`)
+2. The output of `wp theme validate-theme stay-n-alive.zip --debug` if you have WP-CLI installed
+
+These would help confirm if there are any other issues beyond the zip structure.
+
+---
+
+_**User**_
+
+1. After installing the theme file I get this error:
+
+"Unpacking the package…
+
+Could not copy file. assets\css\blocks\"
+
+2. I can't seem to find the debug.log file from Local but XDebug should be on - will that help?
+
+3. I'm attaching the output from "wp theme validate-theme stay-n-alive.zip --debug"
+
+---
+
+_**Assistant**_
+
+From the errors, there are two issues:
+
+1. The directory path issue with `assets\css\blocks\` suggests Windows path separators are causing problems. Let's fix the zip creation:
+
+```shell:install.sh
+# Update the PowerShell zip creation to handle Windows paths
+powershell.exe -Command "& {
+    \$ErrorActionPreference = 'Stop';
+    \$source = '${theme_name}/*';
+    \$destination = '${parent_dir}/stay-n-alive.zip';
+    
+    Write-Host 'Source:' \$source;
+    Write-Host 'Destination:' \$destination;
+    
+    # Create a temporary directory for the correct structure
+    \$tempDir = 'temp_theme';
+    Remove-Item -Path \$tempDir -Recurse -Force -ErrorAction SilentlyContinue;
+    New-Item -ItemType Directory -Path \$tempDir -Force | Out-Null;
+    
+    # Copy all files to temp directory, converting paths
+    Get-ChildItem -Path \$source -Recurse | ForEach-Object {
+        \$targetPath = Join-Path \$tempDir \$_.FullName.Substring(\$source.Length)
+        if (\$_.PSIsContainer) {
+            New-Item -ItemType Directory -Path \$targetPath -Force | Out-Null
+        } else {
+            New-Item -ItemType File -Path \$targetPath -Force | Out-Null
+            Copy-Item -Path \$_.FullName -Destination \$targetPath -Force
+        }
+    }
+    
+    # Verify style.css exists at root level
+    if (-not (Test-Path \"\$tempDir/style.css\")) {
+        Write-Error 'style.css not found at root level';
+        exit 1;
+    }
+    
+    # Create the zip with forward slashes
+    Compress-Archive -Path \"\$tempDir/*\" -DestinationPath \$destination -Force;
+    
+    # Clean up temp directory
+    Remove-Item -Path \$tempDir -Recurse -Force;
+    
+    if (Test-Path \$destination) {
+        Write-Host 'Zip file created successfully';
+        
+        # Verify zip structure
+        \$verifyDir = 'temp_verify';
+        Remove-Item -Path \$verifyDir -Recurse -Force -ErrorAction SilentlyContinue;
+        Expand-Archive -Path \$destination -DestinationPath \$verifyDir -Force;
+        
+        Write-Host 'Zip contents:';
+        Get-ChildItem \$verifyDir -Recurse | ForEach-Object {
+            Write-Host \$_.FullName.Replace('\$verifyDir\\', '').Replace('\\', '/')
+        }
+        
+        Remove-Item -Path \$verifyDir -Recurse -Force;
+    } else {
+        Write-Error 'Failed to create zip file';
+        exit 1;
+    }
+}"
+```
+
+2. For the memory issue in WP-CLI, let's add this to your wp-config.php:
+
+```php:c:\Users\stay\Local Sites\staynalive\app\public\wp-config.php
+// Add before "That's all, stop editing!"
+define('WP_MEMORY_LIMIT', '256M');
+define('WP_MAX_MEMORY_LIMIT', '512M');
+
+// Also add for debugging
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true);
+define('WP_DEBUG_DISPLAY', false);
+```
+
+The changes:
+1. Fix Windows path separators in zip creation
+2. Properly handle directory creation and file copying
+3. Increase memory limits for WP-CLI
+4. Enable proper debugging
+
+Try running the install script again after these changes. The debug log should now appear at `wp-content/debug.log` in your Local site's directory.
+
+Let me know if you still get any errors!
+
+---
+
+_**User**_
+
+Any other errors you haven't addressed?
+
+---
+
+_**Assistant**_
+
+Yes, looking at all the errors and output, there are a few remaining issues:
+
+1. The "Could not copy file. assets\css\blocks\" error suggests we need to ensure the directory exists before copying files. Let's add directory creation to the PowerShell script:
+
+```shell:install.sh
+# Update the PowerShell zip creation to ensure directories exist
+powershell.exe -Command "& {
+    \$ErrorActionPreference = 'Stop';
+    \$source = '${theme_name}/*';
+    \$destination = '${parent_dir}/stay-n-alive.zip';
+    
+    Write-Host 'Source:' \$source;
+    Write-Host 'Destination:' \$destination;
+    
+    # Create a temporary directory for the correct structure
+    \$tempDir = 'temp_theme/stay-n-alive';  # Include theme name in path
+    Remove-Item -Path 'temp_theme' -Recurse -Force -ErrorAction SilentlyContinue;
+    
+    # Create all required directories first
+    @(
+        '',
+        'assets',
+        'assets/css',
+        'assets/css/blocks',
+        'assets/css/base',
+        'assets/css/components',
+        'assets/css/compatibility',
+        'assets/css/utilities',
+        'assets/js',
+        'inc',
+        'inc/classes',
+        'languages',
+        'parts',
+        'patterns',
+        'templates',
+        'styles'
+    ) | ForEach-Object {
+        New-Item -ItemType Directory -Path (Join-Path \$tempDir \$_) -Force | Out-Null
+    }
+    
+    # Copy all files, maintaining structure
+    Get-ChildItem -Path \$source -Recurse | ForEach-Object {
+        \$relativePath = \$_.FullName.Substring((Get-Item \$source).Parent.FullName.Length + 1)
+        \$targetPath = Join-Path 'temp_theme' \$relativePath
+        
+        if (!\$_.PSIsContainer) {
+            Copy-Item -Path \$_.FullName -Destination \$targetPath -Force
+            Write-Host \"Copied: \$relativePath\"
+        }
+    }
+    
+    # Create the zip from the temp directory
+    Remove-Item -Path \$destination -Force -ErrorAction SilentlyContinue
+    Compress-Archive -Path 'temp_theme/*' -DestinationPath \$destination -Force
+    
+    # Verify zip contents
+    Write-Host 'Verifying zip contents...'
+    Expand-Archive -Path \$destination -DestinationPath 'verify_temp' -Force
+    Get-ChildItem -Path 'verify_temp' -Recurse | ForEach-Object {
+        Write-Host \$_.FullName.Replace('verify_temp\\', '')
+    }
+    
+    # Cleanup
+    Remove-Item -Path 'temp_theme' -Recurse -Force
+    Remove-Item -Path 'verify_temp' -Recurse -Force
+}"
+```
+
+2. Let's also add a function to verify the directory structure before creating the zip:
+
+```shell:install.sh
+# Add this function before create_zip
+verify_directory_structure() {
+    local theme_dir="$1"
+    echo "Verifying directory structure..."
+    
+    local required_dirs=(
+        "assets/css/blocks"
+        "assets/css/base"
+        "assets/css/components"
+        "assets/css/compatibility"
+        "assets/css/utilities"
+        "assets/js"
+        "inc/classes"
+        "languages"
+        "parts"
+        "patterns"
+        "templates"
+        "styles"
+    )
+    
+    for dir in "${required_dirs[@]}"; do
+        if [ ! -d "${theme_dir}/${dir}" ]; then
+            echo "Creating missing directory: ${dir}"
+            mkdir -p "${theme_dir}/${dir}"
+        fi
+    done
+    
+    # Verify all directories have correct permissions
+    find "${theme_dir}" -type d -exec chmod 755 {} \;
+    # Verify all files have correct permissions
+    find "${theme_dir}" -type f -exec chmod 644 {} \;
+}
+
+# Call verify_directory_structure before create_zip
+verify_directory_structure "${THEME_DIR}"
+```
+
+3. Add a final verification step:
+
+```shell:install.sh
+# Add this function after create_zip
+verify_theme_package() {
+    local zip_file="$1"
+    echo "Performing final theme package verification..."
+    
+    # Create temp directory for verification
+    local verify_dir="verify_theme_$(date +%s)"
+    mkdir -p "$verify_dir"
+    
+    # Extract and verify
+    powershell.exe -Command "& {
+        Expand-Archive -Path '$zip_file' -DestinationPath '$verify_dir' -Force
+        
+        # Check critical files
+        @('style.css', 'index.php', 'functions.php') | ForEach-Object {
+            if (!(Test-Path '$verify_dir/stay-n-alive/$_')) {
+                Write-Error \"Missing required file: $_\"
+                exit 1
+            }
+        }
+        
+        # Verify directory structure
+        @('assets/css', 'inc', 'templates') | ForEach-Object {
+            if (!(Test-Path '$verify_dir/stay-n-alive/$_')) {
+                Write-Error \"Missing required directory: $_\"
+                exit 1
+            }
+        }
+        
+        Write-Host 'Theme package verification completed successfully'
+    }"
+    
+    # Cleanup
+    rm -rf "$verify_dir"
+}
+
+# Call verify_theme_package after create_zip
+verify_theme_package "stay-n-alive.zip"
+```
+
+These changes should:
+1. Fix the directory creation/copying issues
+2. Ensure proper file structure in the zip
+3. Add thorough verification steps
+4. Maintain proper file permissions
+5. Provide better error reporting
+
+Try running the install script again with these changes. The directory structure issues should be resolved.
+
+---
+
+_**User**_
+
+See these errors from running install.sh. Be sure to address all of them.
+
+---
+
+_**Assistant**_
+
+
+
+I see several issues from the output:
+
+1. The zip file verification is failing because we're trying to verify before creating the zip
+2. The path handling in the PowerShell verification is incorrect
+3. The verification script is running in the wrong order
+
+Let's fix these issues:
+
+```shell:install.sh
+# Update the create_zip function to handle verification properly
+create_zip() {
+    log "Creating theme zip file..."
+    
+    echo "Current directory: $(pwd)"
+    echo "Theme directory: ${THEME_DIR}"
+    
+    # Create zip with proper directory structure
+    echo "Creating zip from: ${THEME_DIR}"
+    
+    # Make sure we're in the parent directory of the theme
+    local parent_dir="$(dirname "${THEME_DIR}")"
+    local theme_name="$(basename "${THEME_DIR}")"
+    
+    cd "${parent_dir}" || {
+        echo -e "${RED}Error: Could not change to parent directory${NC}"
+        exit 1
+    }
+    
+    # Remove existing zip if it exists
+    rm -f "stay-n-alive.zip"
+    
+    echo "Using PowerShell..."
+    powershell.exe -Command "& {
+        \$ErrorActionPreference = 'Stop';
+        \$source = '${theme_name}';
+        \$destination = (Get-Location).Path + '/stay-n-alive.zip';
+        
+        Write-Host 'Creating zip file...';
+        Write-Host 'Source:' \$source;
+        Write-Host 'Destination:' \$destination;
+        
+        # Create zip file
+        Compress-Archive -Path \$source -DestinationPath \$destination -Force;
+        
+        if (Test-Path \$destination) {
+            Write-Host 'Zip file created successfully';
+            
+            # Verify zip contents
+            \$verifyDir = 'verify_temp';
+            Remove-Item -Path \$verifyDir -Recurse -Force -ErrorAction SilentlyContinue;
+            New-Item -ItemType Directory -Path \$verifyDir -Force | Out-Null;
+            
+            Write-Host 'Verifying zip contents...';
+            Expand-Archive -Path \$destination -DestinationPath \$verifyDir -Force;
+            
+            # Check required files
+            \$requiredFiles = @(
+                'style.css',
+                'index.php',
+                'functions.php',
+                'inc/theme-setup.php'
+            );
+            
+            \$missingFiles = @();
+            foreach (\$file in \$requiredFiles) {
+                \$path = Join-Path \$verifyDir \$source \$file;
+                if (-not (Test-Path \$path)) {
+                    \$missingFiles += \$file;
+                }
+            }
+            
+            if (\$missingFiles.Count -gt 0) {
+                Write-Error ('Missing required files: ' + (\$missingFiles -join ', '));
+                Get-ChildItem \$verifyDir -Recurse | Select-Object FullName;
+                exit 1;
+            }
+            
+            Write-Host 'All required files present in zip';
+            Remove-Item -Path \$verifyDir -Recurse -Force;
+        } else {
+            Write-Error 'Failed to create zip file';
+            exit 1;
+        }
+    }" || {
+        echo -e "${RED}Error: PowerShell zip creation failed${NC}"
+        exit 1
+    }
+    
+    # Verify zip was created
+    if [ ! -f "stay-n-alive.zip" ]; then
+        echo -e "${RED}Error: Zip file was not created${NC}"
+        exit 1
+    fi
+    
+    echo "Zip file created at: $(pwd)/stay-n-alive.zip"
+    echo "Zip file size: $(ls -lh stay-n-alive.zip)"
+    
+    # Move back to original directory
+    cd - || exit 1
+}
+
+# Move verify_theme_package call after create_zip in main()
+main() {
+    log "Creating Stay N Alive Theme..."
+    
+    # ... (other function calls)
+    
+    # Create directories first
+    create_directories
+    verify_directory_structure "${THEME_DIR}"
+    
+    # Create all theme files
+    create_all_templates
+    create_template_parts
+    create_style_css
+    create_theme_json
+    create_css_files
+    create_all_css_files
+    create_all_js_files
+    create_block_patterns
+    create_additional_patterns
+    create_additional_css
+    create_additional_js
+    create_php_files
+    create_functions_php
+    create_index_php
+    create_readme
+    create_screenshot
+    
+    # Validate before zipping
+    validate_theme
+    
+    # Create and verify zip
+    create_zip
+    verify_theme_package "stay-n-alive.zip"
+    
+    log "Theme files created successfully!"
+    echo -e "Theme zip created at: ${BLUE}stay-n-alive.zip${NC}"
+}
+```
+
+These changes:
+1. Fix the order of operations (validate before zip creation)
+2. Improve zip file creation and verification
+3. Add proper error handling for missing files
+4. Fix path handling in PowerShell scripts
+5. Add detailed logging of zip contents
+6. Ensure proper cleanup of temporary directories
+
+Try running the script again - it should now properly create and verify the zip file with all required files in the correct locations.
+
+---
+
+_**User**_
+
+We seem to have a lot of problems with the order being wrong and having to keep fixing that. Is there a way to prevent order of operations issues in the future? If there is, make sure you add it to .cursorrules. Also, add to .cursorrules that all scripts must run successfully in both bash and PowerShell.
+
+---
+
+_**Assistant**_
+
 
 
 ---
