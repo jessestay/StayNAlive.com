@@ -13,20 +13,21 @@ fi
 # Author: Jesse Stay
 # Version: 1.0.0
 
-# Colors for output
+# Constants
 readonly GREEN='\033[0;32m'
 readonly BLUE='\033[0;34m'
 readonly RED='\033[0;31m'
 readonly YELLOW='\033[1;33m'
 readonly NC='\033[0m'
 
+# Theme directory name
+readonly THEME_DIR="stay-n-alive"
+readonly THEME_ZIP="stay-n-alive.zip"
+
 # Set each option individually
 set -e
 set -u
 shopt -s -o pipefail
-
-# Theme directory name
-readonly THEME_DIR="stay-n-alive"
 
 # All function definitions should be here, starting with verify_script_settings
 # Then main(), then all other functions in order of dependency
@@ -135,6 +136,13 @@ main() {
     fi
     create_checkpoint "directories"
     
+    # Copy template files first since other functions may depend on them
+    if ! copy_template_files; then
+        echo -e "${RED}Error: Could not copy template files${NC}"
+        exit 1
+    fi
+    create_checkpoint "template_files"
+    
     if ! create_php_files; then
         echo -e "${RED}Error: Could not create PHP files${NC}"
         exit 1
@@ -152,18 +160,6 @@ main() {
         exit 1
     fi
     create_checkpoint "theme_json"
-    
-    if ! create_all_templates; then
-        echo -e "${RED}Error: Could not create templates${NC}"
-        exit 1
-    fi
-    create_checkpoint "templates"
-    
-    if ! create_template_parts; then
-        echo -e "${RED}Error: Could not create template parts${NC}"
-        exit 1
-    fi
-    create_checkpoint "template_parts"
     
     if ! create_css_files; then
         echo -e "${RED}Error: Could not create CSS files${NC}"
@@ -195,7 +191,8 @@ main() {
     fi
     
     # Create and verify zip
-    if ! create_zip "${THEME_DIR}"; then
+    if ! create_theme_zip; then
+        echo -e "${RED}Error: Could not create theme zip${NC}"
         exit 1
     fi
     
@@ -312,85 +309,6 @@ create_style_css() {
 create_theme_json() {
     cp "src/theme.json" "${THEME_DIR}/theme.json" || {
         echo -e "${RED}Error: Could not copy theme.json${NC}"
-        return 1
-    }
-}
-
-# Description: Creates and validates all template files
-# Arguments: None
-# Returns: 0 on success, 1 on failure
-# Dependencies: cp
-# Example: create_all_templates
-create_all_templates() {
-    cp "src/templates/single.html" "${THEME_DIR}/templates/single.html" || {
-        echo -e "${RED}Error: Could not copy single.html${NC}"
-        return 1
-    }
-    
-    cp "src/templates/archive.html" "${THEME_DIR}/templates/archive.html" || {
-        echo -e "${RED}Error: Could not copy archive.html${NC}"
-        return 1
-    }
-    
-    cp "src/templates/404.html" "${THEME_DIR}/templates/404.html" || {
-        echo -e "${RED}Error: Could not copy 404.html${NC}"
-        return 1
-    }
-    
-    cp "src/templates/search.html" "${THEME_DIR}/templates/search.html" || {
-        echo -e "${RED}Error: Could not copy search.html${NC}"
-        return 1
-    }
-    
-    cp "src/templates/category.html" "${THEME_DIR}/templates/category.html" || {
-        echo -e "${RED}Error: Could not copy category.html${NC}"
-        return 1
-    }
-    
-    cp "src/templates/tag.html" "${THEME_DIR}/templates/tag.html" || {
-        echo -e "${RED}Error: Could not copy tag.html${NC}"
-        return 1
-    }
-    
-    cp "src/templates/author.html" "${THEME_DIR}/templates/author.html" || {
-        echo -e "${RED}Error: Could not copy author.html${NC}"
-        return 1
-    }
-    
-    cp "src/templates/index.html" "${THEME_DIR}/templates/index.html" || {
-        echo -e "${RED}Error: Could not copy index.html${NC}"
-        return 1
-    }
-    
-    cp "src/templates/link-bio.html" "${THEME_DIR}/templates/link-bio.html" || {
-        echo -e "${RED}Error: Could not copy link-bio.html${NC}"
-        return 1
-    }
-}
-
-# Description: Creates and validates all template part files
-# Arguments: None
-# Returns: 0 on success, 1 on failure
-# Dependencies: cp
-# Example: create_template_parts
-create_template_parts() {
-    cp "src/parts/header.html" "${THEME_DIR}/parts/header.html" || {
-        echo -e "${RED}Error: Could not copy header.html${NC}"
-        return 1
-    }
-    
-    cp "src/parts/footer.html" "${THEME_DIR}/parts/footer.html" || {
-        echo -e "${RED}Error: Could not copy footer.html${NC}"
-        return 1
-    }
-    
-    cp "src/parts/content.php" "${THEME_DIR}/parts/content.php" || {
-        echo -e "${RED}Error: Could not copy content.php${NC}"
-        return 1
-    }
-    
-    cp "src/parts/content-none.php" "${THEME_DIR}/parts/content-none.php" || {
-        echo -e "${RED}Error: Could not copy content-none.php${NC}"
         return 1
     }
 }
@@ -730,84 +648,66 @@ create_zip() {
 # Dependencies: PowerShell
 # Example: verify_theme_package "theme.zip"
 verify_theme_package() {
-    if [[ -z "$1" ]]; then
-        echo -e "${RED}Error: zip_file argument is required${NC}"
-        return 1
-    fi
-    local zip_file="$1"
     echo "Performing final theme package verification..."
+    echo "DEBUG: Verifying zip file: $1"
     
-    # Debug output
-    echo "DEBUG: Verifying zip file: $zip_file"
-    echo "DEBUG: Current directory: $(pwd)"
-    
-    # Validate zip exists
-    if [[ ! -f "$zip_file" ]]; then
-        echo -e "${RED}ERROR: Zip file not found: $zip_file${NC}"
-        return 1
-    fi
-    
-    # Create temp directory for verification
-    local verify_dir="verify_theme_$(date +%s)"
-    mkdir -p "$verify_dir" || {
-        echo -e "${RED}Error: Could not create verification directory${NC}"
-        return 1
-    }
-    echo "DEBUG: Created temp directory: $verify_dir"
+    local temp_dir
+    temp_dir=$(mktemp -d)
+    echo "DEBUG: Created temp directory: $(basename "$temp_dir")"
     
     # Extract and verify
-    run_powershell "
-        \$ErrorActionPreference = 'Stop'
-        \$verifyDir = '$verify_dir'
-        \$zipFile = '$zip_file'
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        echo "DEBUG: PowerShell verification starting"
+        local win_temp_dir
+        win_temp_dir=$(echo "$temp_dir" | sed 's|^/\([a-z]\)/|\1:/|' | tr '/' '\\')
+        local win_zip_path
+        win_zip_path=$(echo "$(pwd)/$1" | sed 's|^/\([a-z]\)/|\1:/|' | tr '/' '\\')
+        echo "DEBUG: Windows temp dir: $win_temp_dir"
+        echo "DEBUG: Windows zip path: $win_zip_path"
         
-        Write-Host 'DEBUG: PowerShell verification starting'
-        Write-Host \"DEBUG: Verify dir: \$verifyDir\"
-        Write-Host \"DEBUG: Zip file: \$zipFile\"
-        Write-Host \"DEBUG: Current location: \$(Get-Location)\"
-        
-        try {
-            # Extract zip
-            Write-Host 'DEBUG: Extracting zip file...'
-            Expand-Archive -Path \$zipFile -DestinationPath \$verifyDir -Force
-            
-            # Verify required files
-            \$themeDir = \$verifyDir
-            \$requiredFiles = @(
-                (Join-Path \$themeDir 'style.css'),
-                (Join-Path \$themeDir 'index.php'),
-                (Join-Path \$themeDir 'functions.php'),
-                (Join-Path \$themeDir 'inc/theme-setup.php'),
-                (Join-Path \$themeDir 'screenshot.png')
-            )
-            
-            \$missingFiles = @()
-            foreach (\$file in \$requiredFiles) {
-                if (-not (Test-Path \$file)) {
-                    \$missingFiles += \$file.Replace(\$themeDir, '').TrimStart('\\')
-                }
-            }
-            
-            if (\$missingFiles.Count -gt 0) {
-                throw \"Missing required files in zip: \$(\$missingFiles -join ', ')\"
-            }
-            
-            Write-Host 'DEBUG: All required files verified successfully'
-        }
-        catch {
-            Write-Host \"ERROR: \$_\"
-            exit 1
-        }
-        finally {
-            if (Test-Path \$verifyDir) {
-                Remove-Item -Path \$verifyDir -Recurse -Force
-            }
-        }
-    " "Could not verify theme package"
+        run_powershell "
+            Write-Host \"DEBUG: Zip file: $1\"
+            Write-Host \"DEBUG: Current location: $(pwd)\"
+            Write-Host \"DEBUG: Extracting zip file...\"
+            Expand-Archive -Path '$win_zip_path' -DestinationPath '$win_temp_dir' -Force
+        "
+    else
+        unzip -q "$1" -d "$temp_dir"
+    fi
     
-    # Cleanup
-    echo "DEBUG: Cleaning up temp directory"
-    rm -rf "$verify_dir"
+    echo "DEBUG: Verifying extracted contents..."
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        run_powershell "
+            \$tempDir = (Convert-Path '$temp_dir')
+            Get-ChildItem -Path (Join-Path \$tempDir 'parts'),(Join-Path \$tempDir 'templates'),(Join-Path \$tempDir 'patterns')
+        "
+    else
+        ls -la "$temp_dir/parts/" "$temp_dir/templates/" "$temp_dir/patterns/"
+    fi
+    
+    # Check for PHP in HTML files
+    for file in "parts/header.html" "parts/footer.html"; do
+        echo "DEBUG: Checking $file in zip..."
+        local check_path
+        if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+            check_path="$win_temp_dir\\${file//\//\\}"
+        else
+            check_path="$temp_dir/$file"
+        fi
+        
+        if [[ ! -f "$check_path" ]]; then
+            echo -e "${RED}Error: Missing required file in zip: $file${NC}"
+            echo "DEBUG: Tried to find: $check_path"
+            return 1
+        fi
+        if grep -q "<?php" "$check_path"; then
+            echo -e "${RED}Error: Packaged $file contains PHP code${NC}"
+            return 1
+        fi
+    done
+    
+    # Clean up temp directory after we're done with it
+    rm -rf "$temp_dir"
     return 0
 }
 
@@ -1019,43 +919,64 @@ debug_file_paths() {
 # Dependencies: PowerShell
 # Example: verify_zip_contents "theme.zip"
 verify_zip_contents() {
-    if [[ -z "$1" ]]; then
-        echo -e "${RED}Error: zip_file argument is required${NC}"
-        return 1
-    fi
-    local zip_file="$1"
-    echo "Verifying zip contents..."
+    echo "DEBUG: Starting zip verification..."
+    local temp_dir
+    temp_dir=$(mktemp -d)
+    echo "DEBUG: Created temp dir: $temp_dir"
     
-    # Create temp directory for zip verification
-    local temp_dir="temp_verify_$(date +%s)"
-    mkdir -p "$temp_dir" || {
-        echo -e "${RED}Error: Could not create temp directory${NC}"
-        return 1
-    }
-    
-    # Extract zip
-    run_powershell "
-        Expand-Archive -Path '$zip_file' -DestinationPath '$temp_dir' -Force
+    # Extract and verify
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        echo "DEBUG: Extracting zip with PowerShell..."
+        # Convert temp_dir to Windows path
+        local win_temp_dir
+        win_temp_dir=$(echo "$temp_dir" | sed 's|^/\([a-z]\)/|\1:/|' | tr '/' '\\')
+        echo "DEBUG: Windows temp dir: $win_temp_dir"
         
-        Write-Host 'Zip contents:'
-        Get-ChildItem -Path '$temp_dir' -Recurse | ForEach-Object { Write-Host \$_.FullName }
-        
-        if (Test-Path '$temp_dir/inc/theme-setup.php') {
-            Write-Host 'theme-setup.php found in zip'
-            Get-Content '$temp_dir/inc/theme-setup.php' | Select-Object -First 10
-        } else {
-            Write-Host 'ERROR: theme-setup.php not found in zip'
-            Write-Host 'Contents of inc directory:'
-            if (Test-Path '$temp_dir/inc') {
-                Get-ChildItem '$temp_dir/inc'
-            } else {
-                Write-Host 'inc directory not found'
+        run_powershell "
+            \$tempDir = '$win_temp_dir'
+            Write-Host \"DEBUG: Extracting to: \$tempDir\"
+            Expand-Archive -Path '$THEME_ZIP' -DestinationPath \$tempDir -Force
+            # List contents in a format we can parse
+            Get-ChildItem -Path \$tempDir -Recurse | ForEach-Object {
+                Write-Host \$_.FullName.Replace('\$tempDir\\', '')
             }
-        }
-    " "Could not verify zip contents"
+        "
+    else
+        unzip -q "$THEME_ZIP" -d "$temp_dir"
+    fi
     
-    # Cleanup
+    echo "DEBUG: Verifying extracted contents..."
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        # Use dir for Windows
+        dir "$win_temp_dir\\parts" "$win_temp_dir\\templates" "$win_temp_dir\\patterns"
+    else
+        ls -la "$temp_dir/parts/" "$temp_dir/templates/" "$temp_dir/patterns/"
+    fi
+    
+    # Check for PHP in HTML files
+    for file in "parts/header.html" "parts/footer.html"; do
+        echo "DEBUG: Checking $file in zip..."
+        local check_path
+        if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+            check_path="$win_temp_dir\\${file//\//\\}"
+        else
+            check_path="$temp_dir/$file"
+        fi
+        
+        if [[ ! -f "$check_path" ]]; then
+            echo -e "${RED}Error: Missing required file in zip: $file${NC}"
+            echo "DEBUG: Tried to find: $check_path"
+            return 1
+        fi
+        if grep -q "<?php" "$check_path"; then
+            echo -e "${RED}Error: Packaged $file contains PHP code${NC}"
+            return 1
+        fi
+    done
+    
+    # Clean up temp directory after we're done with it
     rm -rf "$temp_dir"
+    return 0
 }
 
 # Description: Cleans up checkpoint files after successful completion
@@ -1066,6 +987,162 @@ verify_zip_contents() {
 cleanup_checkpoints() {
     echo "Cleaning up checkpoint files..."
     find "${THEME_DIR}" -name ".checkpoint_*" -type f -delete
+    return 0
+}
+
+# Description: Verifies theme files
+# Arguments: None
+# Returns: 0 on success, 1 on failure
+# Dependencies: grep
+verify_theme_files() {
+    echo "Verifying theme files..."
+    
+    # Verify HTML files
+    local html_files=(
+        "templates/404.html"
+        "templates/archive.html"
+        "templates/author.html"
+        "templates/category.html"
+        "templates/index.html"
+        "templates/link-bio.html"
+        "templates/search.html"
+        "templates/single.html"
+        "templates/tag.html"
+        "parts/footer.html"
+        "parts/header.html"
+        "patterns/author-bio.html"
+        "patterns/bio-link-button.html"
+        "patterns/social-grid.html"
+    )
+    
+    for file in "${html_files[@]}"; do
+        if [[ ! -f "src/$file" ]]; then
+            echo -e "${RED}Error: Missing required HTML file: $file${NC}"
+            return 1
+        fi
+        
+        # Validate file content
+        if ! grep -q "wp:template-part\|wp:group\|wp:query" "src/$file"; then
+            echo -e "${RED}Error: File $file missing required WordPress blocks${NC}"
+            return 1
+        fi
+    done
+}
+
+# Description: Creates a theme zip file
+# Arguments: None
+# Returns: 0 on success, 1 on failure
+# Dependencies: run_powershell, cd, zip
+create_theme_zip() {
+    echo "Creating theme zip..."
+    echo "DEBUG: Verifying theme directory contents before zipping..."
+    ls -la "${THEME_DIR}/parts/" "${THEME_DIR}/templates/" "${THEME_DIR}/patterns/"
+    
+    # Remove old zip if it exists
+    [[ -f "$THEME_ZIP" ]] && rm "$THEME_ZIP"
+    
+    # Verify required files exist in theme directory
+    local required_files=(
+        "screenshot.png"
+        "style.css"
+        "theme.json"
+        "functions.php"
+        "parts/header.html"
+        "parts/footer.html"
+    )
+    
+    for file in "${required_files[@]}"; do
+        echo "DEBUG: Checking for ${THEME_DIR}/$file"
+        if [[ ! -f "${THEME_DIR}/$file" ]]; then
+            echo -e "${RED}Error: Missing required file in theme directory: $file${NC}"
+            return 1
+        fi
+    done
+    
+    # Verify theme files are clean before zipping
+    for file in "parts/header.html" "parts/footer.html"; do
+        echo "DEBUG: Checking content of ${THEME_DIR}/$file"
+        if grep -q "<?php" "${THEME_DIR}/$file"; then
+            echo -e "${RED}Error: $file contains PHP code - must be pure block markup${NC}"
+            return 1
+        fi
+    done
+    
+    echo "DEBUG: Creating zip file..."
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        run_powershell "Compress-Archive -Path '${THEME_DIR}/*' -DestinationPath '$THEME_ZIP' -Force"
+    else
+        (cd "${THEME_DIR}" && zip -r "../$THEME_ZIP" .)
+    fi
+    
+    echo "DEBUG: Verifying zip file contents..."
+    if [[ ! -f "$THEME_ZIP" ]]; then
+        echo -e "${RED}Error: Zip file not created${NC}"
+        return 1
+    fi
+    
+    echo "DEBUG: Zip file size: $(stat -f%z "$THEME_ZIP" 2>/dev/null || stat -c%s "$THEME_ZIP")"
+    return 0
+}
+
+# Description: Copies template files from src to theme directory
+# Arguments: None
+# Returns: 0 on success, 1 on failure
+# Dependencies: cp
+# Example: copy_template_files
+copy_template_files() {
+    echo "Copying template files..."
+    echo "DEBUG: Current directory: $(pwd)"
+    echo "DEBUG: Source directory contents:"
+    ls -la src/parts/ src/templates/ src/patterns/
+    
+    local template_files=(
+        "templates/404.html"
+        "templates/archive.html"
+        "templates/author.html"
+        "templates/category.html"
+        "templates/index.html"
+        "templates/link-bio.html"
+        "templates/search.html"
+        "templates/single.html"
+        "templates/tag.html"
+        "parts/footer.html"
+        "parts/header.html"
+        "patterns/author-bio.html"
+        "patterns/bio-link-button.html"
+        "patterns/social-grid.html"
+    )
+    
+    for file in "${template_files[@]}"; do
+        echo "DEBUG: Copying $file..."
+        if [[ ! -f "src/$file" ]]; then
+            echo -e "${RED}Error: Source file missing: $file${NC}"
+            echo "DEBUG: Tried to find: $(pwd)/src/$file"
+            return 1
+        fi
+        
+        # Create directory if it doesn't exist
+        mkdir -p "${THEME_DIR}/$(dirname "$file")"
+        
+        # Copy file
+        cp "src/$file" "${THEME_DIR}/$file" || {
+            echo -e "${RED}Error: Failed to copy $file${NC}"
+            echo "DEBUG: From: $(pwd)/src/$file"
+            echo "DEBUG: To: $(pwd)/${THEME_DIR}/$file"
+            return 1
+        }
+        
+        # Verify file was copied
+        if [[ ! -f "${THEME_DIR}/$file" ]]; then
+            echo -e "${RED}Error: File not found after copy: ${THEME_DIR}/$file${NC}"
+            return 1
+        fi
+        echo "DEBUG: Successfully copied $file"
+    done
+    
+    echo "DEBUG: Final theme directory contents:"
+    ls -la "${THEME_DIR}/parts/" "${THEME_DIR}/templates/" "${THEME_DIR}/patterns/"
+    
     return 0
 }
 

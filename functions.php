@@ -287,32 +287,17 @@
 	/**
 	 * Sets up theme defaults and registers support for various WordPress features.
 	 */
-	function staynalive_setup() {
-		add_theme_support('wp-block-styles');
+	function theme_support_setup() {
+		// Add support for block templates
+		add_theme_support('block-templates');
+		add_theme_support('block-template-parts');
+		
+		// Add support for post thumbnails and other features
+		add_theme_support('post-thumbnails');
 		add_theme_support('editor-styles');
-		add_theme_support('responsive-embeds');
-		add_theme_support('title-tag');
-		add_theme_support('automatic-feed-links');
-		add_theme_support('html5', array(
-			'comment-list',
-			'comment-form',
-			'search-form',
-			'gallery',
-			'caption',
-			'style',
-			'script'
-		));
-		add_theme_support('custom-logo');
-		add_theme_support('custom-header');
-		add_theme_support('custom-background');
-		
-		add_editor_style('assets/css/editor-style.css');
-		
-		register_nav_menus(array(
-			'primary' => __('Primary Menu', 'stay-n-alive')
-		));
+		add_theme_support('wp-block-styles');
 	}
-	add_action('after_setup_theme', 'staynalive_setup');
+	add_action('after_setup_theme', 'theme_support_setup');
 
 	function staynalive_enqueue_assets() {
 		wp_enqueue_style(

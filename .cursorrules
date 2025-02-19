@@ -396,6 +396,61 @@ CHECK_PHPCS:
         "Use forward slashes in bash operations",
         "Handle both path types in cross-platform functions"
       ]
+    },
+    "html_validation": {
+        "required_checks": [
+            "Validate all HTML files with tidy",
+            "Check for proper tag nesting",
+            "Verify ARIA attributes",
+            "Check for valid block markup",
+            "Validate template parts",
+            "Test with sample content"
+        ],
+        "file_types": [
+            "templates/*.html",
+            "parts/*.html",
+            "patterns/*.html"
+        ],
+        "tools": {
+            "primary": "tidy -q -e",
+            "fallback": "xmllint --html"
+        },
+        "auto_correction": {
+            "tidy_options": [
+                "--show-warnings no",
+                "--wrap 0",
+                "--tidy-mark no",
+                "--drop-empty-elements no",
+                "--preserve-entities yes",
+                "--quote-ampersand yes",
+                "--quote-marks yes",
+                "--clean yes",
+                "--logical-emphasis yes"
+            ],
+            "content_extraction": [
+                "Extract between <body> tags",
+                "Remove body tags",
+                "Preserve indentation",
+                "Maintain WordPress block comments",
+                "Handle special characters safely",
+                "Use awk for content replacement",
+                "Preserve HTML entities"
+            ],
+            "validation_steps": [
+                "1. Wrap fragment in valid HTML document",
+                "2. Validate wrapped content",
+                "3. Fix issues if found",
+                "4. Extract fixed content",
+                "5. Verify WordPress-specific markup",
+                "6. Check ARIA attributes",
+                "7. Validate block comments"
+            ],
+            "backup_strategy": {
+                "before_fix": "Create temporary copy",
+                "after_fix": "Verify fixed content",
+                "on_error": "Restore from backup"
+            }
+        }
     }
   ],
   "debug_requirements": [

@@ -82,6 +82,14 @@ backup_theme() {
 
 verify_theme_files() {
     echo "DEBUG: Starting theme file verification..."
+    
+    # Check file permissions
+    echo "Checking file permissions..."
+    if [[ "$OSTYPE" != "msys" && "$OSTYPE" != "cygwin" ]]; then
+        find "$local_path/$THEME_DIR" -type f -exec chmod 644 {} \;
+        find "$local_path/$THEME_DIR" -type d -exec chmod 755 {} \;
+    fi
+    
     local required_files=(
         "style.css"
         "index.php"
@@ -319,6 +327,112 @@ EOL
     return 0
 }
 
+verify_html_syntax() {
+    echo "DEBUG: Starting HTML syntax verification..."
+    
+    local templates_count=0
+    local parts_count=0
+    local patterns_count=0
+    
+    # Define HTML files to validate
+    local html_files=(
+        "templates/404.html"
+        "templates/archive.html"
+        "templates/author.html"
+        "templates/category.html"
+        "templates/index.html"
+        "templates/link-bio.html"
+        "templates/search.html"
+        "templates/single.html"
+        "templates/tag.html"
+        "parts/footer.html"
+        "parts/header.html"
+        "patterns/author-bio.html"
+        "patterns/bio-link-button.html"
+        "patterns/social-grid.html"
+    )
+    
+    # Verify files exist and have content
+    for file in "${html_files[@]}"; do
+        echo "DEBUG: Checking $file..."
+        if [[ ! -f "$local_path/$THEME_DIR/$file" ]]; then
+            log_error "Missing required file: $file"
+            return 1
+        fi
+        
+        if [[ ! -s "$local_path/$THEME_DIR/$file" ]]; then
+            log_error "Empty file: $file"
+            return 1
+        fi
+        
+        # Fail fast if PHP found in any HTML file
+        if grep -q "<?php" "$local_path/$THEME_DIR/$file"; then
+            log_error "$file contains PHP code - should be pure block markup"
+            echo "Current content:"
+            cat "$local_path/$THEME_DIR/$file"
+            return 1
+        fi
+        
+        # Validate specific template content
+        case "$file" in
+            "templates/index.html")
+                if ! grep -q "wp:query" "$local_path/$THEME_DIR/$file"; then
+                    log_error "index.html missing required query block"
+                    echo "Current content:"
+                    cat "$local_path/$THEME_DIR/$file"
+                    return 1
+                fi
+                ;;
+            "parts/header.html")
+                if grep -q "<?php" "$local_path/$THEME_DIR/$file"; then
+                    log_error "header.html contains PHP code - should be pure block markup"
+                    echo "Current content:"
+                    cat "$local_path/$THEME_DIR/$file"
+                    return 1
+                fi
+                ;;
+            "parts/footer.html")
+                if grep -q "<?php" "$local_path/$THEME_DIR/$file"; then
+                    log_error "footer.html contains PHP code - should be pure block markup"
+                    echo "Current content:"
+                    cat "$local_path/$THEME_DIR/$file"
+                    return 1
+                fi
+                ;;
+        esac
+        
+        # Count file types
+        if [[ "$file" =~ ^templates/ ]]; then
+            ((templates_count++))
+        elif [[ "$file" =~ ^parts/ ]]; then
+            ((parts_count++))
+        elif [[ "$file" =~ ^patterns/ ]]; then
+            ((patterns_count++))
+        fi
+    done
+    
+    echo "HTML Validation Summary:"
+    echo "Templates verified: $templates_count"
+    echo "Template parts verified: $parts_count"
+    echo "Block patterns verified: $patterns_count"
+    echo "Total files checked: $((templates_count + parts_count + patterns_count))"
+    
+    # Show content of critical files
+    echo
+    echo "Critical file contents:"
+    echo "=== index.html ==="
+    cat "$local_path/$THEME_DIR/templates/index.html"
+    echo
+    echo "=== header.html ==="
+    cat "$local_path/$THEME_DIR/parts/header.html"
+    echo
+    echo "=== footer.html ==="
+    cat "$local_path/$THEME_DIR/parts/footer.html"
+    
+    echo "DEBUG: HTML syntax verification complete"
+    return 0
+}
+
 main() {
     local site_name
     local local_path
@@ -406,6 +520,21 @@ main() {
         fi
     fi
     
+    # Clean up old checkpoints
+    echo "Cleaning up old checkpoints..."
+    local old_checkpoints
+    old_checkpoints=$(find "$local_path/$THEME_DIR" -name ".checkpoint_*" -type f -mtime +1)
+    if [[ -n "$old_checkpoints" ]]; then
+        echo "Found old checkpoints to clean:"
+        echo "$old_checkpoints"
+        local checkpoint_count
+        checkpoint_count=$(echo "$old_checkpoints" | wc -l)
+        find "$local_path/$THEME_DIR" -name ".checkpoint_*" -type f -mtime +1 -delete
+        echo "Cleaned $checkpoint_count old checkpoint files"
+    else
+        echo "No old checkpoints found"
+    fi
+    
     # Now run verifications
     verify_theme_files || exit 1
     verify_theme_functions || exit 1
@@ -413,6 +542,7 @@ main() {
     verify_theme_setup || exit 1
     verify_template_loader || exit 1
     verify_block_patterns || exit 1
+    verify_html_syntax || exit 1
     
     # Final health check
     check_wordpress_health "staynalive.local"
