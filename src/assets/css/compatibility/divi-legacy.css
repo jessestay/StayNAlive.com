@@ -1,0 +1,28 @@
+/* Legacy Divi Support */
+.et_pb_section {
+    position: relative;
+    background-color: #fff;
+}
+
+.et_pb_section_parallax {
+    overflow: hidden;
+}
+
+.et_pb_section_parallax .et_pb_parallax_css {
+    background-attachment: fixed;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.et_pb_text > :last-child {
+    padding-bottom: 0;
+}
+
+.et_pb_space {
+    border: none;
+    box-sizing: content-box;
+    height: 23px;
+} 

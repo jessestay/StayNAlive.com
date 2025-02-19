@@ -1,0 +1,41 @@
+.author-bio {
+    padding: var(--spacing-lg);
+    background: var(--color-light);
+    border-radius: var(--radius-md);
+    margin: var(--spacing-xl) 0;
+}
+
+.author-bio-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.author-avatar img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.author-info h2 {
+    margin: 0 0 var(--spacing-xs);
+    color: var(--color-dark);
+}
+
+.author-meta {
+    color: var(--color-muted);
+    font-size: 0.9em;
+}
+
+.author-description {
+    color: var(--color-dark);
+    line-height: 1.6;
+}
+
+.author-social {
+    margin-top: var(--spacing-md);
+    display: flex;
+    gap: var(--spacing-sm);
+} 
