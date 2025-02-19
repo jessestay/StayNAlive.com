@@ -1,0 +1,44 @@
+.hero-section {
+    padding: 4rem 0;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+}
+
+.hero-image img {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.featured-posts {
+    padding: 4rem 0;
+    background: #f8f9fa;
+}
+
+.featured-posts h2 {
+    margin-bottom: 3rem;
+}
+
+.cta-section {
+    padding: 6rem 0;
+    text-align: center;
+    background: #fff;
+}
+
+.cta-section .wp-block-button__link {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        flex-direction: column-reverse;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+} 

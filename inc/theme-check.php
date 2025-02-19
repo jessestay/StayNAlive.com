@@ -1,6 +1,6 @@
 <?php
 /**
- * Theme Compatibility Checker
+ * Enhanced Theme Check Validation
  *
  * @package StayNAlive
  */
@@ -15,215 +15,210 @@ if (!defined('ABSPATH')) {
 class ThemeCompatibilityChecker {
     private $issues = [];
     private $warnings = [];
-    private $required_files = [
-        'templates/index.html' => 'Main Index Template',
-        'theme.json' => 'Theme Configuration',
-        'parts/header.html' => 'Header Template Part',
-        'parts/footer.html' => 'Footer Template Part',
-        'style.css' => 'Theme Stylesheet'
-    ];
-
-    private $required_theme_support = [
-        'wp-block-styles' => 'Block Styles',
-        'editor-styles' => 'Editor Styles',
-        'block-templates' => 'Block Templates',
-        'block-template-parts' => 'Block Template Parts'
+    private $info = [];
+    
+    // List of functions that should be in plugins, not themes
+    private $plugin_territory = [
+        'add_shortcode' => 'Shortcodes should be implemented in plugins, not themes',
+        'remove_action wp_head wp_shortlink_wp_head' => 'Removing wp_shortlink_wp_head is plugin territory',
+        'remove_action wp_head wp_generator' => 'Removing wp_generator is plugin territory',
+        'remove_action wp_head rsd_link' => 'Removing rsd_link is plugin territory'
     ];
 
     /**
      * Run all compatibility checks
      */
     public function check_compatibility() {
-        $this->check_wp_version();
-        $this->check_php_version();
-        $this->check_required_files();
-        $this->check_theme_support();
-        $this->check_theme_json();
-        $this->check_template_structure();
+        $this->check_plugin_territory();
+        $this->check_screenshot();
+        $this->check_text_domain();
+        $this->check_block_styles();
+        $this->check_theme_headers();
         
         return [
             'issues' => $this->issues,
-            'warnings' => $this->warnings
+            'warnings' => $this->warnings,
+            'info' => $this->info
         ];
     }
 
     /**
-     * Check WordPress version compatibility
+     * Check for plugin-territory functionality
      */
-    private function check_wp_version() {
-        global $wp_version;
-        if (version_compare($wp_version, '6.7', '<')) {
-            $this->issues[] = sprintf(
-                __('WordPress version 6.7 or higher is required. Current version is %s.', 'staynalive'),
-                $wp_version
-            );
-        }
-    }
+    private function check_plugin_territory() {
+        $files_to_check = [
+            'inc/social-feeds.php',
+            'inc/performance.php',
+            'inc/security.php'
+        ];
 
-    /**
-     * Check PHP version compatibility
-     */
-    private function check_php_version() {
-        if (version_compare(PHP_VERSION, '7.4', '<')) {
-            $this->issues[] = sprintf(
-                __('PHP version 7.4 or higher is required. Current version is %s.', 'staynalive'),
-                PHP_VERSION
-            );
-        }
-    }
-
-    /**
-     * Check required files exist
-     */
-    private function check_required_files() {
-        foreach ($this->required_files as $file => $name) {
-            if (!file_exists(get_template_directory() . '/' . $file)) {
-                $this->issues[] = sprintf(
-                    __('Required file missing: %s (%s)', 'staynalive'),
-                    $name,
-                    $file
-                );
-            }
-        }
-    }
-
-    /**
-     * Check required theme support
-     */
-    private function check_theme_support() {
-        foreach ($this->required_theme_support as $feature => $name) {
-            if (!current_theme_supports($feature)) {
-                $this->issues[] = sprintf(
-                    __('Missing required theme support: %s', 'staynalive'),
-                    $name
-                );
-            }
-        }
-    }
-
-    /**
-     * Check theme.json structure
-     */
-    private function check_theme_json() {
-        $theme_json_path = get_template_directory() . '/theme.json';
-        if (file_exists($theme_json_path)) {
-            $theme_json = json_decode(file_get_contents($theme_json_path), true);
-            
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                $this->issues[] = __('Invalid theme.json structure', 'staynalive');
-                return;
+        foreach ($files_to_check as $file) {
+            $full_path = get_template_directory() . '/' . $file;
+            if (!file_exists($full_path)) {
+                continue;
             }
 
-            $required_keys = ['version', 'settings', 'templateParts'];
-            foreach ($required_keys as $key) {
-                if (!isset($theme_json[$key])) {
-                    $this->issues[] = sprintf(
-                        __('Missing required key in theme.json: %s', 'staynalive'),
-                        $key
-                    );
+            $content = file_get_contents($full_path);
+            $lines = explode("\n", $content);
+
+            foreach ($lines as $line_num => $line) {
+                foreach ($this->plugin_territory as $function => $message) {
+                    if (strpos($line, $function) !== false) {
+                        $this->issues[] = sprintf(
+                            'REQUIRED: The theme uses %s in the file %s. %s Line %d: %s',
+                            $function,
+                            $file,
+                            $message,
+                            $line_num + 1,
+                            trim($line)
+                        );
+                    }
                 }
             }
         }
     }
 
     /**
-     * Check template structure
+     * Check screenshot dimensions
      */
-    private function check_template_structure() {
-        $templates_dir = get_template_directory() . '/templates';
-        if (is_dir($templates_dir)) {
-            foreach (glob($templates_dir . '/*.html') as $template) {
-                $this->validate_template_file($template);
+    private function check_screenshot() {
+        $screenshot = get_template_directory() . '/screenshot.png';
+        
+        if (!file_exists($screenshot)) {
+            $this->issues[] = 'REQUIRED: Screenshot.png is missing.';
+            return;
+        }
+
+        $size = getimagesize($screenshot);
+        if ($size) {
+            $width = $size[0];
+            $height = $size[1];
+            $ratio = $width / $height;
+            
+            if (abs($ratio - 4/3) > 0.01) {
+                $this->issues[] = 'REQUIRED: Screenshot dimensions are wrong! Ratio of width to height should be 4:3.';
+            }
+            
+            if ($width < 1200 || $height < 900) {
+                $this->warnings[] = sprintf(
+                    'RECOMMENDED: Screenshot size should be 1200x900, to account for HiDPI displays. Current size: %dx%d',
+                    $width,
+                    $height
+                );
             }
         }
     }
 
     /**
-     * Validate individual template file
+     * Check text domain consistency
      */
-    private function validate_template_file($template_path) {
-        $content = file_get_contents($template_path);
-        $template_name = basename($template_path);
-
-        // Check for required block structure
-        if (!preg_match('/<!-- wp:template-part {"slug":"header"/', $content)) {
-            $this->warnings[] = sprintf(
-                __('Template %s may be missing header template part', 'staynalive'),
-                $template_name
-            );
-        }
-
-        if (!preg_match('/<!-- wp:template-part {"slug":"footer"/', $content)) {
-            $this->warnings[] = sprintf(
-                __('Template %s may be missing footer template part', 'staynalive'),
-                $template_name
-            );
-        }
-
-        // Check for unclosed block comments
-        preg_match_all('/<!-- wp:([^\s]+)/', $content, $openings);
-        preg_match_all('/<!-- \/wp:([^\s]+)/', $content, $closings);
+    private function check_text_domain() {
+        $theme_slug = get_option('stylesheet');
+        $text_domain = 'staynalive';
         
-        if (count($openings[1]) !== count($closings[1])) {
-            $this->issues[] = sprintf(
-                __('Template %s has mismatched block comments', 'staynalive'),
-                $template_name
+        if ($text_domain !== $theme_slug) {
+            $this->info[] = sprintf(
+                'INFO: Text domain (%s) should match theme slug (%s) for WordPress.org language pack compatibility.',
+                $text_domain,
+                $theme_slug
             );
+        }
+    }
+
+    /**
+     * Check for block styles implementation
+     */
+    private function check_block_styles() {
+        $has_block_styles = false;
+        $theme_files = list_files(get_template_directory(), 2);
+        
+        foreach ($theme_files as $file) {
+            if (strpos($file, '.php') !== false) {
+                $content = file_get_contents($file);
+                if (strpos($content, 'register_block_style') !== false) {
+                    $has_block_styles = true;
+                    break;
+                }
+            }
+        }
+        
+        if (!$has_block_styles) {
+            $this->warnings[] = 'RECOMMENDED: No reference to register_block_style was found in the theme. Theme authors are encouraged to implement block styles.';
+        }
+    }
+
+    /**
+     * Check theme headers
+     */
+    private function check_theme_headers() {
+        $style_css = get_template_directory() . '/style.css';
+        if (!file_exists($style_css)) {
+            $this->issues[] = 'REQUIRED: style.css is missing.';
+            return;
+        }
+
+        $theme_data = get_file_data($style_css, [
+            'Name' => 'Theme Name',
+            'ThemeURI' => 'Theme URI',
+            'Description' => 'Description',
+            'Author' => 'Author',
+            'AuthorURI' => 'Author URI',
+            'Version' => 'Version',
+            'License' => 'License',
+            'LicenseURI' => 'License URI',
+            'TextDomain' => 'Text Domain',
+            'Tags' => 'Tags'
+        ]);
+
+        foreach ($theme_data as $key => $value) {
+            if (empty($value)) {
+                $this->issues[] = sprintf('REQUIRED: %s is missing in style.css header.', $key);
+            }
         }
     }
 }
 
 /**
- * Add admin page for theme compatibility checker
+ * Display validation results
  */
-function add_theme_check_page() {
-    add_theme_page(
-        __('Theme Compatibility', 'staynalive'),
-        __('Theme Compatibility', 'staynalive'),
-        'manage_options',
-        'theme-compatibility',
-        __NAMESPACE__ . '\render_theme_check_page'
-    );
-}
-add_action('admin_menu', __NAMESPACE__ . '\add_theme_check_page');
-
-/**
- * Render theme compatibility check page
- */
-function render_theme_check_page() {
+function display_validation_results() {
     $checker = new ThemeCompatibilityChecker();
     $results = $checker->check_compatibility();
-    ?>
-    <div class="wrap">
-        <h1><?php _e('Theme Compatibility Check', 'staynalive'); ?></h1>
+    
+    if (!empty($results['issues']) || !empty($results['warnings']) || !empty($results['info'])) {
+        echo '<div class="notice notice-warning is-dismissible">';
+        echo '<p><strong>Theme Check Results:</strong></p>';
         
-        <?php if (empty($results['issues']) && empty($results['warnings'])): ?>
-            <div class="notice notice-success">
-                <p><?php _e('No compatibility issues found!', 'staynalive'); ?></p>
-            </div>
-        <?php else: ?>
-            <?php if (!empty($results['issues'])): ?>
-                <div class="notice notice-error">
-                    <h3><?php _e('Issues Found:', 'staynalive'); ?></h3>
-                    <ul>
-                        <?php foreach ($results['issues'] as $issue): ?>
-                            <li><?php echo esc_html($issue); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
-            
-            <?php if (!empty($results['warnings'])): ?>
-                <div class="notice notice-warning">
-                    <h3><?php _e('Warnings:', 'staynalive'); ?></h3>
-                    <ul>
-                        <?php foreach ($results['warnings'] as $warning): ?>
-                            <li><?php echo esc_html($warning); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
-        <?php endif; ?>
-    </div>
-    <?php
-} 
+        if (!empty($results['issues'])) {
+            echo '<h3>Required Fixes:</h3>';
+            echo '<ul class="theme-check-error">';
+            foreach ($results['issues'] as $issue) {
+                echo "<li>$issue</li>";
+            }
+            echo '</ul>';
+        }
+        
+        if (!empty($results['warnings'])) {
+            echo '<h3>Recommendations:</h3>';
+            echo '<ul class="theme-check-warning">';
+            foreach ($results['warnings'] as $warning) {
+                echo "<li>$warning</li>";
+            }
+            echo '</ul>';
+        }
+        
+        if (!empty($results['info'])) {
+            echo '<h3>Information:</h3>';
+            echo '<ul class="theme-check-info">';
+            foreach ($results['info'] as $info) {
+                echo "<li>$info</li>";
+            }
+            echo '</ul>';
+        }
+        
+        echo '</div>';
+    }
+}
+
+// Add admin notice for theme check results
+add_action('admin_notices', __NAMESPACE__ . '\display_validation_results'); 

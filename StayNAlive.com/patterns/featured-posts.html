@@ -1,0 +1,17 @@
+<!-- wp:group {"className":"featured-posts","layout":{"type":"constrained"}} -->
+<div class="wp-block-group featured-posts">
+    <!-- wp:heading {"level":2,"align":"center"} -->
+    <h2 class="has-text-align-center">Latest Insights</h2>
+    <!-- /wp:heading -->
+
+    <!-- wp:query {"queryId":1,"query":{"perPage":3,"postType":"post","orderBy":"date","order":"desc"},"displayLayout":{"type":"flex","columns":3}} -->
+    <div class="wp-block-query">
+        <!-- wp:post-template -->
+            <!-- wp:post-featured-image {"isLink":true,"className":"post-thumbnail"} /-->
+            <!-- wp:post-title {"isLink":true,"level":3,"className":"post-grid-title"} /-->
+            <!-- wp:post-excerpt {"moreText":"Read More →","className":"post-excerpt"} /-->
+        <!-- /wp:post-template -->
+    </div>
+    <!-- /wp:query -->
+</div>
+<!-- /wp:group --> 

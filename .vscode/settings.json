@@ -1,0 +1,6 @@
+{
+    "phpcs.showWarnings": false,
+    "phpcs.warningSeverity": 7,
+    "phpcs.errorSeverity": 7,
+    "phpcs.composerJsonPath": "C:\\Users\\stay\\AppData\\Roaming\\Composer\\config.json"
+}

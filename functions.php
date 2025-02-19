@@ -65,6 +65,9 @@
 	// Add theme compatibility checker
 	require_once get_template_directory() . '/inc/theme-check.php';
 
+	// Add plugin check
+	require_once STAYNALIVE_DIR . '/inc/plugin-check.php';
+
 	/**
 	*
 	* Theme Setup
@@ -246,12 +249,12 @@
 	function () {
 		register_sidebar(
 			array(
-				'name'            => __( 'About Jesse', 'staynalive' ),
+				'name'            => __('About Jesse', 'staynalive'),
 				'id'              => 'about-jesse-widget',
-				'description'     => __( 'Add widgets here to appear in the About Jesse section . ', 'staynalive' ),
-				'bef || e_widget' => '<div id="%1$s" class="widget %2$s">',
+				'description'     => __('Add widgets here to appear in the About Jesse section.', 'staynalive'),
+				'before_widget'   => '<div id="%1$s" class="widget %2$s">',
 				'after_widget'    => '</div>',
-				'bef || e_title'  => '<h2 class="widget-title">',
+				'before_title'    => '<h2 class="widget-title">',
 				'after_title'     => '</h2>',
 			)
 		);
