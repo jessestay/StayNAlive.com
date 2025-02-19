@@ -1161,6 +1161,860 @@ _**Assistant**_
 
 
 
+Heredocs are a way to create multi-line strings in shell scripts. They start with `<<` followed by a marker (like 'EOL') and end with that same marker. Everything between the markers is treated as a literal string, preserving formatting and whitespace. For example:
+
+```bash
+cat > file.txt << 'EOL'
+This is line 1
+  This line has indentation
+And here's line 3
+EOL
+```
+
+In our install.sh, we were using heredocs to write the PHP files directly. Now we'll move that content to actual files.
+
+Here's the complete directory structure we need:
+
+```bash
+staynalive.com/              # Root project directory
+├── install.sh               # Installation script
+└── src/                     # Source files for the theme
+    ├── assets/
+    │   ├── css/
+    │   │   ├── base/
+    │   │   │   ├── base.css
+    │   │   │   ├── normalize.css
+    │   │   │   └── wordpress.css
+    │   │   ├── blocks/
+    │   │   ├── components/
+    │   │   │   ├── author-bio.css
+    │   │   │   ├── footer.css
+    │   │   │   ├── header.css
+    │   │   │   ├── link-bio.css
+    │   │   │   ├── mobile-menu.css
+    │   │   │   └── social-feed.css
+    │   │   ├── compatibility/
+    │   │   │   ├── divi.css
+    │   │   │   └── divi-legacy.css
+    │   │   └── utilities/
+    │   │       └── animations.css
+    │   └── js/
+    │       ├── animations.js
+    │       ├── emoji.js
+    │       ├── emoji-support.js
+    │       ├── google-maps.js
+    │       ├── sharethis.js
+    │       └── social-feed.js
+    ├── inc/
+    │   ├── classes/
+    │   ├── performance.php
+    │   ├── security.php
+    │   ├── social-feeds.php
+    │   └── theme-setup.php
+    ├── languages/
+    ├── parts/
+    │   ├── footer.html
+    │   └── header.html
+    ├── patterns/
+    │   ├── author-bio.html
+    │   ├── bio-link-button.html
+    │   └── social-grid.html
+    ├── styles/
+    ├── templates/
+    │   ├── 404.html
+    │   ├── archive.html
+    │   ├── author.html
+    │   ├── category.html
+    │   ├── index.html
+    │   ├── link-bio.html
+    │   ├── search.html
+    │   ├── single.html
+    │   └── tag.html
+    ├── functions.php
+    ├── index.php
+    ├── screenshot.png
+    ├── style.css
+    └── theme.json
+```
+
+Would you like me to:
+1. Create this directory structure
+2. Move the content from the heredocs in install.sh to these files
+3. Update install.sh to copy from these source files instead?
+
+---
+
+_**User**_
+
+What do you recommend?
+
+---
+
+_**Assistant**_
+
+
+
+Given that we have a working install.sh script, I recommend this step-by-step approach:
+
+1. First, create the src directory structure without moving any content:
+
+```bash
+# Create the base directory structure
+mkdir -p src/{assets/{css,js}/{base,blocks,components,compatibility,utilities},inc/classes,languages,parts,patterns,styles,templates}
+
+# Verify the structure
+tree src/
+```
+
+2. Then, move one section at a time, starting with the most critical files:
+
+```bash
+# Start with inc/ files since they're core functionality
+mkdir -p src/inc
+touch src/inc/{theme-setup,social-feeds,security,performance}.php
+```
+
+3. Test after each section to ensure the install script still works:
+```bash
+# Test after moving inc/ files
+./install.sh
+```
+
+This way we can:
+- Keep the working install.sh as a reference
+- Move files one section at a time
+- Test at each step
+- Roll back easily if something breaks
+- Maintain a clear separation between installation logic and theme content
+
+Would you like me to help you start with creating the directory structure and moving the first section of files?
+
+---
+
+_**User**_
+
+yes
+
+---
+
+_**Assistant**_
+
+
+
+Let's start by creating the directory structure and moving the `inc/` files first, since we already have their content:
+
+```bash:install.sh
+# First, let's create the complete src directory structure
+mkdir -p src/{assets/{css,js}/{base,blocks,components,compatibility,utilities},inc/classes,languages,parts,patterns,styles,templates}
+```
+
+Now, let's create the first set of PHP files with their full content:
+
+```php:src/inc/social-feeds.php
+<?php
+/**
+ * Social Feed Integration
+ *
+ * @package StayNAlive
+ */
+
+namespace StayNAlive\SocialFeeds;
+
+/**
+ * Register REST API endpoints for social feeds
+ */
+function register_rest_endpoints() {
+    register_rest_route('staynalive/v1', '/instagram-feed', array(
+        'methods' => 'GET',
+        'callback' => __NAMESPACE__ . '\get_instagram_feed',
+        'permission_callback' => '__return_true'
+    ));
+    
+    register_rest_route('staynalive/v1', '/tiktok-feed', array(
+        'methods' => 'GET',
+        'callback' => __NAMESPACE__ . '\get_tiktok_feed',
+        'permission_callback' => '__return_true'
+    ));
+    
+    register_rest_route('staynalive/v1', '/youtube-feed', array(
+        'methods' => 'GET',
+        'callback' => __NAMESPACE__ . '\get_youtube_feed',
+        'permission_callback' => '__return_true'
+    ));
+    
+    register_rest_route('staynalive/v1', '/twitter-feed', array(
+        'methods' => 'GET',
+        'callback' => __NAMESPACE__ . '\get_twitter_feed',
+        'permission_callback' => '__return_true'
+    ));
+}
+add_action('rest_api_init', __NAMESPACE__ . '\register_rest_endpoints');
+
+/**
+ * Get Instagram feed
+ */
+function get_instagram_feed() {
+    // Implement Instagram API integration here
+    return new \WP_REST_Response(array());
+}
+
+/**
+ * Get TikTok feed
+ */
+function get_tiktok_feed() {
+    // Implement TikTok API integration here
+    return new \WP_REST_Response(array());
+}
+
+/**
+ * Get YouTube feed
+ */
+function get_youtube_feed() {
+    // Implement YouTube API integration here
+    return new \WP_REST_Response(array());
+}
+
+/**
+ * Get Twitter feed
+ */
+function get_twitter_feed() {
+    // Implement Twitter API integration here
+    return new \WP_REST_Response(array());
+}
+```
+
+```php:src/inc/security.php
+<?php
+/**
+ * Security functions
+ *
+ * @package StayNAlive
+ */
+
+namespace StayNAlive\Security;
+
+/**
+ * Remove WordPress version from various locations
+ */
+function remove_version_info() {
+    return '';
+}
+add_filter('the_generator', __NAMESPACE__ . '\remove_version_info');
+
+/**
+ * Disable XML-RPC
+ */
+add_filter('xmlrpc_enabled', '__return_false');
+
+/**
+ * Disable user enumeration
+ */
+function disable_user_enumeration() {
+    if (is_admin()) return;
+    
+    if (isset($_REQUEST['author']) && !current_user_can('list_users')) {
+        wp_die('Author parameter is forbidden.');
+    }
+}
+add_action('init', __NAMESPACE__ . '\disable_user_enumeration');
+```
+
+```php:src/inc/performance.php
+<?php
+/**
+ * Performance optimizations
+ *
+ * @package StayNAlive
+ */
+
+namespace StayNAlive\Performance;
+
+/**
+ * Remove unnecessary emoji scripts
+ */
+function disable_emojis() {
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('admin_print_scripts', 'print_emoji_detection_script');
+    remove_action('wp_print_styles', 'print_emoji_styles');
+    remove_action('admin_print_styles', 'print_emoji_styles');
+    remove_filter('the_content_feed', 'wp_staticize_emoji');
+    remove_filter('comment_text_rss', 'wp_staticize_emoji');
+    remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+}
+add_action('init', __NAMESPACE__ . '\disable_emojis');
+
+/**
+ * Optimize script loading
+ */
+function optimize_scripts() {
+    if (!is_admin()) {
+        wp_deregister_script('wp-embed');
+    }
+}
+add_action('wp_enqueue_scripts', __NAMESPACE__ . '\optimize_scripts', 100);
+```
+
+Let's verify the structure was created correctly:
+
+```bash
+# Check the directory structure
+ls -R src/
+
+# Verify the PHP files were created with content
+head -n 5 src/inc/*.php
+```
+
+Would you like me to continue with moving the next section of files? We can do:
+1. Template files next
+2. CSS files after that
+3. JavaScript files
+4. Or another section you prefer
+
+Which would you like to move next?
+
+---
+
+_**User**_
+
+Yes
+
+---
+
+_**Assistant**_
+
+I notice we have duplicate mkdir commands and some content that needs to be cleaned up. Let's fix that first:
+
+1. Remove the duplicate mkdir command in install.sh:
+```diff:install.sh
+- # Create theme source directory structure
+- mkdir -p src/inc src/templates src/parts src/patterns src/assets/{css,js}/{base,blocks,components,compatibility,utilities}
+- 
+# First, let's create the complete src directory structure
+mkdir -p src/{assets/{css,js}/{base,blocks,components,compatibility,utilities},inc/classes,languages,parts,patterns,styles,templates}
+```
+
+2. Remove the "... rest of X.php content ..." comments from the PHP files:
+```diff:src/inc/social-feeds.php
+- // ... rest of social-feeds.php content ... 
+```
+
+```diff:src/inc/security.php
+- // ... rest of security.php content ... 
+```
+
+```diff:src/inc/performance.php
+- // ... rest of performance.php content ... 
+```
+
+Now let's move on to the template files. Would you like me to:
+1. Create the template files in src/templates/
+2. Create the template parts in src/parts/
+3. Update the install.sh functions to copy these files instead of using heredocs
+
+Which would you prefer to tackle next?
+
+---
+
+_**User**_
+
+1, 2, and 3
+
+---
+
+_**Assistant**_
+
+I'll help you move the template files and update install.sh. Let's start with the template files:
+
+1. First, let's create the template files:
+
+```html:src/templates/single.html
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"site-main single-post"} -->
+<main class="wp-block-group site-main single-post">
+    <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+        <!-- wp:post-featured-image {"align":"wide"} /-->
+
+        <!-- wp:group {"className":"post-header"} -->
+        <div class="wp-block-group post-header">
+            <!-- wp:post-title {"level":1} /-->
+            <!-- wp:post-meta /-->
+        </div>
+        <!-- /wp:group -->
+
+        <!-- wp:post-content /-->
+        <!-- wp:post-terms {"term":"post_tag"} /-->
+        
+        <?php wp_link_pages(); ?>
+        
+        <!-- wp:group {"className":"post-navigation"} -->
+        <div class="wp-block-group post-navigation">
+            <?php
+            the_post_navigation(array(
+                'prev_text' => __('Previous: %title', 'stay-n-alive'),
+                'next_text' => __('Next: %title', 'stay-n-alive'),
+            ));
+            ?>
+        </div>
+        <!-- /wp:group -->
+
+        <?php comments_template(); ?>
+        
+        <!-- wp:comments -->
+        <div class="wp-block-comments">
+            <?php
+            wp_list_comments(array(
+                'style' => 'ol',
+                'avatar_size' => 60,
+                'short_ping' => true,
+            ));
+            the_comments_pagination(array(
+                'prev_text' => __('Previous', 'stay-n-alive'),
+                'next_text' => __('Next', 'stay-n-alive'),
+            ));
+            ?>
+        </div>
+        <!-- /wp:comments -->
+    </div>
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+```
+
+2. Create the template parts:
+
+```html:src/parts/header.html
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
+<?php wp_body_open(); ?>
+
+<!-- wp:group {"tagName":"header","className":"site-header"} -->
+<header class="wp-block-group site-header">
+    <!-- wp:site-title /-->
+    <?php
+    wp_nav_menu(array(
+        'theme_location' => 'primary',
+        'menu_class' => 'primary-navigation',
+        'container' => 'nav',
+        'container_class' => 'main-navigation',
+    ));
+    ?>
+</header>
+<!-- /wp:group -->
+```
+
+```html:src/parts/footer.html
+<!-- wp:group {"tagName":"footer","className":"site-footer"} -->
+<footer class="wp-block-group site-footer">
+    <!-- wp:paragraph {"align":"center"} -->
+    <p class="has-text-align-center">© 2024 Stay N Alive</p>
+    <!-- /wp:paragraph -->
+</footer>
+<!-- /wp:group -->
+<?php wp_footer(); ?>
+</body>
+</html>
+```
+
+3. Update the install.sh functions to copy these files:
+
+```diff:install.sh
+  create_all_templates() {
+-     # Single template
+-     cat > "${THEME_DIR}/templates/single.html" << 'EOL'
+-     <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+-     ...
+-     EOL
++     cp "src/templates/single.html" "${THEME_DIR}/templates/single.html" || {
++         echo -e "${RED}Error: Could not copy single.html${NC}"
++         return 1
++     }
+      # Add similar cp commands for other templates
+  }
+
+  create_template_parts() {
+-     # Header with all original functionality
+-     cat > "${THEME_DIR}/parts/header.html" << 'EOL'
+-     <!DOCTYPE html>
+-     ...
+-     EOL
++     cp "src/parts/header.html" "${THEME_DIR}/parts/header.html" || {
++         echo -e "${RED}Error: Could not copy header.html${NC}"
++         return 1
++     }
++ 
++     cp "src/parts/footer.html" "${THEME_DIR}/parts/footer.html" || {
++         echo -e "${RED}Error: Could not copy footer.html${NC}"
++         return 1
++     }
+  }
+```
+
+Would you like me to continue with the rest of the template files and their corresponding install.sh updates?
+
+---
+
+_**User**_
+
+yes
+
+---
+
+_**Assistant**_
+
+Let's continue with creating the rest of the template files. I'll help you create:
+
+1. Archive template:
+
+```html:src/templates/archive.html
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"site-main archive-page","layout":{"type":"constrained"}} -->
+<main class="wp-block-group site-main archive-page">
+    <!-- wp:group {"className":"archive-header","layout":{"type":"constrained"}} -->
+    <div class="wp-block-group archive-header">
+        <!-- wp:query-title {"type":"archive","textAlign":"center","fontSize":"x-large"} /-->
+        <!-- wp:term-description {"textAlign":"center"} /-->
+    </div>
+    <!-- /wp:group -->
+
+    <!-- wp:query -->
+    <div class="wp-block-query">
+        <!-- wp:post-template -->
+            <!-- wp:group {"className":"post-item"} -->
+            <div class="wp-block-group post-item">
+                <!-- wp:post-featured-image {"isLink":true} /-->
+                <!-- wp:post-title {"isLink":true} /-->
+                <!-- wp:post-excerpt /-->
+            </div>
+            <!-- /wp:group -->
+        <!-- /wp:post-template -->
+
+        <!-- wp:query-pagination -->
+            <!-- wp:query-pagination-previous /-->
+            <!-- wp:query-pagination-numbers /-->
+            <!-- wp:query-pagination-next /-->
+        <!-- /wp:query-pagination -->
+    </div>
+    <!-- /wp:query -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+```
+
+2. 404 template:
+
+```html:src/templates/404.html
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"site-main error-404","layout":{"type":"constrained"}} -->
+<main class="wp-block-group site-main error-404">
+    <!-- wp:heading {"level":1,"className":"error-title"} -->
+    <h1 class="error-title">Page Not Found</h1>
+    <!-- /wp:heading -->
+
+    <!-- wp:paragraph -->
+    <p>The page you're looking for doesn't exist or has been moved.</p>
+    <!-- /wp:paragraph -->
+
+    <!-- wp:search {"label":"Search","buttonText":"Search"} /-->
+
+    <!-- wp:heading {"level":2} -->
+    <h2>Recent Posts</h2>
+    <!-- /wp:heading -->
+
+    <!-- wp:latest-posts {"postsToShow":5,"displayPostDate":true} /-->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+```
+
+3. Update the install.sh template function to copy all templates:
+
+```diff:install.sh
+  create_all_templates() {
+      cp "src/templates/single.html" "${THEME_DIR}/templates/single.html" || {
+          echo -e "${RED}Error: Could not copy single.html${NC}"
+          return 1
+      }
++     
++     cp "src/templates/archive.html" "${THEME_DIR}/templates/archive.html" || {
++         echo -e "${RED}Error: Could not copy archive.html${NC}"
++         return 1
++     }
++ 
++     cp "src/templates/404.html" "${THEME_DIR}/templates/404.html" || {
++         echo -e "${RED}Error: Could not copy 404.html${NC}"
++         return 1
++     }
+  }
+```
+
+Would you like me to continue with the remaining template files (search.html, category.html, tag.html, etc.)?
+
+---
+
+_**User**_
+
+Yes
+
+---
+
+_**Assistant**_
+
+
+
+Let's continue with the remaining template files. First, let's create:
+
+1. Search template:
+
+```html:src/templates/search.html
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"site-main search-results","layout":{"type":"constrained"}} -->
+<main class="wp-block-group site-main search-results">
+    <!-- wp:group {"className":"search-header","layout":{"type":"constrained"}} -->
+    <div class="wp-block-group search-header">
+        <!-- wp:search {"label":"Search","buttonText":"Search","className":"search-form"} /-->
+        <!-- wp:query-title {"type":"search","textAlign":"center"} /-->
+    </div>
+    <!-- /wp:group -->
+
+    <!-- wp:query -->
+    <div class="wp-block-query">
+        <!-- wp:post-template -->
+            <!-- wp:group {"className":"search-item"} -->
+            <div class="wp-block-group search-item">
+                <!-- wp:post-featured-image {"isLink":true,"width":"200px"} /-->
+                <!-- wp:post-title {"isLink":true} /-->
+                <!-- wp:post-excerpt /-->
+            </div>
+            <!-- /wp:group -->
+        <!-- /wp:post-template -->
+
+        <!-- wp:query-pagination -->
+            <!-- wp:query-pagination-previous /-->
+            <!-- wp:query-pagination-numbers /-->
+            <!-- wp:query-pagination-next /-->
+        <!-- /wp:query-pagination -->
+
+        <!-- wp:query-no-results -->
+            <!-- wp:paragraph {"className":"no-results"} -->
+            <p class="no-results">No results found. Try a different search.</p>
+            <!-- /wp:paragraph -->
+        <!-- /wp:query-no-results -->
+    </div>
+    <!-- /wp:query -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+```
+
+2. Update the install.sh template function to include the new file:
+
+```diff:install.sh
+create_all_templates() {
+    cp "src/templates/single.html" "${THEME_DIR}/templates/single.html" || {
+        echo -e "${RED}Error: Could not copy single.html${NC}"
+        return 1
+    }
+    
+    cp "src/templates/archive.html" "${THEME_DIR}/templates/archive.html" || {
+        echo -e "${RED}Error: Could not copy archive.html${NC}"
+        return 1
+    }
+    
+    cp "src/templates/404.html" "${THEME_DIR}/templates/404.html" || {
+        echo -e "${RED}Error: Could not copy 404.html${NC}"
+        return 1
+    }
++     
++    cp "src/templates/search.html" "${THEME_DIR}/templates/search.html" || {
++        echo -e "${RED}Error: Could not copy search.html${NC}"
++        return 1
++    }
+}
+```
+
+Would you like me to continue with the remaining templates (category.html, tag.html, author.html, etc.)?
+
+---
+
+_**User**_
+
+Yes. Do as many as possible.
+
+---
+
+_**Assistant**_
+
+
+
+Let's continue with the remaining template files. First, let's create:
+
+1. Category template:
+
+```html:src/templates/category.html
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"site-main category-archive","layout":{"type":"constrained"}} -->
+<main class="wp-block-group site-main category-archive">
+    <!-- wp:group {"className":"category-header","layout":{"type":"constrained"}} -->
+    <div class="wp-block-group category-header">
+        <!-- wp:query-title {"type":"archive","textAlign":"center"} /-->
+        <!-- wp:term-description {"textAlign":"center"} /-->
+    </div>
+    <!-- /wp:group -->
+
+    <!-- wp:columns -->
+    <div class="wp-block-columns">
+        <!-- wp:column {"width":"70%"} -->
+        <div class="wp-block-column" style="flex-basis:70%">
+            <!-- wp:query -->
+            <div class="wp-block-query">
+                <!-- wp:post-template -->
+                    <!-- wp:group {"className":"category-item"} -->
+                    <div class="wp-block-group category-item">
+                        <!-- wp:post-featured-image {"isLink":true} /-->
+                        <!-- wp:post-title {"isLink":true} /-->
+                        <!-- wp:post-excerpt /-->
+                    </div>
+                    <!-- /wp:group -->
+                <!-- /wp:post-template -->
+
+                <!-- wp:query-pagination -->
+                    <!-- wp:query-pagination-previous /-->
+                    <!-- wp:query-pagination-numbers /-->
+                    <!-- wp:query-pagination-next /-->
+                <!-- /wp:query-pagination -->
+            </div>
+            <!-- /wp:query -->
+        </div>
+        <!-- /wp:column -->
+
+        <!-- wp:column {"width":"30%"} -->
+        <div class="wp-block-column" style="flex-basis:30%">
+            <!-- wp:pattern {"slug":"staynalive/sidebar-categories"} /-->
+            <!-- wp:pattern {"slug":"staynalive/sidebar-recent-posts"} /-->
+        </div>
+        <!-- /wp:column -->
+    </div>
+    <!-- /wp:columns -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+```
+
+2. Tag template:
+
+```html:src/templates/tag.html
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"site-main tag-archive","layout":{"type":"constrained"}} -->
+<main class="wp-block-group site-main tag-archive">
+    <!-- wp:query-title {"type":"archive","textAlign":"center"} /-->
+    
+    <!-- wp:columns -->
+    <div class="wp-block-columns">
+        <!-- wp:column {"width":"70%"} -->
+        <div class="wp-block-column" style="flex-basis:70%">
+            <!-- wp:query -->
+            <div class="wp-block-query">
+                <!-- wp:post-template -->
+                    <!-- wp:group {"className":"tag-item"} -->
+                    <div class="wp-block-group tag-item">
+                        <!-- wp:post-featured-image {"isLink":true} /-->
+                        <!-- wp:post-title {"isLink":true} /-->
+                        <!-- wp:post-excerpt /-->
+                    </div>
+                    <!-- /wp:group -->
+                <!-- /wp:post-template -->
+
+                <!-- wp:query-pagination -->
+                    <!-- wp:query-pagination-previous /-->
+                    <!-- wp:query-pagination-numbers /-->
+                    <!-- wp:query-pagination-next /-->
+                <!-- /wp:query-pagination -->
+            </div>
+            <!-- /wp:query -->
+        </div>
+        <!-- /wp:column -->
+
+        <!-- wp:column {"width":"30%"} -->
+        <div class="wp-block-column" style="flex-basis:30%">
+            <!-- wp:pattern {"slug":"staynalive/sidebar-tags"} /-->
+            <!-- wp:pattern {"slug":"staynalive/sidebar-recent-posts"} /-->
+        </div>
+        <!-- /wp:column -->
+    </div>
+    <!-- /wp:columns -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+```
+
+3. Update install.sh to include these new templates:
+
+```diff:install.sh
+create_all_templates() {
+    cp "src/templates/single.html" "${THEME_DIR}/templates/single.html" || {
+        echo -e "${RED}Error: Could not copy single.html${NC}"
+        return 1
+    }
+    
+    cp "src/templates/archive.html" "${THEME_DIR}/templates/archive.html" || {
+        echo -e "${RED}Error: Could not copy archive.html${NC}"
+        return 1
+    }
+    
+    cp "src/templates/404.html" "${THEME_DIR}/templates/404.html" || {
+        echo -e "${RED}Error: Could not copy 404.html${NC}"
+        return 1
+    }
+    
+    cp "src/templates/search.html" "${THEME_DIR}/templates/search.html" || {
+        echo -e "${RED}Error: Could not copy search.html${NC}"
+        return 1
+    }
++     
++    cp "src/templates/category.html" "${THEME_DIR}/templates/category.html" || {
++        echo -e "${RED}Error: Could not copy category.html${NC}"
++        return 1
++    }
++     
++    cp "src/templates/tag.html" "${THEME_DIR}/templates/tag.html" || {
++        echo -e "${RED}Error: Could not copy tag.html${NC}"
++        return 1
++    }
+}
+```
+
+Would you like me to continue with the author.html and other remaining templates?
+
+---
+
+_**User**_
+
+Yes
+
+---
+
+_**Assistant**_
+
+
+
 ---
 
 

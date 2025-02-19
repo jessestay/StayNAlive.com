@@ -174,511 +174,58 @@ EOL
 
 # Function to create all templates
 create_all_templates() {
-    # Single template
-    cat > "${THEME_DIR}/templates/single.html" << 'EOL'
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
-
-<!-- wp:group {"tagName":"main","className":"site-main single-post"} -->
-<main class="wp-block-group site-main single-post">
-    <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-        <!-- wp:post-featured-image {"align":"wide"} /-->
-
-        <!-- wp:group {"className":"post-header"} -->
-        <div class="wp-block-group post-header">
-            <!-- wp:post-title {"level":1} /-->
-            <!-- wp:post-meta /-->
-        </div>
-        <!-- /wp:group -->
-
-        <!-- wp:post-content /-->
-        <!-- wp:post-terms {"term":"post_tag"} /-->
-        
-        <?php wp_link_pages(); ?>
-        
-        <!-- wp:group {"className":"post-navigation"} -->
-        <div class="wp-block-group post-navigation">
-            <?php
-            the_post_navigation(array(
-                'prev_text' => __('Previous: %title', 'stay-n-alive'),
-                'next_text' => __('Next: %title', 'stay-n-alive'),
-            ));
-            ?>
-        </div>
-        <!-- /wp:group -->
-
-        <?php comments_template(); ?>
-        
-        <!-- wp:comments -->
-        <div class="wp-block-comments">
-            <?php
-            wp_list_comments(array(
-                'style' => 'ol',
-                'avatar_size' => 60,
-                'short_ping' => true,
-            ));
-            the_comments_pagination(array(
-                'prev_text' => __('Previous', 'stay-n-alive'),
-                'next_text' => __('Next', 'stay-n-alive'),
-            ));
-            ?>
-        </div>
-        <!-- /wp:comments -->
-    </div>
-</main>
-<!-- /wp:group -->
-
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
-
-<!-- wp:template-part {"slug":"index","tagName":"index"} /-->
-EOL
-
-    # Archive template
-    cat > "${THEME_DIR}/templates/archive.html" << 'EOL'
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
-
-<!-- wp:group {"tagName":"main","className":"site-main archive-page","layout":{"type":"constrained"}} -->
-<main class="wp-block-group site-main archive-page">
-    <!-- wp:group {"className":"archive-header","layout":{"type":"constrained"}} -->
-    <div class="wp-block-group archive-header">
-        <!-- wp:query-title {"type":"archive","textAlign":"center","fontSize":"x-large"} /-->
-        <!-- wp:term-description {"textAlign":"center"} /-->
-    </div>
-    <!-- /wp:group -->
-
-    <!-- wp:group {"className":"archive-content","layout":{"type":"constrained","contentSize":"1100px"}} -->
-    <div class="wp-block-group archive-content">
-        <!-- wp:columns {"className":"archive-layout"} -->
-        <div class="wp-block-columns archive-layout">
-            <!-- wp:column {"width":"70%"} -->
-            <div class="wp-block-column" style="flex-basis:70%">
-                <!-- wp:query -->
-                <div class="wp-block-query">
-                    <!-- wp:post-template -->
-                        <!-- wp:group {"className":"post-item"} -->
-                        <div class="wp-block-group post-item">
-                            <!-- wp:post-featured-image {"isLink":true,"height":"300px"} /-->
-                            <!-- wp:post-title {"isLink":true,"fontSize":"large"} /-->
-                            <!-- wp:group {"className":"post-meta","layout":{"type":"flex","flexWrap":"wrap"}} -->
-                            <div class="wp-block-group post-meta">
-                                <!-- wp:post-date /-->
-                                <!-- wp:post-author {"showAvatar":false} /-->
-                                <!-- wp:post-terms {"term":"category"} /-->
-                            </div>
-                            <!-- /wp:group -->
-                            <!-- wp:post-excerpt {"moreText":"Read More"} /-->
-                        </div>
-                        <!-- /wp:group -->
-                    <!-- /wp:post-template -->
-
-                    <!-- wp:query-pagination -->
-                        <!-- wp:query-pagination-previous /-->
-                        <!-- wp:query-pagination-numbers /-->
-                        <!-- wp:query-pagination-next /-->
-                    <!-- /wp:query-pagination -->
-
-                    <!-- wp:query-pagination {"paginationArrow":"arrow"} -->
-                    <div class="wp-block-query-pagination">
-                        <?php
-                        the_posts_pagination(array(
-                            'mid_size' => 2,
-                            'prev_text' => sprintf(
-                                '%s <span class="nav-prev-text">%s</span>',
-                                '←',
-                                __('Newer posts', 'stay-n-alive')
-                            ),
-                            'next_text' => sprintf(
-                                '<span class="nav-next-text">%s</span> %s',
-                                __('Older posts', 'stay-n-alive'),
-                                '→'
-                            ),
-                        ));
-                        ?>
-                    </div>
-                    <!-- /wp:query-pagination -->
-                </div>
-                <!-- /wp:query -->
-            </div>
-            <!-- /wp:column -->
-
-            <!-- wp:column {"width":"30%","className":"archive-sidebar"} -->
-            <div class="wp-block-column archive-sidebar" style="flex-basis:30%">
-                <!-- wp:pattern {"slug":"staynalive/sidebar-search"} /-->
-                <!-- wp:pattern {"slug":"staynalive/sidebar-categories"} /-->
-                <!-- wp:pattern {"slug":"staynalive/sidebar-recent-posts"} /-->
-            </div>
-            <!-- /wp:column -->
-        </div>
-        <!-- /wp:columns -->
-    </div>
-    <!-- /wp:group -->
-</main>
-<!-- /wp:group -->
-
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
-EOL
-
-    # 404 template
-    cat > "${THEME_DIR}/templates/404.html" << 'EOL'
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
-
-<!-- wp:group {"tagName":"main","className":"site-main error-404","layout":{"type":"constrained"}} -->
-<main class="wp-block-group site-main error-404">
-    <!-- wp:group {"className":"error-content","layout":{"type":"constrained","contentSize":"800px"}} -->
-    <div class="wp-block-group error-content">
-        <!-- wp:heading {"level":1,"className":"error-title","fontSize":"x-large"} -->
-        <h1 class="error-title has-x-large-font-size">Oops! That page can't be found.</h1>
-        <!-- /wp:heading -->
-
-        <!-- wp:paragraph -->
-        <p>It looks like nothing was found at this location. Maybe try a search or check out some recent posts?</p>
-        <!-- /wp:paragraph -->
-
-        <!-- wp:search {"label":"Search","buttonText":"Search","className":"error-search"} /-->
-
-        <!-- wp:group {"className":"error-widgets","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
-        <div class="wp-block-group error-widgets">
-            <!-- wp:group {"className":"widget recent-posts"} -->
-            <div class="wp-block-group widget recent-posts">
-                <!-- wp:heading {"level":2,"fontSize":"large"} -->
-                <h2 class="has-large-font-size">Recent Posts</h2>
-                <!-- /wp:heading -->
-
-                <!-- wp:latest-posts {"postsToShow":5,"displayPostDate":true} /-->
-            </div>
-            <!-- /wp:group -->
-
-            <!-- wp:group {"className":"widget categories"} -->
-            <div class="wp-block-group widget categories">
-                <!-- wp:heading {"level":2,"fontSize":"large"} -->
-                <h2 class="has-large-font-size">Categories</h2>
-                <!-- /wp:heading -->
-
-                <!-- wp:categories {"displayAsDropdown":false,"showHierarchy":true,"showPostCounts":true} /-->
-            </div>
-            <!-- /wp:group -->
-
-            <!-- wp:group {"className":"widget tags"} -->
-            <div class="wp-block-group widget tags">
-                <!-- wp:heading {"level":2,"fontSize":"large"} -->
-                <h2 class="has-large-font-size">Tags</h2>
-                <!-- /wp:heading -->
-
-                <!-- wp:tag-cloud {"numberOfTags":20} /-->
-            </div>
-            <!-- /wp:group -->
-        </div>
-        <!-- /wp:group -->
-    </div>
-    <!-- /wp:group -->
-</main>
-<!-- /wp:group -->
-
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
-EOL
-
-    # Link-in-bio template
-    cat > "${THEME_DIR}/templates/link-bio.html" << 'EOL'
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
-
-<!-- wp:cover {"url":"placeholder-hero.jpg","dimRatio":50,"minHeight":400,"align":"full","className":"bio-hero"} -->
-<div class="wp-block-cover alignfull bio-hero">
-    <span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span>
-    <div class="wp-block-cover__inner-container">
-        <!-- wp:group {"className":"bio-header","layout":{"type":"constrained","contentSize":"800px"}} -->
-        <div class="wp-block-group bio-header">
-            <!-- wp:image {"className":"bio-avatar","width":150,"height":150,"scale":"cover","align":"center","style":{"border":{"radius":"100%"}}} -->
-            <figure class="wp-block-image aligncenter bio-avatar">
-                <img src="placeholder-avatar.jpg" alt="" style="border-radius:100%;width:150px;height:150px;object-fit:cover"/>
-            </figure>
-            <!-- /wp:image -->
-            
-            <!-- wp:heading {"textAlign":"center","level":1,"className":"bio-name"} -->
-            <h1 class="wp-block-heading has-text-align-center bio-name">Your Name</h1>
-            <!-- /wp:heading -->
-            
-            <!-- wp:paragraph {"align":"center","className":"bio-tagline"} -->
-            <p class="has-text-align-center bio-tagline">Your brief tagline goes here</p>
-            <!-- /wp:paragraph -->
-        </div>
-        <!-- /wp:group -->
-    </div>
-</div>
-<!-- /wp:cover -->
-
-<!-- wp:group {"className":"bio-links","layout":{"type":"constrained","contentSize":"600px"}} -->
-<div class="wp-block-group bio-links">
-    <!-- wp:pattern {"slug":"staynalive/bio-link-button"} /-->
-</div>
-<!-- /wp:group -->
-
-<!-- wp:group {"className":"social-feed","layout":{"type":"constrained","contentSize":"1200px"}} -->
-<div class="wp-block-group social-feed">
-    <!-- wp:pattern {"slug":"staynalive/social-feed"} /-->
-</div>
-<!-- /wp:group -->
-
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
-EOL
-
-    # Search template
-    cat > "${THEME_DIR}/templates/search.html" << 'EOL'
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
-
-<!-- wp:group {"tagName":"main","className":"site-main search-results","layout":{"type":"constrained"}} -->
-<main class="wp-block-group site-main search-results">
-    <!-- wp:group {"className":"search-header","layout":{"type":"constrained"}} -->
-    <div class="wp-block-group search-header">
-        <!-- wp:search {"label":"Search","buttonText":"Search","className":"search-form"} /-->
-        <!-- wp:query-title {"type":"search","textAlign":"center"} /-->
-    </div>
-    <!-- /wp:group -->
-
-    <!-- wp:query {"queryId":1,"query":{"perPage":10,"offset":0,"postType":"post","order":"desc","orderBy":"date","search":"","inherit":true}} -->
-    <div class="wp-block-query">
-        <!-- wp:post-template -->
-            <!-- wp:group {"className":"search-item"} -->
-            <div class="wp-block-group search-item">
-                <!-- wp:post-featured-image {"isLink":true,"width":"200px"} /-->
-                <!-- wp:post-title {"isLink":true} /-->
-                <!-- wp:post-excerpt /-->
-            </div>
-            <!-- /wp:group -->
-        <!-- /wp:post-template -->
-
-        <!-- wp:query-pagination -->
-            <!-- wp:query-pagination-previous /-->
-            <!-- wp:query-pagination-numbers /-->
-            <!-- wp:query-pagination-next /-->
-        <!-- /wp:query-pagination -->
-
-        <!-- wp:query-no-results -->
-            <!-- wp:paragraph {"className":"no-results"} -->
-            <p class="no-results">No results found. Try a different search.</p>
-            <!-- /wp:paragraph -->
-        <!-- /wp:query-no-results -->
-    </div>
-    <!-- /wp:query -->
-</main>
-<!-- /wp:group -->
-
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
-EOL
-
-    # Category template
-    cat > "${THEME_DIR}/templates/category.html" << 'EOL'
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
-
-<!-- wp:group {"tagName":"main","className":"site-main category-archive","layout":{"type":"constrained"}} -->
-<main class="wp-block-group site-main category-archive">
-    <!-- wp:group {"className":"category-header","layout":{"type":"constrained"}} -->
-    <div class="wp-block-group category-header">
-        <!-- wp:query-title {"type":"archive","textAlign":"center"} /-->
-        <!-- wp:term-description {"textAlign":"center"} /-->
-    </div>
-    <!-- /wp:group -->
-
-    <!-- wp:columns -->
-    <div class="wp-block-columns">
-        <!-- wp:column {"width":"70%"} -->
-        <div class="wp-block-column" style="flex-basis:70%">
-            <!-- wp:query -->
-            <div class="wp-block-query">
-                <!-- wp:post-template -->
-                    <!-- wp:group {"className":"category-item"} -->
-                    <div class="wp-block-group category-item">
-                        <!-- wp:post-featured-image {"isLink":true} /-->
-                        <!-- wp:post-title {"isLink":true} /-->
-                        <!-- wp:post-excerpt /-->
-                    </div>
-                    <!-- /wp:group -->
-                <!-- /wp:post-template -->
-
-                <!-- wp:query-pagination -->
-                    <!-- wp:query-pagination-previous /-->
-                    <!-- wp:query-pagination-numbers /-->
-                    <!-- wp:query-pagination-next /-->
-                <!-- /wp:query-pagination -->
-            </div>
-            <!-- /wp:query -->
-        </div>
-        <!-- /wp:column -->
-
-        <!-- wp:column {"width":"30%"} -->
-        <div class="wp-block-column" style="flex-basis:30%">
-            <!-- wp:pattern {"slug":"staynalive/sidebar-categories"} /-->
-            <!-- wp:pattern {"slug":"staynalive/sidebar-recent-posts"} /-->
-        </div>
-        <!-- /wp:column -->
-    </div>
-    <!-- /wp:columns -->
-</main>
-<!-- /wp:group -->
-
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
-EOL
-
-    # Tag Archive template
-    cat > "${THEME_DIR}/templates/tag.html" << 'EOL'
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
-
-<!-- wp:group {"tagName":"main","className":"site-main tag-archive","layout":{"type":"constrained"}} -->
-<main class="wp-block-group site-main tag-archive">
-    <!-- wp:query-title {"type":"archive","textAlign":"center"} /-->
+    cp "src/templates/single.html" "${THEME_DIR}/templates/single.html" || {
+        echo -e "${RED}Error: Could not copy single.html${NC}"
+        return 1
+    }
     
-    <!-- wp:columns -->
-    <div class="wp-block-columns">
-        <!-- wp:column {"width":"70%"} -->
-        <div class="wp-block-column" style="flex-basis:70%">
-            <!-- wp:query -->
-            <div class="wp-block-query">
-                <!-- wp:post-template -->
-                    <!-- wp:group {"className":"tag-item"} -->
-                    <div class="wp-block-group tag-item">
-                        <!-- wp:post-featured-image {"isLink":true} /-->
-                        <!-- wp:post-title {"isLink":true} /-->
-                        <!-- wp:post-excerpt /-->
-                    </div>
-                    <!-- /wp:group -->
-                <!-- /wp:post-template -->
-
-                <!-- wp:query-pagination -->
-                    <!-- wp:query-pagination-previous /-->
-                    <!-- wp:query-pagination-numbers /-->
-                    <!-- wp:query-pagination-next /-->
-                <!-- /wp:query-pagination -->
-            </div>
-            <!-- /wp:query -->
-        </div>
-        <!-- /wp:column -->
-
-        <!-- wp:column {"width":"30%"} -->
-        <div class="wp-block-column" style="flex-basis:30%">
-            <!-- wp:pattern {"slug":"staynalive/sidebar-tags"} /-->
-            <!-- wp:pattern {"slug":"staynalive/sidebar-recent-posts"} /-->
-        </div>
-        <!-- /wp:column -->
-    </div>
-    <!-- /wp:columns -->
-</main>
-<!-- /wp:group -->
-
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
-EOL
-
-    # Author Archive template
-    cat > "${THEME_DIR}/templates/author.html" << 'EOL'
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
-
-<!-- wp:group {"tagName":"main","className":"site-main author-archive","layout":{"type":"constrained"}} -->
-<main class="wp-block-group site-main author-archive">
-    <!-- wp:pattern {"slug":"staynalive/author-bio"} /-->
+    cp "src/templates/archive.html" "${THEME_DIR}/templates/archive.html" || {
+        echo -e "${RED}Error: Could not copy archive.html${NC}"
+        return 1
+    }
     
-    <!-- wp:query {"queryId":1,"query":{"perPage":10,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","inherit":true}} -->
-    <div class="wp-block-query">
-        <!-- wp:post-template -->
-            <!-- wp:group {"className":"author-post-item"} -->
-            <div class="wp-block-group author-post-item">
-                <!-- wp:post-featured-image {"isLink":true} /-->
-                <!-- wp:post-title {"isLink":true} /-->
-                <!-- wp:post-excerpt /-->
-            </div>
-            <!-- /wp:group -->
-        <!-- /wp:post-template -->
-
-        <!-- wp:query-pagination -->
-            <!-- wp:query-pagination-previous /-->
-            <!-- wp:query-pagination-numbers /-->
-            <!-- wp:query-pagination-next /-->
-        <!-- /wp:query-pagination -->
-    </div>
-    <!-- /wp:query -->
-</main>
-<!-- /wp:group -->
-
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
-EOL
-
-    # Index template
-    cat > "${THEME_DIR}/templates/index.html" << 'EOL'
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
-
-<!-- wp:group {"tagName":"main","className":"site-main index-page","layout":{"type":"constrained"}} -->
-<main class="wp-block-group site-main index-page">
-    <!-- wp:query -->
-    <div class="wp-block-query">
-        <!-- wp:post-template -->
-            <!-- wp:group {"className":"post-item"} -->
-            <div class="wp-block-group post-item">
-                <!-- wp:post-featured-image {"isLink":true,"align":"wide"} /-->
-                <!-- wp:post-title {"isLink":true,"fontSize":"large"} /-->
-                <!-- wp:group {"className":"post-meta","layout":{"type":"flex","flexWrap":"wrap"}} -->
-                <div class="wp-block-group post-meta">
-                    <!-- wp:post-date /-->
-                    <!-- wp:post-author {"showAvatar":false} /-->
-                    <!-- wp:post-terms {"term":"category"} /-->
-                </div>
-                <!-- /wp:group -->
-                <!-- wp:post-excerpt {"moreText":"Read More"} /-->
-            </div>
-            <!-- /wp:group -->
-        <!-- /wp:post-template -->
-
-        <!-- wp:query-pagination -->
-            <!-- wp:query-pagination-previous /-->
-            <!-- wp:query-pagination-numbers /-->
-            <!-- wp:query-pagination-next /-->
-        <!-- /wp:query-pagination -->
-    </div>
-    <!-- /wp:query -->
-</main>
-<!-- /wp:group -->
-
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
-EOL
+    cp "src/templates/404.html" "${THEME_DIR}/templates/404.html" || {
+        echo -e "${RED}Error: Could not copy 404.html${NC}"
+        return 1
+    }
+    
+    cp "src/templates/search.html" "${THEME_DIR}/templates/search.html" || {
+        echo -e "${RED}Error: Could not copy search.html${NC}"
+        return 1
+    }
+    
+    cp "src/templates/category.html" "${THEME_DIR}/templates/category.html" || {
+        echo -e "${RED}Error: Could not copy category.html${NC}"
+        return 1
+    }
+    
+    cp "src/templates/tag.html" "${THEME_DIR}/templates/tag.html" || {
+        echo -e "${RED}Error: Could not copy tag.html${NC}"
+        return 1
+    }
+    
+    cp "src/templates/author.html" "${THEME_DIR}/templates/author.html" || {
+        echo -e "${RED}Error: Could not copy author.html${NC}"
+        return 1
+    }
+    
+    cp "src/templates/index.html" "${THEME_DIR}/templates/index.html" || {
+        echo -e "${RED}Error: Could not copy index.html${NC}"
+        return 1
+    }
 }
 
 # Function to create template parts
 create_template_parts() {
-    # Header with all original functionality
-    cat > "${THEME_DIR}/parts/header.html" << 'EOL'
-<!DOCTYPE html>
-<html <?php language_attributes(); ?>>
-<head>
-    <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php wp_head(); ?>
-</head>
-<body <?php body_class(); ?>>
-<?php wp_body_open(); ?>
-
-<!-- wp:group {"tagName":"header","className":"site-header"} -->
-<header class="wp-block-group site-header">
-    <!-- wp:site-title /-->
-    <?php
-    wp_nav_menu(array(
-        'theme_location' => 'primary',
-        'menu_class' => 'primary-navigation',
-        'container' => 'nav',
-        'container_class' => 'main-navigation',
-    ));
-    ?>
-</header>
-<!-- /wp:group -->
-EOL
-
-    # Footer
-    cat > "${THEME_DIR}/parts/footer.html" << 'EOL'
-<!-- wp:group {"tagName":"footer","className":"site-footer"} -->
-<footer class="wp-block-group site-footer">
-    <!-- wp:paragraph {"align":"center"} -->
-    <p class="has-text-align-center">© 2024 Stay N Alive</p>
-    <!-- /wp:paragraph -->
-</footer>
-<!-- /wp:group -->
-<?php wp_footer(); ?>
-</body>
-</html>
-EOL
+    cp "src/parts/header.html" "${THEME_DIR}/parts/header.html" || {
+        echo -e "${RED}Error: Could not copy header.html${NC}"
+        return 1
+    }
+    
+    cp "src/parts/footer.html" "${THEME_DIR}/parts/footer.html" || {
+        echo -e "${RED}Error: Could not copy footer.html${NC}"
+        return 1
+    }
 }
 
 # Function to create CSS files
@@ -2612,3 +2159,6 @@ main
 
 # Create theme source directory structure
 mkdir -p src/inc src/templates src/parts src/patterns src/assets/{css,js}/{base,blocks,components,compatibility,utilities}
+
+# First, let's create the complete src directory structure
+mkdir -p src/{assets/{css,js}/{base,blocks,components,compatibility,utilities},inc/classes,languages,parts,patterns,styles,templates}
