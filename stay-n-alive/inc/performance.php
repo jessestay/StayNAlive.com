@@ -2,13 +2,25 @@
 /**
  * Performance optimizations
  *
- * @package StayNAlive
+ * @package Stay_N_Alive
  */
 
 namespace StayNAlive\Performance;
 
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
+
 /**
- * Remove unnecessary emoji scripts
+ * Remove unnecessary meta tags
+ */
+remove_action('wp_head', 'wp_generator');
+remove_action('wp_head', 'wlwmanifest_link');
+remove_action('wp_head', 'rsd_link');
+remove_action('wp_head', 'wp_shortlink_wp_head');
+
+/**
+ * Disable emoji support if not needed
  */
 function disable_emojis() {
     remove_action('wp_head', 'print_emoji_detection_script', 7);
@@ -24,9 +36,28 @@ add_action('init', __NAMESPACE__ . '\disable_emojis');
 /**
  * Optimize script loading
  */
-function optimize_scripts() {
-    if (!is_admin()) {
-        wp_deregister_script('wp-embed');
+function optimize_script_loading() {
+    // Add defer to scripts
+    function add_defer_attribute($tag, $handle) {
+        if ('stay-n-alive-animations' === $handle) {
+            return str_replace(' src', ' defer src', $tag);
+        }
+        return $tag;
     }
+    add_filter('script_loader_tag', __NAMESPACE__ . '\add_defer_attribute', 10, 2);
 }
-add_action('wp_enqueue_scripts', __NAMESPACE__ . '\optimize_scripts', 100);
+add_action('wp_enqueue_scripts', __NAMESPACE__ . '\optimize_script_loading');
+
+/**
+ * Disable XML-RPC pingback
+ */
+add_filter( 'xmlrpc_methods', function( $methods ) {
+    unset( $methods['pingback.ping'] );
+    return $methods;
+} );
+
+/**
+ * Remove emoji script
+ */
+remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+remove_action( 'wp_print_styles', 'print_emoji_styles' ); 

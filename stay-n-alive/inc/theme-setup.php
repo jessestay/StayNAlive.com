@@ -1,97 +1,77 @@
 <?php
 /**
- * Theme setup functions
+ * Theme setup and configuration
  *
- * @package StayNAlive
+ * @package Stay_N_Alive
  */
 
 namespace StayNAlive\Setup;
 
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
+
 /**
- * Add theme support
+ * Theme setup
  */
-function add_theme_support() {
-    add_theme_support('wp-block-styles');
-    add_theme_support('editor-styles');
-    add_theme_support('responsive-embeds');
-    add_theme_support('align-wide');
-    add_theme_support('custom-units');
-    add_theme_support('post-thumbnails');
-    add_theme_support('title-tag');
+function theme_setup() {
+    // Add default posts and comments RSS feed links to head
     add_theme_support('automatic-feed-links');
+
+    // Let WordPress manage the document title
+    add_theme_support('title-tag');
+
+    // Enable support for Post Thumbnails
+    add_theme_support('post-thumbnails');
+
+    // Register nav menus
+    register_nav_menus(array(
+        'primary' => __('Primary Menu', 'stay-n-alive'),
+        'footer'  => __('Footer Menu', 'stay-n-alive'),
+        'social'  => __('Social Links Menu', 'stay-n-alive'),
+    ));
+
+    // Switch default core markup to output valid HTML5
     add_theme_support('html5', array(
-        'comment-list',
-        'comment-form', 
         'search-form',
+        'comment-form',
+        'comment-list',
         'gallery',
         'caption',
         'style',
-        'script'
+        'script',
     ));
-    add_theme_support('custom-logo');
-    add_theme_support('custom-header');
-    add_theme_support('custom-background');
-    
-    register_nav_menus(array(
-        'primary' => __('Primary Menu', 'stay-n-alive'),
-        'footer' => __('Footer Menu', 'stay-n-alive')
-    ));
+
+    // Add theme support for selective refresh for widgets
+    add_theme_support('customize-selective-refresh-widgets');
+
+    // Add support for Block Styles
+    add_theme_support('wp-block-styles');
+
+    // Add support for full and wide align images
+    add_theme_support('align-wide');
+
+    // Add support for editor styles
+    add_theme_support('editor-styles');
+
+    // Add support for responsive embeds
+    add_theme_support('responsive-embeds');
+
+    // Add support for custom line height controls
+    add_theme_support('custom-line-height');
+
+    // Add support for experimental link color control
+    add_theme_support('experimental-link-color');
+
+    // Add support for custom units
+    add_theme_support('custom-units');
 }
-add_action('after_setup_theme', __NAMESPACE__ . '\add_theme_support');
+add_action('after_setup_theme', __NAMESPACE__ . '\theme_setup');
 
-/**
- * Enqueue scripts and styles
- */
-function enqueue_assets() {
-    wp_enqueue_style(
-        'staynalive-style',
-        get_stylesheet_uri(),
-        array(),
-        STAYNALIVE_VERSION
-    );
+// Load theme setup class
+require_once STAY_N_ALIVE_DIR . '/inc/classes/class-theme-setup.php';
 
-    if (is_singular() && comments_open() && get_option('thread_comments')) {
-        wp_enqueue_script('comment-reply');
-    }
-}
-add_action('wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_assets');
-
-/**
- * Register widget areas
- */
-function widgets_init() {
-    register_sidebar(array(
-        'name'          => __('Blog Sidebar', 'stay-n-alive'),
-        'id'            => 'sidebar-1',
-        'description'   => __('Add widgets here to appear in your sidebar.', 'stay-n-alive'),
-        'before_widget' => '<section id="%1$s" class="widget %2$s">',
-        'after_widget'  => '</section>',
-        'before_title'  => '<h2 class="widget-title">',
-        'after_title'   => '</h2>',
-    ));
-}
-add_action('widgets_init', __NAMESPACE__ . '\widgets_init');
-
-/**
- * Register block styles
- */
-function register_block_styles() {
-    // Quote styles
-    register_block_style('core/quote', array(
-        'name' => 'fancy-quote',
-        'label' => __('Fancy Quote', 'stay-n-alive')
-    ));
-    
-    // Button styles
-    register_block_style('core/button', array(
-        'name' => 'outline',
-        'label' => __('Outline', 'stay-n-alive')
-    ));
-
-    // Group styles
-    register_block_style('core/group', array(
-        'name' => 'card',
-        'label' => __('Card', 'stay-n-alive')
-    ));
-}
-add_action('init', __NAMESPACE__ . '\register_block_styles');
+// Load other classes
+require_once STAY_N_ALIVE_DIR . '/inc/classes/class-social-feed.php';
+require_once STAY_N_ALIVE_DIR . '/inc/classes/class-performance.php';
+require_once STAY_N_ALIVE_DIR . '/inc/classes/class-security.php';

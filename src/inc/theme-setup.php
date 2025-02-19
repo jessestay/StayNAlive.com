@@ -67,3 +67,11 @@ function theme_setup() {
     add_theme_support('custom-units');
 }
 add_action('after_setup_theme', __NAMESPACE__ . '\theme_setup');
+
+// Load theme setup class
+require_once STAY_N_ALIVE_DIR . '/inc/classes/class-theme-setup.php';
+
+// Load other classes
+require_once STAY_N_ALIVE_DIR . '/inc/classes/class-social-feed.php';
+require_once STAY_N_ALIVE_DIR . '/inc/classes/class-performance.php';
+require_once STAY_N_ALIVE_DIR . '/inc/classes/class-security.php';

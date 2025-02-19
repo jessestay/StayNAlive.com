@@ -63,4 +63,23 @@ function get_twitter_feed() {
     }
 
     return rest_ensure_response($feed);
-} 
+}
+
+/**
+ * Register social feed shortcode
+ */
+function stay_n_alive_social_feed_shortcode( $atts ) {
+    $atts = shortcode_atts( array(
+        'type' => 'all',
+        'count' => 5
+    ), $atts );
+    
+    ob_start();
+    ?>
+    <div class="social-feed" data-type="<?php echo esc_attr( $atts['type'] ); ?>" data-count="<?php echo esc_attr( $atts['count'] ); ?>">
+        <!-- Feed content will be loaded via JavaScript -->
+    </div>
+    <?php
+    return ob_get_clean();
+}
+add_shortcode( 'social_feed', 'stay_n_alive_social_feed_shortcode' ); 

@@ -46,4 +46,18 @@ function optimize_script_loading() {
     }
     add_filter('script_loader_tag', __NAMESPACE__ . '\add_defer_attribute', 10, 2);
 }
-add_action('wp_enqueue_scripts', __NAMESPACE__ . '\optimize_script_loading'); 
+add_action('wp_enqueue_scripts', __NAMESPACE__ . '\optimize_script_loading');
+
+/**
+ * Disable XML-RPC pingback
+ */
+add_filter( 'xmlrpc_methods', function( $methods ) {
+    unset( $methods['pingback.ping'] );
+    return $methods;
+} );
+
+/**
+ * Remove emoji script
+ */
+remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+remove_action( 'wp_print_styles', 'print_emoji_styles' ); 

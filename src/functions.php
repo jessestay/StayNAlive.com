@@ -2,7 +2,7 @@
 /**
  * Stay N Alive functions and definitions
  *
- * @package Stay_N_Alive
+ * @package StayNAlive
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,11 +14,13 @@ define( 'STAY_N_ALIVE_VERSION', '1.0.0' );
 define( 'STAY_N_ALIVE_DIR', get_template_directory() );
 define( 'STAY_N_ALIVE_URI', get_template_directory_uri() );
 
-// Required files
+// Require theme setup file
 require_once STAY_N_ALIVE_DIR . '/inc/theme-setup.php';
-require_once STAY_N_ALIVE_DIR . '/inc/social-feeds.php';
+
+// Require other core files
 require_once STAY_N_ALIVE_DIR . '/inc/security.php';
 require_once STAY_N_ALIVE_DIR . '/inc/performance.php';
+require_once STAY_N_ALIVE_DIR . '/inc/social-feeds.php';
 require_once STAY_N_ALIVE_DIR . '/inc/template-loader.php';
 require_once STAY_N_ALIVE_DIR . '/inc/block-patterns.php';
 

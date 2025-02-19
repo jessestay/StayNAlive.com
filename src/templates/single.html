@@ -1,51 +1,18 @@
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 
-<!-- wp:group {"tagName":"main","className":"site-main single-post"} -->
-<main class="wp-block-group site-main single-post">
-    <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-        <!-- wp:post-featured-image {"align":"wide"} /-->
-
-        <!-- wp:group {"className":"post-header"} -->
-        <div class="wp-block-group post-header">
-            <!-- wp:post-title {"level":1} /-->
-            <!-- wp:post-meta /-->
-        </div>
-        <!-- /wp:group -->
-
-        <!-- wp:post-content /-->
-        <!-- wp:post-terms {"term":"post_tag"} /-->
-        
-        <?php wp_link_pages(); ?>
-        
-        <!-- wp:group {"className":"post-navigation"} -->
-        <div class="wp-block-group post-navigation">
-            <?php
-            the_post_navigation(array(
-                'prev_text' => __('Previous: %title', 'stay-n-alive'),
-                'next_text' => __('Next: %title', 'stay-n-alive'),
-            ));
-            ?>
-        </div>
-        <!-- /wp:group -->
-
-        <?php comments_template(); ?>
-        
-        <!-- wp:comments -->
-        <div class="wp-block-comments">
-            <?php
-            wp_list_comments(array(
-                'style' => 'ol',
-                'avatar_size' => 60,
-                'short_ping' => true,
-            ));
-            the_comments_pagination(array(
-                'prev_text' => __('Previous', 'stay-n-alive'),
-                'next_text' => __('Next', 'stay-n-alive'),
-            ));
-            ?>
-        </div>
-        <!-- /wp:comments -->
-    </div>
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
+<main class="wp-block-group">
+    <!-- wp:post-title {"level":1,"align":"wide"} /-->
+    
+    <!-- wp:post-featured-image {"align":"wide"} /-->
+    
+    <!-- wp:post-content {"layout":{"inherit":true}} /-->
+    
+    <!-- wp:spacer {"height":"40px"} -->
+    <div style="height:40px" aria-hidden="true" class="wp-block-spacer"></div>
+    <!-- /wp:spacer -->
+    
+    <!-- wp:post-comments /-->
 </main>
 <!-- /wp:group -->
 

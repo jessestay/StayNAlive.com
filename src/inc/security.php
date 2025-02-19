@@ -2,7 +2,7 @@
 /**
  * Security enhancements
  *
- * @package Stay_N_Alive
+ * @package StayNAlive
  */
 
 namespace StayNAlive\Security;
@@ -12,29 +12,14 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Remove WordPress version from various locations
- */
-function remove_version_info() {
-    return '';
-}
-add_filter('the_generator', __NAMESPACE__ . '\remove_version_info');
-
-/**
  * Disable XML-RPC
  */
 add_filter('xmlrpc_enabled', '__return_false');
 
 /**
- * Remove WordPress version from scripts and styles
+ * Remove WordPress version from various locations
  */
-function remove_version_from_assets($src) {
-    if (strpos($src, 'ver=')) {
-        $src = remove_query_arg('ver', $src);
-    }
-    return $src;
-}
-add_filter('style_loader_src', __NAMESPACE__ . '\remove_version_from_assets');
-add_filter('script_loader_src', __NAMESPACE__ . '\remove_version_from_assets');
+remove_action('wp_head', 'wp_generator');
 
 /**
  * Disable file editing in WordPress admin
@@ -54,5 +39,17 @@ function disable_user_enumeration() {
     }
 }
 add_action('init', __NAMESPACE__ . '\disable_user_enumeration');
+
+/**
+ * Remove WordPress version from scripts and styles
+ */
+function remove_version_from_assets($src) {
+    if (strpos($src, 'ver=')) {
+        $src = remove_query_arg('ver', $src);
+    }
+    return $src;
+}
+add_filter('style_loader_src', __NAMESPACE__ . '\remove_version_from_assets');
+add_filter('script_loader_src', __NAMESPACE__ . '\remove_version_from_assets');
 
 // ... rest of security.php content ... 

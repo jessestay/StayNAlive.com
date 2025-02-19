@@ -1,55 +1,23 @@
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 
-<!-- wp:group {"tagName":"main","className":"site-main error-404","layout":{"type":"constrained"}} -->
-<main class="wp-block-group site-main error-404">
-    <!-- wp:group {"className":"error-content","layout":{"type":"constrained","contentSize":"800px"}} -->
-    <div class="wp-block-group error-content">
-        <!-- wp:heading {"level":1,"className":"error-title","fontSize":"x-large"} -->
-        <h1 class="error-title has-x-large-font-size">Oops! That page can't be found.</h1>
-        <!-- /wp:heading -->
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
+<main class="wp-block-group">
+    <!-- wp:heading {"level":1,"align":"wide"} -->
+    <h1 class="alignwide">404: Page Not Found</h1>
+    <!-- /wp:heading -->
 
-        <!-- wp:paragraph -->
-        <p>It looks like nothing was found at this location. Maybe try a search or check out some recent posts?</p>
-        <!-- /wp:paragraph -->
+    <!-- wp:paragraph -->
+    <p>The page you're looking for could not be found. It might have been removed, renamed, or did not exist in the first place.</p>
+    <!-- /wp:paragraph -->
 
-        <!-- wp:search {"label":"Search","buttonText":"Search","className":"error-search"} /-->
+    <!-- wp:search {"label":"Search","buttonText":"Search"} /-->
 
-        <!-- wp:group {"className":"error-widgets","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
-        <div class="wp-block-group error-widgets">
-            <!-- wp:group {"className":"widget recent-posts"} -->
-            <div class="wp-block-group widget recent-posts">
-                <!-- wp:heading {"level":2,"fontSize":"large"} -->
-                <h2 class="has-large-font-size">Recent Posts</h2>
-                <!-- /wp:heading -->
+    <!-- wp:heading {"level":2} -->
+    <h2>Recent Posts</h2>
+    <!-- /wp:heading -->
 
-                <!-- wp:latest-posts {"postsToShow":5,"displayPostDate":true} /-->
-            </div>
-            <!-- /wp:group -->
-
-            <!-- wp:group {"className":"widget categories"} -->
-            <div class="wp-block-group widget categories">
-                <!-- wp:heading {"level":2,"fontSize":"large"} -->
-                <h2 class="has-large-font-size">Categories</h2>
-                <!-- /wp:heading -->
-
-                <!-- wp:categories {"displayAsDropdown":false,"showHierarchy":true,"showPostCounts":true} /-->
-            </div>
-            <!-- /wp:group -->
-
-            <!-- wp:group {"className":"widget tags"} -->
-            <div class="wp-block-group widget tags">
-                <!-- wp:heading {"level":2,"fontSize":"large"} -->
-                <h2 class="has-large-font-size">Tags</h2>
-                <!-- /wp:heading -->
-
-                <!-- wp:tag-cloud {"numberOfTags":20} /-->
-            </div>
-            <!-- /wp:group -->
-        </div>
-        <!-- /wp:group -->
-    </div>
-    <!-- /wp:group -->
+    <!-- wp:latest-posts {"postsToShow":5,"displayPostDate":true} /-->
 </main>
 <!-- /wp:group -->
 
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /--> 
