@@ -13,6 +13,30 @@ readonly NC='\033[0m'
 # Theme directory name
 readonly THEME_DIR="stay-n-alive"
 
+# Add these functions near the top of the file, right after the THEME_DIR definition
+# and before any other functions:
+
+create_social_feeds_php() {
+    cp "src/inc/social-feeds.php" "${THEME_DIR}/inc/social-feeds.php" || {
+        echo -e "${RED}Error: Could not copy social-feeds.php${NC}"
+        return 1
+    }
+}
+
+create_security_php() {
+    cp "src/inc/security.php" "${THEME_DIR}/inc/security.php" || {
+        echo -e "${RED}Error: Could not copy security.php${NC}"
+        return 1
+    }
+}
+
+create_performance_php() {
+    cp "src/inc/performance.php" "${THEME_DIR}/inc/performance.php" || {
+        echo -e "${RED}Error: Could not copy performance.php${NC}"
+        return 1
+    }
+}
+
 # Function to log messages
 log() {
     echo -e "${BLUE}$1${NC}"
@@ -27,16 +51,61 @@ create_directories() {
         "assets/css/compatibility"
         "assets/css/utilities"
         "assets/js"
+        "inc"           # Make sure this is listed
         "inc/classes"
         "languages"
         "parts"
         "patterns"
+        "styles"
         "templates"
     )
     
+    # First verify all directories are unique
+    local unique_dirs=()
     for dir in "${dirs[@]}"; do
-        mkdir -p "${THEME_DIR}/${dir}" && echo "Created directory: ${dir}"
+        if [[ " ${unique_dirs[@]} " =~ " ${dir} " ]]; then
+            echo -e "${RED}Error: Duplicate directory found: ${dir}${NC}"
+            return 1
+        fi
+        unique_dirs+=("$dir")
     done
+    
+    # Create directories and index.php files
+    for dir in "${dirs[@]}"; do
+        # Create directory
+        mkdir -p "${THEME_DIR}/${dir}"
+        
+        # Create index.php in the directory
+        echo "<?php // Silence is golden" > "${THEME_DIR}/${dir}/index.php"
+        
+        # Verify directory and index.php were created
+        if [[ ! -d "${THEME_DIR}/${dir}" ]]; then
+            echo -e "${RED}Error: Failed to create directory: ${dir}${NC}"
+            return 1
+        fi
+        if [[ ! -f "${THEME_DIR}/${dir}/index.php" ]]; then
+            echo -e "${RED}Error: Failed to create index.php in: ${dir}${NC}"
+            return 1
+        fi
+        
+        echo -e "${GREEN}Created directory and index.php: ${dir}${NC}"
+    done
+    
+    # Verify all directories have content
+    local empty_dirs=()
+    while IFS= read -r -d '' dir; do
+        if [[ -z "$(ls -A "$dir")" ]]; then
+            empty_dirs+=("$dir")
+        fi
+    done < <(find "${THEME_DIR}" -type d -print0)
+    
+    if [[ ${#empty_dirs[@]} -gt 0 ]]; then
+        echo -e "${RED}Error: Found empty directories:${NC}"
+        printf '%s\n' "${empty_dirs[@]}"
+        return 1
+    fi
+    
+    return 0
 }
 
 # Function to create style.css
@@ -1680,18 +1749,8 @@ create_screenshot() {
 # Returns:
 #   0 on success, 1 on failure
 create_zip() {
-    # Validate required parameter
-    if [[ -z "$1" ]]; then
-        echo -e "${RED}Error: Missing required parameter theme_dir${NC}"
-        return 1
-    fi
-
     local theme_dir="$1"
     echo "Creating theme zip file..."
-    
-    # Debug output
-    echo "DEBUG: Current directory: $(pwd)"
-    echo "DEBUG: Theme directory: ${theme_dir}"
     
     # Ensure we're in the parent directory of the theme
     cd "$(dirname "$theme_dir")" || {
@@ -1699,30 +1758,52 @@ create_zip() {
         return 1
     }
     
-    echo "DEBUG: Changed to directory: $(pwd)"
-    echo "DEBUG: Theme directory is now: $(basename "$theme_dir")"
-    
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
         # Windows/Git Bash environment
         powershell.exe -Command "
             \$ErrorActionPreference = 'Stop'
             Write-Host 'DEBUG: Starting PowerShell zip creation'
             
-            # Remove any existing zip
-            if (Test-Path 'stay-n-alive.zip') {
-                Remove-Item 'stay-n-alive.zip' -Force
+            # Remove any existing zip and temp files
+            'stay-n-alive.zip','temp_verify','temp_theme' | ForEach-Object {
+                if (Test-Path \$_) {
+                    Remove-Item -Path \$_ -Recurse -Force
+                }
             }
             
-            # Create zip from theme directory
             Write-Host 'DEBUG: Creating zip file...'
-            Compress-Archive -Path '$(basename "$theme_dir")' -DestinationPath 'stay-n-alive.zip' -Force
+            \$source = '$(basename "$theme_dir")'
+            \$destination = 'stay-n-alive.zip'
+
+            # Create zip archive
+            Add-Type -AssemblyName System.IO.Compression.FileSystem
+            \$compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
             
+            # Create new zip file
+            [System.IO.Compression.ZipFile]::CreateFromDirectory(
+                \$source,
+                \$destination,
+                \$compressionLevel,
+                \$true # preserveSourceDirectory - this is the key change
+            )
+
             # Verify zip contents
             Write-Host 'DEBUG: Verifying zip contents...'
-            Expand-Archive -Path 'stay-n-alive.zip' -DestinationPath 'temp_verify' -Force
-            Get-ChildItem -Path 'temp_verify' -Recurse | ForEach-Object {
-                Write-Host \$_.FullName.Replace('temp_verify\\', '')
+            if (Test-Path 'temp_verify') {
+                Remove-Item -Path 'temp_verify' -Recurse -Force
             }
+            Expand-Archive -Path \$destination -DestinationPath 'temp_verify' -Force
+            
+            Write-Host 'DEBUG: Zip contents:'
+            Get-ChildItem -Path 'temp_verify' -Recurse | ForEach-Object {
+                Write-Host \$_.FullName.Replace('temp_verify\\','')
+            }
+            
+            # Verify theme directory exists in zip
+            if (-not (Test-Path 'temp_verify/stay-n-alive')) {
+                throw 'Theme directory not found in zip root'
+            }
+            
             Remove-Item -Path 'temp_verify' -Recurse -Force
         " || {
             echo -e "${RED}Error: Could not create zip file${NC}"
@@ -1738,10 +1819,9 @@ create_zip() {
         }
     fi
     
-    # Return to original directory
+    # Return to original directory and verify
     cd - >/dev/null
     
-    # Move zip to original location if needed
     if [ ! -f "stay-n-alive.zip" ]; then
         echo -e "${RED}Error: Zip file was not created${NC}"
         return 1
@@ -2287,7 +2367,10 @@ verify_theme_package() {
                 'style.css',
                 'index.php',
                 'functions.php',
-                'inc/theme-setup.php'
+                'inc\theme-setup.php',
+                'inc\social-feeds.php',
+                'inc\security.php',
+                'inc\performance.php'
             )
             
             Write-Host 'DEBUG: Checking required files...'
@@ -2382,7 +2465,7 @@ debug_state() {
 # Update main() to include all necessary function calls in the correct order:
 main() {
     log "Creating Stay N Alive Theme..."
-    debug_state "Starting main()"
+    log "=== DEBUG: Starting main() ==="
     
     # Clean up existing theme directory
     if [ -d "${THEME_DIR}" ]; then
@@ -2407,6 +2490,22 @@ main() {
     
     create_php_files || {
         echo -e "${RED}Error: Could not create PHP files${NC}"
+        exit 1
+    }
+    
+    # Add these three function calls here
+    create_social_feeds_php || {
+        echo -e "${RED}Error: Could not create social-feeds.php${NC}"
+        exit 1
+    }
+    
+    create_security_php || {
+        echo -e "${RED}Error: Could not create security.php${NC}"
+        exit 1
+    }
+    
+    create_performance_php || {
+        echo -e "${RED}Error: Could not create performance.php${NC}"
         exit 1
     }
     
@@ -2510,3 +2609,6 @@ main() {
 
 # Only execute main at the end of the script
 main
+
+# Create theme source directory structure
+mkdir -p src/inc src/templates src/parts src/patterns src/assets/{css,js}/{base,blocks,components,compatibility,utilities}

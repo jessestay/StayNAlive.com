@@ -51,6 +51,8 @@
 	);
 
 	// Required files.
+	require_once STAYNALIVE_DIR . '/inc/social-feeds.php';
+	require_once STAYNALIVE_DIR . '/inc/theme-setup.php';
 	require_once STAYNALIVE_DIR . '/inc/template-functions . php';
 	require_once STAYNALIVE_DIR . '/inc/template-tags . php';
 	require_once STAYNALIVE_DIR . '/inc/block-patterns . php';

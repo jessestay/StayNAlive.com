@@ -123,6 +123,30 @@ WP_DEBUG_POINTS:
     - the_content filter
     - wp_query setup
 
+# Always check debug.log and error.log when user mentions WordPress actions
+CHECK_WP_LOGS:
+  - Check debug.log for errors when user mentions WordPress actions
+  - Check error.log for PHP errors
+  - Look for relevant timestamps in logs
+  - Parse error messages for root causes
+  - Correlate log entries with user actions
+  - Check for related plugin errors
+  - Verify database connection issues
+  - Monitor file permission errors
+
+# Run PHP CodeSniffer before making recommendations
+CHECK_PHPCS:
+  - Run phpcs on all PHP files before suggesting changes
+  - Verify WordPress coding standards
+  - Check for syntax errors
+  - Validate proper function documentation
+  - Ensure proper file headers
+  - Check variable naming conventions
+  - Verify proper indentation
+  - Monitor line length compliance
+  - Check for deprecated functions
+  - Validate security practices
+
 {
   "rules": [
     "Shell script organization:",
@@ -266,6 +290,82 @@ WP_DEBUG_POINTS:
         "    command",
         "} # WRONG!"
       ]
+    },
+    "WordPress Theme Install Script Structure:",
+    {
+      "script_organization": [
+        "1. Script settings (set -euo pipefail)",
+        "2. Constants/Variables",
+        "3. Function definitions - ALL functions must be defined before use",
+        "4. Main function definition",
+        "5. Main function call (at very end)"
+      ],
+      "function_order": [
+        "Define all functions at top of file after variables",
+        "No function calls before their definitions",
+        "Group related functions together",
+        "Place utility functions before their dependent functions"
+      ],
+      "installation_order": [
+        "1. Clean up existing directory",
+        "2. Verify/create directory structure",
+        "3. Create base directories",
+        "4. Create PHP files",
+        "5. Create specialized PHP files (social-feeds.php, security.php, performance.php)",
+        "6. Create functions.php",
+        "7. Create templates",
+        "8. Create template parts",
+        "9. Create style.css",
+        "10. Create theme.json"
+      ],
+      "verification_rules": [
+        "Verify each step before proceeding",
+        "Use Windows-style backslashes in PowerShell verification",
+        "Check all required files in final verification",
+        "Validate file contents after creation",
+        "Ensure proper file permissions"
+      ],
+      "error_handling": [
+        "Each function call in main() must have error handling",
+        "Use exit codes for error states",
+        "Clean up on failure",
+        "Provide detailed error messages"
+      ]
+    },
+    "WordPress Theme File Requirements:",
+    {
+      "required_files": [
+        "style.css",
+        "index.php",
+        "functions.php",
+        "inc/theme-setup.php",
+        "inc/social-feeds.php",
+        "inc/security.php",
+        "inc/performance.php"
+      ],
+      "required_directories": [
+        "assets/css/base",
+        "assets/css/blocks",
+        "assets/css/components",
+        "assets/css/compatibility",
+        "assets/css/utilities",
+        "assets/js",
+        "inc",
+        "inc/classes",
+        "languages",
+        "parts",
+        "patterns",
+        "styles",
+        "templates"
+      ]
+    },
+    "Path Handling:",
+    {
+      "windows_paths": [
+        "Use backslashes in PowerShell verification",
+        "Use forward slashes in bash operations",
+        "Handle both path types in cross-platform functions"
+      ]
     }
   ],
   "debug_requirements": [
@@ -279,5 +379,14 @@ WP_DEBUG_POINTS:
         "State changes"
       ]
     }
-  ]
+  ],
+  "validation": {
+    "before_suggesting_changes": [
+      "Verify all functions are defined before use",
+      "Check installation order matches required sequence",
+      "Validate path separators for target platform",
+      "Ensure error handling exists for all operations",
+      "Verify all required files and directories are included"
+    ]
+  }
 } 

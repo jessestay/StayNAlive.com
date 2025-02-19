@@ -1,22 +1,87 @@
 {
-    "$schema": "https://schemas.wp.org/trunk/theme.json",
     "version": 2,
     "settings": {
         "color": {
             "palette": [
                 {
+                    "name": "Primary",
                     "slug": "primary",
-                    "color": "#1e73be",
-                    "name": "Primary"
+                    "color": "#1e73be"
+                },
+                {
+                    "name": "Secondary",
+                    "slug": "secondary",
+                    "color": "#0d47a1"
+                },
+                {
+                    "name": "Text",
+                    "slug": "text",
+                    "color": "#3C434A"
+                },
+                {
+                    "name": "Background",
+                    "slug": "background",
+                    "color": "#ffffff"
                 }
             ]
         },
         "typography": {
             "fontFamilies": [
                 {
-                    "fontFamily": "Open Sans, sans-serif",
-                    "slug": "primary",
-                    "name": "Primary"
+                    "name": "Inter",
+                    "slug": "inter",
+                    "fontFamily": "\"Inter\", sans-serif",
+                    "fontFace": [
+                        {
+                            "fontFamily": "Inter",
+                            "fontWeight": "300 900",
+                            "fontStyle": "normal",
+                            "fontStretch": "normal",
+                            "src": ["file:./assets/fonts/Inter-VariableFont.woff2"]
+                        }
+                    ]
+                }
+            ],
+            "fontSizes": [
+                {
+                    "name": "Small",
+                    "slug": "small",
+                    "size": "13px"
+                },
+                {
+                    "name": "Regular",
+                    "slug": "regular",
+                    "size": "16px"
+                },
+                {
+                    "name": "Large",
+                    "slug": "large",
+                    "size": "36px"
+                },
+                {
+                    "name": "Extra Large",
+                    "slug": "x-large",
+                    "size": "42px"
+                }
+            ]
+        },
+        "spacing": {
+            "units": ["px", "em", "rem", "%"],
+            "spacingSizes": [
+                {
+                    "name": "Small",
+                    "slug": "small",
+                    "size": "1rem"
+                },
+                {
+                    "name": "Medium",
+                    "slug": "medium",
+                    "size": "2rem"
+                },
+                {
+                    "name": "Large",
+                    "slug": "large",
+                    "size": "3rem"
                 }
             ]
         }
