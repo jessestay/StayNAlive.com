@@ -1,0 +1,24 @@
+.footer-widgets {
+    background-color: #2b2b2b;
+    padding: 6% 0;
+    color: #fff;
+}
+
+.footer-widget {
+    float: left;
+    color: #fff;
+}
+
+.footer-bottom {
+    background-color: rgba(0,0,0,0.32);
+    padding: 15px 0;
+}
+
+.et-social-icons {
+    float: right;
+}
+
+.et-social-icons li {
+    display: inline-block;
+    margin-left: 20px;
+} 

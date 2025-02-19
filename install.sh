@@ -110,66 +110,24 @@ create_directories() {
 
 # Function to create style.css
 create_style_css() {
-    cat > "${THEME_DIR}/style.css" << 'EOL'
-/*
-Theme Name: Stay N Alive
-Theme URI: https://staynalive.com
-Author: Jesse Stay
-Author URI: https://staynalive.com
-Description: A modern block-based WordPress theme.
-Version: 1.0.0
-License: GNU General Public License v2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: stay-n-alive
-Tags: blog, custom-background, custom-colors, custom-logo, custom-menu, editor-style, featured-images, footer-widgets, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready, block-styles, wide-blocks
-*/
-
-/* Basic theme styles */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: #333;
-}
-EOL
+    cp "src/style.css" "${THEME_DIR}/style.css" || {
+        echo -e "${RED}Error: Could not copy style.css${NC}"
+        return 1
+    }
 
     # Verify the file was created correctly
     if ! grep -q "^Theme Name:" "${THEME_DIR}/style.css"; then
         echo -e "${RED}Error: Theme Name not found in style.css header${NC}"
         exit 1
     fi
-
-    # Display the actual content for verification
-    echo "Content of style.css:"
-    cat "${THEME_DIR}/style.css"
 }
 
 # Function to create theme.json
 create_theme_json() {
-    cat > "${THEME_DIR}/theme.json" << 'EOL'
-{
-    "$schema": "https://schemas.wp.org/trunk/theme.json",
-    "version": 2,
-    "settings": {
-        "color": {
-            "palette": [
-                {
-                    "slug": "primary",
-                    "color": "#1e73be",
-                    "name": "Primary"
-                }
-            ]
-        },
-        "typography": {
-            "fontFamilies": [
-                {
-                    "fontFamily": "Open Sans, sans-serif",
-                    "slug": "primary",
-                    "name": "Primary"
-                }
-            ]
-        }
+    cp "src/theme.json" "${THEME_DIR}/theme.json" || {
+        echo -e "${RED}Error: Could not copy theme.json${NC}"
+        return 1
     }
-}
-EOL
 }
 
 # Function to create all templates
@@ -213,6 +171,11 @@ create_all_templates() {
         echo -e "${RED}Error: Could not copy index.html${NC}"
         return 1
     }
+    
+    cp "src/templates/link-bio.html" "${THEME_DIR}/templates/link-bio.html" || {
+        echo -e "${RED}Error: Could not copy link-bio.html${NC}"
+        return 1
+    }
 }
 
 # Function to create template parts
@@ -230,404 +193,48 @@ create_template_parts() {
 
 # Function to create CSS files
 create_css_files() {
-    cat > "${THEME_DIR}/assets/css/style.css" << 'EOL'
-:root {
-    --color-primary: #1e73be;
-    --color-text: #333333;
-    --color-background: #ffffff;
-}
+    cp "src/assets/css/style.css" "${THEME_DIR}/assets/css/style.css" || {
+        echo -e "${RED}Error: Could not copy style.css${NC}"
+        return 1
+    }
 
-body {
-    margin: 0;
-    font-family: var(--wp--preset--font-family--primary);
-    color: var(--color-text);
-    background: var(--color-background);
-}
-EOL
+    cp "src/assets/css/base/wordpress.css" "${THEME_DIR}/assets/css/base/wordpress.css" || {
+        echo -e "${RED}Error: Could not copy wordpress.css${NC}"
+        return 1
+    }
 
-    # Add to create_css_files function
-    cat > "${THEME_DIR}/assets/css/base/wordpress.css" << 'EOL'
-.wp-caption {
-    max-width: 100%;
-    margin-bottom: 1.5em;
-}
-
-.wp-caption-text {
-    font-style: italic;
-    text-align: center;
-}
-
-.sticky {
-    display: block;
-    background: #f7f7f7;
-    padding: 1em;
-}
-
-.gallery-caption {
-    display: block;
-}
-
-.bypostauthor {
-    background: #f7f7f7;
-    padding: 1em;
-}
-
-.alignright {
-    float: right;
-    margin: 0 0 1em 1em;
-}
-
-.alignleft {
-    float: left;
-    margin: 0 1em 1em 0;
-}
-
-.aligncenter {
-    display: block;
-    margin: 1em auto;
-}
-
-.screen-reader-text {
-    clip: rect(1px, 1px, 1px, 1px);
-    position: absolute !important;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
-}
-
-.gallery {
-    margin-bottom: 1.5em;
-    display: grid;
-    grid-gap: 1.5em;
-}
-
-.gallery-item {
-    display: inline-block;
-    text-align: center;
-    width: 100%;
-}
-
-.gallery-columns-2 {
-    grid-template-columns: repeat(2, 1fr);
-}
-
-.gallery-columns-3 {
-    grid-template-columns: repeat(3, 1fr);
-}
-
-.gallery-columns-4 {
-    grid-template-columns: repeat(4, 1fr);
-}
-
-.gallery-columns-5 {
-    grid-template-columns: repeat(5, 1fr);
-}
-
-.gallery-columns-6 {
-    grid-template-columns: repeat(6, 1fr);
-}
-
-.gallery-columns-7 {
-    grid-template-columns: repeat(7, 1fr);
-}
-
-.gallery-columns-8 {
-    grid-template-columns: repeat(8, 1fr);
-}
-
-.gallery-columns-9 {
-    grid-template-columns: repeat(9, 1fr);
-}
-EOL
-
-    # Add to create_css_files function
-    cat > "${THEME_DIR}/assets/css/editor-style.css" << 'EOL'
-/* Editor Styles */
-.editor-styles-wrapper {
-    font-family: var(--wp--preset--font-family--primary);
-    color: var(--color-text);
-}
-
-.editor-post-title__input {
-    font-family: var(--wp--preset--font-family--primary);
-    font-size: 2.5em;
-    font-weight: bold;
-}
-
-.wp-block {
-    max-width: 840px;
-}
-
-.wp-block[data-align="wide"] {
-    max-width: 1100px;
-}
-
-.wp-block[data-align="full"] {
-    max-width: none;
-}
-EOL
+    cp "src/assets/css/editor-style.css" "${THEME_DIR}/assets/css/editor-style.css" || {
+        echo -e "${RED}Error: Could not copy editor-style.css${NC}"
+        return 1
+    }
 }
 
 # Function to create all CSS files
 create_all_css_files() {
-    # Base CSS
-    cat > "${THEME_DIR}/assets/css/base/base.css" << 'EOL'
-:root {
-    --color-primary: #1e73be;
-    --color-secondary: #666666;
-    --color-dark: #333333;
-    --color-light: #f5f5f5;
-    --color-white: #ffffff;
-    --color-border: #e5e5e5;
-    --color-muted: #666;
-    
-    --spacing-xs: 5px;
-    --spacing-sm: 10px;
-    --spacing-md: 20px;
-    --spacing-lg: 40px;
-    --spacing-xl: 80px;
-    
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 16px;
-}
-
-body {
-    margin: 0;
-    font-family: var(--wp--preset--font-family--primary);
-    color: var(--color-text);
-    background: var(--color-background);
-    line-height: 1.6;
-}
-EOL
-
-    # Header CSS
-    cat > "${THEME_DIR}/assets/css/components/header.css" << 'EOL'
-.site-header {
-    background: var(--wp--preset--color--white);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.header-content {
-    padding: 20px 0;
-}
-
-.site-branding {
-    gap: 15px;
-    align-items: center;
-}
-
-.site-title {
-    margin: 0;
-}
-
-.primary-navigation {
-    gap: 30px;
-}
-
-.primary-navigation a {
-    color: var(--wp--preset--color--dark);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 5px 0;
-    position: relative;
-}
-
-.primary-navigation a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--wp--preset--color--primary);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
-
-.primary-navigation a:hover::after,
-.primary-navigation .current-menu-item a::after {
-    transform: scaleX(1);
-}
-
-@media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        gap: 20px;
+    cp "src/assets/css/base/base.css" "${THEME_DIR}/assets/css/base/base.css" || {
+        echo -e "${RED}Error: Could not copy base.css${NC}"
+        return 1
     }
     
-    .primary-navigation {
-        width: 100%;
-        justify-content: center;
+    cp "src/assets/css/components/header.css" "${THEME_DIR}/assets/css/components/header.css" || {
+        echo -e "${RED}Error: Could not copy header.css${NC}"
+        return 1
     }
-}
-EOL
 
-    # Link Bio CSS
-    cat > "${THEME_DIR}/assets/css/components/link-bio.css" << 'EOL'
-.link-bio-page {
-    padding: var(--spacing-lg) var(--spacing-md);
-    background: var(--color-background);
-}
-
-.bio-header {
-    margin-bottom: var(--spacing-lg);
-    text-align: center;
-}
-
-.bio-avatar {
-    margin-bottom: var(--spacing-md);
-}
-
-.bio-avatar img {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.bio-name {
-    margin-bottom: var(--spacing-sm);
-    color: var(--color-primary);
-}
-
-.bio-description {
-    color: var(--color-muted);
-    font-size: 1.1em;
-}
-
-.bio-links {
-    margin-bottom: var(--spacing-lg);
-}
-
-.bio-link-button {
-    margin-bottom: var(--spacing-sm);
-}
-
-.bio-link-button .wp-block-button__link {
-    width: 100%;
-    text-align: center;
-    padding: var(--spacing-md);
-    border-radius: var(--radius-md);
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.bio-link-button .wp-block-button__link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-/* Button Style Variations */
-.bio-link-button .is-style-gradient .wp-block-button__link {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-    border: none;
-    color: var(--color-background);
-}
-
-.bio-link-button .is-style-glass .wp-block-button__link {
-    background: rgba(255, 255, 255, 0.1);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.bio-link-button .is-style-neon .wp-block-button__link {
-    background: transparent;
-    border: 2px solid var(--color-primary);
-    box-shadow: 0 0 15px var(--color-primary);
-    text-shadow: 0 0 5px var(--color-primary);
-}
-EOL
-
-    # Social Feed CSS
-    cat > "${THEME_DIR}/assets/css/components/social-feed.css" << 'EOL'
-.social-feed-container {
-    margin-top: var(--spacing-xl);
-}
-
-.social-feed-tabs {
-    margin-bottom: var(--spacing-lg);
-    gap: var(--spacing-md);
-}
-
-.social-tab {
-    padding: var(--spacing-sm) var(--spacing-md);
-    border: none;
-    background: transparent;
-    color: var(--color-muted);
-    cursor: pointer;
-    font-weight: 500;
-    position: relative;
-    transition: color 0.3s ease;
-}
-
-.social-tab::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--color-primary);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
-
-.social-tab.active {
-    color: var(--color-primary);
-}
-
-.social-tab.active::after {
-    transform: scaleX(1);
-}
-
-.social-feed-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--spacing-md);
-}
-
-.social-card {
-    background: var(--color-background);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.social-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-}
-EOL
-
-    # Footer CSS
-    cat > "${THEME_DIR}/assets/css/components/footer.css" << 'EOL'
-.footer-widgets {
-    background-color: #2b2b2b;
-    padding: 6% 0;
-    color: #fff;
-}
-
-.footer-widget {
-    float: left;
-    color: #fff;
-}
-
-.footer-bottom {
-    background-color: rgba(0,0,0,0.32);
-    padding: 15px 0;
-}
-
-.et-social-icons {
-    float: right;
-}
-
-.et-social-icons li {
-    display: inline-block;
-    margin-left: 20px;
-}
-EOL
+    cp "src/assets/css/components/link-bio.css" "${THEME_DIR}/assets/css/components/link-bio.css" || {
+        echo -e "${RED}Error: Could not copy link-bio.css${NC}"
+        return 1
+    }
+    
+    cp "src/assets/css/components/social-feed.css" "${THEME_DIR}/assets/css/components/social-feed.css" || {
+        echo -e "${RED}Error: Could not copy social-feed.css${NC}"
+        return 1
+    }
+    
+    cp "src/assets/css/components/footer.css" "${THEME_DIR}/assets/css/components/footer.css" || {
+        echo -e "${RED}Error: Could not copy footer.css${NC}"
+        return 1
+    }
 }
 
 # Function to create JavaScript files

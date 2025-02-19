@@ -1,0 +1,30 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"site-main link-bio-page","layout":{"type":"constrained"}} -->
+<main class="wp-block-group site-main link-bio-page">
+    <!-- wp:pattern {"slug":"staynalive/bio-header"} /-->
+    
+    <!-- wp:group {"className":"bio-links","layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->
+    <div class="wp-block-group bio-links">
+        <!-- wp:pattern {"slug":"staynalive/bio-link-button"} /-->
+        <!-- wp:pattern {"slug":"staynalive/social-grid"} /-->
+    </div>
+    <!-- /wp:group -->
+    
+    <!-- wp:query {"queryId":1,"query":{"perPage":3,"postType":"post","order":"desc","orderBy":"date"}} -->
+    <div class="wp-block-query">
+        <h2>Latest Posts</h2>
+        <!-- wp:post-template -->
+            <!-- wp:group {"className":"bio-post-item"} -->
+            <div class="wp-block-group bio-post-item">
+                <!-- wp:post-featured-image {"isLink":true,"width":"100px","height":"100px"} /-->
+                <!-- wp:post-title {"isLink":true,"fontSize":"medium"} /-->
+            </div>
+            <!-- /wp:group -->
+        <!-- /wp:post-template -->
+    </div>
+    <!-- /wp:query -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /--> 
