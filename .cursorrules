@@ -1,4 +1,34 @@
-# Shell script validation rules
+"Shell script validation rules": {
+    "syntax_validation": [
+        "Run bash -n to check syntax before submitting ANY shell script",
+        "Count and verify matching pairs of: (), {}, [], if/fi, case/esac",
+        "Never mix if/fi with { } syntax",
+        "Always use if/then/fi for conditional blocks, not { }",
+        "Validate all heredoc markers are unique and properly closed",
+        "No nested heredocs unless absolutely necessary",
+        "Test ALL code paths before submitting",
+        "Use shellcheck with ALL optional checks enabled",
+        "Verify script works with set -e enabled",
+        "Test script with bash -x for debugging",
+        "Maintain proper indentation for readability",
+        "No copy-paste without full validation"
+    ],
+    "platform_validation": [
+        "Check OS-specific requirements (Windows vs Unix)",
+        "Don't require Unix commands (like zip) on Windows if PowerShell alternative exists",
+        "Verify PowerShell commands on Windows systems",
+        "Test platform-specific code paths separately",
+        "Document platform-specific requirements clearly"
+    ],
+    "error_prevention": [
+        "Always run bash -n before suggesting ANY changes",
+        "Verify all if statements end with fi, not }",
+        "Never mix if/then/fi with { } blocks",
+        "Check for proper closing of all control structures",
+        "Validate syntax before making ANY suggestions",
+        "Test all error paths with set -e enabled"
+    ]
+} 
 VALIDATE_SHELL_SCRIPTS:
   - Run shellcheck on all shell scripts before submitting
   - Verify all if/fi, case/esac pairs match

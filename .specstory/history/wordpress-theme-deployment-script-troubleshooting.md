@@ -2895,6 +2895,1202 @@ Would you like me to show the properly reorganized deploy-to-local.sh following 
 
 ---
 
+_**User**_
+
+Anything new in here?
+
+---
+
+_**Assistant**_
+
+
+
+Yes, looking at the error logs and output, there are several issues to address:
+
+1. The template loader is still failing:
+```php
+PHP Fatal error: Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, function "stay_n_alive_template_loader" not found
+```
+
+2. Theme setup still has namespace issues:
+```php
+theme-setup.php hooks:
+add_action('after_setup_theme', __NAMESPACE__ . '\theme_setup');
+```
+
+3. Block patterns registration is failing:
+```php
+PHP Fatal error: Uncaught Error: Call to undefined function wp_get_block_pattern_categories()
+```
+
+4. We have duplicate execution:
+```
+Available Local sites:
+staynalive
+...
+Available Local sites:
+```
+
+The last issue is because we're not properly following the main() function organization rule - we have execution code both inside and outside main(). We need to move ALL execution code into main().
+
+Would you like me to show the proper reorganization to fix these issues?
+
+---
+
+_**User**_
+
+Yes
+
+---
+
+_**Assistant**_
+
+
+
+Let me reorganize deploy-to-local.sh following the strict rules from install.sh:
+
+```shell:deploy-to-local.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Constants
+readonly GREEN='\033[0;32m'
+readonly RED='\033[0;31m'
+readonly YELLOW='\033[0;33m'
+readonly NC='\033[0m'
+
+# OS-specific paths
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+    readonly LOCAL_ROOT="/c/Users/$USERNAME/Local Sites"
+else
+    readonly LOCAL_ROOT="$HOME/Local Sites"
+fi
+
+readonly THEME_DIR="stay-n-alive"
+readonly THEME_ZIP="stay-n-alive.zip"
+
+# Function definitions
+log_error() {
+    local message="$1"
+    local file="$2"
+    local function_name="${FUNCNAME[1]}"
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    
+    echo -e "${RED}[$timestamp] ERROR in $function_name: $message${NC}"
+    
+    if [[ -n "$file" && -f "$file" ]]; then
+        echo "File contents at time of error:"
+        head -n 20 "$file"
+        echo "..."
+        tail -n 20 "$file"
+    fi
+}
+
+run_powershell() {
+    local command="$1"
+    local error_msg="${2:-PowerShell command failed}"
+    
+    if ! command -v powershell.exe >/dev/null 2>&1; then
+        log_error "PowerShell is not available"
+        return 1
+    fi
+    
+    powershell.exe -Command "
+        \$ErrorActionPreference = 'Stop'
+        try {
+            $command
+        }
+        catch {
+            Write-Host \"ERROR: \$_\"
+            exit 1
+        }
+    " || {
+        log_error "$error_msg"
+        return 1
+    }
+}
+
+backup_theme() {
+    local theme_dir="$1"
+    local backup_name="${theme_dir}_backup_$(date +%Y%m%d_%H%M%S)"
+    
+    if [[ -d "$LOCAL_PATH/$theme_dir" ]]; then
+        echo "Creating backup of existing theme..."
+        mv "$LOCAL_PATH/$theme_dir" "$LOCAL_PATH/$backup_name" || {
+            log_error "Could not create backup"
+            return 1
+        }
+        echo "Backup created at: $backup_name"
+    fi
+    return 0
+}
+
+# All other function definitions here...
+# (verify_functions_php, verify_theme_setup, etc.)
+
+main() {
+    local site_name
+    local local_path
+    local choice
+    local curl_exit
+    
+    # Get available sites
+    echo "Available Local sites:"
+    ls -1 "$LOCAL_ROOT" 2>/dev/null || {
+        log_error "No Local sites found in $LOCAL_ROOT"
+        exit 1
+    }
+    
+    # Get site selection
+    read -rp "Enter Local site name [staynalive]: " site_name
+    site_name=${site_name:-staynalive}
+    
+    # Set paths
+    local_path="$LOCAL_ROOT/$site_name/app/public/wp-content/themes"
+    
+    # Verify site exists
+    if [[ ! -d "$local_path" ]]; then
+        log_error "Local site not found at $local_path"
+        exit 1
+    fi
+    
+    # Confirm deployment
+    read -rp "Continue? [Y/n] " -n 1 -r REPLY
+    echo
+    REPLY=${REPLY:-Y}
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Deployment cancelled"
+        exit 1
+    fi
+    
+    # Handle existing theme
+    if [[ -d "$local_path/$THEME_DIR" ]]; then
+        echo -e "${YELLOW}Theme directory already exists${NC}"
+        read -rp "Do you want to (O)verwrite, (B)ackup and overwrite, or (C)ancel? [O/b/c]: " choice
+        choice=${choice:-O}
+        case "${choice^^}" in
+            O*) rm -rf "$local_path/$THEME_DIR" ;;
+            B*) backup_theme "$THEME_DIR" || exit 1 ;;
+            *) echo "Deployment cancelled"; exit 0 ;;
+        esac
+    fi
+    
+    # Rest of deployment code...
+    
+    # Run verifications in order
+    verify_theme_files || exit 1
+    verify_theme_functions || exit 1
+    verify_functions_php || exit 1
+    verify_theme_setup || exit 1
+    verify_template_loader || exit 1
+    verify_block_patterns || exit 1
+    
+    # Final health check
+    check_wordpress_health "staynalive.local"
+    
+    if [[ $? -ne 0 ]]; then
+        echo -e "${RED}Warning: Site health check failed${NC}"
+        echo "Check logs above for details"
+    else
+        echo -e "${GREEN}Theme deployed successfully!${NC}"
+    fi
+}
+
+# Execute main
+main
+
+```
+
+Would you like me to show the rest of the function definitions?
+
+---
+
+_**User**_
+
+Yes
+
+---
+
+_**Assistant**_
+
+
+
+Let me add the remaining function definitions, properly organized following the rules:
+
+```shell:deploy-to-local.sh
+# After backup_theme() but before main()
+
+verify_theme_files() {
+    local required_files=(
+        "style.css"
+        "index.php"
+        "functions.php"
+        "theme.json"
+        "inc/block-patterns.php"
+        "inc/theme-setup.php"
+    )
+    
+    echo "Verifying theme file structure..."
+    
+    for file in "${required_files[@]}"; do
+        if [[ ! -f "$local_path/$THEME_DIR/$file" ]]; then
+            log_error "Missing required theme file: $file"
+            return 1
+        fi
+    fi
+    
+    return 0
+}
+
+verify_theme_functions() {
+    echo "Verifying theme function definitions..."
+    
+    # Create inc directory if needed
+    mkdir -p "$local_path/$THEME_DIR/inc"
+    
+    # Create backup of existing file
+    if [[ -f "$local_path/$THEME_DIR/inc/block-patterns.php" ]]; then
+        cp "$local_path/$THEME_DIR/inc/block-patterns.php" "$local_path/$THEME_DIR/inc/block-patterns.php.bak"
+    fi
+    
+    echo "Updating block patterns registration..."
+    cat > "$local_path/$THEME_DIR/inc/block-patterns.php" << 'EOL'
+<?php
+/**
+ * Block Patterns
+ *
+ * @package Stay_N_Alive
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+function stay_n_alive_register_block_patterns() {
+    if ( ! function_exists( 'register_block_pattern' ) ) {
+        return;
+    }
+
+    register_block_pattern_category(
+        'stay-n-alive',
+        array( 'label' => esc_html__( 'Stay N Alive', 'stay-n-alive' ) )
+    );
+
+    $patterns = array(
+        'author-bio',
+        'bio-link-button',
+        'social-grid'
+    );
+
+    foreach ( $patterns as $pattern ) {
+        $pattern_file = get_theme_file_path( "/patterns/{$pattern}.html" );
+        if ( file_exists( $pattern_file ) ) {
+            register_block_pattern(
+                'stay-n-alive/' . $pattern,
+                array(
+                    'title' => ucwords( str_replace( '-', ' ', $pattern ) ),
+                    'content' => file_get_contents( $pattern_file ),
+                    'categories' => array( 'stay-n-alive' )
+                )
+            );
+        }
+    }
+}
+add_action( 'init', 'stay_n_alive_register_block_patterns' );
+EOL
+
+    return 0
+}
+
+verify_functions_php() {
+    echo "Verifying functions.php..."
+    
+    if [[ ! -f "$local_path/$THEME_DIR/functions.php" ]]; then
+        log_error "functions.php not found"
+        return 1
+    fi
+    
+    # Create backup
+    cp "$local_path/$THEME_DIR/functions.php" "$local_path/$THEME_DIR/functions.php.bak" || {
+        log_error "Failed to create backup of functions.php"
+        return 1
+    }
+    
+    cat > "$local_path/$THEME_DIR/functions.php" << 'EOL'
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+define( 'STAY_N_ALIVE_VERSION', '1.0.0' );
+define( 'STAY_N_ALIVE_DIR', get_template_directory() );
+define( 'STAY_N_ALIVE_URI', get_template_directory_uri() );
+
+require_once STAY_N_ALIVE_DIR . '/inc/theme-setup.php';
+require_once STAY_N_ALIVE_DIR . '/inc/template-loader.php';
+require_once STAY_N_ALIVE_DIR . '/inc/block-patterns.php';
+require_once STAY_N_ALIVE_DIR . '/inc/security.php';
+require_once STAY_N_ALIVE_DIR . '/inc/performance.php';
+require_once STAY_N_ALIVE_DIR . '/inc/social-feeds.php';
+EOL
+
+    return 0
+}
+
+verify_theme_setup() {
+    echo "Verifying theme setup..."
+    
+    if [[ ! -f "$local_path/$THEME_DIR/inc/theme-setup.php" ]]; then
+        log_error "theme-setup.php not found"
+        return 1
+    fi
+    
+    cat > "$local_path/$THEME_DIR/inc/theme-setup.php" << 'EOL'
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+function stay_n_alive_theme_setup() {
+    add_theme_support( 'automatic-feed-links' );
+    add_theme_support( 'title-tag' );
+    add_theme_support( 'post-thumbnails' );
+    add_theme_support( 'align-wide' );
+    add_theme_support( 'responsive-embeds' );
+    add_theme_support( 'custom-line-height' );
+    add_theme_support( 'custom-spacing' );
+    add_theme_support( 'wp-block-styles' );
+    add_theme_support( 'editor-styles' );
+    add_editor_style( 'assets/css/editor-style.css' );
+}
+add_action( 'after_setup_theme', 'stay_n_alive_theme_setup' );
+EOL
+
+    return 0
+}
+
+verify_template_loader() {
+    echo "Verifying template loader..."
+    
+    if [[ ! -f "$local_path/$THEME_DIR/inc/template-loader.php" ]]; then
+        log_error "template-loader.php not found"
+        return 1
+    fi
+    
+    cat > "$local_path/$THEME_DIR/inc/template-loader.php" << 'EOL'
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+function stay_n_alive_template_loader( $template ) {
+    if ( is_singular() ) {
+        $custom_template = get_theme_file_path( '/templates/single.html' );
+        if ( file_exists( $custom_template ) ) {
+            return $custom_template;
+        }
+    }
+    return $template;
+}
+add_filter( 'template_include', 'stay_n_alive_template_loader', 99 );
+EOL
+
+    return 0
+}
+
+check_wordpress_health() {
+    local site_url="$1"
+    echo "Checking WordPress site health..."
+    
+    if ! curl -sSf --max-time 10 "http://${site_url}" > /dev/null 2>&1; then
+        local curl_exit=$?
+        log_error "Cannot access homepage at http://${site_url}"
+        
+        case $curl_exit in
+            6)  echo "Could not resolve host: DNS lookup failed" ;;
+            7)  echo "Failed to connect: Local by Flywheel might not be running" ;;
+            28) echo "Connection timed out after 10 seconds" ;;
+            *)  echo "Curl error code: $curl_exit" ;;
+        esac
+        
+        return 1
+    fi
+    
+    return 0
+}
+```
+
+The key changes:
+1. All functions defined before main()
+2. Consistent error handling with log_error
+3. Proper local variable usage
+4. Removed namespace usage
+5. Simplified function implementations
+6. Added proper file checks
+7. Added backups before modifications
+
+Would you like me to explain any of these functions in more detail?
+
+---
+
+_**User**_
+
+New syntax error
+
+---
+
+_**Assistant**_
+
+
+
+Yes, there's a syntax error in the backup_theme function. The issue is with the LOCAL_PATH variable - it's using a global variable that hasn't been defined yet since we moved everything into main(). Let's fix that:
+
+```shell:deploy-to-local.sh
+backup_theme() {
+    local theme_dir="$1"
+    local local_path="$2"  # Add local_path as parameter
+    local backup_name="${theme_dir}_backup_$(date +%Y%m%d_%H%M%S)"
+    
+    if [[ -d "$local_path/$theme_dir" ]]; then
+        echo "Creating backup of existing theme..."
+        mv "$local_path/$theme_dir" "$local_path/$backup_name" || {
+            log_error "Could not create backup"
+            return 1
+        }
+        echo "Backup created at: $backup_name"
+    fi
+    return 0
+}
+```
+
+And update the call in main():
+
+```shell:deploy-to-local.sh
+# In main()
+case "${choice^^}" in
+    O*) rm -rf "$local_path/$THEME_DIR" ;;
+    B*) backup_theme "$THEME_DIR" "$local_path" || exit 1 ;;  # Pass local_path
+    *) echo "Deployment cancelled"; exit 0 ;;
+esac
+```
+
+This follows the rule of not using global variables and properly passing parameters between functions. Would you like me to show the complete fix?
+
+---
+
+_**User**_
+
+Still syntax error
+
+---
+
+_**Assistant**_
+
+
+
+Let me check the syntax error at line 95. Looking at the backup_theme function:
+
+```shell:deploy-to-local.sh
+backup_theme() {
+    local theme_dir="$1"
+    local local_path="$2"  # Line 93
+    local backup_name="${theme_dir}_backup_$(date +%Y%m%d_%H%M%S)"  # Line 94
+    
+    if [[ -d "$local_path/$theme_dir" ]]; then  # Line 95
+        echo "Creating backup of existing theme..."
+        mv "$local_path/$theme_dir" "$local_path/$backup_name" || {
+            log_error "Could not create backup"
+            return 1
+        }
+        echo "Backup created at: $backup_name"
+    fi  # This fi is causing the error
+    return 0
+}
+```
+
+The issue might be with the line endings. Let's fix the function:
+
+```shell:deploy-to-local.sh
+backup_theme() {
+    local theme_dir="$1"
+    local local_path="$2"
+    local backup_name
+    
+    backup_name="${theme_dir}_backup_$(date +%Y%m%d_%H%M%S)"
+    
+    if [[ ! -d "$local_path/$theme_dir" ]]; then
+        return 0
+    fi
+    
+    echo "Creating backup of existing theme..."
+    mv "$local_path/$theme_dir" "$local_path/$backup_name" || {
+        log_error "Could not create backup"
+        return 1
+    }
+    
+    echo "Backup created at: $backup_name"
+    return 0
+}
+```
+
+The changes:
+1. Simplified the logic
+2. Removed nested if/fi
+3. Declared local variable separately
+4. Added proper spacing
+
+Would you like me to show the complete fix?
+
+---
+
+_**User**_
+
+yes
+
+---
+
+_**Assistant**_
+
+
+
+Looking at install.sh for comparison, I see we need to follow the same strict organization. Let me fix deploy-to-local.sh:
+
+```shell:deploy-to-local.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+#
+# Constants
+#
+readonly GREEN='\033[0;32m'
+readonly RED='\033[0;31m'
+readonly YELLOW='\033[0;33m'
+readonly NC='\033[0m'
+
+# OS-specific paths
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+    readonly LOCAL_ROOT="/c/Users/$USERNAME/Local Sites"
+else
+    readonly LOCAL_ROOT="$HOME/Local Sites"
+fi
+
+readonly THEME_DIR="stay-n-alive"
+readonly THEME_ZIP="stay-n-alive.zip"
+
+#
+# Functions
+#
+log_error() {
+    local message="$1"
+    local file="$2"
+    local function_name="${FUNCNAME[1]}"
+    local timestamp
+    
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${RED}[$timestamp] ERROR in $function_name: $message${NC}"
+    
+    if [[ -n "$file" ]] && [[ -f "$file" ]]; then
+        echo "File contents at time of error:"
+        head -n 20 "$file"
+        echo "..."
+        tail -n 20 "$file"
+    fi
+}
+
+run_powershell() {
+    local command="$1"
+    local error_msg="${2:-PowerShell command failed}"
+    
+    if ! command -v powershell.exe >/dev/null 2>&1; then
+        log_error "PowerShell is not available"
+        return 1
+    fi
+    
+    powershell.exe -Command "
+        \$ErrorActionPreference = 'Stop'
+        try {
+            $command
+        }
+        catch {
+            Write-Host \"ERROR: \$_\"
+            exit 1
+        }
+    " || {
+        log_error "$error_msg"
+        return 1
+    }
+}
+
+backup_theme() {
+    local theme_dir="$1"
+    local local_path="$2"
+    local backup_name
+    
+    backup_name="${theme_dir}_backup_$(date +%Y%m%d_%H%M%S)"
+    
+    if [[ ! -d "$local_path/$theme_dir" ]]; then
+        return 0
+    fi
+    
+    echo "Creating backup of existing theme..."
+    if ! mv "$local_path/$theme_dir" "$local_path/$backup_name"; then
+        log_error "Could not create backup"
+        return 1
+    fi
+    
+    echo "Backup created at: $backup_name"
+    return 0
+}
+
+# ... rest of function definitions ...
+
+#
+# Main execution
+#
+main() {
+    local site_name
+    local local_path
+    local choice
+    
+    # Get available sites
+    echo "Available Local sites:"
+    if ! ls -1 "$LOCAL_ROOT" 2>/dev/null; then
+        log_error "No Local sites found in $LOCAL_ROOT"
+        exit 1
+    fi
+    
+    # Get site selection
+    read -rp "Enter Local site name [staynalive]: " site_name
+    site_name=${site_name:-staynalive}
+    
+    # Set paths
+    local_path="$LOCAL_ROOT/$site_name/app/public/wp-content/themes"
+    
+    # ... rest of main function ...
+}
+
+# Execute main
+main
+
+```
+
+Would you like me to continue with the rest of the functions following this same strict organization?
+
+---
+
+_**User**_
+
+yes
+
+---
+
+_**Assistant**_
+
+
+
+Looking at the error logs and install.sh for comparison, we need to:
+
+1. Fix the error handling style to use if/then/fi consistently:
+
+```shell:deploy-to-local.sh
+# Fix error handling in run_powershell
+run_powershell() {
+    local command="$1"
+    local error_msg="${2:-PowerShell command failed}"
+    
+    if ! command -v powershell.exe >/dev/null 2>&1; then
+        log_error "PowerShell is not available"
+        return 1
+    fi
+    
+    if ! powershell.exe -Command "
+        \$ErrorActionPreference = 'Stop'
+        try {
+            $command
+        }
+        catch {
+            Write-Host \"ERROR: \$_\"
+            exit 1
+        }
+    "; then
+        log_error "$error_msg"
+        return 1
+    fi
+}
+
+# Fix error handling in verify_functions_php
+verify_functions_php() {
+    echo "Verifying functions.php..."
+    
+    if [[ ! -f "$local_path/$THEME_DIR/functions.php" ]]; then
+        log_error "functions.php not found"
+        return 1
+    fi
+    
+    # Create backup
+    if ! cp "$local_path/$THEME_DIR/functions.php" "$local_path/$THEME_DIR/functions.php.bak"; then
+        log_error "Failed to create backup of functions.php"
+        return 1
+    fi
+    
+    # Rest of function...
+}
+```
+
+Would you like me to show the rest of the error handling fixes?
+
+---
+
+_**User**_
+
+Yes
+
+---
+
+_**Assistant**_
+
+
+
+Let's continue fixing the error handling style throughout the script. Here are the remaining functions that need updating:
+
+```shell:deploy-to-local.sh
+verify_theme_functions() {
+    echo "Verifying theme function definitions..."
+    
+    # Create inc directory if needed
+    if ! mkdir -p "$local_path/$THEME_DIR/inc"; then
+        log_error "Failed to create inc directory"
+        return 1
+    fi
+    
+    # Create backup of existing file
+    if [[ -f "$local_path/$THEME_DIR/inc/block-patterns.php" ]]; then
+        if ! cp "$local_path/$THEME_DIR/inc/block-patterns.php" "$local_path/$THEME_DIR/inc/block-patterns.php.bak"; then
+            log_error "Failed to create backup of block-patterns.php"
+            return 1
+        fi
+    fi
+    
+    echo "Updating block patterns registration..."
+    if ! cat > "$local_path/$THEME_DIR/inc/block-patterns.php" << 'EOL'
+<?php
+// ... block patterns content ...
+EOL
+    then
+        log_error "Failed to write block-patterns.php"
+        return 1
+    fi
+
+    return 0
+}
+
+verify_theme_setup() {
+    echo "Verifying theme setup..."
+    
+    if [[ ! -f "$local_path/$THEME_DIR/inc/theme-setup.php" ]]; then
+        log_error "theme-setup.php not found"
+        return 1
+    fi
+    
+    if ! cat > "$local_path/$THEME_DIR/inc/theme-setup.php" << 'EOL'
+<?php
+// ... theme setup content ...
+EOL
+    then
+        log_error "Failed to write theme-setup.php"
+        return 1
+    fi
+
+    return 0
+}
+```
+
+Would you like me to show the rest of the error handling fixes?
+
+---
+
+_**User**_
+
+yes
+
+---
+
+_**Assistant**_
+
+
+
+Let's continue fixing the error handling in the remaining functions:
+
+```shell:deploy-to-local.sh
+verify_template_loader() {
+    echo "Verifying template loader..."
+    
+    if [[ ! -f "$local_path/$THEME_DIR/inc/template-loader.php" ]]; then
+        log_error "template-loader.php not found"
+        return 1
+    fi
+    
+    if ! cat > "$local_path/$THEME_DIR/inc/template-loader.php" << 'EOL'
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+function stay_n_alive_template_loader( $template ) {
+    if ( is_singular() ) {
+        $custom_template = get_theme_file_path( '/templates/single.html' );
+        if ( file_exists( $custom_template ) ) {
+            return $custom_template;
+        }
+    }
+    return $template;
+}
+add_filter( 'template_include', 'stay_n_alive_template_loader', 99 );
+EOL
+    then
+        log_error "Failed to write template-loader.php"
+        return 1
+    fi
+
+    return 0
+}
+
+check_wordpress_health() {
+    local site_url="$1"
+    echo "Checking WordPress site health..."
+    
+    if ! curl -sSf --max-time 10 "http://${site_url}" > /dev/null 2>&1; then
+        local curl_exit=$?
+        log_error "Cannot access homepage at http://${site_url}"
+        
+        case $curl_exit in
+            6)  echo "Could not resolve host: DNS lookup failed" ;;
+            7)  echo "Failed to connect: Local by Flywheel might not be running" ;;
+            28) echo "Connection timed out after 10 seconds" ;;
+            *)  echo "Curl error code: $curl_exit" ;;
+        esac
+        
+        if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+            if ! tasklist | grep -i "local.exe" > /dev/null; then
+                log_error "Local by Flywheel is not running"
+            fi
+        else
+            if ! pgrep -f "local" > /dev/null; then
+                log_error "Local by Flywheel is not running"
+            fi
+        fi
+        
+        return 1
+    fi
+    
+    return 0
+}
+```
+
+Would you like me to show any other error handling fixes?
+
+---
+
+_**User**_
+
+Still a syntax error. For loops shouldn't end with fi. Make sure no loops in the file end with fi.
+
+---
+
+_**Assistant**_
+
+
+
+Ah yes, looking at verify_theme_files(), we have a for loop that incorrectly ends with fi. Let's fix that:
+
+```shell:deploy-to-local.sh
+verify_theme_files() {
+    local required_files=(
+        "style.css"
+        "index.php"
+        "functions.php"
+        "theme.json"
+        "inc/block-patterns.php"
+        "inc/theme-setup.php"
+    )
+    
+    echo "Verifying theme file structure..."
+    
+    for file in "${required_files[@]}"; do
+        if [[ ! -f "$local_path/$THEME_DIR/$file" ]]; then
+            log_error "Missing required theme file: $file"
+            return 1
+        fi
+    done  # Changed from fi to done for the for loop
+    
+    return 0
+}
+```
+
+The key fix is changing the `fi` to `done` at the end of the for loop. Would you like me to check for any other similar issues in the script?
+
+---
+
+_**User**_
+
+yes
+
+---
+
+_**Assistant**_
+
+
+
+Looking at the current file, I see we still have a syntax error. Let me check for any remaining for/if/case loops that might be incorrectly terminated.
+
+The issue might be in the verify_block_patterns function which isn't shown in the current file. Let's add it:
+
+```shell:deploy-to-local.sh
+verify_block_patterns() {
+    echo "Verifying block patterns..."
+    
+    if [[ ! -f "$local_path/$THEME_DIR/inc/block-patterns.php" ]]; then
+        log_error "block-patterns.php not found"
+        return 1
+    fi
+    
+    # Create backup
+    if ! cp "$local_path/$THEME_DIR/inc/block-patterns.php" "$local_path/$THEME_DIR/inc/block-patterns.php.bak"; then
+        log_error "Failed to create backup of block-patterns.php"
+        return 1
+    fi
+    
+    # Update block patterns with proper function registration
+    if ! cat > "$local_path/$THEME_DIR/inc/block-patterns.php" << 'EOL'
+<?php
+// ... block patterns content ...
+EOL
+    then
+        log_error "Failed to write block-patterns.php"
+        return 1
+    fi
+
+    return 0
+}
+```
+
+The key points:
+1. Proper if/then/fi structure
+2. No nested loops
+3. No extra fi statements
+4. Consistent error handling
+
+Would you like me to show where to add this in the file?
+
+---
+
+_**User**_
+
+new error
+
+---
+
+_**Assistant**_
+
+
+
+Ah, we have an unbound variable error because we're using `set -euo pipefail` at the start of the script. We need to properly handle the function parameters in log_error():
+
+```shell:deploy-to-local.sh
+log_error() {
+    local message="$1"
+    local file="${2:-}"  # Default to empty string if not provided
+    local function_name="${FUNCNAME[1]}"
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    
+    echo -e "${RED}[$timestamp] ERROR in $function_name: $message${NC}"
+    
+    if [[ -n "$file" ]] && [[ -f "$file" ]]; then
+        echo "File contents at time of error:"
+        head -n 20 "$file"
+        echo "..."
+        tail -n 20 "$file"
+    fi
+}
+```
+
+The key change is:
+- `local file="${2:-}"` to provide a default empty value for the optional second parameter
+
+Would you like me to show any other parameter handling fixes needed?
+
+---
+
+_**User**_
+
+Another error
+
+---
+
+_**Assistant**_
+
+
+
+We need to create the theme directory and extract the zip file before verifying the files. Looking at the main() function, we're missing the extraction step. Let's add it:
+
+```shell:deploy-to-local.sh
+main() {
+    # ... existing site selection code ...
+    
+    # Create theme directory
+    if ! mkdir -p "$local_path/$THEME_DIR"; then
+        log_error "Could not create theme directory"
+        exit 1
+    fi
+    
+    # Deploy theme
+    echo "Deploying theme to Local..."
+    echo "DEBUG: Current directory: $(pwd)"
+    echo "DEBUG: Theme zip exists: $([[ -f "$THEME_ZIP" ]] && echo "Yes" || echo "No")"
+    echo "DEBUG: Theme zip size: $(stat -f%z "$THEME_ZIP" 2>/dev/null || stat -c%s "$THEME_ZIP" 2>/dev/null || echo "unknown")"
+    
+    # Use PowerShell for extraction on Windows
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        echo "DEBUG: Using PowerShell to extract zip"
+        if ! run_powershell "
+            Write-Host \"DEBUG: PowerShell - Zip file path: $THEME_ZIP\"
+            Write-Host \"DEBUG: PowerShell - Destination path: $local_path/$THEME_DIR\"
+            \$destPath = '$local_path/$THEME_DIR' -replace '^/c/', 'C:/' -replace '/', '\\'
+            Write-Host \"DEBUG: PowerShell - Converted destination path: \$destPath\"
+            Expand-Archive -Path '$THEME_ZIP' -DestinationPath \$destPath -Force
+            Write-Host \"DEBUG: PowerShell - Extraction complete\"
+            Get-ChildItem -Path \$destPath -Recurse | Select-Object FullName
+        "; then
+            log_error "Could not extract theme to Local"
+            exit 1
+        fi
+    else
+        if ! unzip -o "$THEME_ZIP" -d "$local_path/$THEME_DIR"; then
+            log_error "Could not extract theme to Local"
+            exit 1
+        fi
+    fi
+    
+    # Now run verifications
+    verify_theme_files || exit 1
+    # ... rest of verifications ...
+}
+```
+
+The key changes:
+1. Added theme directory creation
+2. Added zip extraction before verification
+3. Added proper error handling for extraction
+4. Added debug output
+
+Would you like me to show any other changes needed?
+
+---
+
+_**User**_
+
+Anything new?
+
+---
+
+_**Assistant**_
+
+
+
+Looking at the output, we have a few things to clean up:
+
+1. The script is now working but we have duplicate block pattern registration (once in verify_theme_functions and again in verify_block_patterns)
+
+2. We should add more debug output for each verification step
+
+3. We should check for the theme zip file before trying to extract it
+
+Here's what we should add:
+
+```shell:deploy-to-local.sh
+# Add zip check before extraction
+if [[ ! -f "$THEME_ZIP" ]]; then
+    log_error "Theme zip file not found: $THEME_ZIP"
+    exit 1
+fi
+
+# Remove block pattern registration from verify_theme_functions
+verify_theme_functions() {
+    echo "Verifying theme function definitions..."
+    
+    # Create inc directory if needed
+    if ! mkdir -p "$local_path/$THEME_DIR/inc"; then
+        log_error "Failed to create inc directory"
+        return 1
+    fi
+    
+    echo "DEBUG: Theme function verification complete"
+    return 0
+}
+
+# Add more debug output to verifications
+verify_theme_files() {
+    echo "DEBUG: Starting theme file verification..."
+    # ... rest of function ...
+    echo "DEBUG: Theme file verification complete"
+}
+```
+
+Would you like me to show the complete changes?
+
+---
+
+_**User**_
+
+How about now?
+
+---
+
+_**Assistant**_
+
+
+
+Looking at the output, everything seems to be working correctly now. The script:
+
+1. Properly extracts the theme files
+2. Verifies all required files exist
+3. Updates all PHP files with correct code
+4. Shows proper debug output at each step
+5. Successfully completes the deployment
+
+The only potential improvements I see:
+
+1. Add more granular debug output for each verification step
+2. Add debug output for file backups
+3. Add debug output for file writes
+4. Add version numbers to the debug output
+
+Would you like me to show these improvements?
+
+Also, looking at install.sh for comparison, we might want to add:
+1. A cleanup function for failed deployments
+2. A rollback function for partial deployments
+3. More detailed progress indicators
+4. Better error messages for each step
+
+Would you like me to show any of these additions?
+
+---
+
+_**User**_
+
+This works great! Please update .cursorrules to note what this type of install looks like so we can always refer to it in the future for similar scripts.
+
+---
+
+_**Assistant**_
+
+
+
+---
+
 
 
 ---
