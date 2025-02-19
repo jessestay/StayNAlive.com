@@ -418,5 +418,118 @@ CHECK_PHPCS:
       "Ensure error handling exists for all operations",
       "Verify all required files and directories are included"
     ]
+  },
+  "shell_script_standards": {
+    "file_organization": {
+      "required_sections": [
+        "1. Shebang (#!/usr/bin/env bash)",
+        "2. Strict mode (set -euo pipefail)",
+        "3. Constants (readonly variables)",
+        "4. Function definitions",
+        "5. Main function",
+        "6. Main execution"
+      ],
+      "section_rules": {
+        "constants": [
+          "Define all constants at top",
+          "Use readonly keyword",
+          "Group by type (colors, paths, etc)",
+          "Platform-specific constants in conditionals"
+        ],
+        "functions": [
+          "Define all functions before use",
+          "No execution code between functions",
+          "Group related functions together",
+          "Utility functions first",
+          "Main function last"
+        ]
+      }
+    },
+    "error_handling": {
+      "required_patterns": [
+        "if ! command; then",
+        "if [[ ! -f \"$file\" ]]; then",
+        "if ! mkdir -p \"$dir\"; then"
+      ],
+      "prohibited_patterns": [
+        "command || {",
+        "if/} combinations",
+        "nested error handling"
+      ],
+      "logging": {
+        "format": "[timestamp] ERROR in function_name: message",
+        "required_info": [
+          "Timestamp",
+          "Function name",
+          "Error message",
+          "Context data"
+        ]
+      }
+    },
+    "debug_output": {
+      "format": "DEBUG: context: message",
+      "required_points": [
+        "Start of operations",
+        "Critical steps",
+        "File operations",
+        "Command execution",
+        "Completion status"
+      ]
+    },
+    "deployment_safety": {
+      "required_checks": [
+        "Backup before modify",
+        "Verify after modify",
+        "Health check after deploy",
+        "Rollback on failure"
+      ],
+      "backup_naming": "${file}_backup_$(date +%Y%m%d_%H%M%S)"
+    },
+    "cross_platform": {
+      "path_handling": [
+        "Use $OSTYPE for platform detection",
+        "Convert paths for PowerShell",
+        "Handle both forward/backslashes"
+      ],
+      "command_alternatives": {
+        "windows": "powershell.exe",
+        "unix": "unzip, curl, etc"
+      }
+    }
+  },
+  "wordpress_deployment": {
+    "required_files": [
+      "style.css",
+      "index.php",
+      "functions.php",
+      "theme.json"
+    ],
+    "required_directories": [
+      "inc/",
+      "assets/",
+      "templates/",
+      "parts/"
+    ],
+    "verification_steps": [
+      "Theme files exist",
+      "PHP syntax valid",
+      "WordPress standards met",
+      "Theme activates",
+      "Site health check"
+    ]
+  },
+  "testing_standards": {
+    "phpunit": {
+      "required_configs": [
+        "phpunit.xml present",
+        "Tests directory structure",
+        "Bootstrap file"
+      ]
+    },
+    "syntax": {
+      "php": "php -l",
+      "bash": "bash -n",
+      "shellcheck": "shellcheck -x"
+    }
   }
 } 
