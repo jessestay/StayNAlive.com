@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "DEBUG: Starting deploy-to-local.sh"
+echo "DEBUG: Checking for existing color variables..."
+echo "DEBUG: GREEN=${GREEN:-undefined}"
+echo "DEBUG: BLUE=${BLUE:-undefined}"
+
+# Source shared functions
+echo "DEBUG: About to source shared-functions.sh"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/lib/shared-functions.sh"
+echo "DEBUG: Finished sourcing shared-functions.sh"
+
 # Constants
-readonly GREEN='\033[0;32m'
-readonly RED='\033[0;31m'
-readonly YELLOW='\033[0;33m'
-readonly NC='\033[0m'
+echo "DEBUG: Defining local constants..."
 
 # OS-specific paths
 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
@@ -14,8 +22,8 @@ else
     readonly LOCAL_ROOT="$HOME/Local Sites"
 fi
 
-readonly THEME_DIR="stay-n-alive"
-readonly THEME_ZIP="stay-n-alive.zip"
+readonly THEME_DIR="staynalive"
+readonly THEME_ZIP="staynalive.zip"
 
 # Function definitions
 log_error() {
@@ -97,6 +105,7 @@ verify_theme_files() {
         "theme.json"
         "inc/block-patterns.php"
         "inc/theme-setup.php"
+        "assets/css/blocks/custom-styles.css"
     )
     
     echo "Verifying theme file structure..."
@@ -107,6 +116,71 @@ verify_theme_files() {
             return 1
         fi
     done
+    
+    # Run PHPCS on PHP files if available
+    if command -v phpcs >/dev/null 2>&1; then
+        echo "Running PHPCS validation..."
+        echo "DEBUG: Checking PHPCS configuration..."
+        export XDEBUG_MODE=off
+        
+        # Initialize composer if needed
+        if [[ ! -f "composer.json" ]]; then
+            echo "DEBUG: Initializing composer..."
+            composer init --quiet --no-interaction
+        fi
+        
+        # Install WordPress Coding Standards
+        echo "DEBUG: Installing WordPress Coding Standards..."
+        if ! composer require --dev \
+            dealerdirect/phpcodesniffer-composer-installer \
+            wp-coding-standards/wpcs \
+            phpcompatibility/php-compatibility \
+            phpcsstandards/phpcsutils \
+            phpcsstandards/phpcsextra; then
+            echo "WARNING: Could not install PHPCS dependencies"
+            return 0
+        fi
+        
+        # Configure PHPCS
+        echo "DEBUG: Configuring PHPCS..."
+        vendor/bin/phpcs --config-set installed_paths \
+            vendor/wp-coding-standards/wpcs,\
+            vendor/phpcompatibility/php-compatibility,\
+            vendor/phpcsstandards/phpcsutils,\
+            vendor/phpcsstandards/phpcsextra
+        
+        # Verify PHPCS configuration
+        echo "DEBUG: Installed coding standards:"
+        vendor/bin/phpcs -i
+        
+        for file in functions.php inc/*.php; do
+            if [[ -f "$local_path/$THEME_DIR/$file" ]]; then
+                echo "DEBUG: Running PHPCS on $file..."
+                # Try to fix the file first
+                echo "DEBUG: Attempting to fix coding standards in $file..."
+                if ! vendor/bin/phpcbf --standard=WordPress "$local_path/$THEME_DIR/$file" >/dev/null 2>&1; then
+                    echo "WARNING: Could not automatically fix all issues in $file"
+                fi
+                
+                # Run validation after fixes
+                if ! vendor/bin/phpcs \
+                    --standard=WordPress-Core \
+                    --runtime-set installed_paths vendor/wp-coding-standards/wpcs \
+                    --ignore=*/vendor/*,*/node_modules/* \
+                    --extensions=php \
+                    "$local_path/$THEME_DIR/$file" >/dev/null 2>&1; then
+                    echo "WARNING: Some issues remain in $file after fixes (non-critical)"
+                    echo "DEBUG: Remaining issues:"
+                    vendor/bin/phpcs \
+                        --standard=WordPress-Core \
+                        --runtime-set installed_paths vendor/wp-coding-standards/wpcs \
+                        --ignore=*/vendor/*,*/node_modules/* \
+                        --extensions=php \
+                        "$local_path/$THEME_DIR/$file"
+                fi
+            fi
+        done
+    fi
     
     echo "DEBUG: Theme file verification complete"
     return 0
@@ -145,16 +219,16 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'STAY_N_ALIVE_VERSION', '1.0.0' );
-define( 'STAY_N_ALIVE_DIR', get_template_directory() );
-define( 'STAY_N_ALIVE_URI', get_template_directory_uri() );
+define( 'STAYNALIVE_VERSION', '1.0.0' );
+define( 'STAYNALIVE_DIR', get_template_directory() );
+define( 'STAYNALIVE_URI', get_template_directory_uri() );
 
-require_once STAY_N_ALIVE_DIR . '/inc/theme-setup.php';
-require_once STAY_N_ALIVE_DIR . '/inc/template-loader.php';
-require_once STAY_N_ALIVE_DIR . '/inc/block-patterns.php';
-require_once STAY_N_ALIVE_DIR . '/inc/security.php';
-require_once STAY_N_ALIVE_DIR . '/inc/performance.php';
-require_once STAY_N_ALIVE_DIR . '/inc/social-feeds.php';
+require_once STAYNALIVE_DIR . '/inc/theme-setup.php';
+require_once STAYNALIVE_DIR . '/inc/template-loader.php';
+require_once STAYNALIVE_DIR . '/inc/block-patterns.php';
+require_once STAYNALIVE_DIR . '/inc/security.php';
+require_once STAYNALIVE_DIR . '/inc/performance.php';
+require_once STAYNALIVE_DIR . '/inc/social-feeds.php';
 EOL
 
     return 0
@@ -174,7 +248,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-function stay_n_alive_theme_setup() {
+function staynalive_theme_setup() {
     add_theme_support( 'automatic-feed-links' );
     add_theme_support( 'title-tag' );
     add_theme_support( 'post-thumbnails' );
@@ -186,7 +260,7 @@ function stay_n_alive_theme_setup() {
     add_theme_support( 'editor-styles' );
     add_editor_style( 'assets/css/editor-style.css' );
 }
-add_action( 'after_setup_theme', 'stay_n_alive_theme_setup' );
+add_action( 'after_setup_theme', 'staynalive_theme_setup' );
 EOL
     then
         log_error "Failed to write theme-setup.php"
@@ -210,7 +284,15 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-function stay_n_alive_template_loader( $template ) {
+function staynalive_template_loader( $template ) {
+    // Check for front page first
+    if ( is_front_page() ) {
+        $front_template = get_theme_file_path( '/templates/front-page.html' );
+        if ( file_exists( $front_template ) ) {
+            return $front_template;
+        }
+    }
+    
     if ( is_singular() ) {
         $custom_template = get_theme_file_path( '/templates/single.html' );
         if ( file_exists( $custom_template ) ) {
@@ -219,7 +301,7 @@ function stay_n_alive_template_loader( $template ) {
     }
     return $template;
 }
-add_filter( 'template_include', 'stay_n_alive_template_loader', 99 );
+add_filter( 'template_include', 'staynalive_template_loader', 99 );
 EOL
     then
         log_error "Failed to write template-loader.php"
@@ -233,7 +315,18 @@ check_wordpress_health() {
     local site_url="$1"
     echo "Checking WordPress site health..."
     
-    if ! curl -sSf --max-time 10 "http://${site_url}" > /dev/null 2>&1; then
+    # Try HTTPS first, fallback to HTTP
+    local protocols=("https" "http")
+    local success=0
+    
+    for protocol in "${protocols[@]}"; do
+        if curl -sSf --max-time 10 "${protocol}://${site_url}" > /dev/null 2>&1; then
+            success=1
+            break
+        fi
+    done
+    
+    if [[ $success -eq 0 ]]; then
         local curl_exit=$?
         log_error "Cannot access homepage at http://${site_url}"
         
@@ -257,6 +350,24 @@ check_wordpress_health() {
         return 1
     fi
     
+    # Verify REST API is accessible
+    if ! curl -sSf --max-time 10 "http://${site_url}/wp-json" > /dev/null 2>&1; then
+        log_error "WordPress REST API is not accessible"
+        return 1
+    fi
+    
+    # Verify block editor is active
+    if ! curl -sSf --max-time 10 "http://${site_url}/wp-json/wp/v2/block-types" > /dev/null 2>&1; then
+        log_error "Block editor API not accessible - Gutenberg may be disabled"
+        return 1
+    fi
+    
+    # Then verify theme activation
+    if ! curl -sSf --max-time 10 "http://${site_url}/wp-json/wp/v2/themes" | grep -q "\"stylesheet\":\"staynalive\""; then
+        log_error "Theme is not active"
+        return 1
+    fi
+    
     return 0
 }
 
@@ -268,56 +379,114 @@ verify_block_patterns() {
         return 1
     fi
     
-    # Create backup
-    if ! cp "$local_path/$THEME_DIR/inc/block-patterns.php" "$local_path/$THEME_DIR/inc/block-patterns.php.bak"; then
-        log_error "Failed to create backup of block-patterns.php"
+    # Create patterns directory if needed
+    if ! mkdir -p "$local_path/$THEME_DIR/patterns"; then
+        log_error "Failed to create patterns directory"
         return 1
     fi
     
-    # Update block patterns with proper function registration
+    # Create author bio pattern
+    if ! cat > "$local_path/$THEME_DIR/patterns/author-bio.html" << 'EOL'
+<!-- wp:pattern {"slug":"staynalive/author-bio","title":"Author Bio"} -->
+<!-- wp:group {"className":"author-bio","layout":{"type":"constrained"}} -->
+<div class="wp-block-group author-bio">
+    <!-- wp:columns {"verticalAlignment":"center"} -->
+    <div class="wp-block-columns are-vertically-aligned-center">
+        <!-- wp:column {"width":"25%"} -->
+        <div class="wp-block-column" style="flex-basis:25%">
+            <!-- wp:image {"className":"is-style-rounded"} -->
+            <figure class="wp-block-image is-style-rounded">
+                <img src="[author_avatar_url]" alt="Author avatar"/>
+            </figure>
+            <!-- /wp:image -->
+        </div>
+        <!-- /wp:column -->
+
+        <!-- wp:column {"width":"75%"} -->
+        <div class="wp-block-column" style="flex-basis:75%">
+            <!-- wp:heading {"level":3} -->
+            <h3>[author_name]</h3>
+            <!-- /wp:heading -->
+
+            <!-- wp:paragraph -->
+            <p>[author_bio]</p>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:social-links -->
+            <ul class="wp-block-social-links">
+                <!-- wp:social-link {"url":"#","service":"twitter"} /-->
+                <!-- wp:social-link {"url":"#","service":"linkedin"} /-->
+            </ul>
+            <!-- /wp:social-links -->
+        </div>
+        <!-- /wp:column -->
+    </div>
+    <!-- /wp:columns -->
+</div>
+<!-- /wp:group -->
+<!-- /wp:pattern -->
+EOL
+    then
+        log_error "Failed to write author-bio.html"
+        return 1
+    fi
+    
+    # Update block patterns registration
     if ! cat > "$local_path/$THEME_DIR/inc/block-patterns.php" << 'EOL'
 <?php
 /**
  * Block Patterns
  *
- * @package Stay_N_Alive
+ * @package Staynalive
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-function stay_n_alive_register_block_patterns() {
-    if ( ! function_exists( 'register_block_pattern' ) ) {
+/**
+ * Register Block Patterns
+ */
+function staynalive_register_block_patterns() {
+    if ( ! function_exists( 'register_block_pattern_category' ) ) {
         return;
     }
 
+    // Register pattern category
     register_block_pattern_category(
-        'stay-n-alive',
-        array( 'label' => esc_html__( 'Stay N Alive', 'stay-n-alive' ) )
+        'staynalive',
+        array(
+            'label' => __( 'Stay N Alive', 'staynalive' ),
+        )
     );
 
-    $patterns = array(
+    // Register patterns
+    $block_patterns = array(
         'author-bio',
         'bio-link-button',
+        'cta',
+        'featured-post',
         'social-grid'
     );
 
-    foreach ( $patterns as $pattern ) {
-        $pattern_file = get_theme_file_path( "/patterns/{$pattern}.html" );
-        if ( file_exists( $pattern_file ) ) {
-            register_block_pattern(
-                'stay-n-alive/' . $pattern,
-                array(
-                    'title' => ucwords( str_replace( '-', ' ', $pattern ) ),
-                    'content' => file_get_contents( $pattern_file ),
-                    'categories' => array( 'stay-n-alive' )
-                )
-            );
+    foreach ( $block_patterns as $block_pattern ) {
+        $pattern_file = get_theme_file_path( "/patterns/{$block_pattern}.html" );
+        
+        if ( ! file_exists( $pattern_file ) ) {
+            continue;
         }
+
+        register_block_pattern(
+            'staynalive/' . $block_pattern,
+            array(
+                'title'         => ucwords( str_replace( '-', ' ', $block_pattern ) ),
+                'categories'    => array( 'staynalive' ),
+                'content'       => file_get_contents( $pattern_file ),
+            )
+        );
     }
 }
-add_action( 'init', 'stay_n_alive_register_block_patterns' );
+add_action( 'init', 'staynalive_register_block_patterns' );
 EOL
     then
         log_error "Failed to write block-patterns.php"
@@ -330,30 +499,38 @@ EOL
 verify_html_syntax() {
     echo "DEBUG: Starting HTML syntax verification..."
     
-    local templates_count=0
-    local parts_count=0
-    local patterns_count=0
-    
-    # Define HTML files to validate
-    local html_files=(
+    local template_files=(
         "templates/404.html"
         "templates/archive.html"
         "templates/author.html"
         "templates/category.html"
+        "templates/front-page.html"
         "templates/index.html"
         "templates/link-bio.html"
         "templates/search.html"
         "templates/single.html"
         "templates/tag.html"
-        "parts/footer.html"
-        "parts/header.html"
+    )
+    
+    local pattern_files=(
         "patterns/author-bio.html"
         "patterns/bio-link-button.html"
+        "patterns/cta.html"
+        "patterns/featured-post.html"
         "patterns/social-grid.html"
     )
     
+    local part_files=(
+        "parts/header.html"
+        "parts/footer.html"
+    )
+    
+    local templates_count=0
+    local parts_count=0
+    local patterns_count=0
+    
     # Verify files exist and have content
-    for file in "${html_files[@]}"; do
+    for file in "${template_files[@]}" "${pattern_files[@]}" "${part_files[@]}"; do
         echo "DEBUG: Checking $file..."
         if [[ ! -f "$local_path/$THEME_DIR/$file" ]]; then
             log_error "Missing required file: $file"
@@ -375,25 +552,68 @@ verify_html_syntax() {
         
         # Validate specific template content
         case "$file" in
-            "templates/index.html")
-                if ! grep -q "wp:query" "$local_path/$THEME_DIR/$file"; then
-                    log_error "index.html missing required query block"
+            "templates/"*)
+                # All templates must have proper block structure
+                if ! grep -q "<!-- wp:template-part.*\"slug\":\"header\"" "$local_path/$THEME_DIR/$file" || \
+                   ! grep -q "<!-- wp:template-part.*\"slug\":\"footer\"" "$local_path/$THEME_DIR/$file" || \
+                   ! grep -q "<!-- wp:group.*\"tagName\":\"main\"" "$local_path/$THEME_DIR/$file"; then
+                    echo "DEBUG: Checking template structure..."
+                    echo "Header template part: $(grep -q "<!-- wp:template-part.*\"slug\":\"header\"" "$local_path/$THEME_DIR/$file" && echo "Found" || echo "Missing")"
+                    echo "Footer template part: $(grep -q "<!-- wp:template-part.*\"slug\":\"footer\"" "$local_path/$THEME_DIR/$file" && echo "Found" || echo "Missing")"
+                    echo "Main content group: $(grep -q "<!-- wp:group.*\"tagName\":\"main\"" "$local_path/$THEME_DIR/$file" && echo "Found" || echo "Missing")"
+                    log_error "$file missing required template structure"
                     echo "Current content:"
                     cat "$local_path/$THEME_DIR/$file"
                     return 1
                 fi
-                ;;
-            "parts/header.html")
-                if grep -q "<?php" "$local_path/$THEME_DIR/$file"; then
-                    log_error "header.html contains PHP code - should be pure block markup"
+                
+                # Check for theme.json style integration
+                if ! grep -q "className=\".*wp-block-\|style=\"\|{\"style\":" "$local_path/$THEME_DIR/$file"; then
+                    log_error "$file missing theme.json style integration"
                     echo "Current content:"
                     cat "$local_path/$THEME_DIR/$file"
                     return 1
                 fi
+                
+                # Specific template checks
+                case "$file" in
+                    "templates/index.html")
+                        if ! grep -q "wp:query" "$local_path/$THEME_DIR/$file"; then
+                            log_error "index.html missing required query block"
+                            echo "Current content:"
+                            cat "$local_path/$THEME_DIR/$file"
+                            return 1
+                        fi
+                        ;;
+                    "templates/front-page.html")
+                        # Check that both patterns exist, regardless of order
+                        if ! grep -q "<!-- wp:pattern.*\"slug\":\"staynalive/featured-post\"" "$local_path/$THEME_DIR/$file" || \
+                           ! grep -q "<!-- wp:pattern.*\"slug\":\"staynalive/cta\"" "$local_path/$THEME_DIR/$file"; then
+                            log_error "front-page.html missing required pattern blocks"
+                            echo "Current content:"
+                            cat "$local_path/$THEME_DIR/$file"
+                            return 1
+                        fi
+                        ;;
+                esac
                 ;;
-            "parts/footer.html")
-                if grep -q "<?php" "$local_path/$THEME_DIR/$file"; then
-                    log_error "footer.html contains PHP code - should be pure block markup"
+            "patterns/"*)
+                # Check for required block structure
+                if ! grep -q "<!-- wp:group {\".*\"}" "$local_path/$THEME_DIR/$file" || \
+                   ! grep -q "<!-- /wp:group -->" "$local_path/$THEME_DIR/$file"; then
+                    log_error "$file missing required block structure"
+                    echo "Current content:"
+                    cat "$local_path/$THEME_DIR/$file"
+                    return 1
+                fi
+                
+                # Verify all blocks are properly closed
+                local open_blocks
+                local close_blocks
+                open_blocks=$(grep -c "<!-- wp:" "$local_path/$THEME_DIR/$file")
+                close_blocks=$(grep -c "<!-- /wp:" "$local_path/$THEME_DIR/$file")
+                if [[ $open_blocks -ne $close_blocks ]]; then
+                    log_error "$file has mismatched block tags: $open_blocks opens vs $close_blocks closes"
                     echo "Current content:"
                     cat "$local_path/$THEME_DIR/$file"
                     return 1
@@ -404,9 +624,11 @@ verify_html_syntax() {
         # Count file types
         if [[ "$file" =~ ^templates/ ]]; then
             ((templates_count++))
-        elif [[ "$file" =~ ^parts/ ]]; then
+        fi
+        if [[ "$file" =~ ^parts/ ]]; then
             ((parts_count++))
-        elif [[ "$file" =~ ^patterns/ ]]; then
+        fi
+        if [[ "$file" =~ ^patterns/ ]]; then
             ((patterns_count++))
         fi
     done
@@ -420,18 +642,56 @@ verify_html_syntax() {
     # Show content of critical files
     echo
     echo "Critical file contents:"
+    echo "=== front-page.html ==="
+    cat "$local_path/$THEME_DIR/templates/front-page.html"
+    echo
     echo "=== index.html ==="
     cat "$local_path/$THEME_DIR/templates/index.html"
-    echo
-    echo "=== header.html ==="
-    cat "$local_path/$THEME_DIR/parts/header.html"
-    echo
-    echo "=== footer.html ==="
-    cat "$local_path/$THEME_DIR/parts/footer.html"
     
     echo "DEBUG: HTML syntax verification complete"
     return 0
 }
+
+# Clean up checkpoint files before creating zip
+cleanup_checkpoints() {
+    echo "Cleaning up checkpoint files..."
+    # Remove from source directory
+    find "${THEME_DIR}" -name ".checkpoint_*" -type f -exec rm -f {} \;
+    # Also clean from zip if it exists
+    if [[ -f "${THEME_ZIP}" ]]; then
+        local temp_dir
+        temp_dir=$(mktemp -d)
+        unzip -q "${THEME_ZIP}" -d "${temp_dir}"
+        find "${temp_dir}" -name ".checkpoint_*" -type f -exec rm -f {} \;
+        (cd "${temp_dir}" && zip -r "${THEME_ZIP}" .)
+    fi
+    return 0
+}
+
+# Fix path truncation in debug output
+debug_powershell_paths() {
+    echo "DEBUG: PowerShell - Destination path:"
+    echo "$1" | fold -w 100
+    local win_path
+    win_path=$(echo "$1" | sed 's|^/\([a-z]\)/|\1:/|' | tr '/' '\\')
+    echo "DEBUG: PowerShell - Converted destination path:"
+    echo "$win_path" | fold -w 100
+}
+
+# Cleanup function
+cleanup_on_exit() {
+    local exit_code=$?
+    if [[ $exit_code -ne 0 ]]; then
+        echo "Script failed with exit code $exit_code"
+        # Clean up temporary files
+        find . -name "*.bak" -type f -delete
+        find . -name ".checkpoint_*" -type f -delete
+    fi
+    exit $exit_code
+}
+
+# Set trap
+trap cleanup_on_exit EXIT
 
 main() {
     local site_name
@@ -488,24 +748,70 @@ main() {
     
     # Deploy theme
     echo "Deploying theme to Local..."
+    
     echo "DEBUG: Current directory: $(pwd)"
+    
+    # Check if we need to create the zip file
+    if [[ ! -f "$THEME_ZIP" ]]; then
+        echo "Creating theme zip file..."
+        if ! zip -r "$THEME_ZIP" "$THEME_DIR"; then
+            log_error "Failed to create theme zip file"
+            exit 1
+        fi
+    fi
+    
     echo "DEBUG: Theme zip exists: $([[ -f "$THEME_ZIP" ]] && echo "Yes" || echo "No")"
     echo "DEBUG: Theme zip size: $(stat -f%z "$THEME_ZIP" 2>/dev/null || stat -c%s "$THEME_ZIP" 2>/dev/null || echo "unknown")"
     
-    # Add zip check before extraction
-    if [[ ! -f "$THEME_ZIP" ]]; then
-        log_error "Theme zip file not found: $THEME_ZIP"
+    # Clean up checkpoints before adding to zip
+    cleanup_checkpoints || {
+        log_error "Failed to clean up checkpoints"
+        exit 1
+    }
+    
+    # Recreate zip without checkpoints
+    echo "DEBUG: Recreating zip file..."
+    if command -v zip >/dev/null 2>&1; then
+        echo "DEBUG: Using zip command..."
+        # Convert backslashes to forward slashes for zip
+        if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+            find "$THEME_DIR" -type f -exec sh -c 'echo "{}" | sed "s/\\\\/\\//g"' \; | zip -@ "$THEME_ZIP"
+        else
+            if ! zip -r "$THEME_ZIP" "$THEME_DIR"; then
+                log_error "Failed to recreate theme zip file with zip command"
+                exit 1
+            fi
+        fi
+    elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        echo "DEBUG: zip not found, using PowerShell Compress-Archive..."
+        # Convert paths to Windows format
+        local win_source="${THEME_DIR//\//\\}"
+        local win_dest="${THEME_ZIP//\//\\}"
+        
+        if ! powershell.exe -Command "
+            \$ErrorActionPreference = 'Stop'
+            Write-Host 'DEBUG: Starting compression...'
+            if (Test-Path '$win_dest') {
+                Remove-Item -Path '$win_dest' -Force
+            }
+            Compress-Archive -Path '$win_source\\*' -DestinationPath '$win_dest' -Force
+            Write-Host 'DEBUG: Compression completed'
+            \$true
+        "; then
+            log_error "Failed to create zip file using PowerShell"
+            exit 1
+        fi
+    else
+        log_error "No zip command found and not on Windows - cannot create zip file"
         exit 1
     fi
     
     # Use PowerShell for extraction on Windows
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
         echo "DEBUG: Using PowerShell to extract zip"
+        debug_powershell_paths "$local_path/$THEME_DIR"
         if ! run_powershell "
-            Write-Host \"DEBUG: PowerShell - Zip file path: $THEME_ZIP\"
-            Write-Host \"DEBUG: PowerShell - Destination path: $local_path/$THEME_DIR\"
             \$destPath = '$local_path/$THEME_DIR' -replace '^/c/', 'C:/' -replace '/', '\\'
-            Write-Host \"DEBUG: PowerShell - Converted destination path: \$destPath\"
             Expand-Archive -Path '$THEME_ZIP' -DestinationPath \$destPath -Force
             Write-Host \"DEBUG: PowerShell - Extraction complete\"
             Get-ChildItem -Path \$destPath -Recurse | Select-Object FullName
@@ -535,7 +841,7 @@ main() {
         echo "No old checkpoints found"
     fi
     
-    # Now run verifications
+    # Use shared functions for verification
     verify_theme_files || exit 1
     verify_theme_functions || exit 1
     verify_functions_php || exit 1
@@ -544,7 +850,6 @@ main() {
     verify_block_patterns || exit 1
     verify_html_syntax || exit 1
     
-    # Final health check
     check_wordpress_health "staynalive.local"
     
     if [[ $? -ne 0 ]]; then

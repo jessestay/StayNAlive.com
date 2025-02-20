@@ -1,26 +1,30 @@
 <?xml version="1.0"?>
 <ruleset name="WordPress Theme Coding Standards">
-    <description>PHPCS configuration file for WordPress theme development.</description>
+    <description>PHPCS configuration for StayNAlive WordPress theme</description>
 
-    <!-- Check all PHP files in directory tree by default. -->
+    <!-- Use WordPress Standards -->
+    <rule ref="WordPress"/>
+
+    <!-- Check PHP files only -->
     <arg name="extensions" value="php"/>
+
+    <!-- Show progress -->
+    <arg value="p"/>
+
+    <!-- Show sniff codes -->
+    <arg value="s"/>
+
+    <!-- Check all files in theme -->
     <file>.</file>
 
-    <!-- Exclude paths -->
+    <!-- Exclude patterns -->
     <exclude-pattern>/vendor/*</exclude-pattern>
     <exclude-pattern>/node_modules/*</exclude-pattern>
-    <exclude-pattern>/tests/*</exclude-pattern>
-
-    <!-- Show progress and sniff codes in all reports -->
-    <arg value="ps"/>
-
-    <!-- Use WordPress Coding Standards -->
-    <rule ref="WordPress"/>
 
     <!-- Verify that the text_domain is set to the desired text-domain -->
     <rule ref="WordPress.WP.I18n">
         <properties>
-            <property name="text_domain" type="array" value="stay-n-alive"/>
+            <property name="text_domain" type="array" value="staynalive"/>
         </properties>
     </rule>
 

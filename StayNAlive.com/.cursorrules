@@ -1,0 +1,427 @@
+{
+  "rules": [
+    "Automatic syntax validation": {
+      "when": "After EVERY change, no exceptions",
+      "steps": [
+        "1. Make proposed change",
+        "2. Run bash -n immediately",
+        "3. If errors found, fix automatically",
+        "4. Run bash -n again",
+        "5. Repeat steps 3-4 until clean",
+        "6. Only then show final diff"
+      ],
+      "required": [
+        "Never show a diff without running bash -n first",
+        "Fix syntax errors automatically without asking",
+        "Verify clean syntax before showing changes",
+        "Run validation after EVERY change",
+        "No exceptions to validation process"
+      ],
+      "example_workflow": [
+        "Make change -> bash -n -> fix errors -> bash -n -> verify clean -> show diff",
+        "If still errors: fix -> bash -n -> verify -> then show diff",
+        "Never proceed without clean syntax check"
+      ]
+    },
+    "Shell script validation rules": {
+      "syntax_validation": [
+        "Run bash -n after EVERY change",
+        "Fix syntax errors automatically",
+        "Verify clean syntax before proceeding",
+        "No exceptions to validation process"
+      ]
+    },
+    "shell_script_validation": {
+      "variable_handling": {
+        "shared_variables": {
+          "check_before_define": true,
+          "use_default_value": true,
+          "pattern": "${VAR:-}",
+          "readonly_variables": {
+            "check_exists": true,
+            "define_once": true,
+            "shared_constants": [
+              "GREEN",
+              "BLUE",
+              "RED",
+              "YELLOW",
+              "NC"
+            ]
+          }
+        }
+      },
+      "required": true,
+      "run_before_showing_changes": true,
+      "files_to_check": [
+        "ALL_SHELL_SCRIPTS",
+        "RELATED_SCRIPTS",
+        "SOURCED_SCRIPTS"
+      ],
+      "check_order": [
+        "1. Check script being edited",
+        "2. Check all scripts that source this script",
+        "3. Check all scripts sourced by this script",
+        "4. Check all related scripts in the project"
+      ],
+      "validation_commands": [
+        {
+          "command": "bash -n",
+          "when": "BEFORE showing ANY shell script changes",
+          "fix": "automatically",
+          "block_if_fails": true,
+          "apply_to": "ALL_SHELL_SCRIPTS",
+          "verify_steps": [
+            "1. Run bash -n on file",
+            "2. Show exact error message",
+            "3. Show surrounding context",
+            "4. Fix error",
+            "5. Run bash -n again",
+            "6. Show fixed code",
+            "7. Verify no new errors introduced"
+          ],
+          "error_context": {
+            "show_lines": 5,
+            "highlight_error": true,
+            "show_line_numbers": true
+          }
+        }
+      ],
+      "error_handling": {
+        "on_syntax_error": "fix_automatically",
+        "on_shellcheck_error": "fix_automatically",
+        "on_validation_failure": "do_not_show_changes",
+        "check_all_files": true,
+        "block_on_any_error": true
+      },
+      "validation_requirements": [
+        "Must run on EVERY shell script change",
+        "Must run BEFORE showing any changes",
+        "Must BLOCK changes if validation fails",
+        "Must FIX errors automatically",
+        "NO exceptions allowed"
+      ],
+      "syntax_validation": [
+        "control_structures": {
+          "if_statements": {
+            "required": [
+              "Always use 'if' with 'fi', never with '}'",
+              "Check all if/fi pairs match before submitting",
+              "Count total if statements and fi statements - must be equal",
+              "Validate proper nesting of if/fi blocks",
+              "No mixing of if/fi with { } syntax"
+            ],
+            "prohibited": [
+              "if with }",
+              "if without matching fi",
+              "else without if",
+              "elif without if",
+              "Mixed if/fi and { } syntax"
+            ],
+            "validation_command": "grep -n \"if \|fi\|else\|elif\" | verify_matching_pairs"
+          }
+        }
+      ]
+    },
+    "shell_script_workflow": {
+      "order_of_operations": [
+        "1. Check current state",
+        "2. Identify missing files/functionality",
+        "3. Create test plan",
+        "4. Make small, focused change",
+        "5. Run validation immediately",
+        "6. Fix any issues",
+        "7. Verify fix",
+        "8. Only then show changes"
+      ],
+      "validation_process": {
+        "before_changes": [
+          "Review current file state",
+          "Check file listings",
+          "Verify file contents",
+          "Identify dependencies"
+        ],
+        "during_changes": [
+          "Make one focused change",
+          "Run bash -n immediately",
+          "Fix any syntax errors",
+          "Run shellcheck",
+          "Fix any shellcheck errors",
+          "Verify fix worked",
+          "Check dependent files"
+        ],
+        "after_changes": [
+          "Verify all files exist",
+          "Check file contents",
+          "Test functionality",
+          "Verify no regressions"
+        ]
+      },
+      "error_handling": {
+        "steps": [
+          "1. Identify exact error",
+          "2. Check surrounding context",
+          "3. Make focused fix",
+          "4. Verify fix worked",
+          "5. Check for similar issues",
+          "6. Prevent recurrence"
+        ]
+      },
+      "debugging": {
+        "required_output": [
+          "Current state",
+          "File listings",
+          "Operation results",
+          "Error messages",
+          "Verification steps"
+        ]
+      },
+      "verification": {
+        "required_checks": [
+          "Files exist",
+          "Correct permissions",
+          "Valid syntax",
+          "Proper content",
+          "Dependencies satisfied"
+        ],
+        "order": [
+          "1. Check existence",
+          "2. Verify permissions",
+          "3. Validate syntax",
+          "4. Check content",
+          "5. Test functionality"
+        ]
+      }
+    },
+    "learning_from_success": {
+      "capture": [
+        "Working processes",
+        "Effective validations",
+        "Useful debug output",
+        "Error prevention steps"
+      ],
+      "update_rules": [
+        "Document successful patterns",
+        "Add new validations",
+        "Improve error handling",
+        "Enhance debugging"
+      ]
+    },
+    "deployment_workflow": {
+      "pre_deployment": {
+        "checks": [
+          "Verify zip file exists and size",
+          "Check target directory permissions",
+          "Backup existing installation",
+          "Validate all checkpoint files"
+        ],
+        "user_interaction": [
+          "Show available deployment targets",
+          "Confirm target selection",
+          "Prompt for overwrite/backup/cancel if target exists",
+          "Get explicit confirmation before proceeding"
+        ]
+      },
+      "during_deployment": {
+        "required_logging": [
+          "Current directory",
+          "Source file status",
+          "Destination paths",
+          "Extraction progress",
+          "File listings after extraction"
+        ],
+        "verification_steps": [
+          "Check file permissions",
+          "Verify theme file structure",
+          "Validate function definitions",
+          "Check PHP files syntax",
+          "Verify HTML syntax in templates",
+          "Test WordPress integration"
+        ]
+      },
+      "post_deployment": {
+        "cleanup": [
+          "Remove checkpoint files",
+          "Clean up temporary files",
+          "Verify cleanup success"
+        ],
+        "validation": {
+          "file_checks": [
+            "Templates verified count",
+            "Template parts verified count",
+            "Block patterns verified count",
+            "Critical file contents"
+          ],
+          "wordpress_checks": [
+            "Theme activation status",
+            "Template loading",
+            "Block pattern registration",
+            "Site health status"
+          ]
+        }
+      }
+    },
+    "syntax_validation": {
+      "required": true,
+      "before_showing_changes": true,
+      "steps": [
+        "1. Run bash -n on ALL shell scripts being modified",
+        "2. Run bash -n on ALL related shell scripts",
+        "3. Fix ANY syntax errors before proceeding",
+        "4. Show the validation steps in the response",
+        "5. Only then show the changes"
+      ],
+      "no_exceptions": true,
+      "block_if_fails": true
+    },
+    "windows_command_validation": {
+      "required": true,
+      "before_showing_changes": true,
+      "commands_to_check": [
+        {
+          "command": "zip",
+          "windows_alternative": "Compress-Archive",
+          "check": "command -v zip >/dev/null 2>&1",
+          "fallback": {
+            "command": "powershell.exe -Command \"Compress-Archive\"",
+            "retry_mechanism": {
+              "max_retries": 3,
+              "delay_between": 3,
+              "cleanup_before": [
+                "[System.GC]::Collect()",
+                "[System.GC]::WaitForPendingFinalizers()"
+              ],
+              "handle_errors": [
+                "The process cannot access the file",
+                "because it is being used by another process"
+              ]
+            }
+          }
+        },
+        {
+          "command": "rm",
+          "windows_issues": [
+            "Directory not empty",
+            "Permission denied"
+          ],
+          "windows_fallbacks": [
+            "attrib -R \"dir\\*\" /S",
+            "cmd //c \"rmdir /s /q\""
+          ]
+        }
+      ],
+      "path_handling": {
+        "required": true,
+        "rules": [
+          "Convert forward slashes to backslashes for Windows commands",
+          "Use ${var//\//\\} for path conversion",
+          "Quote all Windows paths",
+          "Handle spaces in paths",
+          "Use cmd //c for Windows commands",
+          "Convert paths before passing to Windows commands",
+          "Store converted paths in variables",
+          "Echo commands before running them",
+          "Use PowerShell as last resort for file operations"
+        ]
+      },
+      "powershell_requirements": {
+        "error_handling": "\$ErrorActionPreference = 'Stop'",
+        "path_conversion": "-replace '/', '\\'",
+        "quoting": "Quote all paths with escaped quotes",
+        "force_flag": "Use -Force for overwrite operations"
+      },
+      "windows_commands": {
+        "attrib": {
+          "format": "cmd //c \"attrib -R \\\"path\\\\*\\\" /S\"",
+          "requires_cmd": true,
+          "path_conversion": true,
+          "fallback": "powershell.exe Remove-Item"
+        },
+        "rmdir": {
+          "format": "cmd //c \"rmdir /s /q \\\"path\\\"\"",
+          "requires_cmd": true,
+          "path_conversion": true,
+          "fallback": "powershell.exe Remove-Item"
+        }
+      }
+    },
+    "command_availability": {
+      "required": true,
+      "check_before_use": true,
+      "commands": [
+        "zip",
+        "attrib",
+        "powershell",
+        "rm"
+      ],
+      "provide_alternatives": true,
+      "error_handling": "Show clear error messages with alternatives"
+    },
+    "namespace_standardization": {
+      "required": true,
+      "format": "Staynalive",
+      "check_files": [
+        "inc/theme-setup.php",
+        "inc/classes/*.php"
+      ],
+      "replacements": {
+        "StayNAlive": "Staynalive",
+        "Stay_N_Alive": "Staynalive"
+      },
+      "validation": {
+        "before_zip": true,
+        "show_changes": true,
+        "update_automatically": true
+      }
+    },
+    "error_handling": {
+      "directory_operations": {
+        "cleanup": {
+          "non_existent": {
+            "message": "Directory does not exist, skipping cleanup",
+            "return": 0
+          },
+          "listing": {
+            "check_before": true,
+            "message": "Creating directory structure..."
+          }
+        }
+      },
+      "namespace_checks": {
+        "required": true,
+        "verify_after_update": true,
+        "show_before_after": true,
+        "files_to_check": [
+          "theme-setup.php",
+          "functions.php",
+          "all_php_files"
+        ]
+      },
+      "validation_requirements": [
+        "code_quality": {
+          "critical": [
+            "PHP syntax",
+            "File existence",
+            "Directory structure",
+            "Required functions"
+          ],
+          "non_critical": [
+            "PHPCS validation",
+            "Code style",
+            "Documentation"
+          ],
+          "handling": {
+            "critical": {
+              "on_failure": "exit",
+              "error_message": "Critical validation failed"
+            },
+            "non_critical": {
+              "on_failure": "warn",
+              "continue": true,
+              "log_level": "WARNING"
+            }
+          }
+        }
+      ]
+    }
+  }
+} 

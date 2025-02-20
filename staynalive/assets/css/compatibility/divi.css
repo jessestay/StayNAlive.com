@@ -1,0 +1,33 @@
+/* Divi Builder Compatibility */
+.et_pb_row {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
+    padding: 2em 0;
+}
+
+.et_pb_column {
+    float: left;
+    position: relative;
+    z-index: 1;
+}
+
+.et_pb_column_1_2 {
+    width: 47.25%;
+    margin-right: 5.5%;
+}
+
+.et_pb_column_1_3 {
+    width: 29.667%;
+    margin-right: 5.5%;
+}
+
+.et_pb_column_2_3 {
+    width: 64.833%;
+    margin-right: 5.5%;
+}
+
+.et_pb_column_last {
+    margin-right: 0;
+} 

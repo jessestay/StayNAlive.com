@@ -1,0 +1,36 @@
+<!-- wp:group {"className":"author-bio","layout":{"type":"constrained"}} -->
+<div class="wp-block-group author-bio">
+    <!-- wp:columns {"verticalAlignment":"center"} -->
+    <div class="wp-block-columns are-vertically-aligned-center">
+        <!-- wp:column {"width":"25%"} -->
+        <div class="wp-block-column" style="flex-basis:25%">
+            <!-- wp:image {"className":"is-style-rounded"} -->
+            <figure class="wp-block-image is-style-rounded">
+                <img src="[author_avatar_url]" alt="Author avatar"/>
+            </figure>
+            <!-- /wp:image -->
+        </div>
+        <!-- /wp:column -->
+
+        <!-- wp:column {"width":"75%"} -->
+        <div class="wp-block-column" style="flex-basis:75%">
+            <!-- wp:heading {"level":3} -->
+            <h3>[author_name]</h3>
+            <!-- /wp:heading -->
+
+            <!-- wp:paragraph -->
+            <p>[author_bio]</p>
+            <!-- /wp:paragraph -->
+
+            <!-- wp:social-links -->
+            <ul class="wp-block-social-links">
+                <!-- wp:social-link {"url":"#","service":"twitter"} /-->
+                <!-- wp:social-link {"url":"#","service":"linkedin"} /-->
+            </ul>
+            <!-- /wp:social-links -->
+        </div>
+        <!-- /wp:column -->
+    </div>
+    <!-- /wp:columns -->
+</div>
+<!-- /wp:group --> 

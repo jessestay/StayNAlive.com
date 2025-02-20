@@ -128,6 +128,13 @@ function stay_n_alive_enqueue_styles() {
         array(),
         wp_get_theme()->get('Version')
     );
+
+    wp_enqueue_style(
+        'staynalive-blocks',
+        get_template_directory_uri() . '/assets/css/blocks/custom-styles.css',
+        array(),
+        wp_get_theme()->get('Version')
+    );
 }
 add_action('wp_enqueue_scripts', 'stay_n_alive_enqueue_styles');
 

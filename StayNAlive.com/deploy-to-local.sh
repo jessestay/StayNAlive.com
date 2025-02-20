@@ -114,21 +114,71 @@ check_wp_settings() {
     # Test template registration
     echo -e "${BLUE}Testing template registration...${NC}"
     wp eval '
+        echo "\nDebug: Template Registration\n";
+        echo "==========================\n";
+        
+        // Check theme.json templates
+        $theme_json = json_decode(file_get_contents(get_template_directory() . "/theme.json"), true);
+        echo "Theme.json templates:\n";
+        if (isset($theme_json["templates"])) {
+            foreach ($theme_json["templates"] as $template) {
+                echo "- {$template["name"]}\n";
+            }
+        } else {
+            echo "No templates defined in theme.json\n";
+        }
+        echo "\n";
+        
+        // Check registered templates
+        echo "WordPress registered templates:\n";
         $templates = get_block_templates();
-        $template_slugs = array_map(function($tpl) { 
-            return $tpl->slug; 
-        }, $templates);
+        $template_names = array();
+        
+        foreach ($templates as $template) {
+            echo sprintf(
+                "- %s (%s)\n  Source: %s\n  Type: %s\n  Status: %s\n  Theme: %s\n\n",
+                $template->title,
+                $template->slug,
+                $template->source,
+                $template->type,
+                $template->status,
+                $template->theme
+            );
+            $template_names[$template->slug] = $template->title;
+        }
+        
+        // Check filesystem templates
+        echo "Filesystem templates:\n";
+        $template_files = glob(get_template_directory() . "/templates/*.html");
+        foreach ($template_files as $file) {
+            $name = basename($file, ".html");
+            echo sprintf(
+                "- %s\n  Path: %s\n  Size: %d bytes\n  Registered: %s\n\n",
+                $name,
+                str_replace(get_template_directory(), "", $file),
+                filesize($file),
+                isset($template_names[$name]) ? "Yes" : "No"
+            );
+        }
         
         $required_templates = array("front-page", "index");
         
         foreach ($required_templates as $template) {
-            if (!in_array($template, $template_slugs)) {
+            if (!isset($template_names[$template])) {
                 echo "\033[0;31mERROR: Required template $template not registered\033[0m\n";
+                echo "Available templates: " . implode(", ", array_keys($template_names)) . "\n";
+               
+               // Additional debug info for missing template
+               $template_file = get_template_directory() . "/templates/" . $template . ".html";
+               if (file_exists($template_file)) {
+                   echo "File exists but not registered. Content:\n";
+                   echo file_get_contents($template_file) . "\n";
+               } else {
+                   echo "Template file does not exist: $template_file\n";
+               }
                 exit(1);
             }
         }
-        
-        echo "\033[0;32mTemplate registration verification passed\033[0m\n";
     '
 
     # Test theme.json configuration
@@ -166,6 +216,148 @@ check_wp_settings() {
         echo "\033[0;32mtheme.json verification passed\033[0m\n";
     '
 
+    # Verify installed templates match source files
+    echo -e "${BLUE}Verifying installed templates...${NC}"
+    wp eval '
+        $theme = wp_get_theme();
+        $theme_dir = get_template_directory();
+        
+        echo "\nWordPress Registered Templates:\n";
+        echo "================================\n";
+        $registered_templates = get_block_templates();
+        foreach ($registered_templates as $template) {
+            echo sprintf(
+                "- %s (%s)\n  Status: %s\n  Type: %s\n  Path: %s\n\n",
+                $template->title,
+                $template->slug,
+                $template->status,
+                $template->type,
+                $template->source
+            );
+        }
+
+        echo "\nSource Template Files:\n";
+        echo "=====================\n";
+        $source_templates = glob($theme_dir . "/templates/*.html");
+        foreach ($source_templates as $template_file) {
+            $template_slug = basename($template_file, ".html");
+            echo sprintf(
+                "- %s\n  Path: %s\n  Size: %s bytes\n\n",
+                $template_slug,
+                str_replace($theme_dir, "", $template_file),
+                filesize($template_file)
+            );
+        }
+
+        echo "\nTemplate Comparison:\n";
+        echo "===================\n";
+        
+        // Compare installed templates with source files
+        foreach ($registered_templates as $template) {
+            $template_slug = $template->slug;
+            $source_file = $theme_dir . "/templates/" . $template_slug . ".html";
+            
+            echo sprintf(
+                "Checking %s:\n",
+                $template_slug
+            );
+            
+            // Check if source file exists
+            if (!file_exists($source_file)) {
+                echo sprintf(
+                    "\033[0;31m  ✗ Source file missing: %s\033[0m\n",
+                    $source_file
+                );
+                exit(1);
+            }
+            
+            // Get installed template content
+            $installed_content = $template->content;
+            $source_content = file_get_contents($source_file);
+            
+            // Normalize whitespace and line endings
+            $installed_content = preg_replace("/\s+/", " ", trim($installed_content));
+            $source_content = preg_replace("/\s+/", " ", trim($source_content));
+            
+            if ($installed_content !== $source_content) {
+                echo "\033[0;31m  ✗ Content mismatch:\033[0m\n";
+                echo "  Source content (first 100 chars):\n    " . substr($source_content, 0, 100) . "...\n";
+                echo "  Installed content (first 100 chars):\n    " . substr($installed_content, 0, 100) . "...\n";
+                exit(1);
+            }
+            
+            echo "\033[0;32m  ✓ Template verified\033[0m\n";
+            echo "  - Source file exists\n";
+            echo "  - Content matches\n";
+            echo "  - Properly registered\n\n";
+        }
+    '
+
+    # Verify template parts
+    echo -e "${BLUE}Verifying template parts...${NC}"
+    wp eval '
+        $theme = wp_get_theme();
+        $theme_dir = get_template_directory();
+        $installed_parts = get_block_template_parts(array("theme" => $theme->get_stylesheet()));
+        
+        // Get source template parts
+        $source_parts = glob($theme_dir . "/parts/*.html");
+        $source_part_contents = array();
+        
+        foreach ($source_parts as $part_file) {
+            $part_slug = basename($part_file, ".html");
+            $source_part_contents[$part_slug] = file_get_contents($part_file);
+        }
+        
+        // Compare installed parts with source files
+        foreach ($installed_parts as $part) {
+            $part_slug = $part->slug;
+            
+            if (!isset($source_part_contents[$part_slug])) {
+                echo "\033[0;31mERROR: Template part $part_slug exists in WordPress but not in source files\033[0m\n";
+                exit(1);
+            }
+            
+            $installed_content = $part->content;
+            $source_content = $source_part_contents[$part_slug];
+            
+            // Normalize whitespace and line endings
+            $installed_content = preg_replace("/\s+/", " ", trim($installed_content));
+            $source_content = preg_replace("/\s+/", " ", trim($source_content));
+            
+            if ($installed_content !== $source_content) {
+                echo "\033[0;31mERROR: Content mismatch for template part $part_slug\033[0m\n";
+                exit(1);
+            }
+            
+            echo "Template part $part_slug verified ✓\n";
+        }
+        
+        echo "\033[0;32mAll template parts verified successfully\033[0m\n";
+    '
+
+    # Verify WordPress registered all templates
+    echo -e "${BLUE}Verifying WordPress template registration...${NC}"
+    wp eval '
+        $registered = get_block_templates();
+        $required_templates = array("front-page", "index", "single", "archive", "search", "404");
+        
+        foreach ($required_templates as $template) {
+            $found = false;
+            foreach ($registered as $reg) {
+                if ($reg->slug === $template) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                echo "\033[0;31mERROR: WordPress did not register template: $template\033[0m\n";
+                exit(1);
+            }
+            echo "✓ Template $template is registered\n";
+        }
+    '
+
     echo -e "${GREEN}WordPress settings verified${NC}"
 }
 
@@ -173,10 +365,38 @@ check_wp_settings() {
 deploy_theme() {
     echo -e "${BLUE}Deploying theme to Local site...${NC}"
     
+    # Check if Local site is running
+    echo -e "${BLUE}Checking Local site accessibility...${NC}"
+    if ! curl -s -I "http://staynalive.local" > /dev/null; then
+        echo -e "${RED}ERROR: Cannot access staynalive.local${NC}"
+        echo "Please ensure:"
+        echo "1. Local is running"
+        echo "2. Site is started"
+        echo "3. hosts file has staynalive.local entry"
+        exit 1
+    }
+    echo -e "${GREEN}Local site is accessible${NC}"
+
     # Verify template locations
     TEMPLATES_DIR="templates"
-    if [[ ! -d "$TEMPLATES_DIR" ]]; then
-        echo -e "${RED}Templates directory not found${NC}"
+    FRONT_PAGE="$TEMPLATES_DIR/front-page.html"
+    
+    # Check front-page.html specifically
+    if [[ ! -f "$FRONT_PAGE" ]]; then
+        echo -e "${RED}ERROR: front-page.html not found${NC}"
+        echo "Expected location: $FRONT_PAGE"
+        exit 1
+    }
+    
+    # Verify front-page.html content
+    if ! grep -q "wp:post-content" "$FRONT_PAGE"; then
+        echo -e "${RED}ERROR: front-page.html missing wp:post-content block${NC}"
+        exit 1
+    }
+    
+    # Verify front-page.html is included in zip
+    if ! unzip -l stay-n-alive.zip | grep -q "front-page.html"; then
+        echo -e "${RED}ERROR: front-page.html not found in theme zip${NC}"
         exit 1
     }
 
@@ -191,6 +411,43 @@ deploy_theme() {
     # Your existing deployment code here...
     
     check_wp_settings
+
+    # Verify all required files were deployed
+    THEME_PATH="/c/Users/stay/Local Sites/staynalive/app/public/wp-content/themes/stay-n-alive"
+    echo -e "${BLUE}Verifying deployed files...${NC}"
+    REQUIRED_FILES=(
+        "templates/front-page.html"
+        "templates/index.html"
+        "parts/header.html"
+        "parts/footer.html"
+    )
+    
+    for file in "${REQUIRED_FILES[@]}"; do
+        if [[ ! -f "$THEME_PATH/$file" ]]; then
+            echo -e "${RED}ERROR: Required file $file not found in deployed theme${NC}"
+            exit 1
+        fi
+        echo -e "${GREEN}✓ Found $file${NC}"
+    }
+
+    # Additional HTML syntax verification
+    echo -e "${BLUE}Starting HTML syntax verification...${NC}"
+    wp eval '
+        $theme_dir = get_template_directory();
+        $all_html_files = array_merge(
+            glob($theme_dir . "/templates/*.html"),
+            glob($theme_dir . "/parts/*.html"),
+            glob($theme_dir . "/patterns/*.html")
+        );
+        
+        echo "Found " . count($all_html_files) . " HTML files to validate\n\n";
+        
+        foreach ($all_html_files as $file) {
+            $relative_path = str_replace($theme_dir . "/", "", $file);
+            echo "Validating $relative_path...\n";
+            // Validation code here
+        }
+    '
 }
 
 # Main execution

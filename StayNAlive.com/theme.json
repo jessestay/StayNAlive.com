@@ -8,37 +8,28 @@
     "editorStyle": "file:./assets/css/blocks/custom-styles.css",
     "style": "file:./assets/css/blocks/custom-styles.css",
     "patterns": [
-        {
-            "name": "hero-section",
-            "title": "Hero Section"
-        },
-        {
-            "name": "expertise-section",
-            "title": "Expertise Section"
-        },
-        {
-            "name": "featured-posts",
-            "title": "Featured Posts Grid"
-        },
-        {
-            "name": "cta-section",
-            "title": "Call to Action Section"
-        },
-        {
-            "name": "background-pattern",
-            "title": "Background Pattern"
-        }
+        "staynalive/hero-section",
+        "staynalive/expertise-section",
+        "staynalive/featured-posts",
+        "staynalive/cta-section"
     ],
     "template": [
         ["core/template-part", {"slug": "header", "tagName": "header"}],
         ["core/group", {"tagName": "main", "layout": {"type": "constrained"}}],
         ["core/template-part", {"slug": "footer", "tagName": "footer"}]
     ],
-    "customTemplates": [
+    "templates": [
         {
             "name": "front-page",
             "title": "Front Page",
-            "postTypes": ["page"]
+            "postTypes": ["page"],
+            "description": "The main homepage template that displays your hero section, expertise, and featured content."
+        },
+        {
+            "name": "index",
+            "title": "Index",
+            "postTypes": ["page", "post"],
+            "description": "The default template for displaying content."
         }
     ],
     "templateParts": [

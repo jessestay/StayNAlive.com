@@ -1,0 +1,41 @@
+/*
+Theme Name: Stay N Alive
+Theme URI: https://staynalive.com
+Author: Jesse Stay
+Author URI: https://staynalive.com
+Description: A modern WordPress theme for StayNAlive.com
+Version: 1.0.0
+Requires at least: 5.9
+Tested up to: 6.4
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: stay-n-alive
+Tags: blog, custom-background, custom-colors, custom-logo, custom-menu, editor-style, featured-images, footer-widgets, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready, block-styles, wide-blocks
+*/
+
+/* Import base styles */
+@import "assets/css/base/normalize.css";
+@import "assets/css/base/base.css";
+@import "assets/css/base/wordpress.css";
+
+/* Import components */
+@import "assets/css/components/header.css";
+@import "assets/css/components/footer.css";
+@import "assets/css/components/mobile-menu.css";
+@import "assets/css/components/link-bio.css";
+@import "assets/css/components/social-feed.css";
+@import "assets/css/components/author-bio.css";
+
+/* Import utilities */
+@import "assets/css/utilities/animations.css";
+
+/* Import compatibility styles */
+@import "assets/css/compatibility/divi.css";
+@import "assets/css/compatibility/divi-legacy.css";
+
+/* Basic theme styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #333;
+} 
