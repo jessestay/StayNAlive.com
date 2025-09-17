@@ -1,0 +1,68 @@
+name: Deploy Theme
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+
+    - name: Install dependencies
+      run: |
+        npm ci
+        composer install --no-dev
+
+    - name: Run tests
+      run: |
+        npm run lint
+        composer run-script test
+
+    - name: Build assets
+      run: npm run build
+
+    - name: Create production build
+      run: |
+        mkdir -p dist/staynalive
+        cp -r {assets,inc,languages,parts,patterns,styles,templates} dist/staynalive/
+        cp {style.css,functions.php,theme.json,index.php} dist/staynalive/
+        cd dist && zip -r staynalive.zip staynalive -x ".*" -x "__MACOSX"
+
+    - name: Deploy to production
+      if: github.ref == 'refs/heads/main'
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        source: "dist/staynalive.zip"
+        target: "/tmp/"
+        
+    - name: Install theme
+      if: github.ref == 'refs/heads/main'
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /tmp
+          unzip -o staynalive.zip
+          rm -rf /var/www/html/wp-content/themes/staynalive
+          mv staynalive /var/www/html/wp-content/themes/
+          wp theme activate staynalive 

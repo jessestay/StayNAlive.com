@@ -1,0 +1,63 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Fix All Shell Scripts",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "for f in $(find . -name '*.sh' ! -path '*/.specstory/*' ! -path '*/vendor/*'); do \
+                    echo \"Fixing $f...\"; \
+                    # Fix variable references \
+                    sed -i -E 's/\\$([A-Za-z][A-Za-z0-9_]*)/\\${\\1}/g' \"$f\"; \
+                    # Fix command substitution \
+                    sed -i -E 's/echo.*\\$\\(pwd\\)/current_dir=\\$(pwd) || exit 1; echo \"DEBUG: Current directory: \\${current_dir}\"/g' \"$f\"; \
+                    # Fix path concatenation \
+                    sed -i -E 's|\\(\"\\?\\)src/\\$|\\1src/\\${|g' \"$f\"; \
+                    sed -i -E 's|\\(\"\\?\\)\\${THEME_DIR}/\\$|\\1\\${THEME_DIR}/\\${|g' \"$f\"; \
+                    # Fix if conditions \
+                    sed -i -E 's/if \\[\\[ \"\\$\\([^\"]*\\)\" /if [[ \"\\${\\1}\" /g' \"$f\"; \
+                    # Apply shellcheck auto-fixes \
+                    shellcheck --format=diff \"$f\" | patch \"$f\" || true; \
+                    echo \"Done fixing $f\"; \
+                done"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Fix Current Shell Script",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "echo \"Fixing ${file}...\"; \
+                # Fix variable references \
+                sed -i -E 's/\\$([A-Za-z][A-Za-z0-9_]*)/\\${\\1}/g' \"${file}\"; \
+                # Fix command substitution \
+                sed -i -E 's/echo.*\\$\\(pwd\\)/current_dir=\\$(pwd) || exit 1; echo \"DEBUG: Current directory: \\${current_dir}\"/g' \"${file}\"; \
+                # Fix path concatenation \
+                sed -i -E 's|\\(\"\\?\\)src/\\$|\\1src/\\${|g' \"${file}\"; \
+                sed -i -E 's|\\(\"\\?\\)\\${THEME_DIR}/\\$|\\1\\${THEME_DIR}/\\${|g' \"${file}\"; \
+                # Fix if conditions \
+                sed -i -E 's/if \\[\\[ \"\\$\\([^\"]*\\)\" /if [[ \"\\${\\1}\" /g' \"${file}\"; \
+                # Apply shellcheck auto-fixes \
+                shellcheck --format=diff \"${file}\" | patch \"${file}\" || true; \
+                echo \"Done fixing ${file}\""
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "clear": true
+            },
+            "problemMatcher": []
+        }
+    ]
+} 

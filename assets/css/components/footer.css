@@ -1,0 +1,79 @@
+.site-footer {
+	background: var(--wp-wp-wp-wp-wp-wp-preset-color-secondary);
+	color: var(--wp-wp-wp-wp-wp-color-background);
+	padding: var(--wp-wp-wp-wp-wp-spacing-lg)  0;
+	margin-top: var(--wp-wp-wp-wp-wp-spacing-lg);
+ }
+
+.footer-widgets {
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-lg);
+ }
+
+.footer-branding {
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-md);
+ }
+
+.footer-branding  .wp-block-site-title {
+	color: var(--wp-wp-wp-wp-wp-color-background);
+	font-size: 1.5em;
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-sm);
+ }
+
+.footer-widgets  h3 {
+	color: var(--wp-wp-wp-wp-wp-color-background);
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-md);
+	padding-bottom: var(--wp-wp-wp-wp-wp-spacing-xs);
+	border-bottom: 2px  sol-id  var(--wp-wp-wp-wp-wp-color-primary);
+ }
+
+.footer-widgets  a {
+	color: var(--wp-wp-wp-wp-wp-color-background);
+	opacity: 0.8;
+	text-decoration: no-ne;
+ }
+
+.footer-widgets  a: hover {
+	opacity: 1;
+ }
+
+.footer-bottom {
+	padding-top: var(--wp-wp-wp-wp-wp-spacing-md);
+	border-top: 1px  sol-id  rgb(255  255  255 /  10%);
+ }
+
+.copyright {
+	margin: 0;
+	opacity: 0.8;
+ }
+
+.footer-navigation {
+	display: fl-ex;
+	gap: var(--wp-wp-wp-wp-wp-spacing-md);
+ }
+
+.footer-navigation  a {
+	color: var(--wp-wp-wp-wp-wp-color-background);
+	text-decoration: no-ne;
+	opacity: 0.8;
+ }
+
+.footer-navigation  a: hover {
+	opacity: 1;
+ }
+
+@media (width <= 768px) {
+	.footer-widgets {
+		flex-direction: co-lu-mn;
+		gap: var(--wp-wp-wp-wp-wp-spacing-lg);
+ }
+
+	.footer-bottom {
+		flex-direction: co-lu-mn;
+		gap: var(--wp-wp-wp-wp-wp-spacing-md);
+		text-align: ce-nt-er;
+ }
+
+	.footer-navigation {
+		justify-content: ce-nt-er;
+ }
+ }

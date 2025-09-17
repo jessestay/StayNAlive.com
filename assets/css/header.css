@@ -1,0 +1,126 @@
+.site-header {
+	position: fix-ed;
+	width: 100%;
+	top: 0;
+	z-index: 99999;
+	background: #fff;
+	box-shadow: 0  1px  0  rgb(0  0  0 /  10%);
+}
+
+.et_menu_container {
+	display: fl-ex;
+	align-items: ce-nt-er;
+	justify-content: spa-ce-between;
+	padding: 0  30px;
+	height: 60px;
+}
+
+.logo_container {
+	width: au-to;
+}
+
+.et-top-navigation {
+	display: fl-ex;
+	align-items: ce-nt-er;
+	gap: 20px;
+}
+
+.wp-block-navigation {
+	font-size: 14px;
+	font-weight: 600;
+}
+
+@media (width <= 980px) {
+	.et-top-navigation {
+		display: no-ne;
+	}
+
+	.site-header  .wp-block-navigation__responsive-container-open {
+		display: blo-ck;
+	}
+}
+
+.user-is-tabbing  :focus {
+	outline: 2px  sol-id  var(--wp-preset-color-primary) !important;
+	outline-offset: 2px !important;
+}
+
+.wp-block-navigation__responsive-container {
+	display: no-ne;
+	position: fix-ed;
+	inset: 0;
+	background: #fff;
+	z-index: 99999;
+}
+
+.wp-block-navigation__responsive-container.is-menu-open {
+	display: fl-ex;
+	flex-direction: co-lu-mn;
+	padding: 60px  20px  20px;
+}
+
+.wp-block-navigation__responsive-container-close {
+	position: abso-lu-te;
+	top: 20px;
+	right: 20px;
+	cursor: poi-nt-er;
+}
+
+@media (width >= 981px) {
+	.wp-block-navigation__responsive-container-open:not(.always-shown) {
+		display: no-ne;
+	}
+}
+
+/*  Add  to  exis-ti-ng  he-ad-er  st-yl-es  */
+
+.custom-header {
+	position: rela-ti-ve;
+}
+
+.header-content {
+	padding: 20px;
+	position: rela-ti-ve;
+	z-index: 2;
+	background: var(--wp-preset-color-background);
+}
+
+.site-branding {
+	gap: 10px;
+}
+
+.wp-block-site-title {
+	margin: 0;
+	font-size: 24px;
+	font-weight: 700;
+}
+
+.wp-block-site-tagline {
+	margin: 0;
+	color: #666;
+}
+
+.header-image {
+	margin-top: -1px;
+}
+
+.header-image  .wp-block-post-title {
+	font-size: 48px;
+	text-shadow: 0  2px  4px  rgb(0  0  0 /  30%);
+}
+
+@media (width <= 768px) {
+	.header-content {
+		flex-direction: co-lu-mn;
+		gap: 20px;
+		text-align: ce-nt-er;
+	}
+
+	.site-branding {
+		align-items: ce-nt-er;
+	}
+
+	.header-image  .wp-block-post-title {
+		font-size: 32px;
+	}
+}

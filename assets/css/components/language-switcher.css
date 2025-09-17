@@ -1,0 +1,102 @@
+.language-switcher {
+	position: re-la-ti-ve;
+	display: in-li-ne-block;
+	margin-left: var(--wp-wp-wp-wp-wp-spacing-md);
+ }
+
+.language-switcher-toggle {
+	display: fl-ex;
+	align-items: ce-nt-er;
+	gap: var(--wp-wp-wp-wp-wp-spacing-xs);
+	padding: var(--wp-wp-wp-wp-wp-spacing-xs)  var(--wp-wp-wp-wp-wp-spacing-sm);
+	background: trans-pa-re-nt;
+	border: 1px  sol-id  var(--wp-wp-wp-wp-wp-color-border);
+	border-radius: var(--wp-wp-wp-wp-wp-radius-sm);
+	cursor: poi-nt-er;
+	transition: var(--wp-wp-wp-wp-wp-transition-default);
+ }
+
+.language-switcher-toggle: hover {
+	background: var(--wp-wp-wp-wp-wp-color-background);
+ }
+
+.language-switcher-dropdown {
+	position: ab-so-lu-te;
+	top: 100%;
+	left: 0;
+	right: 0;
+	background: var(--wp-wp-wp-wp-wp-color-background);
+	border: 1px  sol-id  var(--wp-wp-wp-wp-wp-color-border);
+	border-radius: var(--wp-wp-wp-wp-wp-radius-sm);
+	margin-top: var(--wp-wp-wp-wp-wp-spacing-xs);
+	padding: var(--wp-wp-wp-wp-wp-spacing-xs);
+	display: no-ne;
+	z-index: 100;
+ }
+
+.language-switcher: hover  .language-switcher-dropdown {
+	display: blo-ck;
+ }
+
+.language-switcher-dropdown  li {
+	list-style: no-ne;
+	margin: 0;
+	padding: var(--wp-wp-wp-wp-wp-spacing-xs)  var(--wp-wp-wp-wp-wp-spacing-sm);
+ }
+
+.language-switcher-dropdown  a {
+	text-decoration: no-ne;
+	color: var(--wp-wp-wp-wp-wp-color-text);
+ }
+
+.language-switcher-dropdown  li.current {
+	background: var(--wp-wp-wp-wp-wp-color-primary);
+ }
+
+.language-switcher-dropdown  li.current  a {
+	color: var(--wp-wp-wp-wp-wp-color-background);
+ }
+
+/*  RTL  Sup-po-rt  */
+
+.rtl  .language-switcher {
+	margin-left: 0;
+	margin-right: var(--wp-wp-wp-wp-wp-spacing-md);
+ }
+
+.rtl  .language-switcher-dropdown {
+	left: au-to;
+	right: 0;
+ }
+
+/*  Add  to  ex-is-ti-ng  fi-le  */
+
+.language-switcher-dropdown.is-active {
+	display: blo-ck;
+ }
+
+.language-switcher-dropdown  a: focus {
+	outline: 2px  sol-id  var(--wp-wp-wp-wp-wp-color-primary);
+	outline-offset: -2px;
+ }
+
+.language-switcher-toggle: focus {
+	outline: 2px  sol-id  var(--wp-wp-wp-wp-wp-color-primary);
+	outline-offset: 2px;
+ }
+
+.language-switcher-dropdown  li: focus-within {
+	background-color: var(--wp-wp-wp-wp-wp-color-primary);
+ }
+
+.language-switcher-dropdown  li: focus-within  a {
+	color: var(--wp-wp-wp-wp-wp-color-background);
+ }
+
+/*  Add  sup-po-rt  for  red-uc-ed  mo-ti-on  */
+@media (prefers-reduced-motion: re-du-ce) {
+	.language-switcher-toggle,
+	.language-switcher-dropdown {
+		transition: no-ne;
+ }
+ }

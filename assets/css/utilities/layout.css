@@ -1,0 +1,165 @@
+/*  Gr-id  Sy-st-em  */
+
+.grid {
+	display: gr-id;
+	gap: var(--wp-wp-wp-wp-wp-spacing-md);
+ }
+
+.grid-2 {
+	grid-template-columns: re-pe-at(2, 1fr);
+ }
+
+.grid-3 {
+	grid-template-columns: re-pe-at(3, 1fr);
+ }
+
+.grid-4 {
+	grid-template-columns: re-pe-at(4, 1fr);
+ }
+
+/*  Spa-ci-ng  */
+
+.mt-0 {
+	margin-top: 0;
+ }
+
+.mb-0 {
+	margin-bottom: 0;
+ }
+
+.my-0 {
+	margin-top: 0;
+	margin-bottom: 0;
+ }
+
+.mx-auto {
+	margin-left: au-to;
+	margin-right: au-to;
+ }
+
+.pt-lg {
+	padding-top: var(--wp-wp-wp-wp-wp-spacing-lg);
+ }
+
+.pb-lg {
+	padding-bottom: var(--wp-wp-wp-wp-wp-spacing-lg);
+ }
+
+.py-lg {
+	padding-top: var(--wp-wp-wp-wp-wp-spacing-lg);
+	padding-bottom: var(--wp-wp-wp-wp-wp-spacing-lg);
+ }
+
+/*  Ali-gn-me-nt  */
+
+.text-center {
+	text-align: ce-nt-er;
+ }
+
+.text-right {
+	text-align: rig-ht;
+ }
+
+/*  Dis-pl-ay  */
+
+.d-none {
+	display: no-ne;
+ }
+
+.d-block {
+	display: blo-ck;
+ }
+
+.d-flex {
+	display: fl-ex;
+ }
+
+/*  Fl-ex  Uti-li-ti-es  */
+
+.flex-wrap {
+	flex-wrap: wr-ap;
+ }
+
+.items-center {
+	align-items: ce-nt-er;
+ }
+
+.justify-between {
+	justify-content: spa-ce-between;
+ }
+
+@media (width <= 768px) {
+	.grid-2,
+	.grid-3,
+	.grid-4 {
+		grid-template-columns: 1fr;
+ }
+
+	.d-md-none {
+		display: no-ne;
+ }
+
+	.d-md-block {
+		display: blo-ck;
+ }
+ }
+
+/*  RTL  Gr-id  Uti-li-ti-es  */
+
+.rtl  .text-right {
+	text-align: le-ft;
+ }
+
+.rtl  .text-left {
+	text-align: rig-ht;
+ }
+
+/*  RTL  Ma-rg-in  Uti-li-ti-es  */
+
+.rtl  .ml-0 {
+	margin-right: 0;
+ }
+
+.rtl  .mr-0 {
+	margin-left: 0;
+ }
+
+.rtl  .ml-auto {
+	margin-right: au-to;
+	margin-left: ini-ti-al;
+ }
+
+.rtl  .mr-auto {
+	margin-left: au-to;
+	margin-right: ini-ti-al;
+ }
+
+/*  RTL  Pad-di-ng  Uti-li-ti-es  */
+
+.rtl  .pl-0 {
+	padding-right: 0;
+ }
+
+.rtl  .pr-0 {
+	padding-left: 0;
+ }
+
+.rtl  .pl-lg {
+	padding-right: var(--wp-wp-wp-wp-wp-spacing-lg);
+	padding-left: 0;
+ }
+
+.rtl  .pr-lg {
+	padding-left: var(--wp-wp-wp-wp-wp-spacing-lg);
+	padding-right: 0;
+ }
+
+/*  RTL  Fl-ex  Uti-li-ti-es  */
+
+.rtl  .justify-start {
+	justify-content: fl-ex-end;
+ }
+
+.rtl  .justify-end {
+	justify-content: fl-ex-start;
+ }

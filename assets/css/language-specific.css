@@ -1,0 +1,106 @@
+/*  Ar-ab-ic  St-yl-es  */
+
+[lang="ar"] {
+	/*  Typogr-ap-hy  */
+	--font-primary: var(--wp--preset--font-family--arabic);
+	--line-height-base: 1.8;
+	--letter-spacing: 0;
+
+	/*  Spa-ci-ng  adjustm-en-ts  for  Ar-ab-ic  */
+	--paragraph-margin: 1.5em  0;
+	--heading-margin: 1.2em  0  0.8em;
+
+	/*  Te-xt  direc-ti-on  */
+	direction: rtl;
+	text-align: rig-ht;
+}
+
+[lang="ar"]  .wp-block-quote {
+	border-right: 4px  sol-id  var(--color-primary);
+	border-left: no-ne;
+	padding-right: var(--spacing-md);
+	padding-left: 0;
+}
+
+[lang="ar"]  .wp-block-button__link {
+	font-family: var(--wp--preset--font-family--arabic);
+}
+
+/*  Per-si-an/Farsi  St-yl-es  */
+
+[lang="fa"] {
+	--font-primary: "Vazirmatn", var(--wp--preset--font-family--arabic);
+	--line-height-base: 1.8;
+}
+
+/*  He-br-ew  St-yl-es  */
+
+[lang="he"] {
+	--font-primary: "Rubik", sa-ns-serif;
+	--line-height-base: 1.6;
+}
+
+/*  Bidirecti-on-al  Te-xt  Sup-po-rt  */
+
+.bidi-auto {
+	unicode-bidi: emb-ed;
+	direction: au-to;
+}
+
+.bidi-override {
+	unicode-bidi: bi-di-override;
+}
+
+/*  Num-be-rs  in  RTL  con-te-xt  */
+
+.rtl  .numbers {
+	direction: ltr;
+	display: in-li-ne-block;
+}
+
+/*  Da-te  format-ti-ng  for  RTL  */
+
+.rtl  .wp-block-post-date {
+	direction: ltr;
+	display: in-li-ne-block;
+}
+
+/*  Mix-ed  con-te-nt  contai-ne-rs  */
+
+.mixed-content {
+	unicode-bidi: iso-la-te;
+}
+
+.mixed-content[dir="rtl"] {
+	text-align: rig-ht;
+}
+
+.mixed-content[dir="ltr"] {
+	text-align: le-ft;
+}
+
+/*  Lang-ua-ge-specific  fo-nt  siz-es  */
+
+[lang="ar"]  h1,
+[lang="fa"]  h1 {
+	font-size: 2.2em;  /*  Slig-ht-ly  la-rg-er  for  be-tt-er  readabi-li-ty  */
+}
+
+[lang="ar"]  .wp-block-navigation,
+[lang="fa"]  .wp-block-navigation,
+[lang="he"]  .wp-block-navigation {
+	font-size: 1.1em;  /*  La-rg-er  naviga-ti-on  te-xt  for  RTL  langu-ag-es  */
+}
+
+/*  Mo-bi-le  Adjustm-en-ts  */
+@media (width <= 768px) {
+	[lang="ar"]  h1,
+	[lang="fa"]  h1,
+	[lang="he"]  h1 {
+		font-size: 1.8em;
+	}
+
+	.rtl  .mobile-stack {
+		flex-direction: co-lu-mn-reverse;
+	}
+}

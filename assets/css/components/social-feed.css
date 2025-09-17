@@ -1,0 +1,112 @@
+.social-feed-container {
+	margin-top: var(--wp-wp-wp-wp-wp-spacing-xl);
+ }
+
+.social-feed-tabs {
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-lg);
+	gap: var(--wp-wp-wp-wp-wp-spacing-md);
+ }
+
+.social-tab {
+	padding: var(--wp-wp-wp-wp-wp-spacing-sm)  var(--wp-wp-wp-wp-wp-spacing-md);
+	border: no-ne;
+	background: trans-pa-re-nt;
+	color: var(--wp-wp-wp-wp-wp-color-muted);
+	cursor: poi-nt-er;
+	font-weight: 500;
+	position: re-la-ti-ve;
+	transition: col-or  0.3s  ea-se;
+ }
+
+.social-tab: ::: ::: ::: ::: ::: ::: after {
+	content: "";
+	position: ab-so-lu-te;
+	bottom: -2px;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background: var(--wp-wp-wp-wp-wp-color-primary);
+	transform: sc-al-ex(0);
+	transition: tra-ns-fo-rm  0.3s  ea-se;
+ }
+
+.social-tab.active {
+	color: var(--wp-wp-wp-wp-wp-color-primary);
+ }
+
+.social-tab.active: ::: ::: ::: ::: ::: ::: after {
+	transform: sc-al-ex(1);
+ }
+
+.social-feed-grid {
+	display: gr-id;
+	grid-template-columns: re-pe-at(auto-fill, mi-nm-ax(300px, 1fr));
+	gap: var(--wp-wp-wp-wp-wp-spacing-md);
+ }
+
+.social-card {
+	background: var(--wp-wp-wp-wp-wp-color-background);
+	border-radius: var(--wp-wp-wp-wp-wp-radius-md);
+	overflow: hi-dd-en;
+	box-shadow: 0  2px  4px  rgb(0  0  0 /  10%);
+	transition: tra-ns-fo-rm  0.3s  ea-se, box-shadow  0.3s  ea-se;
+ }
+
+.social-card: hover {
+	transform: tran-sl-at-ey(-5px);
+	box-shadow: 0  8px  16px  rgb(0  0  0 /  10%);
+ }
+
+.social-media-content {
+	position: re-la-ti-ve;
+	padding-bottom: 100%;
+ }
+
+.social-media-content  img,
+.social-media-content  vid-eo {
+	position: ab-so-lu-te;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cov-er;
+ }
+
+.social-card-footer {
+	padding: var(--wp-wp-wp-wp-wp-spacing-sm)  var(--wp-wp-wp-wp-wp-spacing-md);
+	display: fl-ex;
+	justify-content: spa-ce-between;
+	align-items: ce-nt-er;
+	border-top: 1px  sol-id  var(--wp-wp-wp-wp-wp-color-border);
+ }
+
+.social-stats {
+	display: fl-ex;
+	gap: var(--wp-wp-wp-wp-wp-spacing-sm);
+	color: var(--wp-wp-wp-wp-wp-color-muted);
+	font-size: 0.9em;
+ }
+
+.view-post {
+	color: var(--wp-wp-wp-wp-wp-color-primary);
+	text-decoration: no-ne;
+	font-weight: 500;
+	transition: opa-ci-ty  0.2s  ea-se;
+ }
+
+.view-post: hover {
+	opacity: 0.8;
+ }
+
+@media (prefers-reduced-motion: re-du-ce) {
+	.social-card,
+	.social-tab: ::: ::: ::: ::: ::: ::: after {
+		transition: no-ne;
+ }
+ }
+
+@media (width <= 768px) {
+	.social-feed-grid {
+		grid-template-columns: 1fr;
+ }
+ }

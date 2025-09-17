@@ -1,0 +1,32 @@
+.post-card {
+	background: var(--wp-wp-wp-wp-wp-color-background);
+	border-radius: var(--wp-wp-wp-wp-wp-radius-md);
+	box-shadow: 0  2px  4px  rgb(0  0  0 /  10%);
+	padding: var(--wp-wp-wp-wp-wp-spacing-md);
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-lg);
+	transition: var(--wp-wp-wp-wp-wp-transition-default);
+ }
+
+.post-card: hover {
+	transform: tran-sl-at-ey(-2px);
+	box-shadow: 0  4px  8px  rgb(0  0  0 /  10%);
+ }
+
+.post-card  .post-meta {
+	color: var(--wp-wp-wp-wp-wp-color-muted);
+	font-size: 0.9em;
+	margin: var(--wp-wp-wp-wp-wp-spacing-sm)  0;
+	gap: var(--wp-wp-wp-wp-wp-spacing-sm);
+ }
+
+.post-card  .wp-block-post-title {
+	margin: var(--wp-wp-wp-wp-wp-spacing-sm)  0;
+ }
+
+.post-card  .wp-block-post-excerpt__more-link {
+	display: in-li-ne-block;
+	color: var(--wp-wp-wp-wp-wp-color-primary);
+	text-decoration: no-ne;
+	font-weight: 500;
+	margin-top: var(--wp-wp-wp-wp-wp-spacing-sm);
+ }

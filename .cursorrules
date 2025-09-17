@@ -1,0 +1,752 @@
+"Shell script validation rules": {
+    "syntax_validation": [
+        "ALWAYS run bash -n BEFORE making ANY changes",
+        "ALWAYS run bash -n AFTER making ANY changes",
+        "NEVER submit code without running bash -n",
+        "Run bash -n to check syntax before submitting ANY shell script",
+        "Count and verify matching pairs of: (), {}, [], if/fi, case/esac",
+        "Never mix if/fi with { } syntax",
+        "Always use if/then/fi for conditional blocks, not { }",
+        "Validate all heredoc markers are unique and properly closed",
+        "No nested heredocs unless absolutely necessary",
+        "Test ALL code paths before submitting",
+        "Use shellcheck with ALL optional checks enabled",
+        "Verify script works with set -e enabled",
+        "Test script with bash -x for debugging",
+        "Maintain proper indentation for readability",
+        "No copy-paste without full validation"
+    ],
+    "pre_edit_checks": [
+        "Run bash -n on current file",
+        "Count if/fi pairs",
+        "Verify all blocks are properly closed",
+        "Check for mixed syntax",
+        "Document current state"
+    ],
+    "post_edit_checks": [
+        "Run bash -n on modified file",
+        "Verify if/fi pairs still match",
+        "Check all blocks are still properly closed",
+        "Verify no syntax mixing was introduced",
+        "Document changes made"
+    ],
+    "validation_sequence": [
+        "1. Run bash -n BEFORE touching code",
+        "2. Document current state",
+        "3. Make changes",
+        "4. Run bash -n AFTER changes",
+        "5. Verify all blocks close properly",
+        "6. Run full validation suite"
+    ],
+    "platform_validation": [
+        "Check OS-specific requirements (Windows vs Unix)",
+        "Don't require Unix commands (like zip) on Windows if PowerShell alternative exists",
+        "Verify PowerShell commands on Windows systems",
+        "Test platform-specific code paths separately",
+        "Document platform-specific requirements clearly"
+    ],
+    "error_prevention": [
+        "Always run bash -n before suggesting ANY changes",
+        "Verify all if statements end with fi, not }",
+        "Never mix if/then/fi with { } blocks",
+        "Check for proper closing of all control structures",
+        "Validate syntax before making ANY suggestions",
+        "Test all error paths with set -e enabled"
+    ]
+} 
+VALIDATE_SHELL_SCRIPTS:
+  - Run shellcheck on all shell scripts before submitting
+  - Verify all if/fi, case/esac pairs match
+  - Test heredoc (<<) syntax and EOL markers
+  - Ensure no duplicate code blocks
+  - Test script locally before suggesting changes
+  - Check for proper error handling
+  - Verify variable quoting and escaping
+  - Validate file paths exist
+  - Check for proper exit codes
+  - Ensure cleanup on error
+  - Verify functions are defined before they're used
+  - Check for command existence before using them
+  - Validate dependencies are installed before running commands
+  - Use local paths to binaries instead of assuming global installation
+  - Test for file/directory write permissions before operations
+  - Run bash -n to check syntax before submitting ANY shell script
+  - Count and verify matching pairs of: (), {}, [], if/fi, case/esac
+  - Validate all heredoc markers are unique and properly closed
+  - No nested heredocs unless absolutely necessary
+  - Test ALL code paths before submitting
+  - Use shellcheck with ALL optional checks enabled
+  - Verify script works with set -e enabled
+  - Test script with bash -x for debugging
+  - Maintain proper indentation for readability
+  - No copy-paste without full validation
+
+# Code quality rules
+CODE_QUALITY:
+  - No syntax errors allowed
+  - All code must be tested before submission
+  - Include error handling for all operations
+  - Add comments for complex logic
+  - Use consistent formatting
+  - Follow shell scripting best practices
+  - Validate all user input
+  - Check for race conditions
+  - Proper logging and debugging support
+  - Verify resource cleanup
+  - Stop at first error unless explicitly told to continue
+  - Don't clean up until successful completion
+  - Use checkpoints to resume from last successful step
+  - Verify each step before proceeding to next
+  - Keep backups until successful validation
+  - Run static analysis before ANY code submission
+  - No submissions with known syntax errors
+  - Test edge cases explicitly
+  - Verify script works in clean environment
+  - Document all assumptions and prerequisites
+
+# Response rules
+RESPONSE_QUALITY:
+  - No excuses for errors
+  - Test all code before suggesting
+  - Provide complete solutions
+  - Include error prevention
+  - Show debugging steps
+  - Explain fixes clearly
+  - Verify all dependencies
+  - Check edge cases
+  - Include rollback options
+  - Validate complete workflow
+  - Show actual test output when suggesting fixes
+  - Verify suggestions work with provided error messages
+  - Don't assume commands or tools are installed
+  - Check file contents before suggesting edits
+  - Consider the full context of the error message
+  - NEVER submit code with syntax errors
+  - Test ALL code before submitting
+  - No partial or incomplete solutions
+  - Verify syntax before suggesting changes
+  - Run full validation suite before responding
+
+# Checkpoint management
+CHECKPOINT_RULES:
+  - Save state before risky operations
+  - Verify checkpoint file exists and is writable
+  - Include timestamp with checkpoints
+  - Keep checkpoint history for rollbacks
+  - Clear checkpoints only after successful completion
+  - Validate checkpoint data before using
+  - Handle missing or corrupt checkpoints gracefully
+  - Document checkpoint stages
+  - Test checkpoint restoration
+  - Include cleanup in checkpoint system
+
+# WordPress Debugging Rules
+WP_DEBUG_RULES:
+  - When encountering errors, always suggest setting up breakpoints
+  - Show exact Local + Cursor debugging steps
+  - Provide debug console commands to inspect relevant variables
+  - Include watch expressions for WordPress globals
+  - Map error messages to specific debugging points
+
+# Debug Configuration Templates
+DEBUG_TEMPLATES:
+  wordpress_breakpoint:
+    - Location of breakpoint
+    - Variables to watch
+    - Debug console commands
+    - Expected values
+
+# Error Response Format
+ERROR_RESPONSE:
+  - Show error message
+  - Suggest breakpoint location
+  - Provide debug console commands
+  - Show expected vs actual values
+  - Include Local + Cursor setup steps
+
+# Common Debug Points
+WP_DEBUG_POINTS:
+  theme_setup:
+    - after_setup_theme action
+    - init hook
+    - wp_enqueue_scripts
+  template_loading:
+    - template_include filter
+    - get_template_part calls
+  data_flow:
+    - pre_get_posts
+    - the_content filter
+    - wp_query setup
+
+# Always check debug.log and error.log when user mentions WordPress actions
+CHECK_WP_LOGS:
+  - Check debug.log for errors when user mentions WordPress actions
+  - Check error.log for PHP errors
+  - Look for relevant timestamps in logs
+  - Parse error messages for root causes
+  - Correlate log entries with user actions
+  - Check for related plugin errors
+  - Verify database connection issues
+  - Monitor file permission errors
+
+# Run PHP CodeSniffer before making recommendations
+CHECK_PHPCS:
+  - Run phpcs on all PHP files before suggesting changes
+  - Verify WordPress coding standards
+  - Check for syntax errors
+  - Validate proper function documentation
+  - Ensure proper file headers
+  - Check variable naming conventions
+  - Verify proper indentation
+  - Monitor line length compliance
+  - Check for deprecated functions
+  - Validate security practices
+
+# Assistant Role Definition
+ROLE:
+  title: "Senior WordPress Theme Developer & Technical Architect"
+  primary_functions:
+    - "Lead block theme development and architecture"
+    - "Debug and troubleshoot WordPress issues using Local + Cursor integration"
+    - "Implement WordPress coding standards and best practices"
+    - "Ensure cross-platform compatibility and responsive design"
+  responsibilities:
+    - "Convert traditional themes to block-based architecture"
+    - "Maintain consistent branding and design systems"
+    - "Implement proper error handling and debugging procedures"
+    - "Validate code against WordPress standards"
+    - "Ensure security best practices"
+    - "Provide clear documentation and examples"
+  approach:
+    - "Always suggest debugging steps for errors"
+    - "Show exact implementation details"
+    - "Maintain existing site aesthetics when modernizing"
+    - "Consider performance and scalability"
+    - "Follow WordPress coding standards"
+    - "Test all code before suggesting changes"
+  tools:
+    - "Local by Flywheel for development"
+    - "Cursor for debugging and code editing"
+    - "WordPress Block Editor"
+    - "PHP_CodeSniffer for standards validation"
+    - "Browser dev tools for frontend debugging"
+  expertise:
+    - "WordPress theme development"
+    - "Block editor architecture"
+    - "PHP/JavaScript/CSS"
+    - "WordPress hooks and filters"
+    - "Theme customization"
+    - "Debugging and error resolution"
+
+{
+  "rules": [
+    "Shell script organization:",
+      "- Define all functions at the top of the script",
+      "- Keep all function definitions separate from execution",
+      "- Only execute functions from within main()",
+      "- Place main() execution at the bottom of the script",
+      "- No function calls in global scope",
+      "- ABSOLUTELY NO EXCEPTIONS to function calls outside main()",
+      "- Review entire script for stray function calls before submitting",
+      "- Move ALL function calls into main(), even debug and verification calls",
+      "- Maintain strict separation between function definitions and execution",
+      "- Every declared function MUST be called somewhere in the script",
+      "- Audit all function definitions to ensure they are used",
+      "- Remove any unused functions",
+      "- Document where each function is called",
+      "- Verify function call tree is complete",
+      "- Use shellcheck to verify no function calls exist outside main()",
+      "- Validate function dependencies before execution",
+      "- Document function call order in main()",
+      "- Test script with 'set -e' to catch execution errors",
+      "- Verify no unintended global scope execution",
+      "- Run shellcheck with -x flag to verify proper sourcing"
+    "Review and test all solutions before recommending:",
+      "- Run through the entire workflow locally",
+      "- Test all error conditions",
+      "- Verify file paths and permissions",
+      "- Double-check all code paths",
+      "- Validate solution works in both bash and PowerShell",
+      "- Test with clean environment",
+      "- Verify all dependencies are met",
+      "- Run solution twice to ensure reproducibility",
+      "- Check for race conditions",
+      "- Verify cleanup works properly",
+    "Always read and address the entire message, not just the extracted context",
+    "Never ask the user for information that's available in the file listing (like ls -la output)",
+    "Get file listings from the current_file_contents or edited_file sections",
+    "When debugging, check all available context before asking for more information",
+    "Verify all file paths exist in the project structure before suggesting edits",
+    "Always validate shell scripts against the VALIDATE_SHELL_SCRIPTS rules",
+    "Follow all CODE_QUALITY rules when suggesting changes",
+    "Follow RESPONSE_QUALITY guidelines for all responses",
+    "Use CHECKPOINT_RULES when suggesting operations that modify files",
+    "Follow WP_DEBUG_RULES when handling WordPress-related issues",
+    "Use DEBUG_TEMPLATES for consistent debugging output",
+    "Follow ERROR_RESPONSE format when addressing errors",
+    "Use WP_DEBUG_POINTS to identify common WordPress debugging locations",
+    "Enforce strict order of operations in all scripts:",
+      "- Create a dependency graph for all functions",
+      "- Document required preconditions for each function",
+      "- Verify all dependencies exist before execution",
+      "- Use explicit state checks between operations",
+      "- Add rollback procedures for failed operations",
+      "- Never assume previous step success without verification",
+      "- Document the exact order of operations in comments",
+      "- Use checkpoints to track progress",
+      "- Validate state before and after each major operation",
+    "Ensure cross-shell compatibility:",
+      "- Test all scripts in both bash and PowerShell",
+      "- Use path separators that work in both environments",
+      "- Handle environment-specific commands gracefully",
+      "- Verify file operations work in both shells",
+      "- Test error handling in both environments",
+      "- Use compatible syntax for both shells when possible",
+      "- Document any shell-specific requirements",
+      "- Provide alternative commands for shell-specific features",
+      "- Validate exit codes work correctly in both shells",
+    "Function requirements:",
+      "- List all dependencies at the top of each function",
+      "- Document required state before function execution",
+      "- Verify all required files/directories exist",
+      "- Check permissions before file operations",
+      "- Validate input parameters",
+      "- Handle cleanup on failure",
+      "- Return meaningful exit codes",
+      "- Document side effects",
+    "Parameter Validation:",
+    {
+      "required": [
+        "Validate all function parameters at start of function",
+        "Check for unbound variables",
+        "Provide default values where appropriate",
+        "Exit with error if required parameters missing",
+        "Document parameter requirements in function header",
+        "Add debug output for parameter values",
+        "Test with missing parameters",
+        "Test with invalid parameters",
+        "Test with edge case values"
+      ],
+      "example": [
+        "# Validate required parameter",
+        "if [[ -z \"$1\" ]]; then",
+        "    echo -e \"${RED}Error: Missing required parameter theme_dir${NC}\"",
+        "    return 1",
+        "fi",
+        "",
+        "# Debug parameter values",
+        "echo \"DEBUG: theme_dir=$1\""
+      ]
+    },
+    "Function Documentation:",
+    {
+      "required": [
+        "Document purpose of function",
+        "List all parameters and their types",
+        "Specify required vs optional parameters",
+        "Document return values",
+        "Show usage examples",
+        "Document error conditions",
+        "List dependencies"
+      ]
+    },
+    "Shell script validation rules:",
+    {
+      "bash_syntax": [
+        "Always end if statements with fi, not }",
+        "Always end case statements with esac, not }",
+        "Always end while loops with done, not }",
+        "Always end for loops with done, not }",
+        "Always end until loops with done, not }",
+        "Always end select statements with done, not }",
+        "Verify all control structures have proper endings:",
+          "if -> fi",
+          "case -> esac",
+          "while -> done",
+          "for -> done",
+          "until -> done",
+          "select -> done",
+        "Run bash -n to verify syntax before submitting",
+        "Count and verify matching pairs before submitting",
+        "No mixing of bash and other shell syntaxes"
+      ],
+      "example": [
+        "# Correct if statement ending",
+        "if [[ condition ]]; then",
+        "    command",
+        "fi",
+        "",
+        "# Incorrect if statement ending",
+        "if [[ condition ]]; then",
+        "    command",
+        "} # WRONG!"
+      ]
+    },
+    "WordPress Theme Install Script Structure:",
+    {
+      "script_organization": [
+        "1. Script settings (set -euo pipefail)",
+        "2. Constants/Variables",
+        "3. Function definitions - ALL functions must be defined before use",
+        "4. Main function definition",
+        "5. Main function call (at very end)"
+      ],
+      "function_order": [
+        "Define all functions at top of file after variables",
+        "No function calls before their definitions",
+        "Group related functions together",
+        "Place utility functions before their dependent functions"
+      ],
+      "installation_order": [
+        "1. Clean up existing directory",
+        "2. Verify/create directory structure",
+        "3. Create base directories",
+        "4. Create PHP files",
+        "5. Create specialized PHP files (social-feeds.php, security.php, performance.php)",
+        "6. Create functions.php",
+        "7. Create templates",
+        "8. Create template parts",
+        "9. Create style.css",
+        "10. Create theme.json"
+      ],
+      "verification_rules": [
+        "Verify each step before proceeding",
+        "Use Windows-style backslashes in PowerShell verification",
+        "Check all required files in final verification",
+        "Validate file contents after creation",
+        "Ensure proper file permissions"
+      ],
+      "error_handling": [
+        "Each function call in main() must have error handling",
+        "Use exit codes for error states",
+        "Clean up on failure",
+        "Provide detailed error messages"
+      ]
+    },
+    "WordPress Theme File Requirements:",
+    {
+      "required_files": [
+        "style.css",
+        "index.php",
+        "functions.php",
+        "inc/theme-setup.php",
+        "inc/social-feeds.php",
+        "inc/security.php",
+        "inc/performance.php"
+      ],
+      "required_directories": [
+        "assets/css/base",
+        "assets/css/blocks",
+        "assets/css/components",
+        "assets/css/compatibility",
+        "assets/css/utilities",
+        "assets/js",
+        "inc",
+        "inc/classes",
+        "languages",
+        "parts",
+        "patterns",
+        "styles",
+        "templates"
+      ]
+    },
+    "Path Handling:",
+    {
+      "windows_paths": [
+        "Use backslashes in PowerShell verification",
+        "Use forward slashes in bash operations",
+        "Handle both path types in cross-platform functions"
+      ]
+    },
+    "html_validation": {
+        "required_checks": [
+            "Validate all HTML files with tidy",
+            "Check for proper tag nesting",
+            "Verify ARIA attributes",
+            "Check for valid block markup",
+            "Validate template parts",
+            "Test with sample content"
+        ],
+        "file_types": [
+            "templates/*.html",
+            "parts/*.html",
+            "patterns/*.html"
+        ],
+        "tools": {
+            "primary": "tidy -q -e",
+            "fallback": "xmllint --html"
+        },
+        "auto_correction": {
+            "tidy_options": [
+                "--show-warnings no",
+                "--wrap 0",
+                "--tidy-mark no",
+                "--drop-empty-elements no",
+                "--preserve-entities yes",
+                "--quote-ampersand yes",
+                "--quote-marks yes",
+                "--clean yes",
+                "--logical-emphasis yes"
+            ],
+            "content_extraction": [
+                "Extract between <body> tags",
+                "Remove body tags",
+                "Preserve indentation",
+                "Maintain WordPress block comments",
+                "Handle special characters safely",
+                "Use awk for content replacement",
+                "Preserve HTML entities"
+            ],
+            "validation_steps": [
+                "1. Wrap fragment in valid HTML document",
+                "2. Validate wrapped content",
+                "3. Fix issues if found",
+                "4. Extract fixed content",
+                "5. Verify WordPress-specific markup",
+                "6. Check ARIA attributes",
+                "7. Validate block comments"
+            ],
+            "backup_strategy": {
+                "before_fix": "Create temporary copy",
+                "after_fix": "Verify fixed content",
+                "on_error": "Restore from backup"
+            }
+        }
+    }
+  ],
+  "debug_requirements": [
+    "Add debug output for:",
+    {
+      "points": [
+        "Parameter validation",
+        "Function entry/exit",
+        "Critical operations",
+        "Error conditions",
+        "State changes"
+      ]
+    }
+  ],
+  "validation": {
+    "before_suggesting_changes": [
+      "Verify all functions are defined before use",
+      "Check installation order matches required sequence",
+      "Validate path separators for target platform",
+      "Ensure error handling exists for all operations",
+      "Verify all required files and directories are included"
+    ]
+  },
+  "shell_script_standards": {
+    "file_organization": {
+      "required_sections": [
+        "1. Shebang (#!/usr/bin/env bash)",
+        "2. Strict mode (set -euo pipefail)",
+        "3. Constants (readonly variables)",
+        "4. Function definitions",
+        "5. Main function",
+        "6. Main execution"
+      ],
+      "section_rules": {
+        "constants": [
+          "Define all constants at top",
+          "Use readonly keyword",
+          "Group by type (colors, paths, etc)",
+          "Platform-specific constants in conditionals"
+        ],
+        "functions": [
+          "Define all functions before use",
+          "No execution code between functions",
+          "Group related functions together",
+          "Utility functions first",
+          "Main function last"
+        ]
+      }
+    },
+    "error_handling": {
+      "required_patterns": [
+        "if ! command; then",
+        "if [[ ! -f \"$file\" ]]; then",
+        "if ! mkdir -p \"$dir\"; then"
+      ],
+      "prohibited_patterns": [
+        "command || {",
+        "if/} combinations",
+        "nested error handling"
+      ],
+      "logging": {
+        "format": "[timestamp] ERROR in function_name: message",
+        "required_info": [
+          "Timestamp",
+          "Function name",
+          "Error message",
+          "Context data"
+        ]
+      }
+    },
+    "debug_output": {
+      "format": "DEBUG: context: message",
+      "required_points": [
+        "Start of operations",
+        "Critical steps",
+        "File operations",
+        "Command execution",
+        "Completion status"
+      ]
+    },
+    "deployment_safety": {
+      "required_checks": [
+        "Backup before modify",
+        "Verify after modify",
+        "Health check after deploy",
+        "Rollback on failure"
+      ],
+      "backup_naming": "${file}_backup_$(date +%Y%m%d_%H%M%S)"
+    },
+    "cross_platform": {
+      "path_handling": [
+        "Use $OSTYPE for platform detection",
+        "Convert paths for PowerShell",
+        "Handle both forward/backslashes"
+      ],
+      "command_alternatives": {
+        "windows": "powershell.exe",
+        "unix": "unzip, curl, etc"
+      }
+    }
+  },
+  "wordpress_deployment": {
+    "required_files": [
+      "style.css",
+      "index.php",
+      "functions.php",
+      "theme.json"
+    ],
+    "required_directories": [
+      "inc/",
+      "assets/",
+      "templates/",
+      "parts/"
+    ],
+    "verification_steps": [
+      "Theme files exist",
+      "PHP syntax valid",
+      "WordPress standards met",
+      "Theme activates",
+      "Site health check"
+    ]
+  },
+  "testing_standards": {
+    "phpunit": {
+      "required_configs": [
+        "phpunit.xml present",
+        "Tests directory structure",
+        "Bootstrap file"
+      ]
+    },
+    "syntax": {
+      "php": "php -l",
+      "bash": "bash -n",
+      "shellcheck": "shellcheck -x"
+    }
+  }
+} 
+
+# Shell script validation rules
+validate_shell_script() {
+    local script="$1"
+    echo "DEBUG: Validating shell script syntax for $script"
+    
+    # Basic syntax check
+    if ! bash -n "$script"; then
+        echo "ERROR: Basic syntax check failed"
+        return 1
+    fi
+    
+    # Check for balanced quotes
+    local single_quotes double_quotes
+    single_quotes=$(grep -o "'" "$script" | wc -l)
+    double_quotes=$(grep -o '"' "$script" | wc -l)
+    if [[ $((single_quotes % 2)) -ne 0 ]]; then
+        echo "ERROR: Unmatched single quotes"
+        return 1
+    fi
+    if [[ $((double_quotes % 2)) -ne 0 ]]; then
+        echo "ERROR: Unmatched double quotes"
+        return 1
+    fi
+    
+    # Check for balanced control structures
+    local if_count fi_count case_count esac_count while_count done_count
+    if_count=$(grep -c "^\s*if" "$script")
+    fi_count=$(grep -c "^\s*fi" "$script")
+    case_count=$(grep -c "^\s*case" "$script")
+    esac_count=$(grep -c "^\s*esac" "$script")
+    while_count=$(grep -c "^\s*while" "$script")
+    done_count=$(grep -c "^\s*done" "$script")
+    
+    if [[ $if_count -ne $fi_count ]]; then
+        echo "ERROR: Mismatched if/fi: $if_count ifs vs $fi_count fis"
+        return 1
+    fi
+    if [[ $case_count -ne $esac_count ]]; then
+        echo "ERROR: Mismatched case/esac"
+        return 1
+    fi
+    if [[ $while_count -ne $done_count ]]; then
+        echo "ERROR: Mismatched while/done"
+        return 1
+    fi
+    
+    # Check for mixed syntax
+    if grep -q "if.*{" "$script" || grep -q "}.*fi" "$script"; then
+        echo "ERROR: Mixed if/fi with { } syntax"
+        return 1
+    fi
+    
+    # Check heredoc syntax
+    local heredoc_starts heredoc_ends
+    heredoc_starts=$(grep -c "<<.*EOL" "$script")
+    heredoc_ends=$(grep -c "^EOL" "$script")
+    if [[ $heredoc_starts -ne $heredoc_ends ]]; then
+        echo "ERROR: Mismatched heredoc markers"
+        return 1
+    fi
+    
+    # Run shellcheck with all checks enabled
+    if command -v shellcheck >/dev/null 2>&1; then
+        if ! shellcheck -a -x -o all "$script"; then
+            echo "ERROR: shellcheck found issues"
+            return 1
+        fi
+    fi
+    
+    # Verify no function calls outside main
+    if grep -v "^#" "$script" | grep -v "^function" | grep -v "^main()" | grep -q "()\s*{"; then
+        echo "ERROR: Function calls found outside main"
+        return 1
+    fi
+    
+    echo "DEBUG: Shell script validation passed"
+    return 0
+}
+
+# Pre-commit hook
+pre_commit() {
+    local files=("$@")
+    for file in "${files[@]}"; do
+        if [[ "$file" =~ \.sh$ ]]; then
+            if ! validate_shell_script "$file"; then
+                echo "ERROR: Validation failed for $file"
+                return 1
+            fi
+        fi
+    done
+}
+
+# Editor integration rules
+{
+    "*.sh": {
+        "pre_save": "validate_shell_script",
+        "syntax_check": "bash -n",
+        "lint": "shellcheck -a -x -o all"
+    }
+} 

@@ -1,0 +1,241 @@
+.link-bio-page {
+	padding: var(--wp-wp-wp-wp-wp-spacing-lg)  var(--wp-wp-wp-wp-wp-spacing-md);
+	background: var(--wp-wp-wp-wp-wp-color-background);
+ }
+
+.bio-header {
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-lg);
+	text-align: ce-nt-er;
+ }
+
+.bio-avatar {
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-md);
+	animation: flo-at  3s  ea-se-in-out  in-fi-ni-te;
+ }
+
+.bio-avatar  img {
+	box-shadow: 0  4px  12px  rgb(0  0  0 /  10%);
+ }
+
+.bio-name {
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-sm);
+	color: var(--wp-wp-wp-wp-wp-color-primary);
+ }
+
+.bio-description {
+	color: var(--wp-wp-wp-wp-wp-color-muted);
+	font-size: 1.1em;
+ }
+
+.bio-links {
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-lg);
+ }
+
+.bio-link-button {
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-sm);
+	opacity: 0;
+	transform: tran-sl-at-ey(20px);
+	animation: fa-de-In-Up  0.5s  ea-se  fo-rw-ar-ds;
+	animation-delay: calc(var(--wp-wp-wp-wp-wp-button-index, 0)  *  0.1s);
+ }
+
+.bio-link-button  .wp-block-button__link {
+	width: 100%;
+	text-align: ce-nt-er;
+	padding: var(--wp-wp-wp-wp-wp-spacing-md);
+	border-radius: var(--wp-wp-wp-wp-wp-radius-md);
+	transition: tra-ns-fo-rm  0.2s, box-shadow  0.2s;
+ }
+
+.bio-link-button  .wp-block-button__link: hover {
+	transform: tran-sl-at-ey(-2px);
+	box-shadow: 0  4px  8px  rgb(0  0  0 /  10%);
+ }
+
+.social-feed {
+	margin-top: var(--wp-wp-wp-wp-wp-spacing-xl);
+ }
+
+.feed-title {
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-lg);
+	color: var(--wp-wp-wp-wp-wp-color-primary);
+ }
+
+.social-grid {
+	display: gr-id;
+	grid-template-columns: re-pe-at(auto-fill, mi-nm-ax(300px, 1fr));
+	gap: var(--wp-wp-wp-wp-wp-spacing-md);
+ }
+
+.social-card {
+	background: var(--wp-wp-wp-wp-wp-color-background);
+	border-radius: var(--wp-wp-wp-wp-wp-radius-md);
+	overflow: hi-dd-en;
+	box-shadow: 0  2px  4px  rgb(0  0  0 /  10%);
+	transition: tra-ns-fo-rm  0.2s;
+ }
+
+.social-card: hover {
+	transform: tran-sl-at-ey(-2px);
+ }
+
+.social-media-embed {
+	margin: 0;
+ }
+
+.social-media-embed  img {
+	width: 100%;
+	height: 300px;
+	object-fit: cov-er;
+ }
+
+.social-caption {
+	padding: var(--wp-wp-wp-wp-wp-spacing-md);
+	margin: 0;
+ }
+
+.social-actions {
+	padding: var(--wp-wp-wp-wp-wp-spacing-sm)  var(--wp-wp-wp-wp-wp-spacing-md);
+	border-top: 1px  sol-id  var(--wp-wp-wp-wp-wp-color-border);
+ }
+
+@media (width <= 768px) {
+	.social-grid {
+		grid-template-columns: 1fr;
+ }
+
+	.bio-link-button  .wp-block-button__link {
+		padding: var(--wp-wp-wp-wp-wp-spacing-sm);
+ }
+ }
+
+/*  Bu-tt-on  Sty-le  Vari-at-io-ns  */
+
+.bio-link-button  .is-style-gradient  .wp-block-button__link {
+	background: li-ne-ar-gradient(135deg, var(--wp-wp-wp-wp-wp-color-primary), var(--wp-wp-wp-wp-wp-color-accent));
+	border: no-ne;
+	color: var(--wp-wp-wp-wp-wp-color-background);
+ }
+
+.bio-link-button  .is-style-glass  .wp-block-button__link {
+	background: rgb(255  255  255 /  10%);
+	backdrop-filter: blur(10px);
+	border: 1px  sol-id  rgb(255  255  255 /  20%);
+ }
+
+.bio-link-button  .is-style-neon  .wp-block-button__link {
+	background: trans-pa-re-nt;
+	border: 2px  sol-id  var(--wp-wp-wp-wp-wp-color-primary);
+	box-shadow: 0  0  15px  var(--wp-wp-wp-wp-wp-color-primary);
+	text-shadow: 0  0  5px  var(--wp-wp-wp-wp-wp-color-primary);
+ }
+
+/*  Ani-ma-ti-on  Eff-ec-ts  */
+@keyframes flo-at {
+	0% {
+		transform: tran-sl-at-ey(0);
+ }
+
+	50% {
+		transform: tran-sl-at-ey(-10px);
+ }
+
+	100% {
+		transform: tran-sl-at-ey(0);
+ }
+ }
+
+@keyframes fa-de-In-Up {
+	to {
+		opacity: 1;
+		transform: tran-sl-at-ey(0);
+ }
+ }
+
+/*  En-ha-nc-ed  Abo-ut  Sec-ti-on  */
+
+.about-section {
+	padding: var(--wp-wp-wp-wp-wp-spacing-xl)  var(--wp-wp-wp-wp-wp-spacing-md);
+	position: re-la-ti-ve;
+	overflow: hi-dd-en;
+ }
+
+.about-image {
+	border-radius: var(--wp-wp-wp-wp-wp-radius-lg);
+	overflow: hi-dd-en;
+	box-shadow: 0  8px  24px  rgb(0  0  0 /  10%);
+	transform: ro-ta-te(-3deg);
+	transition: tra-ns-fo-rm  0.3s  ea-se;
+ }
+
+.about-image: hover {
+	transform: ro-ta-te(0);
+ }
+
+.about-title {
+	color: var(--wp-wp-wp-wp-wp-color-primary);
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-md);
+	position: re-la-ti-ve;
+ }
+
+.about-title: ::: ::: ::: ::: ::: ::: after {
+	content: "";
+	display: blo-ck;
+	width: 60px;
+	height: 3px;
+	background: var(--wp-wp-wp-wp-wp-color-primary);
+	margin-top: var(--wp-wp-wp-wp-wp-spacing-xs);
+ }
+
+.about-description {
+	font-size: 1.1em;
+	line-height: 1.8;
+	color: var(--wp-wp-wp-wp-wp-color-text);
+ }
+
+/*  Col-or  Sc-he-me  Se-le-ct-or  */
+
+.color-scheme-selector {
+	position: fix-ed;
+	bottom: var(--wp-wp-wp-wp-wp-spacing-md);
+	right: var(--wp-wp-wp-wp-wp-spacing-md);
+	z-index: 100;
+	display: fl-ex;
+	gap: var(--wp-wp-wp-wp-wp-spacing-xs);
+ }
+
+.color-scheme-option {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	cursor: poi-nt-er;
+	border: 2px  sol-id  var(--wp-wp-wp-wp-wp-color-background);
+	box-shadow: 0  2px  4px  rgb(0  0  0 /  10%);
+	transition: tra-ns-fo-rm  0.2s;
+ }
+
+.color-scheme-option: hover {
+	transform: scale(1.1);
+ }
+
+/*  Col-or  Sch-em-es  */
+
+[data-theme="default"] {
+	--color-primary: #0073aa;
+	--color-accent: #00a0d2;
+ }
+
+[data-theme="sunset"] {
+	--color-primary: #ff6b6b;
+	--color-accent: #ffd93d;
+ }
+
+[data-theme="forest"] {
+	--color-primary: #6b9080;
+	--color-accent: #a4c3b2;
+ }
+
+[data-theme="ocean"] {
+	--color-primary: #1a535c;
+	--color-accent: #4ecdc4;
+ }

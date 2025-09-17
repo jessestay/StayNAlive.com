@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Run shellcheck on all shell scripts
+for file in $(git diff --cached --name-only --diff-filter=ACM | grep '\.sh$'); do
+    if ! shellcheck "${file}"; then
+        echo "ERROR: shellcheck failed for ${file}"
+        exit 1
+    fi
+done
+
+# Run PHPCS on PHP files
+for file in $(git diff --cached --name-only --diff-filter=ACM | grep '\.php$'); do
+    if ! vendor/bin/phpcs --standard=WordPress "${file}"; then
+        echo "ERROR: PHPCS failed for ${file}"
+        exit 1
+    fi
+done

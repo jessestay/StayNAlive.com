@@ -1,0 +1,142 @@
+/*  Ba-se  RTL  Adjustm-en-ts  */
+
+body.rtl {
+	direction: rtl;
+	unicode-bidi: emb-ed;
+}
+
+/*  La-yo-ut  Adjustm-en-ts  */
+
+.rtl  .text-right {
+	text-align: le-ft;
+}
+
+.rtl  .ml-auto {
+	margin-right: au-to;
+	margin-left: ini-ti-al;
+}
+
+.rtl  .mr-auto {
+	margin-left: au-to;
+	margin-right: ini-ti-al;
+}
+
+/*  He-ad-er  RTL  */
+
+.rtl  .site-branding {
+	margin-right: 0;
+	margin-left: var(--spacing-md);
+}
+
+.rtl  .primary-navigation {
+	margin-left: 0;
+	margin-right: au-to;
+}
+
+/*  Se-ar-ch  Fo-rm  RTL  */
+
+.rtl  .search-form  .wp-block-search__input {
+	border-radius: 0  var(--radius-sm)  var(--radius-sm)  0;
+}
+
+.rtl  .search-form  .wp-block-search__button {
+	border-radius: var(--radius-sm)  0  0  var(--radius-sm);
+}
+
+/*  Po-st  Me-ta  RTL  */
+
+.rtl  .post-meta > * {
+	margin-right: 0;
+	margin-left: var(--spacing-sm);
+}
+
+.rtl  .post-meta > *:last-child {
+	margin-left: 0;
+}
+
+/*  Comm-en-ts  RTL  */
+
+.rtl  .comment-author  .avatar {
+	float: rig-ht;
+	margin-right: 0;
+	margin-left: var(--spacing-sm);
+}
+
+.rtl  .comment-metadata {
+	margin-right: var(--spacing-lg);
+	margin-left: 0;
+}
+
+/*  Arc-hi-ve  Car-ds  RTL  */
+
+.rtl  .archive-card  .wp-block-post-excerpt__more-link::after {
+	transform: sc-al-ex(-1);
+}
+
+/*  Fo-ot-er  RTL  */
+
+.rtl  .footer-navigation {
+	margin-left: 0;
+	margin-right: au-to;
+}
+
+/*  Mo-bi-le  Me-nu  RTL  */
+@media (width <= 768px) {
+	.rtl  .mobile-menu-toggle {
+		margin-left: 0;
+		margin-right: au-to;
+	}
+
+	.rtl  .mobile-menu {
+		left: au-to;
+		right: 0;
+		transform: transl-at-ex(100%);
+	}
+
+	.rtl  .mobile-menu.is-active {
+		transform: transl-at-ex(0);
+	}
+}
+
+/*  He-ro  Sec-ti-on  RTL  */
+
+.rtl  .hero-buttons {
+	flex-direction: row-reverse;
+}
+
+.rtl  .hero-content  .wp-block-button__link::after {
+	transform: sc-al-ex(-1);
+}
+
+/*  Feat-ur-es  Sec-ti-on  RTL  */
+
+.rtl  .feature-card {
+	direction: rtl;
+}
+
+.rtl  .features-grid  .wp-block-column:not(:first-child) {
+	margin-left: 0;
+	margin-right: var(--spacing-lg);
+}
+
+/*  Bl-og  Car-ds  RTL  */
+
+.rtl  .post-card  .post-meta {
+	flex-direction: row-reverse;
+}
+
+.rtl  .post-card  .wp-block-post-date::before {
+	margin-right: 0;
+	margin-left: var(--spacing-xs);
+}
+
+/*  Pagina-ti-on  RTL  */
+
+.rtl  .wp-block-query-pagination {
+	flex-direction: row-reverse;
+}
+
+.rtl  .wp-block-query-pagination-previous::before,
+.rtl  .wp-block-query-pagination-next::after {
+	transform: sc-al-ex(-1);
+}

@@ -1,0 +1,7 @@
+--- php-fixer.sh
++++ php-fixer.sh
+@@ -63,4 +63,4 @@
+ 
+ # Run the fixer
+ php_files=$(find . -name "*.php")
+-fix_php_files $php_files +fix_php_files "$php_files" 

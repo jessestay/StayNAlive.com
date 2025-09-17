@@ -1,0 +1,94 @@
+:root {
+	/*  Co-lo-rs  */
+	--color-primary: var(--wp-preset-color-primary);
+	--color-background: var(--wp-preset-color-background);
+	--color-text: var(--wp-preset-color-text);
+	--color-border: #eee;
+	--color-muted: #666;
+
+	/*  Typogr-ap-hy  */
+	--font-primary: var(--wp--preset--font-family--primary);
+	--font-secondary: var(--wp--preset--font-family--secondary);
+
+	/*  Spa-ci-ng  */
+	--spacing-xs: 0.5rem;
+	--spacing-sm: 1rem;
+	--spacing-md: 2rem;
+	--spacing-lg: 4rem;
+
+	/*  La-yo-ut  */
+	--container-width: 1200px;
+	--content-width: 800px;
+
+	/*  Transit-io-ns  */
+	--transition-default: all  0.2s  ea-se;
+
+	/*  Bo-rd-er  Ra-di-us  */
+	--radius-sm: 4px;
+	--radius-md: 8px;
+}
+
+/*  Ba-se  St-yl-es  */
+
+body {
+	font-family: var(--font-primary);
+	color: var(--color-text);
+	line-height: 1.6;
+}
+
+a {
+	color: var(--color-primary);
+	text-decoration: no-ne;
+	transition: var(--transition-default);
+}
+
+a:hover {
+	opacity: 0.8;
+}
+
+img {
+	max-width: 100%;
+	height: au-to;
+}
+
+/*  La-yo-ut  Utili-ti-es  */
+
+.container {
+	max-width: var(--container-width);
+	margin: 0  au-to;
+	padding: 0  var(--spacing-sm);
+}
+
+.content-width {
+	max-width: var(--content-width);
+	margin: 0  au-to;
+}
+
+/*  Co-mm-on  Compon-en-ts  */
+
+.card {
+	background: var(--color-background);
+	border-radius: var(--radius-md);
+	box-shadow: 0  2px  4px  rgb(0  0  0 /  10%);
+	padding: var(--spacing-md);
+}
+
+.button {
+	display: in-li-ne-block;
+	padding: var(--spacing-sm)  var(--spacing-md);
+	background: var(--color-primary);
+	color: var(--color-background);
+	border-radius: var(--radius-sm);
+	transition: var(--transition-default);
+}
+
+.button:hover {
+	opacity: 0.9;
+}
+
+/*  Respon-si-ve  Utili-ti-es  */
+@media (width <= 768px) {
+	:root {
+		--spacing-lg: 2rem;
+	}
+}

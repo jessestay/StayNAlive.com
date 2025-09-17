@@ -1,0 +1,144 @@
+{
+    "version": 2,
+    "name": "stay-n-alive",
+    "description": "A modern block theme for StayNAlive.com",
+    "author": "Jesse Stay",
+    "textdomain": "stay-n-alive",
+    "keywords": ["blog", "portfolio", "business"],
+    "editorStyle": "file:./assets/css/blocks/custom-styles.css",
+    "style": "file:./assets/css/blocks/custom-styles.css",
+    "patterns": [
+        "staynalive/hero-section",
+        "staynalive/expertise-section",
+        "staynalive/featured-posts",
+        "staynalive/cta-section"
+    ],
+    "template": [
+        ["core/template-part", {"slug": "header", "tagName": "header"}],
+        ["core/group", {"tagName": "main", "layout": {"type": "constrained"}}],
+        ["core/template-part", {"slug": "footer", "tagName": "footer"}]
+    ],
+    "templates": [
+        {
+            "name": "front-page",
+            "title": "Front Page",
+            "postTypes": ["page"],
+            "description": "The main homepage template that displays your hero section, expertise, and featured content."
+        },
+        {
+            "name": "index",
+            "title": "Index",
+            "postTypes": ["page", "post"],
+            "description": "The default template for displaying content."
+        }
+    ],
+    "templateParts": [
+        {
+            "name": "header",
+            "title": "Header",
+            "area": "header"
+        },
+        {
+            "name": "footer",
+            "title": "Footer",
+            "area": "footer"
+        }
+    ],
+    "defaultTemplateTypes": {
+        "home": "front-page",
+        "front-page": "front-page",
+        "single": "single",
+        "page": "page",
+        "archive": "archive",
+        "404": "404"
+    },
+    "settings": {
+        "color": {
+            "palette": [
+                {
+                    "name": "Primary",
+                    "slug": "primary",
+                    "color": "#2c3e50"
+                },
+                {
+                    "name": "Secondary",
+                    "slug": "secondary",
+                    "color": "#6c757d"
+                },
+                {
+                    "name": "Background",
+                    "slug": "background",
+                    "color": "#ffffff"
+                },
+                {
+                    "name": "Light",
+                    "slug": "light",
+                    "color": "#f8f9fa"
+                }
+            ]
+        },
+        "typography": {
+            "fontSizes": [
+                {
+                    "name": "Small",
+                    "slug": "small",
+                    "size": "0.9rem"
+                },
+                {
+                    "name": "Regular",
+                    "slug": "regular",
+                    "size": "1rem"
+                },
+                {
+                    "name": "Large",
+                    "slug": "large",
+                    "size": "1.5rem"
+                },
+                {
+                    "name": "Extra Large",
+                    "slug": "x-large",
+                    "size": "4rem"
+                }
+            ],
+            "fontFamilies": [
+                {
+                    "name": "System Font",
+                    "slug": "system",
+                    "fontFamily": "-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,\"Helvetica Neue\",Arial,sans-serif"
+                }
+            ]
+        },
+        "layout": {
+            "contentSize": "800px",
+            "wideSize": "1200px"
+        },
+        "spacing": {
+            "units": ["px", "rem", "em", "%", "vh", "vw"]
+        }
+    },
+    "styles": {
+        "elements": {
+            "h1": {
+                "typography": {
+                    "fontFamily": "var(--wp--preset--font-family--system)",
+                    "fontWeight": "700",
+                    "lineHeight": "1.1"
+                }
+            },
+            "h2": {
+                "typography": {
+                    "fontFamily": "var(--wp--preset--font-family--system)",
+                    "fontWeight": "600",
+                    "lineHeight": "1.2"
+                }
+            },
+            "h3": {
+                "typography": {
+                    "fontFamily": "var(--wp--preset--font-family--system)",
+                    "fontWeight": "600",
+                    "lineHeight": "1.3"
+                }
+            }
+        }
+    }
+} 

@@ -1,0 +1,73 @@
+{
+  "name": "staynalive",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A modern block-based theme for Stay N Alive",
+  "author": "Jesse Stay",
+  "license": "GPL-2.0-or-later",
+  "keywords": [
+    "WordPress",
+    "Theme",
+    "Blocks",
+    "FSE"
+  ],
+  "homepage": "https://staynalive.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jessestay/staynalive.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jessestay/staynalive/issues"
+  },
+  "devDependencies": {
+    "@wordpress/eslint-plugin": "^17.0.0",
+    "@wordpress/scripts": "^26.0.0",
+    "@wordpress/stylelint-config": "^21.0.0",
+    "stylelint-config-standard": "^34.0.0",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.57.0",
+    "husky": "^8.0.3",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.24",
+    "postcss-cli": "^10.1.0",
+    "postcss-import": "^15.1.0",
+    "postcss-preset-env": "^8.0.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0",
+    "stylelint": "^15.0.0",
+    "jest": "^29.0.0",
+    "@playwright/test": "^1.40.0"
+  },
+  "browserslist": [
+    "extends @wordpress/browserslist-config"
+  ],
+  "scripts": {
+    "preinstall": "npx only-allow npm",
+    "prepare": "husky install",
+    "dev": "wp-env start",
+    "dev:setup": "bash setup-dev.sh",
+    "dev:stop": "wp-env stop",
+    "dev:clean": "wp-env clean",
+    "build": "ai-fix watch -- npm run build",
+    "build:css": "postcss assets/css/**/*.css --dir build/css",
+    "build:js": "wp-scripts build",
+    "clean": "rimraf build dist",
+    "lint": "npm-run-all --continue-on-error --parallel lint:*",
+    "lint:css": "stylelint 'assets/css/**/*.css' --fix",
+    "lint:js": "eslint assets/js/ --fix",
+    "lint:php": "composer run-script lint || true",
+    "typecheck": "tsc --noEmit",
+    "format": "npm-run-all --continue-on-error --parallel format:*",
+    "format:css": "prettier --write 'assets/css/**/*.css'",
+    "format:js": "prettier --write 'assets/js/**/*.js'",
+    "format:php": "composer run-script format",
+    "start": "wp-scripts start",
+    "test": "ai-fix watch -- npm test",
+    "test:php": "./vendor/bin/phpunit --testdox --coverage-html coverage",
+    "test:js": "jest --coverage",
+    "test:e2e": "playwright test",
+    "test:performance": "playwright test tests/performance/",
+    "test:report": "node scripts/generate-test-report.js",
+    "test:ci": "npm-run-all test:* test:report"
+  }
+}

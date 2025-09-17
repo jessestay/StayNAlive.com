@@ -1,0 +1,132 @@
+{
+    "phpcs.enable": true,
+    "phpcs.executablePath": "C:\\Users\\stay\\AppData\\Roaming\\Composer\\vendor\\bin\\phpcs.bat",
+    "phpcs.standard": ".phpcs.xml.dist",
+    "phpcs.showWarnings": false,
+    "phpcs.warningSeverity": 7,
+    "phpcs.errorSeverity": 7,
+    "phpcs.trace.server": "messages",
+    "phpcs.ignorePatterns": [
+        "*/vendor/*",
+        "*/node_modules/*"
+    ],
+    "shellcheck.enable": true,
+    "shellcheck.useWorkspaceRootAsCwd": true,
+    "shellcheck.run": "onType",
+    "shellcheck.executablePath": "shellcheck",
+    "shellcheck.customArgs": [
+        "--shell=bash",
+        "--external-sources",
+        "--check-sourced",
+        "--enable=all",
+        "--severity=style"
+    ],
+    "shellformat.flag": "-i 4 -ci -bn -sr",
+    "files.associations": {
+        "*.sh": "shellscript",
+        "*.bash": "shellscript",
+        ".bashrc": "shellscript",
+        ".bash_*": "shellscript"
+    },
+    "[shellscript]": {
+        "editor.defaultFormatter": "foxundermoon.shell-format",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.fixAll.shellcheck": "explicit",
+            "source.organizeImports": "explicit"
+        },
+        "editor.rulers": [80],
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation": false,
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 80,
+        "editor.suggest.showKeywords": true,
+        "editor.quickSuggestions": {
+            "comments": true,
+            "strings": true,
+            "other": true
+        }
+    },
+    "shellLauncher.shells.windows": [
+        {
+            "shell": "C:\\Program Files\\Git\\bin\\bash.exe",
+            "label": "Git Bash"
+        }
+    ],
+    "shellcheck.ignorePatterns": {
+        "**/*.zsh": true,
+        "**/*.fish": true
+    },
+    "shellcheck.enableQuickFix": true,
+    "shellcheck.useWSL": false,
+    "shellcheck.disableVersionCheck": false,
+    "better-comments.tags": [
+        {
+            "tag": "DEBUG:",
+            "color": "#FF8C00",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+        {
+            "tag": "ERROR:",
+            "color": "#FF0000",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        }
+    ],
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "terminal.integrated.profiles.windows": {
+        "Git Bash": {
+            "path": "C:\\Program Files\\Git\\bin\\bash.exe",
+            "args": ["--login", "-i"]
+        }
+    },
+    "problemMatcher": [
+        {
+            "owner": "shellcheck",
+            "pattern": [
+                {
+                    "regexp": "^(.+):(\\d+):(\\d+):\\s+(note|warning|error):\\s+(.+)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            ]
+        }
+    ],
+    "php.debug.ideKey": "VSCODE",
+    "php.debug.executablePath": "php",
+    "php.validate.executablePath": "php",
+    "php.debug.port": 9003,
+    "php.debug.ignore": [
+        "**/vendor/**/*.php"
+    ],
+    "debug.javascript.autoAttachFilter": "disabled",
+    "debug.allowBreakpointsEverywhere": false,
+    "debug.showInStatusBar": "never",
+    "debug.internalConsoleOptions": "neverOpen",
+    "problems.autoReveal": true,
+    "problems.showCurrentInStatus": true,
+    "errorLens.enabled": true,
+    "errorLens.enabledDiagnosticLevels": [
+        "error",
+        "warning",
+        "info"
+    ],
+    "output.smartScroll.enabled": true,
+    "terminal.integrated.enablePersistentSessions": false,
+    "cSpell.words": [
+        "dealerdirect",
+        "Dziewoński",
+        "esac",
+        "Folmer",
+        "staynalive"
+    ]
+}

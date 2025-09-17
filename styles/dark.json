@@ -1,0 +1,31 @@
+{
+    "version": 2,
+    "title": "Dark Mode",
+    "settings": {
+        "color": {
+            "palette": [
+                {
+                    "name": "Background",
+                    "slug": "background",
+                    "color": "#1a1a1a"
+                },
+                {
+                    "name": "Text",
+                    "slug": "text",
+                    "color": "#ffffff"
+                },
+                {
+                    "name": "Primary",
+                    "slug": "primary",
+                    "color": "#ff4444"
+                }
+            ]
+        }
+    },
+    "styles": {
+        "color": {
+            "background": "#1a1a1a",
+            "text": "#ffffff"
+        }
+    }
+} 

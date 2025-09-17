@@ -1,0 +1,63 @@
+#!/usr/bin/env php
+<?php
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use StayNAlive\ThemeBuilder\Install;
+use StayNAlive\ThemeBuilder\Deploy;
+
+// Parse command line arguments
+$options = getopt('', [
+    'action:',
+    'source-dir::',
+    'target-url::',
+    'output-zip::',
+    'local-url::'
+]);
+
+$action = $options['action'] ?? 'analyze';
+
+try {
+    switch ($action) {
+        case 'analyze':
+            $installer = new Install([
+                'source_dir' => $options['source-dir'] ?? 'src/theme',
+                'target_url' => $options['target_url'] ?? null,
+                'output_zip' => $options['output-zip'] ?? 'theme.zip'
+            ]);
+
+            // Validate structure
+            $result = $installer->validateThemeStructure();
+            echo "Theme structure validation: " . ($result ? "PASSED" : "FAILED") . "\n";
+
+            // Analyze target site
+            if ($options['target-url']) {
+                $analysis = $installer->analyzeTargetSite();
+                echo "\nTheme Analysis Results:\n";
+                echo json_encode($analysis, JSON_PRETTY_PRINT) . "\n";
+            }
+            break;
+
+        case 'deploy':
+            $deployer = new Deploy([
+                'theme_zip' => $options['output-zip'] ?? 'theme.zip',
+                'local_url' => $options['local-url'] ?? null,
+                'target_url' => $options['target-url'] ?? null
+            ]);
+
+            $deployer->deployToLocal();
+            echo "Theme deployed successfully!\n";
+
+            if ($options['target-url']) {
+                $comparison = $deployer->compareWithTarget();
+                echo "\nComparison Results:\n";
+                echo json_encode($comparison, JSON_PRETTY_PRINT) . "\n";
+            }
+            break;
+
+        default:
+            throw new Exception("Unknown action: $action");
+    }
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage() . "\n";
+    exit(1);
+} 

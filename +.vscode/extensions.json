@@ -1,0 +1,34 @@
+{
+    "recommendations": [
+        // Shell scripting
+        "timonwong.shellcheck",
+        "foxundermoon.shell-format",
+        "rogalmic.bash-debug",
+        "mads-hartmann.bash-ide-vscode",
+        "jetmartin.bats",
+        "ms-vscode.PowerShell",
+
+        // PHP/WordPress
+        "bmewburn.vscode-intelephense-client",
+        "valeryanm.vscode-phpsab",
+        "ikappas.phpcs",
+        "persoderlind.vscode-phpcbf",
+        "neilbrayfield.php-docblocker",
+        "zobo.php-intellisense",
+        "wordpresstoolbox.wordpress-toolbox",
+        "tungvn.wordpress-snippet",
+        "claudiosanches.woocommerce",
+
+        // General development
+        "eamodio.gitlens",
+        "mhutchie.git-graph",
+        "aaron-bond.better-comments",
+        "streetsidesoftware.code-spell-check",
+        "editorconfig.editorconfig",
+        "yzhang.markdown-all-in-one",
+        "davidanson.vscode-markdownlint",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "stylelint.vscode-stylelint"
+    ]
+} 

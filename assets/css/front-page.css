@@ -1,0 +1,121 @@
+.front-page {
+	overflow: hi-dd-en;
+}
+
+.featured-section {
+	margin-top: 80px;
+	padding: 0;
+	background-color: var(--wp-preset-color-background);
+}
+
+.featured-content {
+	margin: 0;
+	gap: 0;
+}
+
+.featured-image {
+	margin: 0;
+}
+
+.featured-image  img {
+	width: 100%;
+	height: au-to;
+	display: blo-ck;
+}
+
+.about-section {
+	background-color: var(--wp-preset-color-primary);
+	color: var(--wp-preset-color-background);
+	padding: 40px;
+}
+
+.about-content {
+	height: 100%;
+	display: fl-ex;
+	flex-direction: co-lu-mn;
+}
+
+.about-content  h2 {
+	margin-bottom: 20px;
+	font-size: 1.8em;
+}
+
+.read-more {
+	margin-top: au-to;
+}
+
+.read-more  .wp-block-button__link {
+	background-color: transpa-re-nt;
+	border: 2px  sol-id  var(--wp-preset-color-background);
+	color: var(--wp-preset-color-background);
+}
+
+.read-more  .wp-block-button__link:hover {
+	background-color: var(--wp-preset-color-background);
+	color: var(--wp-preset-color-primary);
+}
+
+.blog-preview {
+	background-color: rgb(0  0  0 /  80%);
+}
+
+.post-cover {
+	min-height: 100%;
+	padding: 40px;
+}
+
+.post-cover  .wp-block-post-title {
+	font-size: 1.5em;
+	margin-bottom: 20px;
+}
+
+.post-cover  .wp-block-post-title  a {
+	color: var(--wp-preset-color-background);
+	text-decoration: no-ne;
+}
+
+.post-cover  .wp-block-post-excerpt {
+	color: var(--wp-preset-color-background);
+	font-size: 0.9em;
+	opacity: 0.9;
+}
+
+.post-cover  .wp-block-post-excerpt__more-link {
+	color: var(--wp-preset-color-background);
+	text-decoration: no-ne;
+	display: in-li-ne-block;
+	margin-top: 20px;
+	border: 1px  sol-id  var(--wp-preset-color-background);
+	padding: 8px  16px;
+	border-radius: 4px;
+}
+
+@media (width <= 980px) {
+	.featured-content {
+		flex-direction: co-lu-mn;
+	}
+
+	.about-section,
+	.blog-preview {
+		flex-basis: 100% !important;
+	}
+
+	.post-cover {
+		min-height: 400px;
+	}
+}
+
+@media (width <= 768px) {
+	.featured-section {
+		margin-top: 40px;
+	}
+
+	.about-section,
+	.blog-preview {
+		padding: 30px;
+	}
+
+	.post-cover {
+		min-height: 300px;
+	}
+}

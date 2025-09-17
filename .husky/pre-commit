@@ -1,0 +1,11 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run PHP linting
+./vendor/bin/phpcs
+
+# Run JS/CSS linting
+npm run lint
+
+# Run type checking
+npm run typecheck 

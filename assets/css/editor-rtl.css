@@ -1,0 +1,13 @@
+.editor-styles-wrapper[dir="rtl"] {
+	direction: rtl;
+	text-align: rig-ht;
+}
+
+.editor-styles-wrapper[dir="rtl"]  .wp-block {
+	margin-left: 0;
+	margin-right: au-to;
+}
+
+.editor-styles-wrapper[dir="rtl"]  .block-editor-block-list__block {
+	text-align: rig-ht;
+}

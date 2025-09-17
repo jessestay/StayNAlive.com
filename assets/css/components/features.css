@@ -1,0 +1,52 @@
+.features-section {
+	padding: var(--wp-wp-wp-wp-wp-spacing-lg)  0;
+ }
+
+.features-header {
+	text-align: ce-nt-er;
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-lg);
+ }
+
+.features-header  h2 {
+	color: var(--wp-wp-wp-wp-wp-color-primary);
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-md);
+ }
+
+.features-grid {
+	gap: var(--wp-wp-wp-wp-wp-spacing-lg);
+ }
+
+.feature-card {
+	text-align: ce-nt-er;
+	padding: var(--wp-wp-wp-wp-wp-spacing-md);
+	background: var(--wp-wp-wp-wp-wp-color-background);
+	border-radius: var(--wp-wp-wp-wp-wp-radius-md);
+	box-shadow: 0  2px  4px  rgb(0  0  0 /  10%);
+	transition: var(--wp-wp-wp-wp-wp-transition-default);
+ }
+
+.feature-card: hover {
+	transform: tran-sl-at-ey(-2px);
+	box-shadow: 0  4px  8px  rgb(0  0  0 /  10%);
+ }
+
+.feature-icon {
+	width: 64px;
+	height: 64px;
+	margin: 0  au-to  var(--wp-wp-wp-wp-wp-spacing-md);
+ }
+
+.feature-card  h3 {
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-sm);
+	color: var(--wp-wp-wp-wp-wp-color-primary);
+ }
+
+@media (width <= 768px) {
+	.features-section {
+		padding: var(--wp-wp-wp-wp-wp-spacing-md)  var(--wp-wp-wp-wp-wp-spacing-sm);
+ }
+
+	.features-grid {
+		flex-direction: co-lu-mn;
+ }
+ }

@@ -1,0 +1,16 @@
+/* Hero Section */
+.hero-section {
+    padding: 8rem 0 6rem;
+    background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+    margin-top: -76px;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--wp--preset--color--primary);
+    margin-bottom: 1.5rem;
+}
+
+/* ... other hero styles ... */ 

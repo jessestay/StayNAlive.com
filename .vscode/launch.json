@@ -1,0 +1,157 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "Debug install.sh",
+            "program": "${workspaceFolder}/install.sh",
+            "cwd": "${workspaceFolder}",
+            "args": []
+        },
+        {
+            "type": "PowerShell",
+            "request": "launch",
+            "name": "Debug PowerShell Scripts",
+            "script": "${file}",
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug PHP",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                "/var/www/html": "${workspaceFolder}"
+            }
+        },
+        {
+            "args": [
+                "--extensionDevelopmentPath=${workspaceFolder}"
+            ],
+            "name": "Launch Extension",
+            "outFiles": [
+                "${workspaceFolder}/out/**/*.js"
+            ],
+            "preLaunchTask": "npm",
+            "request": "launch",
+            "type": "extensionHost"
+        },
+
+        /*{
+            "name": "Listen for Xdebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9003
+        },*/
+        /*{
+            "name": "Launch currently open script",
+            "type": "php",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${fileDirname}",
+            "port": 0,
+            "runtimeArgs": [
+                "-dxdebug.start_with_request=yes"
+            ],
+            "env": {
+                "XDEBUG_MODE": "debug,develop",
+                "XDEBUG_CONFIG": "client_port=${port}"
+            }
+        },
+        /*{
+            "name": "Launch Built-in web server",
+            "type": "php",
+            "request": "launch",
+            "runtimeArgs": [
+                "-dxdebug.mode=debug",
+                "-dxdebug.start_with_request=yes",
+                "-S",
+                "localhost:0"
+            ],
+            "program": "",
+            "cwd": "${workspaceRoot}",
+            "port": 9003,
+            "serverReadyAction": {
+                "pattern": "Development Server \\(http://localhost:([0-9]+)\\) started",
+                "uriFormat": "http://localhost:%s",
+                "action": "openExternally"
+            }
+        },*/
+        {
+			"name": "Listen for Xdebug 3.0 (Local)",
+			"type": "php",
+			"request": "launch",
+			"port": 9003,
+            "pathMappings": {
+                "/app/public": "${workspaceFolder}",
+                "C:/Users/stay/Local Sites/staynalive/app/public": "${workspaceFolder}"
+            },
+			"xdebugSettings": {
+				"max_children": 128,
+				"max_data": 1024,
+				"max_depth": 3,
+				"show_hidden": 1
+			}
+		},
+		{
+			"name": "Listen for Xdebug (Local)",
+			"type": "php",
+			"request": "launch",
+			"port": 9000,
+            "pathMappings": {
+                "/app/public": "${workspaceFolder}",
+                "C:/Users/stay/Local Sites/staynalive/app/public": "${workspaceFolder}"
+            },
+			"xdebugSettings": {
+				"max_children": 128,
+				"max_data": 1024,
+				"max_depth": 3,
+				"show_hidden": 1
+			}
+		},
+		{
+			"name": "Launch currently open script",
+			"type": "php",
+			"request": "launch",
+			"program": "${file}",
+			"cwd": "${fileDirname}",
+			"port": 9000,
+            "pathMappings": {
+                "/app/public": "${workspaceFolder}",
+                "C:/Users/stay/Local Sites/staynalive/app/public": "${workspaceFolder}"
+            },
+			"xdebugSettings": {
+				"max_children": 128,
+				"max_data": 1024,
+				"max_depth": 3,
+				"show_hidden": 1
+			}
+		},
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "Debug deploy-to-local.sh",
+            "program": "${workspaceFolder}/deploy-to-local.sh",
+            "args": [],
+            "env": {
+                "DEBUG": "1",
+                "CHECKPOINT_ENABLED": "1"
+            },
+            "cwd": "${workspaceFolder}",
+            "terminalKind": "integrated",
+            "internalConsoleOptions": "neverOpen",
+            "preLaunchTask": "Validate deploy-to-local.sh"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Full Debug",
+            "configurations": ["Debug install.sh", "Debug PowerShell Scripts", "Debug PHP"]
+        }
+    ]
+}

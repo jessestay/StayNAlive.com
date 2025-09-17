@@ -1,0 +1,30 @@
+:root {
+    --color-primary: #1e73be;
+    --color-text: #333333;
+    --color-background: #ffffff;
+    --header-height: 60px;
+    --footer-padding: 30px;
+}
+
+body {
+    margin: 0;
+    font-family: var(--wp--preset--font-family--primary);
+    color: var(--color-text);
+    background: var(--color-background);
+}
+
+.site-header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 99999;
+    background: #fff;
+    box-shadow: 0 1px 0 rgba(0,0,0,.1);
+    height: var(--header-height);
+}
+
+.site-footer {
+    padding: var(--footer-padding) 0;
+    background: #222;
+    color: #fff;
+}

@@ -1,0 +1,35 @@
+# Allow following external sources
+external-sources=true
+
+# Enable all optional checks
+enable=all
+
+# Disable specific checks that don't apply
+disable=SC2250  # Don't warn about unquoted variables in [[ ]]
+
+# Set shell dialect
+shell=bash
+
+# Enable recursive checking
+check-sourced=true
+
+# Require explicit cd success checks
+require-variable-braces=true
+
+# Ignore directories
+source-path=SCRIPTDIR
+exclude=.specstory/**/*
+exclude=**/.specstory/**/*
+exclude=vendor/**/*
+exclude=**/vendor/**/*
+exclude=**/*.log
+exclude=**/.log/**/*
+exclude=**/logs/**/*
+exclude=debug.log
+exclude=error.log
+
+# Remove duplicate section
+# Ignore .specstory directory
+# source-path=SCRIPTDIR
+# exclude=.specstory/**/*
+# exclude=**/.specstory/**/* 

@@ -1,0 +1,13 @@
+# ... existing header ...
+"Project-Id-Version: StayNAlive\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/staynalive\n"
+"POT-Creation-Date: 2024-03-XX\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: staynalive\n"
+# ... rest of file ... 

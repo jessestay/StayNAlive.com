@@ -1,0 +1,22 @@
+[Unit]
+Description=n8n MCP Server
+After=network.target n8n.service
+
+[Service]
+Type=simple
+User=stay
+WorkingDirectory=/home/stay
+Environment=NODE_ENV=production
+Environment=N8N_API_URL=http://localhost:5678/api
+Environment=N8N_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiMDFkMmI5ZS1mOTdkLTQ5YWYtYjE4MC1lODViMjQ3MDVjZGYiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzU3OTk5NDg5LCJleHAiOjE3NjA1ODcyMDB9.tzezqCSsLZEQotgEVOwQmtxz2d43HCU_30w4ImVkS2c
+Environment=NVM_DIR=/home/stay/.nvm
+Environment=PATH=/home/stay/.nvm/versions/node/v20.19.5/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ExecStart=/home/stay/.nvm/versions/node/v20.19.5/bin/n8n-mcp
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+
+
+

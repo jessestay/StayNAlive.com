@@ -1,0 +1,78 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:cover {"url":"placeholder-hero.jpg","dimRatio":50,"minHeight":400,"align":"full","className":"bio-hero"} -->
+<div class="wp-block-cover alignfull bio-hero">
+    <span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span>
+    <div class="wp-block-cover__inner-container">
+        <!-- wp:group {"className":"bio-header","layout":{"type":"constrained","contentSize":"800px"}} -->
+        <div class="wp-block-group bio-header">
+            <!-- wp:image {"className":"bio-avatar","width":150,"height":150,"scale":"cover","align":"center","style":{"border":{"radius":"100%"}}} -->
+            <figure class="wp-block-image aligncenter bio-avatar">
+                <img src="placeholder-avatar.jpg" alt="Profile avatar" style="border-radius:100%;width:150px;height:150px;object-fit:cover"/>
+            </figure>
+            <!-- /wp:image -->
+            
+            <!-- wp:heading {"textAlign":"center","level":1,"className":"bio-name"} -->
+            <h1 class="wp-block-heading has-text-align-center bio-name">Your Name</h1>
+            <!-- /wp:heading -->
+            
+            <!-- wp:paragraph {"align":"center","className":"bio-tagline"} -->
+            <p class="has-text-align-center bio-tagline">Your brief tagline goes here</p>
+            <!-- /wp:paragraph -->
+        </div>
+        <!-- /wp:group -->
+    </div>
+</div>
+<!-- /wp:cover -->
+
+<!-- wp:group {"className":"about-section","layout":{"type":"constrained","contentSize":"800px"}} -->
+<div class="wp-block-group about-section">
+    <!-- wp:columns {"verticalAlignment":"center"} -->
+    <div class="wp-block-columns are-vertically-aligned-center">
+        <!-- wp:column {"width":"40%"} -->
+        <div class="wp-block-column" style="flex-basis:40%">
+            <!-- wp:image {"className":"about-image","sizeSlug":"large"} -->
+            <figure class="wp-block-image size-large about-image">
+                <img src="placeholder-about.jpg" alt=""/>
+            </figure>
+            <!-- /wp:image -->
+        </div>
+        <!-- /wp:column -->
+
+        <!-- wp:column {"width":"60%"} -->
+        <div class="wp-block-column" style="flex-basis:60%">
+            <!-- wp:heading {"level":2,"className":"about-title"} -->
+            <h2 class="about-title">About Me</h2>
+            <!-- /wp:heading -->
+            
+            <!-- wp:paragraph {"className":"about-description"} -->
+            <p class="about-description">Your detailed bio goes here. Share your story, mission, and what makes you unique.</p>
+            <!-- /wp:paragraph -->
+        </div>
+        <!-- /wp:column -->
+    </div>
+    <!-- /wp:columns -->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:group {"tagName":"main","className":"link-bio-page","layout":{"type":"constrained"}} -->
+<main class="wp-block-group link-bio-page">
+    <!-- wp:group {"className":"bio-links","layout":{"type":"constrained","contentSize":"600px"}} -->
+    <div class="wp-block-group bio-links">
+        <!-- wp:pattern {"slug":"staynalive/bio-link-button"} /-->
+    </div>
+    <!-- /wp:group -->
+    
+    <!-- wp:group {"className":"social-feed","layout":{"type":"constrained","contentSize":"1200px"}} -->
+    <div class="wp-block-group social-feed">
+        <!-- wp:heading {"textAlign":"center","level":2,"className":"feed-title"} -->
+        <h2 class="wp-block-heading has-text-align-center feed-title">Latest Content</h2>
+        <!-- /wp:heading -->
+        
+        <!-- wp:pattern {"slug":"staynalive/social-grid"} /-->
+    </div>
+    <!-- /wp:group -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /--> 

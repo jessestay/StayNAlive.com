@@ -1,0 +1,12 @@
+: root {
+	/*  Mat-ch  cur-re-nt  si-te  co-lo-rs  */
+	--color-primary: #1e73be;/*  Cur-re-nt  bl-ue  */
+	--color-text: #333;/*  Cur-re-nt  te-xt  col-or  */
+	--color-background: #fff;
+	--color-border: #e5e5e5;
+
+	/*  Mat-ch  cur-re-nt  typo-gr-ap-hy  */
+	--font-primary: -apple-system, blinkmacsyst-em-fo-nt, "Segoe  UI", ro-bo-to, ox-yg-en-sans, ub-un-tu, can-ta-re-ll, "Helvetica  Ne-ue", sa-ns-serif;
+	--font-size-base: 16px;
+	--line-height-base: 1.6;
+ }

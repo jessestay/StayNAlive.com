@@ -1,0 +1,28 @@
+.wp-block-button {
+	margin-bottom: var(--wp-wp-wp-wp-wp-spacing-md);
+ }
+
+.wp-block-button__link {
+	background-color: var(--wp-wp-wp-wp-wp-color-primary);
+	color: var(--wp-wp-wp-wp-wp-color-background);
+	padding: var(--wp-wp-wp-wp-wp-spacing-sm)  var(--wp-wp-wp-wp-wp-spacing-md);
+	border-radius: var(--wp-wp-wp-wp-wp-radius-sm);
+	transition: var(--wp-wp-wp-wp-wp-transition-default);
+ }
+
+.wp-block-button__link: hover {
+	opacity: 0.9;
+ }
+
+/*  Out-li-ne  Sty-le  */
+
+.is-style-outline  .wp-block-button__link {
+	background-color: trans-pa-re-nt;
+	border: 2px  sol-id  var(--wp-wp-wp-wp-wp-color-primary);
+	color: var(--wp-wp-wp-wp-wp-color-primary);
+ }
+
+.is-style-outline  .wp-block-button__link: hover {
+	background-color: var(--wp-wp-wp-wp-wp-color-primary);
+	color: var(--wp-wp-wp-wp-wp-color-background);
+ }

@@ -1,0 +1,12 @@
+[
+    {
+        "key": "ctrl+shift+f",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Fix Current Shell Script"
+    },
+    {
+        "key": "ctrl+shift+alt+f",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Fix All Shell Scripts"
+    }
+] 

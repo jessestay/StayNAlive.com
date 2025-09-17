@@ -1,0 +1,188 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Validate Shell Scripts",
+            "type": "shell",
+            "command": "shellcheck",
+            "args": [
+                "--shell=bash",
+                "--external-sources",
+                "--check-sourced",
+                "--enable=all",
+                "${file}"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": "$shellcheck"
+        },
+        {
+            "label": "Deploy to Local",
+            "type": "shell",
+            "command": "./deploy-to-local.sh",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Format PHP Files",
+            "type": "shell",
+            "command": "vendor/bin/phpcbf",
+            "args": [
+                "--standard=WordPress",
+                "${file}"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Validate All",
+            "dependsOn": [
+                "Validate Shell Scripts",
+                "Format PHP Files"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Debug deploy-to-local.sh",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-x",
+                "./deploy-to-local.sh"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true,
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Validate deploy-to-local.sh",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-n",
+                "./deploy-to-local.sh"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared",
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Deploy with Checkpoints",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "export DEBUG=1 && ./deploy-to-local.sh"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true
+            },
+            "problemMatcher": [],
+            "options": {
+                "env": {
+                    "DEBUG": "1",
+                    "CHECKPOINT_ENABLED": "1"
+                }
+            }
+        },
+        {
+            "label": "Fix Shell Script",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "shellcheck --format=diff \"${file}\" | patch \"${file}\""
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "group": "build"
+        },
+        {
+            "label": "Fix All Shell Scripts",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "for f in $(find . -name '*.sh'); do shellcheck --format=diff \"$f\" | patch \"$f\"; done"
+            ],
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "Auto-format Shell Scripts",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "shfmt -i 4 -ci -bn -w \"${file}\""
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Fix Common Shell Issues",
+            "type": "shell",
+            "command": "sed",
+            "args": [
+                "-i",
+                "-e", "s/\\$\\([A-Za-z][A-Za-z0-9_]*\\)/${\\1}/g",
+                "-e", "/echo.*\\$(pwd)/{ h; s/.*\\$(pwd)/current_dir=$(pwd) || exit 1/; x; G; }",
+                "-e", "s|\\(\"\\?\\)src/\\$|\\1src/${|g",
+                "-e", "s|\\(\"\\?\\)${THEME_DIR}/\\$|\\1${THEME_DIR}/${|g",
+                "-e", "s/if \\[\\[ \"\\$\\([^\"]*\\)\" /if [[ \"${\\1}\" /g",
+                "-e", "s/for \\([a-z]*\\) in \"\\$\\([^\"]*\\)\"/for \\1 in \"${\\2}\"/g",
+                "${file}"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Validate Shell Script",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "shellcheck -x \"${file}\" && bash -n \"${file}\""
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "clear": true
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "localSiteName",
+            "type": "promptString",
+            "description": "Local site name",
+            "default": "staynalive"
+        }
+    ]
+} 
